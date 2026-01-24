@@ -42,6 +42,14 @@ export default defineI18nConfig(() => ({
           title: '專業基礎設施解決方案',
           subtitle: '請使用桌面瀏覽器體驗完整 3D 互動效果'
         }
+      },
+      products: {
+        title: '產品',
+        featured: '精選',
+        viewDetails: '查看詳情',
+        specifications: '規格',
+        category: '類別',
+        allProducts: '所有產品'
       }
     },
     'zh-CN': {
@@ -84,6 +92,14 @@ export default defineI18nConfig(() => ({
           title: '专业基础设施解决方案',
           subtitle: '请使用桌面浏览器体验完整 3D 互动效果'
         }
+      },
+      products: {
+        title: '产品',
+        featured: '精选',
+        viewDetails: '查看详情',
+        specifications: '规格',
+        category: '类别',
+        allProducts: '所有产品'
       }
     },
     'en': {
@@ -126,6 +142,14 @@ export default defineI18nConfig(() => ({
           title: 'Professional Infrastructure Solutions',
           subtitle: 'Please use a desktop browser for the full 3D interactive experience'
         }
+      },
+      products: {
+        title: 'Products',
+        featured: 'Featured',
+        viewDetails: 'View Details',
+        specifications: 'Specifications',
+        category: 'Category',
+        allProducts: 'All Products'
       }
     }
   }
