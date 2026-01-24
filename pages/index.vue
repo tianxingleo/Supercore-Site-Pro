@@ -1,16 +1,16 @@
 <template>
   <div class="min-h-screen bg-swiss-bg">
-    <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center">
+    <!-- Hero Section with 3D Scene -->
+    <section class="min-h-screen flex items-center">
       <GridContainer>
-        <div class="col-span-12 text-center">
-          <TypographyHeader level="1" size="display" align="center" class="mb-6">
+        <div class="col-span-12 lg:col-span-6 flex flex-col justify-center">
+          <TypographyHeader level="1" size="display" class="mb-6">
             {{ $t('home.hero.title') }}
           </TypographyHeader>
-          <TypographyHeader level="2" size="h3" color="secondary" align="center" class="mb-12">
+          <TypographyHeader level="2" size="h3" color="secondary" class="mb-12">
             {{ $t('home.hero.subtitle') }}
           </TypographyHeader>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div class="flex flex-col sm:flex-row gap-4">
             <SwissButton variant="primary" size="lg">
               {{ $t('home.hero.cta') }}
             </SwissButton>
@@ -18,6 +18,14 @@
               {{ $t('home.hero.ctaSecondary') }}
             </SwissButton>
           </div>
+        </div>
+
+        <div class="col-span-12 lg:col-span-6 min-h-[500px] relative">
+          <ServerScene
+            background-color="#F5F5F7"
+            :auto-rotate="true"
+            :mouse-parallax="true"
+          />
         </div>
       </GridContainer>
     </section>
