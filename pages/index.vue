@@ -1,7 +1,10 @@
 <template>
   <div class="min-h-screen bg-swiss-bg">
+    <!-- Animated Text Overlay -->
+    <AnimatedTextOverlay :phase="animationPhase" />
+
     <!-- Hero Section with 3D Scene -->
-    <section class="min-h-screen flex items-center">
+    <section class="min-h-screen flex items-center" id="hero-section">
       <GridContainer>
         <div class="col-span-12 lg:col-span-6 flex flex-col justify-center">
           <TypographyHeader level="1" size="display" class="mb-6">
@@ -22,8 +25,9 @@
 
         <div class="col-span-12 lg:col-span-6 min-h-[500px] relative">
           <ServerScene
+            ref="serverSceneRef"
             background-color="#F5F5F7"
-            :auto-rotate="true"
+            :auto-rotate="false"
             :mouse-parallax="true"
           />
         </div>
@@ -145,5 +149,95 @@ const { t } = useI18n()
 
 useHead({
   title: t('nav.home'),
+})
+
+// 動畫系統
+const serverSceneRef = ref()
+const animationPhase = ref(0)
+
+onMounted(() => {
+  // 確保在客戶端執行
+  if (process.client) {
+    // 等待下一個 tick，確保組件已掛載
+    nextTick(() => {
+      initScrollAnimation()
+    })
+  }
+})
+
+const initScrollAnimation = () => {
+  // 獲取 ScrollTrigger 實例
+  const { ScrollTrigger } = useNuxtApp().$ScrollTrigger as { ScrollTrigger: any }
+
+  if (!ScrollTrigger) {
+    console.warn('ScrollTrigger not available')
+    return
+  }
+
+  // 創建滾動時間軸
+  const timeline = ScrollTrigger.timeline({
+    scrollTrigger: {
+      trigger: '#hero-section',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1,
+      onUpdate: (self: any) => {
+        const progress = self.progress
+        updateAnimationPhase(progress)
+      },
+    },
+  })
+
+  // 階段 1: 淡入 (0-20%)
+  timeline.to({}, { duration: 20 })
+
+  // 階段 2: 機櫃打開 (20-50%)
+  timeline.to({}, { duration: 30 })
+
+  // 階段 3: 組件爆炸 (50-80%)
+  timeline.to({}, { duration: 30 })
+
+  // 階段 4: 重新組裝 (80-100%)
+  timeline.to({}, { duration: 20 })
+}
+
+const updateAnimationPhase = (progress: number) => {
+  if (!serverSceneRef.value) return
+
+  let phase = 0
+  let phaseProgress = 0
+
+  if (progress < 0.2) {
+    // 階段 1: 淡入
+    phase = 0
+    phaseProgress = progress / 0.2
+  } else if (progress < 0.5) {
+    // 階段 2: 機櫃打開
+    phase = 1
+    phaseProgress = (progress - 0.2) / 0.3
+  } else if (progress < 0.8) {
+    // 階段 3: 組件爆炸
+    phase = 2
+    phaseProgress = (progress - 0.5) / 0.3
+  } else {
+    // 階段 4: 重新組裝
+    phase = 3
+    phaseProgress = (progress - 0.8) / 0.2
+  }
+
+  animationPhase.value = phase
+
+  // 更新 3D 場景
+  serverSceneRef.value.setAnimationPhase(phase, phaseProgress)
+}
+
+onUnmounted(() => {
+  // 清理 ScrollTrigger
+  if (process.client) {
+    const { ScrollTrigger } = useNuxtApp().$ScrollTrigger as { ScrollTrigger: any }
+    if (ScrollTrigger) {
+      ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill())
+    }
+  }
 })
 </script>
