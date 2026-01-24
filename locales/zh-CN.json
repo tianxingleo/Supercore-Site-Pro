@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "home": "首页",
+    "products": "产品",
+    "solutions": "解决方案",
+    "about": "关于我们",
+    "contact": "联系我们"
+  },
+  "home": {
+    "hero": {
+      "title": "专业基础设施解决方案",
+      "subtitle": "服务香港及海外市场",
+      "cta": "了解更多"
+    }
+  },
+  "common": {
+    "loading": "加载中...",
+    "learnMore": "了解更多",
+    "contactUs": "联系我们",
+    "back": "返回"
+  }
+}

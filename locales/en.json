@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "solutions": "Solutions",
+    "about": "About Us",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero": {
+      "title": "Professional Infrastructure Solutions",
+      "subtitle": "Serving Hong Kong and Overseas Markets",
+      "cta": "Learn More"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "learnMore": "Learn More",
+    "contactUs": "Contact Us",
+    "back": "Back"
+  }
+}

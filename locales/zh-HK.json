@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "home": "首頁",
+    "products": "產品",
+    "solutions": "解決方案",
+    "about": "關於我們",
+    "contact": "聯絡我們"
+  },
+  "home": {
+    "hero": {
+      "title": "專業基礎設施解決方案",
+      "subtitle": "服務香港及海外市場",
+      "cta": "了解更多"
+    }
+  },
+  "common": {
+    "loading": "載入中...",
+    "learnMore": "了解更多",
+    "contactUs": "聯絡我們",
+    "back": "返回"
+  }
+}
