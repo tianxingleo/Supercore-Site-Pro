@@ -31,6 +31,12 @@ export default defineI18nConfig(() => ({
             title: '安全可靠',
             description: '金融級安全標準，保護您的數據資產'
           }
+        },
+        animation: {
+          phase1: '卓越性能，啟動未來',
+          phase2: '精密工藝，層層解構',
+          phase3: '每一個組件，都值得細細品味',
+          phase4: '專業，從細節開始'
         }
       }
     },
@@ -63,6 +69,12 @@ export default defineI18nConfig(() => ({
             title: '安全可靠',
             description: '金融级安全标准，保护您的数据资产'
           }
+        },
+        animation: {
+          phase1: '卓越性能，启动未来',
+          phase2: '精密工艺，层层解构',
+          phase3: '每一个组件，都值得细细品味',
+          phase4: '专业，从细节开始'
         }
       }
     },
@@ -95,6 +107,12 @@ export default defineI18nConfig(() => ({
             title: 'Secure & Reliable',
             description: 'Financial-grade security standards protecting your data assets'
           }
+        },
+        animation: {
+          phase1: 'Exceptional Performance, Powering the Future',
+          phase2: 'Precision Engineering, Layer by Layer',
+          phase3: 'Every Component Deserves Attention',
+          phase4: 'Professionalism Starts with Details'
         }
       }
     }
