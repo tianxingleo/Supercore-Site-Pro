@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/i18n',
-    '@nuxtjs/supabase',
+    // '@nuxtjs/supabase', // Temporarily disabled - will configure on Day 3
   ],
 
   // Tailwind CSS
@@ -61,11 +61,11 @@ export default defineNuxtConfig({
     },
   },
 
-  // Supabase
-  supabase: {
-    url: process.env.SUPABASE_URL,
-    key: process.env.SUPABASE_ANON_KEY,
-  },
+  // Supabase (Temporarily disabled - will configure on Day 3)
+  // supabase: {
+  //   url: process.env.SUPABASE_URL,
+  //   key: process.env.SUPABASE_ANON_KEY,
+  // },
 
   // CSS
   css: ['~/assets/css/main.css'],
@@ -86,8 +86,9 @@ export default defineNuxtConfig({
   // Runtime Config
   runtimeConfig: {
     public: {
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
+      // Supabase config (will be added on Day 3)
+      // supabaseUrl: process.env.SUPABASE_URL,
+      // supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
     },
   },
 
