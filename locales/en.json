@@ -10,13 +10,78 @@
     "hero": {
       "title": "Professional Infrastructure Solutions",
       "subtitle": "Serving Hong Kong and Overseas Markets",
-      "cta": "Learn More"
+      "cta": "Learn More",
+      "ctaSecondary": "Contact Us"
+    },
+    "features": {
+      "title": "Core Advantages",
+      "feature1": {
+        "title": "High-Performance Servers",
+        "description": "Enterprise-grade server solutions ensuring business continuity"
+      },
+      "feature2": {
+        "title": "Professional Operations",
+        "description": "24/7 technical support ensuring stable system operations"
+      },
+      "feature3": {
+        "title": "Secure & Reliable",
+        "description": "Financial-grade security standards protecting your data assets"
+      }
+    }
+  },
+  "products": {
+    "title": "Product Series",
+    "subtitle": "Meeting All Your Infrastructure Needs",
+    "viewAll": "View All",
+    "specs": "Specifications",
+    "features": "Features"
+  },
+  "solutions": {
+    "title": "Solutions",
+    "subtitle": "Tailored for Your Business",
+    "idc": "Data Center Services",
+    "operations": "Operations Management",
+    "development": "Development Services"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Your Trusted Infrastructure Partner",
+    "mission": "Our Mission",
+    "vision": "Our Vision",
+    "timeline": "Timeline"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're Here to Help",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company Name",
+      "message": "Message",
+      "submit": "Send",
+      "success": "Message sent successfully! We'll reply shortly.",
+      "error": "Failed to send. Please try again later."
     }
   },
   "common": {
     "loading": "Loading...",
     "learnMore": "Learn More",
     "contactUs": "Contact Us",
-    "back": "Back"
+    "back": "Back",
+    "readMore": "Read More",
+    "close": "Close",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "next": "Next",
+    "previous": "Previous",
+    "page": "Page",
+    "of": "of"
   }
 }

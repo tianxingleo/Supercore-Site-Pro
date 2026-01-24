@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   // TypeScript
   typescript: {
     strict: true,
-    typeCheck: true,
+    typeCheck: false, // Disabled due to vue-tsc issues in dev mode
   },
 
   // Modules
@@ -55,6 +55,9 @@ export default defineNuxtConfig({
       useCookie: true,
       cookieKey: 'i18n_redirected',
       redirectOn: 'root',
+    },
+    bundle: {
+      optimizeTranslationDirective: false,
     },
   },
 

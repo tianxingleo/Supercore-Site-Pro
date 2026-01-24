@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(git branch:*)",
+      "Bash(npx nuxi@latest init:*)",
+      "Bash(npm install:*)",
+      "Bash(npx husky init:*)",
+      "Bash(npx nuxt prepare:*)"
+    ]
+  }
+}

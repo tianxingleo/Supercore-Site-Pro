@@ -10,13 +10,78 @@
     "hero": {
       "title": "專業基礎設施解決方案",
       "subtitle": "服務香港及海外市場",
-      "cta": "了解更多"
+      "cta": "了解更多",
+      "ctaSecondary": "聯絡我們"
+    },
+    "features": {
+      "title": "核心優勢",
+      "feature1": {
+        "title": "高性能伺服器",
+        "description": "提供企業級伺服器解決方案，確保業務連續性"
+      },
+      "feature2": {
+        "title": "專業運維服務",
+        "description": "24/7 全天候技術支援，保障系統穩定運行"
+      },
+      "feature3": {
+        "title": "安全可靠",
+        "description": "金融級安全標準，保護您的數據資產"
+      }
+    }
+  },
+  "products": {
+    "title": "產品系列",
+    "subtitle": "滿足您所有基礎設施需求",
+    "viewAll": "查看全部",
+    "specs": "規格",
+    "features": "功能特點"
+  },
+  "solutions": {
+    "title": "解決方案",
+    "subtitle": "為您的業務量身定制",
+    "idc": "數據中心服務",
+    "operations": "運維管理",
+    "development": "開發服務"
+  },
+  "about": {
+    "title": "關於我們",
+    "subtitle": "值得信賴的基礎設施合作夥伴",
+    "mission": "我們的使命",
+    "vision": "我們的願景",
+    "timeline": "發展歷程"
+  },
+  "contact": {
+    "title": "聯絡我們",
+    "subtitle": "我們隨時為您服務",
+    "form": {
+      "name": "姓名",
+      "email": "電子郵件",
+      "phone": "電話",
+      "company": "公司名稱",
+      "message": "留言",
+      "submit": "發送",
+      "success": "發送成功！我們會儘快回覆您。",
+      "error": "發送失敗，請稍後再試。"
     }
   },
   "common": {
     "loading": "載入中...",
     "learnMore": "了解更多",
     "contactUs": "聯絡我們",
-    "back": "返回"
+    "back": "返回",
+    "readMore": "閱讀更多",
+    "close": "關閉",
+    "submit": "提交",
+    "cancel": "取消",
+    "save": "儲存",
+    "delete": "刪除",
+    "edit": "編輯",
+    "search": "搜尋",
+    "filter": "篩選",
+    "sort": "排序",
+    "next": "下一頁",
+    "previous": "上一頁",
+    "page": "頁",
+    "of": "/"
   }
 }
