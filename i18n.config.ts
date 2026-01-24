@@ -50,6 +50,9 @@ export default defineI18nConfig(() => ({
         specifications: '規格',
         category: '類別',
         allProducts: '所有產品'
+      },
+      solutions: {
+        title: '解決方案'
       }
     },
     'zh-CN': {
@@ -100,6 +103,9 @@ export default defineI18nConfig(() => ({
         specifications: '规格',
         category: '类别',
         allProducts: '所有产品'
+      },
+      solutions: {
+        title: '解决方案'
       }
     },
     'en': {
@@ -150,6 +156,9 @@ export default defineI18nConfig(() => ({
         specifications: 'Specifications',
         category: 'Category',
         allProducts: 'All Products'
+      },
+      solutions: {
+        title: 'Solutions'
       }
     }
   }
