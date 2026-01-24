@@ -25,3 +25,8 @@ logs
 
 # TypeScript
 *.tsbuildinfo
+*_CONFIG*.md
+*_GUIDE.md
+*_COMPLETE.md
+*_REFERENCE.md
+*_VERIFICATION.md
