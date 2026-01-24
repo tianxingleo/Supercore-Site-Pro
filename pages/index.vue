@@ -24,12 +24,16 @@
         </div>
 
         <div class="col-span-12 lg:col-span-6 min-h-[500px] relative">
+          <!-- 桌面端：3D 場景 -->
           <ServerScene
+            v-if="canUseAdvanced3D"
             ref="serverSceneRef"
             background-color="#F5F5F7"
             :auto-rotate="false"
             :mouse-parallax="true"
           />
+          <!-- 移動端：降級版本 -->
+          <MobileFallback v-else :show-scroll-indicator="true" />
         </div>
       </GridContainer>
     </section>
@@ -151,13 +155,20 @@ useHead({
   title: t('nav.home'),
 })
 
+// 設備檢測
+const { deviceInfo, canUseAdvanced3D } = useDeviceDetection()
+const canUse3D = ref(false)
+
 // 動畫系統
 const serverSceneRef = ref()
 const animationPhase = ref(0)
 
 onMounted(() => {
-  // 確保在客戶端執行
-  if (process.client) {
+  // 檢測設備並決定是否啟用 3D
+  canUse3D.value = canUseAdvanced3D()
+
+  // 確保在客戶端執行且可以使用 3D
+  if (process.client && canUse3D.value) {
     // 等待下一個 tick，確保組件已掛載
     nextTick(() => {
       initScrollAnimation()
@@ -171,6 +182,11 @@ const initScrollAnimation = () => {
 
   if (!ScrollTrigger) {
     console.warn('ScrollTrigger not available')
+    return
+  }
+
+  // 僅在桌面端啟用滾動動畫
+  if (!canUse3D.value) {
     return
   }
 

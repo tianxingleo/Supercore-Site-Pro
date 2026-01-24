@@ -37,6 +37,10 @@ export default defineI18nConfig(() => ({
           phase2: '精密工藝，層層解構',
           phase3: '每一個組件，都值得細細品味',
           phase4: '專業，從細節開始'
+        },
+        mobileFallback: {
+          title: '專業基礎設施解決方案',
+          subtitle: '請使用桌面瀏覽器體驗完整 3D 互動效果'
         }
       }
     },
@@ -75,6 +79,10 @@ export default defineI18nConfig(() => ({
           phase2: '精密工艺，层层解构',
           phase3: '每一个组件，都值得细细品味',
           phase4: '专业，从细节开始'
+        },
+        mobileFallback: {
+          title: '专业基础设施解决方案',
+          subtitle: '请使用桌面浏览器体验完整 3D 互动效果'
         }
       }
     },
@@ -113,6 +121,10 @@ export default defineI18nConfig(() => ({
           phase2: 'Precision Engineering, Layer by Layer',
           phase3: 'Every Component Deserves Attention',
           phase4: 'Professionalism Starts with Details'
+        },
+        mobileFallback: {
+          title: 'Professional Infrastructure Solutions',
+          subtitle: 'Please use a desktop browser for the full 3D interactive experience'
         }
       }
     }
