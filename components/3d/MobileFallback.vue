@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <TypographyHeader level="3" size="h4" class="text-swiss-text mb-2">
+        <TypographyHeader :level="3" size="h4" class="text-swiss-text mb-2">
           {{ $t('home.mobileFallback.title') }}
         </TypographyHeader>
         <p class="text-swiss-secondary text-sm">

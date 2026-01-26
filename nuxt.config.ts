@@ -53,7 +53,7 @@ export default defineNuxtConfig({
       { code: 'zh-CN', iso: 'zh-CN', name: '简体中文', file: 'zh-CN.json' },
       { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' }
     ],
-    langDir: 'locales/',
+    langDir: 'locales',
     lazy: true,
     bundle: {
       optimizeTranslationDirective: false

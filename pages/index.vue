@@ -62,7 +62,7 @@
       <GridContainer :grid="true">
         <!-- Section Header -->
         <div class="col-span-12 text-center mb-16">
-          <TypographyHeader level="2" size="h2" align="center" class="mb-4">
+          <TypographyHeader :level="2" size="h2" align="center" class="mb-4">
             {{ $t('home.features.title') }}
           </TypographyHeader>
         </div>
@@ -70,7 +70,7 @@
         <!-- Feature 1 -->
         <div class="col-span-12 md:col-span-4 mb-8 md:mb-0">
           <div class="text-center p-8">
-            <TypographyHeader level="3" size="h4" class="mb-4">
+            <TypographyHeader :level="3" size="h4" class="mb-4">
               {{ $t('home.features.feature1.title') }}
             </TypographyHeader>
             <p class="text-swiss-secondary">
@@ -82,7 +82,7 @@
         <!-- Feature 2 -->
         <div class="col-span-12 md:col-span-4 mb-8 md:mb-0">
           <div class="text-center p-8">
-            <TypographyHeader level="3" size="h4" class="mb-4">
+            <TypographyHeader :level="3" size="h4" class="mb-4">
               {{ $t('home.features.feature2.title') }}
             </TypographyHeader>
             <p class="text-swiss-secondary">
@@ -94,7 +94,7 @@
         <!-- Feature 3 -->
         <div class="col-span-12 md:col-span-4">
           <div class="text-center p-8">
-            <TypographyHeader level="3" size="h4" class="mb-4">
+            <TypographyHeader :level="3" size="h4" class="mb-4">
               {{ $t('home.features.feature3.title') }}
             </TypographyHeader>
             <p class="text-swiss-secondary">
@@ -112,10 +112,10 @@
       </div>
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-5 mb-12 lg:mb-0">
-          <TypographyHeader level="2" size="h2" class="mb-6">
+          <TypographyHeader :level="2" size="h2" class="mb-6">
             {{ $t('about.pageTitle') }}
           </TypographyHeader>
-          <TypographyHeader level="2" size="h4" color="secondary" weight="normal" class="mb-8 leading-relaxed">
+          <TypographyHeader :level="2" size="h4" color="secondary" weight="normal" class="mb-8 leading-relaxed">
             {{ $t('company.slogan') }}
           </TypographyHeader>
           <SwissButton variant="secondary" @click="$router.push('/about')">
@@ -134,7 +134,7 @@
     <section class="py-24 bg-swiss-bg">
       <GridContainer :grid="true">
         <div class="col-span-12 mb-12">
-          <TypographyHeader level="2" size="h2"> Swiss Design Components </TypographyHeader>
+          <TypographyHeader :level="2" size="h2"> Swiss Design Components </TypographyHeader>
           <p class="text-swiss-secondary mt-4">
             Swiss International Style - 瑞士国际主义风格组件库
           </p>
@@ -142,7 +142,7 @@
 
         <!-- Button Variants -->
         <div class="col-span-12 mb-8">
-          <TypographyHeader level="3" size="h4" class="mb-4"> Button Variants </TypographyHeader>
+          <TypographyHeader :level="3" size="h4" class="mb-4"> Button Variants </TypographyHeader>
           <div class="flex flex-wrap gap-4">
             <SwissButton variant="primary">Primary</SwissButton>
             <SwissButton variant="secondary">Secondary</SwissButton>
@@ -153,7 +153,7 @@
 
         <!-- Button Sizes -->
         <div class="col-span-12 mb-8">
-          <TypographyHeader level="3" size="h4" class="mb-4"> Button Sizes </TypographyHeader>
+          <TypographyHeader :level="3" size="h4" class="mb-4"> Button Sizes </TypographyHeader>
           <div class="flex flex-wrap gap-4 items-center">
             <SwissButton variant="primary" size="sm">Small</SwissButton>
             <SwissButton variant="primary" size="md">Medium</SwissButton>
@@ -163,18 +163,18 @@
 
         <!-- Typography Examples -->
         <div class="col-span-12">
-          <TypographyHeader level="3" size="h4" class="mb-4"> Typography Scale </TypographyHeader>
+          <TypographyHeader :level="3" size="h4" class="mb-4"> Typography Scale </TypographyHeader>
           <div class="space-y-4">
-            <TypographyHeader level="1" size="h1">
+            <TypographyHeader :level="1" size="h1">
               Display Heading (H1) - 专业基礎設施解決方案
             </TypographyHeader>
-            <TypographyHeader level="2" size="h2">
+            <TypographyHeader :level="2" size="h2">
               Heading 2 (H2) - 瑞士國際主義風格
             </TypographyHeader>
-            <TypographyHeader level="3" size="h3">
+            <TypographyHeader :level="3" size="h3">
               Heading 3 (H3) - Swiss International Style
             </TypographyHeader>
-            <TypographyHeader level="4" size="h4" color="secondary">
+            <TypographyHeader :level="4" size="h4" color="secondary">
               Secondary Text - 次要文字顏色
             </TypographyHeader>
           </div>

@@ -1,16 +1,18 @@
 <template>
-  <div class="spec-table">
-    <table class="w-full">
+  <div class="spec-table overflow-hidden">
+    <table class="w-full border-collapse">
       <tbody>
         <tr
           v-for="(value, key) in specs"
           :key="key"
-          class="border-b border-swiss-secondary/20 last:border-0"
+          class="border-b border-gray-100 last:border-0 group hover:bg-swiss-bg-soft transition-colors"
         >
-          <th class="py-4 px-4 text-left font-medium text-swiss-secondary w-1/3">
-            {{ getSpecLabel(key) }}
+          <th class="py-6 px-0 text-left w-1/3">
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-swiss-text/40 group-hover:text-swiss-text/60 transition-colors">
+              {{ key }} <span class="text-swiss-text/10">/</span> {{ getSpecLabel(key) }}
+            </span>
           </th>
-          <td class="py-4 px-4 text-swiss-text">
+          <td class="py-6 px-0 text-right text-swiss-text font-bold">
             {{ formatSpecValue(value) }}
           </td>
         </tr>
@@ -63,18 +65,10 @@ const formatSpecValue = (value: string | number | boolean): string => {
 </script>
 
 <style scoped>
-.spec-table {
-  @apply bg-white rounded-lg overflow-hidden shadow-sm;
-}
-
-table {
-  border-collapse: collapse;
-}
-
 @media (max-width: 768px) {
   th,
   td {
-    @apply px-2 py-3 text-sm;
+    @apply py-4;
   }
 }
 </style>

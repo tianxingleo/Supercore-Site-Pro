@@ -1,79 +1,87 @@
 <template>
-  <div class="min-h-screen bg-swiss-bg py-24">
-    <GridContainer>
-      <!-- Back Button -->
-      <div class="col-span-12 mb-8">
-        <NuxtLink to="/products" class="inline-flex items-center text-swiss-secondary hover:text-swiss-accent transition-colors">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-          {{ $t('products.allProducts') }}
-        </NuxtLink>
-      </div>
+  <div class="min-h-screen bg-white">
+    <!-- Back Navigation -->
+    <div class="pt-32 border-b border-gray-100">
+      <GridContainer>
+        <div class="col-span-12 py-6">
+          <NuxtLink to="/products" class="inline-flex items-center text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text/40 hover:text-swiss-text transition-colors">
+            <span class="mr-4">←</span>
+            Back to Collection
+          </NuxtLink>
+        </div>
+      </GridContainer>
+    </div>
 
+    <GridContainer :grid="true" gap="none" class="border-l border-gray-100 min-h-[calc(100vh-140px)]">
       <!-- Product Not Found -->
-      <div v-if="!product" class="col-span-12 text-center py-24">
-        <TypographyHeader level="2" size="h2" class="mb-4">
-          產品未找到
+      <div v-if="!product" class="col-span-12 text-center py-48 border-r border-b border-gray-100">
+        <TypographyHeader :level="2" size="h2" class="mb-8">
+          404_NOT_FOUND
         </TypographyHeader>
         <SwissButton variant="primary" @click="navigateTo('/products')">
-          返回產品列表
+          RETURN_TO_COLLECTION
         </SwissButton>
       </div>
 
       <!-- Product Details -->
       <template v-else>
-        <!-- Product Header -->
-        <div class="col-span-12 lg:col-span-6 mb-12">
-          <!-- Product Image Placeholder -->
-          <div class="aspect-square bg-gradient-to-br from-swiss-bg to-gray-200 rounded-lg relative overflow-hidden">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-48 h-48 bg-swiss-text rounded-lg opacity-10"></div>
+        <!-- Product Image (Left) -->
+        <div class="col-span-12 lg:col-span-7 border-r border-b border-gray-100 flex items-center justify-center bg-swiss-bg-soft">
+          <div class="aspect-square w-full p-24 flex items-center justify-center relative">
+             <div class="w-2/3 h-2/3 border border-swiss-text/5 bg-swiss-bg flex items-center justify-center shadow-2xl">
+                <div class="w-1/2 h-1/2 bg-swiss-text opacity-5"></div>
+             </div>
+
+            <!-- Meta Labels -->
+            <div class="absolute top-12 left-12 flex flex-col gap-2">
+              <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-swiss-text">Model: {{ product.slug }}</span>
+              <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-swiss-text/40">Cat: {{ getCategoryLabel(product.category) }}</span>
             </div>
 
-            <!-- Category Badge -->
-            <div class="absolute top-6 left-6">
-              <span class="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium text-swiss-text">
-                {{ getCategoryLabel(product.category) }}
-              </span>
-            </div>
-
-            <!-- Featured Badge -->
-            <div v-if="product.featured" class="absolute top-6 right-6">
-              <span class="px-4 py-2 bg-swiss-accent text-white rounded-full text-sm font-medium">
-                {{ $t('products.featured') }}
-              </span>
+            <div v-if="product.featured" class="absolute bottom-12 right-12">
+               <span class="text-[10px] font-black tracking-widest uppercase border border-swiss-text px-4 py-1">Limited Edition Range</span>
             </div>
           </div>
         </div>
 
-        <!-- Product Info -->
-        <div class="col-span-12 lg:col-span-6 mb-12">
-          <TypographyHeader level="1" size="h2" class="mb-4">
-            {{ product.name[locale] || product.name.zhHK }}
-          </TypographyHeader>
-          <p class="text-swiss-secondary text-lg mb-8">
-            {{ product.description[locale] || product.description.zhHK }}
-          </p>
+        <!-- Product Info (Right) -->
+        <div class="col-span-12 lg:col-span-5 border-r border-b border-gray-100 p-12 md:p-20 flex flex-col justify-between">
+          <div>
+            <div class="inline-block mb-12 text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono">
+              Technical Specification / 01
+            </div>
+            <TypographyHeader :level="1" size="h1" class="mb-8">
+              {{ product.name[locale] || product.name.zhHK }}
+            </TypographyHeader>
+            <p class="text-swiss-text-muted text-lg leading-relaxed font-medium mb-16">
+              {{ product.description[locale] || product.description.zhHK }}
+            </p>
 
-          <!-- Actions -->
-          <div class="flex flex-col sm:flex-row gap-4">
-            <SwissButton variant="primary" size="lg">
-              聯絡我們
-            </SwissButton>
-            <SwissButton variant="ghost" size="lg">
-              下載規格書
-            </SwissButton>
+            <!-- Actions -->
+            <div class="flex flex-col gap-4">
+              <SwissButton variant="primary" size="lg" class="!py-6">
+                REQUEST_CONSULTATION
+              </SwissButton>
+              <SwissButton variant="ghost" size="lg" class="!py-6">
+                DOWNLOAD_DATASHEET
+              </SwissButton>
+            </div>
+          </div>
+
+          <!-- Bottom Summary -->
+          <div class="mt-20 pt-10 border-t border-gray-100 flex justify-between items-center">
+             <span class="text-[10px] font-bold tracking-widest uppercase text-swiss-text/40">Status: Available</span>
+             <span class="text-[10px] font-mono opacity-20">BUILD_UUID: {{ product.id }}</span>
           </div>
         </div>
 
-        <!-- Specifications -->
-        <div class="col-span-12">
-          <div class="bg-white rounded-lg p-8 shadow-sm">
-            <TypographyHeader level="2" size="h3" class="mb-6">
+        <!-- Detailed Specifications (Bottom) -->
+        <div class="col-span-12 border-r border-b border-gray-100 p-12 md:p-20 bg-white">
+          <div class="max-w-4xl">
+            <TypographyHeader :level="2" size="h3" class="mb-12 !tracking-tighter uppercase">
               {{ $t('products.specifications') }}
             </TypographyHeader>
-            <SpecTable :specs="product.specs" />
+            <SpecTable :specs="product.specs" class="!rounded-none border-t border-gray-100" />
           </div>
         </div>
       </template>

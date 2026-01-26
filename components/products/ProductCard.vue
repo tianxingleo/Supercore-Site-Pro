@@ -32,7 +32,7 @@
 
     <!-- Product Info -->
     <div class="p-6">
-      <TypographyHeader level="3" size="h4" class="mb-2 group-hover:text-swiss-accent transition-colors">
+      <TypographyHeader :level="3" size="h4" class="mb-2 group-hover:text-swiss-accent transition-colors">
         {{ product.name[currentLocale] }}
       </TypographyHeader>
       <p class="text-swiss-secondary text-sm line-clamp-2 mb-4">

@@ -1,36 +1,37 @@
 <template>
-  <div class="min-h-screen bg-swiss-bg">
+  <div class="min-h-screen bg-white">
     <!-- Page Header -->
-    <section class="mb-16">
+    <section class="pt-48 pb-24 border-b border-gray-100 mb-12">
       <GridContainer :grid="true">
-        <div class="col-span-12 text-center">
-          <TypographyHeader level="1" size="h1" class="mb-4">
+        <div class="col-span-12 lg:col-span-8">
+          <TypographyHeader :level="1" size="display" class="mb-8">
             {{ $t('solutions.title') }}
           </TypographyHeader>
-          <p class="text-swiss-secondary max-w-2xl mx-auto">
+          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-2xl opacity-80">
             {{ $t('solutions.subtitle') }}
-          </p>
+          </TypographyHeader>
         </div>
       </GridContainer>
     </section>
 
     <!-- Category Tabs -->
-    <section class="mb-12">
+    <section class="mb-24">
       <GridContainer :grid="true">
-        <div class="col-span-12">
-          <div class="flex flex-wrap justify-center gap-4">
+        <div class="col-span-12 flex flex-col md:flex-row items-center gap-8">
+          <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono">Filter / Category</span>
+          <div class="flex flex-wrap gap-4">
             <button
               v-for="category in categories"
               :key="category.key"
               @click="selectedCategory = category.key"
-              class="px-6 py-3 rounded-lg transition-all duration-300"
+              class="px-8 py-3 border border-gray-200 text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-500 font-mono"
               :class="
                 selectedCategory === category.key
-                  ? 'bg-swiss-text text-white'
-                  : 'bg-white text-swiss-text hover:bg-swiss-secondary/10'
+                  ? 'bg-swiss-text text-white border-black'
+                  : 'bg-white text-swiss-text hover:border-black'
               "
             >
-              {{ category.label }}
+              [{{ category.label }}]
             </button>
           </div>
         </div>
@@ -38,7 +39,7 @@
     </section>
 
     <!-- Solutions Grid -->
-    <section>
+    <section class="pb-32">
       <SolutionsBento :solutions="filteredSolutions" />
     </section>
   </div>

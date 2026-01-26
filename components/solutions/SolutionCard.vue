@@ -16,7 +16,7 @@
     </div>
 
     <!-- Title -->
-    <TypographyHeader level="3" size="h3" class="mb-6 !tracking-tighter">
+    <TypographyHeader :level="3" size="h3" class="mb-6 !tracking-tighter">
       {{ solution.title[currentLocale] }}
     </TypographyHeader>
 

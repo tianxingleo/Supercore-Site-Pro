@@ -93,12 +93,6 @@
       </p>
     </div>
   </form>
-</template>    >
-      <p class="text-red-800 text-sm">
-        發送失敗，請稍後再試。
-      </p>
-    </div>
-  </form>
 </template>
 
 <script setup lang="ts">

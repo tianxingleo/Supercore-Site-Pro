@@ -96,52 +96,30 @@
       </GridContainer>
     </section>
 
-            <!-- Stats Card 4 -->
-            <div
-              class="bg-swiss-accent p-6 sm:p-10 rounded-3xl flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[220px]">
-              <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
-              <div
-                class="text-white/70 font-display font-medium mb-2 tracking-wider uppercase text-[10px] sm:text-xs relative z-10">
-                Experience</div>
-              <div class="relative z-10">
-                <div class="text-3xl sm:text-5xl font-bold text-white mb-1 font-display">{{
-                  $t('about.coreAdvantages.team.value') }}</div>
-                <div class="text-white/80 text-sm sm:text-base font-medium">{{ $t('about.coreAdvantages.team.label') }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </GridContainer>
-    </section>
-
     <!-- Why Choose Us / Features -->
-    <section class="py-32 bg-swiss-text relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-swiss-accent/10 to-transparent"></div>
-
+    <section class="py-32 bg-white">
       <GridContainer :grid="true">
-        <div class="col-span-12 text-center mb-20">
+        <div class="col-span-12 mb-20">
           <div
-            class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest uppercase text-swiss-accent bg-swiss-accent/20 rounded-full">
+            class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
             Our Edge
           </div>
-          <TypographyHeader :level="2" size="h2" class="mb-4 text-white font-display">
+          <TypographyHeader :level="2" size="h1" class="mb-4">
             {{ $t('about.solutionFeatures.title') }}
           </TypographyHeader>
         </div>
 
-        <div v-for="(feature, key) in solutionFeatures" :key="key" class="col-span-12 md:col-span-4 mb-8">
-          <div
-            class="bg-white/5 backdrop-blur-lg rounded-3xl p-8 h-full border border-white/10 hover:border-swiss-accent/50 transition-all duration-500 hover:-translate-y-2 group">
+        <div v-for="(feature, key) in solutionFeatures" :key="key" class="col-span-12 md:col-span-4 border-t border-gray-100 pt-12 mt-12 first:mt-0 md:first:mt-12 md:mt-12">
+          <div class="h-full group">
             <div
-              class="w-14 h-14 bg-swiss-accent/20 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-swiss-accent transition-colors duration-500">
+              class="w-12 h-12 border border-gray-200 flex items-center justify-center mb-10 group-hover:bg-swiss-text group-hover:border-swiss-text transition-all duration-500">
               <component :is="feature.icon"
-                class="w-7 h-7 text-swiss-accent group-hover:text-white transition-colors" />
+                class="w-6 h-6 text-swiss-text group-hover:text-white transition-colors" />
             </div>
-            <TypographyHeader :level="3" size="h4" class="mb-4 text-white font-display">
+            <TypographyHeader :level="3" size="h3" class="mb-6 !tracking-tighter">
               {{ $t(`about.solutionFeatures.${key}.title`) }}
             </TypographyHeader>
-            <p class="text-swiss-secondary leading-relaxed text-sm sm:text-base">
+            <p class="text-swiss-text-muted leading-relaxed font-medium">
               {{ $t(`about.solutionFeatures.${key}.description`) }}
             </p>
           </div>
@@ -150,23 +128,20 @@
     </section>
 
     <!-- Call to Action -->
-    <section class="py-24 bg-[#FBFBFE]">
+    <section class="py-32 border-t border-gray-100">
       <GridContainer>
         <div class="col-span-12">
           <div
-            class="bg-gradient-to-r from-swiss-accent to-[#005bb5] rounded-[2.5rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
-            <div
-              class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10">
-            </div>
+            class="bg-swiss-text p-16 md:p-32 text-center relative overflow-hidden">
             <div class="relative z-10">
-              <TypographyHeader :level="2" size="h2" class="text-white mb-8 font-display">
-                Ready to optimize your infrastructure?
+              <TypographyHeader :level="2" size="display" color="white" class="mb-16">
+                Ready to optimize<br>your infrastructure?
               </TypographyHeader>
-              <div class="flex flex-col sm:flex-row justify-center gap-6">
-                <SwissButton variant="primary" size="lg" class="!bg-white !text-swiss-accent hover:!bg-gray-100">
+              <div class="flex flex-col sm:flex-row justify-center gap-8">
+                <SwissButton variant="primary" size="lg" class="!bg-white !text-swiss-text hover:!bg-gray-100 !px-12">
                   {{ $t('home.hero.ctaSecondary') }}
                 </SwissButton>
-                <SwissButton variant="ghost" size="lg" class="!text-white !border-white/30 hover:!bg-white/10">
+                <SwissButton variant="ghost" size="lg" class="!text-white !border-white/20 hover:!bg-white/10 !px-12">
                   {{ $t('nav.products') }}
                 </SwissButton>
               </div>

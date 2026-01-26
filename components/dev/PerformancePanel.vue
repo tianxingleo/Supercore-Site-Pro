@@ -22,7 +22,7 @@
         <div v-for="(value, key) in metrics" :key="key" class="group">
           <div class="flex items-end justify-between mb-1">
             <span class="text-[9px] font-bold text-swiss-text/40 uppercase tracking-widest">{{ key }}</span>
-            <span 
+            <span
               class="text-[9px] font-bold uppercase tracking-widest"
               :class="getPerformanceColor(key as keyof PerformanceMetrics)"
             >
@@ -35,7 +35,7 @@
           </div>
           <!-- Tiny bar chart simulation -->
           <div class="mt-2 h-[2px] w-full bg-gray-100 overflow-hidden">
-            <div 
+            <div
               class="h-full bg-swiss-text transition-all duration-1000"
               :style="{ width: getMetricPercentage(key as keyof PerformanceMetrics) + '%' }"
             ></div>

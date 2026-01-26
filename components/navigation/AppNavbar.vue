@@ -11,7 +11,7 @@
             class="relative w-8 h-8 flex items-center justify-center overflow-hidden bg-swiss-text group-hover:bg-black transition-all duration-500 shadow-sm">
             <span class="text-white font-bold text-lg">B</span>
           </div>
-          <TypographyHeader level="3" size="h5" class="hidden sm:block !mb-0 tracking-[0.2em] font-black uppercase">
+          <TypographyHeader :level="3" size="h5" class="hidden sm:block !mb-0 tracking-[0.2em] font-black uppercase">
             BOER TECH
           </TypographyHeader>
         </NuxtLink>
@@ -19,7 +19,7 @@
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-12">
           <NuxtLink v-for="item in navItems" :key="item.key" :to="item.to" class="nav-link group relative py-1 overflow-hidden">
-            <TypographyHeader level="4" size="h6"
+            <TypographyHeader :level="4" size="h6"
               class="text-swiss-text-muted group-hover:text-swiss-text transition-colors duration-500 !mb-0 font-bold uppercase tracking-widest text-[10px]">
               {{ $t(item.label) }}
             </TypographyHeader>
@@ -52,7 +52,7 @@
           <div class="col-span-12 py-4 space-y-4">
             <NuxtLink v-for="item in navItems" :key="item.key" :to="item.to" class="block py-2"
               @click="mobileMenuOpen = false">
-              <TypographyHeader level="4" size="h5">
+              <TypographyHeader :level="4" size="h5">
                 {{ $t(item.label) }}
               </TypographyHeader>
             </NuxtLink>
