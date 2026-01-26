@@ -7,21 +7,20 @@
         :class="{ 'py-3 md:py-4': scrolled }">
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center space-x-3 group">
-          <img
-            src="/images/logo.png"
-            alt="Boer Tech Logo"
-            width="32"
-            height="32"
-            class="object-contain"
-          />
-          <TypographyHeader :level="3" size="h5" class="hidden sm:block !mb-0 tracking-[0.2em] font-black uppercase">
+          <img src="/images/logo.png" alt="Boer Tech Logo"
+            class="object-contain drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)] transition-all duration-500 w-20 h-20 md:w-32 md:h-32"
+            :class="{ '!w-12 !h-12 md:!w-20 md:!h-20': scrolled }" />
+          <TypographyHeader :level="3" size="h4"
+            class="hidden sm:block !mb-0 tracking-[0.2em] font-black uppercase transition-all duration-500 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+            :color="scrolled ? 'text' : 'white'">
             BOER TECH
           </TypographyHeader>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-12">
-          <NuxtLink v-for="item in navItems" :key="item.key" :to="item.to" class="nav-link group relative py-1 overflow-hidden">
+          <NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.to)"
+            class="nav-link group relative py-1 overflow-hidden">
             <TypographyHeader :level="4" size="h6"
               class="text-swiss-text-muted group-hover:text-swiss-text transition-colors duration-500 !mb-0 font-bold uppercase tracking-widest text-[10px]">
               {{ $t(item.label) }}
@@ -53,7 +52,7 @@
       <div v-if="mobileMenuOpen" class="md:hidden bg-swiss-bg/95 backdrop-blur-md border-t border-swiss-secondary/10">
         <GridContainer>
           <div class="col-span-12 py-4 space-y-4">
-            <NuxtLink v-for="item in navItems" :key="item.key" :to="item.to" class="block py-2"
+            <NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.to)" class="block py-2"
               @click="mobileMenuOpen = false">
               <TypographyHeader :level="4" size="h5">
                 {{ $t(item.label) }}
@@ -67,6 +66,7 @@
 </template>
 
 <script setup lang="ts">
+const localePath = useLocalePath()
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
 

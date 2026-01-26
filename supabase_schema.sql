@@ -90,22 +90,47 @@ CREATE POLICY "Public can view site config" ON site_config
 
 -- Admin Access
 CREATE POLICY "Admins have full access to products" ON products
-    FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin'));
+    FOR ALL TO authenticated USING (
+        (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
+    );
 
 CREATE POLICY "Admins have full access to posts" ON posts
-    FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin'));
+    FOR ALL TO authenticated USING (
+        (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
+    );
 
 CREATE POLICY "Admins have full access to solutions" ON solutions
-    FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin'));
+    FOR ALL TO authenticated USING (
+        (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
+    );
 
 CREATE POLICY "Admins have full access to inquiries" ON inquiries
-    FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin'));
+    FOR ALL TO authenticated USING (
+        (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
+    );
 
 CREATE POLICY "Admins have full access to site_config" ON site_config
-    FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin'));
+    FOR ALL TO authenticated USING (
+        (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
+    );
 
-CREATE POLICY "Users can view their own profile" ON profiles
+CREATE POLICY "Profiles are viewable by owners" ON profiles
     FOR SELECT USING (auth.uid() = id);
 
-CREATE POLICY "Admins can view all profiles" ON profiles
-    FOR SELECT USING (EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin'));
+CREATE POLICY "Profiles are editable by owners" ON profiles
+    FOR UPDATE USING (auth.uid() = id);
+
+-- Trigger to create profile on signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO public.profiles (id, full_name, avatar_url, role)
+  VALUES (new.id, new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'avatar_url', 'admin');
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+

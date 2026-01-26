@@ -8,13 +8,14 @@
       <GridContainer :grid="true" class="relative z-10">
         <div class="col-span-12 lg:col-span-8">
           <div class="flex items-center space-x-4 mb-10">
-             <NuxtLink to="/solutions" class="text-[10px] font-bold tracking-[0.2em] uppercase text-swiss-text/40 hover:text-swiss-text transition-colors">
-               [ {{ $t('nav.solutions') }} ]
-             </NuxtLink>
-             <span class="text-gray-300">/</span>
-             <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-swiss-text">
-               {{ solution.title }}
-             </span>
+            <NuxtLink :to="localePath('/solutions')"
+              class="text-[10px] font-bold tracking-[0.2em] uppercase text-swiss-text/40 hover:text-swiss-text transition-colors">
+              [ {{ $t('nav.solutions') }} ]
+            </NuxtLink>
+            <span class="text-gray-300">/</span>
+            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-swiss-text">
+              {{ solution.title }}
+            </span>
           </div>
 
           <TypographyHeader :level="1" size="display" class="mb-8 !tracking-[0.02em]">
@@ -26,7 +27,7 @@
           </TypographyHeader>
 
           <div class="flex flex-wrap gap-6">
-            <SwissButton variant="primary" size="lg" class="!px-10" @click="navigateTo('/contact')">
+            <SwissButton variant="primary" size="lg" class="!px-10" @click="navigateTo(localePath('/contact'))">
               {{ $t('home.hero.cta') }}
             </SwissButton>
           </div>
@@ -38,25 +39,26 @@
     <section class="py-32">
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-12">
-           <div class="border-l-[12px] border-swiss-text pl-12 md:pl-20 py-8">
-             <div class="inline-block mb-12 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
-               Solution Specifications
-             </div>
+          <div class="border-l-[12px] border-swiss-text pl-12 md:pl-20 py-8">
+            <div
+              class="inline-block mb-12 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
+              Solution Specifications
+            </div>
 
-             <div class="prose prose-2xl max-w-none text-swiss-text font-medium leading-relaxed">
-               <p class="mb-12 text-3xl md:text-4xl tracking-tight">
-                 {{ solution.description }}
-               </p>
+            <div class="prose prose-2xl max-w-none text-swiss-text font-medium leading-relaxed">
+              <p class="mb-12 text-3xl md:text-4xl tracking-tight">
+                {{ solution.description }}
+              </p>
 
-               <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mt-24">
-                 <div v-for="(feature, index) in solution.features" :key="index" class="border-t border-gray-100 pt-10">
-                   <div class="text-[10px] font-bold text-swiss-text/30 mb-6 font-mono">FEATURE_O{{ index + 1 }}</div>
-                   <h3 class="text-2xl font-bold mb-4 tracking-tight">{{ feature }}</h3>
-                   <div class="w-12 h-1 bg-swiss-text/10"></div>
-                 </div>
-               </div>
-             </div>
-           </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mt-24">
+                <div v-for="(feature, index) in solution.features" :key="index" class="border-t border-gray-100 pt-10">
+                  <div class="text-[10px] font-bold text-swiss-text/30 mb-6 font-mono">FEATURE_O{{ index + 1 }}</div>
+                  <h3 class="text-2xl font-bold mb-4 tracking-tight">{{ feature }}</h3>
+                  <div class="w-12 h-1 bg-swiss-text/10"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </GridContainer>
     </section>
@@ -73,7 +75,8 @@
               {{ $t('about.companyOverview.description1') }}
             </p>
           </div>
-          <SwissButton variant="ghost" size="lg" class="border-swiss-text whitespace-nowrap" @click="navigateTo('/contact')">
+          <SwissButton variant="ghost" size="lg" class="border-swiss-text whitespace-nowrap"
+            @click="navigateTo(localePath('/contact'))">
             {{ $t('home.hero.ctaSecondary') }}
           </SwissButton>
         </div>
@@ -90,6 +93,7 @@
 import type { Solution } from '~/types'
 
 const route = useRoute()
+const localePath = useLocalePath()
 const slug = route.params.slug as string
 
 const { data: response, pending } = await useFetch<{ success: boolean, data: Solution }>(`/api/solutions/${slug}`)

@@ -1,21 +1,15 @@
 <template>
-  <NuxtLink
-    :to="`/products/${product.slug}`"
-    class="group block bg-white border border-gray-100 hover:border-swiss-text transition-all duration-500"
-  >
+  <NuxtLink :to="localePath(`/products/${product.slug}`)"
+    class="group block bg-white border border-gray-100 hover:border-swiss-text transition-all duration-500">
     <!-- Product Image -->
     <div class="aspect-square bg-swiss-bg-soft relative overflow-hidden">
-      <img
-        v-if="product.images && product.images.length > 0"
-        :src="product.images[0]"
-        :alt="product.name[currentLocale]"
-        width="400"
-        height="400"
-        class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
-      />
+      <img v-if="product.images && product.images.length > 0" :src="product.images[0]"
+        :alt="product.name[currentLocale]" width="400" height="400"
+        class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
       <div v-else class="absolute inset-0 flex items-center justify-center p-12">
         <!-- Fallback placeholder -->
-        <div class="w-full h-full bg-swiss-text opacity-[0.03] group-hover:opacity-[0.05] transition-all duration-500"></div>
+        <div class="w-full h-full bg-swiss-text opacity-[0.03] group-hover:opacity-[0.05] transition-all duration-500">
+        </div>
       </div>
 
       <!-- Category Badge -->
@@ -62,6 +56,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const localePath = useLocalePath()
 const { locale } = useI18n()
 
 const currentLocale = computed(() => locale.value as 'zh-HK' | 'zh-CN' | 'en')
