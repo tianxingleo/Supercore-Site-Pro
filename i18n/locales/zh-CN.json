@@ -1,10 +1,13 @@
 {
   "nav": {
     "home": "首页",
-    "products": "产品",
+    "products": "产品信息",
     "solutions": "解决方案",
-    "about": "关于我们",
-    "contact": "联系我们"
+    "support": "技术支持",
+    "news": "行业资讯",
+    "about": "关于博迩",
+    "contact": "联系我们",
+    "supercore": "SUPERCORE"
   },
   "company": {
     "name": "广东博迩科技有限公司",
@@ -14,7 +17,7 @@
     "description": "企业基础设施一体化解决方案服务提供商，提供服务器、网络、数据中心等产品和服务",
     "address": "广东省广州市天河区大观中路95号科汇园1栋303-305",
     "phone": "020-89816175",
-    "email": "sales{'@'}boer.cn",
+    "email": "sales@boer.cn",
     "website": "https://www.boer.cn"
   },
   "home": {
@@ -51,14 +54,54 @@
     }
   },
   "products": {
-    "title": "产品系列",
+    "title": "产品信息",
     "subtitle": "满足您所有基础设施需求",
     "viewAll": "查看全部",
     "featured": "精选产品",
     "viewDetails": "查看详情",
     "specs": "规格",
     "specifications": "技术规格",
-    "features": "功能特点"
+    "features": "功能特点",
+    "categories": {
+      "generalCompute": {
+        "title": "通用计算",
+        "subtitle": "General Compute Products",
+        "description": "通用计算和数据处理服务器，适用于多种企业应用、数据库管理、虚拟化等应用场景，具有较高的灵活性和通用性"
+      },
+      "hpc": {
+        "title": "高性能计算",
+        "subtitle": "High-Performance Compute Products",
+        "description": "高性能计算服务器，适用于科学计算、深度学习、人工智能等需要大规模并行计算的领域"
+      },
+      "highPerformanceStorage": {
+        "title": "高性能存储",
+        "subtitle": "High-Performance Storage Products",
+        "description": "高性能存储服务器，用于提供高速、高性能数据存储访问，适用于大规模数据分析、高性能计算、云计算以及大规模数据库管理"
+      },
+      "serverProducts": {
+        "title": "服务器产品",
+        "subtitle": "Server Products"
+      },
+      "generalStorage": {
+        "title": "通用存储",
+        "subtitle": "General Storage Products",
+        "description": "通用存储服务器，适用于大规模数据处理、数据存储场景，满足大容量、可扩展性以及高可用存储需求"
+      },
+      "network": {
+        "title": "网络产品",
+        "subtitle": "Network Products"
+      },
+      "ibSwitch": {
+        "title": "IB交换机",
+        "subtitle": "InfiniBand Switch",
+        "description": "IB交换机通常用于高性能计算(HPC)、数据中心、云计算和大规模存储等领域，以满足高性能计算和数据传输的需求，近年来已成为GPU服务器的首选网络互连技术"
+      },
+      "ethernetSwitch": {
+        "title": "以太网交换机",
+        "subtitle": "Ethernet Switch",
+        "description": "基于以太网传输数据，连接各服务器与网络防火墙、路由器等网络设备互联，从而实现所有设备的互联互通；应用于企业网络、运营商网络、数据中心网络和工业网络场景"
+      }
+    }
   },
   "solutions": {
     "title": "解决方案",
@@ -72,6 +115,10 @@
     "idc": "数据中心服务",
     "operations": "运维管理",
     "development": "开发服务"
+  },
+  "news": {
+    "title": "行业资讯",
+    "subtitle": "INFORMATION"
   },
   "about": {
     "title": "关于我们",
@@ -146,19 +193,20 @@
     "pageSubtitle": "我们期待与您合作，为您的业务提供专业的基础设施解决方案",
     "sendMessage": "发送消息",
     "contactInfo": "联系方式",
-    "email": "电邮",
+    "email": "邮箱",
     "name": "姓名",
     "company": "公司名称",
     "message": "留言",
     "phone": "联系电话",
     "address": "地址",
-    "businessHours": "办公时间",
-    "mondayToFriday": "星期一 - 星期五",
-    "weekend": "星期六",
-    "sundayHoliday": "星期日及公众假期",
+    "businessHours": "服务时间",
+    "mondayToFriday": "周一至周五",
+    "weekend": "周六",
+    "sundayHoliday": "周日及公众假期",
     "closed": "休息",
-    "workingHours": "09:30 - 18:30",
-    "emergencyContact": "如有紧急需求，请联系",
+    "workingHours": "09:30-18:30",
+    "emergencyContact": "如有紧急需求，请致电联系",
+    "wechatQR": "微信二维码",
     "form": {
       "name": "姓名",
       "email": "电子邮件",

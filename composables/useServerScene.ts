@@ -5,6 +5,8 @@
 
 import { ref, onMounted, onUnmounted } from 'vue'
 import * as THREE from 'three'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 
 export const useServerScene = () => {
   const scene = ref<THREE.Scene | null>(null)
@@ -60,9 +62,50 @@ export const useServerScene = () => {
   }
 
   /**
-   * 添加立方體（佔位符伺服器）
+   * 載入 3D 模型
    */
-  const addServerModel = () => {
+  const loadModel = async (mtlPath: string, objPath: string) => {
+    if (!scene.value) return
+
+    const mtlLoader = new MTLLoader()
+    const objLoader = new OBJLoader()
+
+    return new Promise<THREE.Group>((resolve, reject) => {
+      mtlLoader.load(mtlPath, (materials) => {
+        materials.preload()
+        objLoader.setMaterials(materials)
+        objLoader.load(objPath, (object) => {
+          // 自定義處理
+          object.traverse((child) => {
+            if (child instanceof THREE.Mesh) {
+              child.castShadow = true
+              child.receiveShadow = true
+            }
+          })
+
+          // 自動居中和縮放
+          const box = new THREE.Box3().setFromObject(object)
+          const center = box.getCenter(new THREE.Vector3())
+          const size = box.getSize(new THREE.Vector3())
+          const maxDim = Math.max(size.x, size.y, size.z)
+          const scale = 4 / maxDim
+          object.scale.setScalar(scale)
+          object.position.set(-center.x * scale, -center.y * scale, -center.z * scale)
+
+          const group = new THREE.Group()
+          group.add(object)
+          group.name = 'server'
+          scene.value?.add(group)
+          resolve(group)
+        }, undefined, reject)
+      }, undefined, reject)
+    })
+  }
+
+  /**
+   * 添加立方體（舊版佔位符伺服器）
+   */
+  const addPlaceholderServer = () => {
     if (!scene.value) return
 
     // 使用立方體作為伺服器的佔位符

@@ -5,8 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import * as THREE from 'three'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 
 interface Props {
   backgroundColor?: string
@@ -26,7 +28,7 @@ let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
 let animationId: number
-let cube: THREE.Mesh
+let cube: THREE.Object3D
 let mouseX = 0
 let mouseY = 0
 let targetX = 0
@@ -101,34 +103,46 @@ const initScene = () => {
     renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
 
-    // Geometry - Server Rack representation
-    const group = new THREE.Group()
+    // Loaders
+    const mtlLoader = new MTLLoader()
+    const objLoader = new OBJLoader()
 
-    // Main Body
-    const bodyGeom = new THREE.BoxGeometry(2, 4, 2)
-    const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0x2a2a2e,
-      metalness: 0.9,
-      roughness: 0.1,
-    })
-    const body = new THREE.Mesh(bodyGeom, bodyMat)
-    group.add(body)
+    // 載入模型
+    // 請確保您的模型文件放在 public/models/server/ 目錄下
+    mtlLoader.load('/models/server/model.mtl', (materials) => {
+      materials.preload()
+      objLoader.setMaterials(materials)
+      objLoader.load('/models/server/model.obj', (object) => {
+        // 自定義模型處理
+        object.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.castShadow = true
+            child.receiveShadow = true
+          }
+        })
 
-    // Segments (Server units)
-    for (let i = 0; i < 8; i++) {
-      const segGeom = new THREE.BoxGeometry(1.9, 0.3, 0.1)
-      const segMat = new THREE.MeshStandardMaterial({
-        color: i % 3 === 0 ? 0x0071e3 : 0x1d1d1f,
-        emissive: i % 3 === 0 ? 0x0071e3 : 0x000000,
-        emissiveIntensity: 0.5,
+        // 自動縮放並對齊中心
+        const box = new THREE.Box3().setFromObject(object)
+        const center = box.getCenter(new THREE.Vector3())
+        const size = box.getSize(new THREE.Vector3())
+        
+        const maxDim = Math.max(size.x, size.y, size.z)
+        const scale = 4 / maxDim
+        object.scale.setScalar(scale)
+        object.position.set(-center.x * scale, -center.y * scale, -center.z * scale)
+
+        const group = new THREE.Group()
+        group.add(object)
+        cube = group as any
+        scene.add(group)
+      }, (xhr) => {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded')
+      }, (error) => {
+        console.error('An error happened while loading OBJ', error)
       })
-      const seg = new THREE.Mesh(segGeom, segMat)
-      seg.position.set(0, 1.4 - i * 0.4, 1.01)
-      group.add(seg)
-    }
-
-    cube = group as any // Reusing the 'cube' variable name for the group
-    scene.add(group)
+    }, (error) => {
+      console.error('An error happened while loading MTL', error)
+    })
 
     // Lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)

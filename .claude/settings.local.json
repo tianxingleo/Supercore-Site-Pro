@@ -9,7 +9,8 @@
       "Bash(npx nuxt prepare:*)",
       "mcp__web-reader__webReader",
       "mcp__playwright__browser_navigate",
-      "mcp__search__tavily_extract"
+      "mcp__search__tavily_extract",
+      "Bash(npx tsx:*)"
     ]
   }
 }

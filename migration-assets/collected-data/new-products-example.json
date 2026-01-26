@@ -1,0 +1,51 @@
+[
+  {
+    "product_id": "bc440g3-p",
+    "source_url": "https://boer.cn/products/bc440g3-p",
+    "category": "hpc",
+    "name_zhCN": "BC440G3-P 高性能计算服务器",
+    "description_zhCN": "2U高性能计算服务器，适用于科学计算、深度学习、人工智能等需要大规模并行计算的领域。支持GPU加速和高速互连。",
+    "specs_model": "BC440G3-P",
+    "specs_cpu": "AMD EPYC 9004系列处理器",
+    "specs_memory": "24x DDR5-4800 DIMM插槽，最大1.5TB",
+    "specs_storage": "热插拔 NVMe SSD",
+    "specs_pcie": "PCIe 5.0",
+    "specs_power": "冗余电源",
+    "specs_rackUnits": "2U",
+    "image_filename": "bc440g3-p.png",
+    "featured": true
+  },
+  {
+    "product_id": "bc440g3-n",
+    "source_url": "https://boer.cn/products/bc440g3-n",
+    "category": "hpc",
+    "name_zhCN": "BC440G3-N 高性能计算服务器",
+    "description_zhCN": "2U高性能计算服务器，专为大规模并行计算设计，支持多GPU配置。",
+    "specs_model": "BC440G3-N",
+    "specs_cpu": "AMD EPYC 9004系列处理器",
+    "specs_memory": "24x DDR5-4800 DIMM",
+    "specs_storage": "热插拔 NVMe",
+    "specs_pcie": "PCIe 5.0",
+    "specs_power": "冗余电源",
+    "specs_rackUnits": "2U",
+    "image_filename": "bc440g3-n.png",
+    "featured": true
+  },
+  {
+    "product_id": "bs270g3",
+    "source_url": "https://boer.cn/products/bs270g3",
+    "category": "storage-hp",
+    "name_zhCN": "BS270G3 高性能存储服务器",
+    "description_zhCN": "2U高性能存储服务器，采用全闪存配置，提供高速数据访问性能。",
+    "specs_model": "BS270G3",
+    "specs_cpu": "双路 Intel Xeon 可扩展处理器",
+    "specs_memory": "16x DDR4-3200 DIMM",
+    "specs_storage": "12x 热插拔 NVMe U.2",
+    "specs_capacity": "最大192TB",
+    "specs_raid": "硬件RAID支持",
+    "specs_power": "冗余电源",
+    "specs_rackUnits": "2U",
+    "image_filename": "bs270g3.png",
+    "featured": false
+  }
+]

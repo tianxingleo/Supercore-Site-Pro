@@ -1,0 +1,21 @@
+{
+  "name": "boer-migration-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for migrating content from boer.cn to Web-For-HK",
+  "main": "index.ts",
+  "scripts": {
+    "convert": "tsx convert-traditional.ts",
+    "generate": "tsx generate-products.ts",
+    "update": "tsx update-mockdata.ts"
+  },
+  "keywords": ["migration", "boer"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "opencc-js": "^1.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0"
+  }
+}
