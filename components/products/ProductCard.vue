@@ -3,16 +3,19 @@
     :to="`/products/${product.slug}`"
     class="group block bg-white border border-gray-100 hover:border-swiss-text transition-all duration-500"
   >
-    <!-- Product Image Placeholder -->
+    <!-- Product Image -->
     <div class="aspect-square bg-swiss-bg-soft relative overflow-hidden">
-      <div class="absolute inset-0 flex items-center justify-center p-12">
-        <!-- Isolated Product Look: Monochrome Minimal Icon/Object -->
-        <div
-          class="w-full h-full bg-swiss-text opacity-[0.03] group-hover:opacity-[0.05] group-hover:scale-105 transition-all duration-700 ease-out"
-        ></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-           <div class="w-1/3 h-1/3 border-2 border-swiss-text/10 group-hover:border-swiss-text/20 transition-all duration-500"></div>
-        </div>
+      <NuxtImg
+        v-if="product.images && product.images.length > 0"
+        :src="product.images[0]"
+        :alt="product.name[currentLocale]"
+        width="400"
+        height="400"
+        class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+      />
+      <div v-else class="absolute inset-0 flex items-center justify-center p-12">
+        <!-- Fallback placeholder -->
+        <div class="w-full h-full bg-swiss-text opacity-[0.03] group-hover:opacity-[0.05] transition-all duration-500"></div>
       </div>
 
       <!-- Category Badge -->

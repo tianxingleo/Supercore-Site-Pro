@@ -31,7 +31,7 @@ export const mockProducts: Product[] = [
       power: '冗余电源',
       rackUnits: '1U'
     },
-    images: ['/images/categories/general-compute.png'],
+    images: ['/images/products/bc120g3/main.png', '/images/products/bc120g3/front.png', '/images/products/bc120g3/back.png'],
     category: 'server',
     featured: true,
     createdAt: '2025-01-26T00:00:00Z'
@@ -60,7 +60,7 @@ export const mockProducts: Product[] = [
       power: '冗余电源',
       rackUnits: '2U'
     },
-    images: ['/images/categories/general-compute.png'],
+    images: ['/images/products/bc220g3/main.png', '/images/products/bc220g3/front.png', '/images/products/bc220g3/back.png'],
     category: 'server',
     featured: true,
     createdAt: '2025-01-26T00:00:00Z'
@@ -120,7 +120,7 @@ export const mockProducts: Product[] = [
       raid: '硬件RAID支持',
       rackUnits: '4U'
     },
-    images: ['/images/categories/general-storage.png'],
+    images: ['/images/products/bs450g3/main.png', '/images/products/bs450g3/front.png', '/images/products/bs450g3/back.png'],
     category: 'storage',
     featured: true,
     createdAt: '2025-01-26T00:00:00Z'
@@ -149,7 +149,7 @@ export const mockProducts: Product[] = [
       raid: '硬件RAID支持',
       rackUnits: '4U'
     },
-    images: ['/images/categories/general-storage.png'],
+    images: ['/images/products/bs450g3/main.png', '/images/products/bs450g3/front.png', '/images/products/bs450g3/back.png'],
     category: 'storage',
     featured: true,
     createdAt: '2025-01-26T00:00:00Z'
@@ -268,7 +268,7 @@ export const mockProducts: Product[] = [
           "power": "2x 860W 冗余白金级电源",
           "rackUnits": "1U"
     },
-    images: ["/images/products/bc120g3.png"],
+    images: ['/images/products/bc120g3/main.png', '/images/products/bc120g3/front.png', '/images/products/bc120g3/back.png'],
     category: 'server',
     featured: true,
     createdAt: '2026-01-26T07:33:52.481Z'
@@ -298,7 +298,7 @@ export const mockProducts: Product[] = [
           "power": "2x 1200W 冗余钛金级电源",
           "rackUnits": "1U"
     },
-    images: ["/images/products/bc120g3-h.png"],
+    images: ['/images/products/bc120g3/main.png', '/images/products/bc120g3/front.png', '/images/products/bc120g3/back.png'],
     category: 'server',
     featured: true,
     createdAt: '2026-01-26T07:33:52.482Z'
@@ -327,7 +327,7 @@ export const mockProducts: Product[] = [
           "power": "冗余电源",
           "rackUnits": "2U"
     },
-    images: ["/images/products/bc220g3.png"],
+    images: ['/images/products/bc220g3/main.png', '/images/products/bc220g3/front.png', '/images/products/bc220g3/back.png'],
     category: 'server',
     featured: true,
     createdAt: '2026-01-26T07:33:52.483Z'
@@ -356,7 +356,7 @@ export const mockProducts: Product[] = [
           "power": "冗余电源",
           "rackUnits": "2U"
     },
-    images: ["/images/products/bc220g3-h.png"],
+    images: ['/images/products/bc220g3/main.png', '/images/products/bc220g3/front.png', '/images/products/bc220g3/back.png'],
     category: 'server',
     featured: false,
     createdAt: '2026-01-26T07:33:52.483Z'
@@ -385,7 +385,7 @@ export const mockProducts: Product[] = [
           "power": "2x 1200W 冗余钛级电源",
           "rackUnits": "2U"
     },
-    images: ["/images/products/bc220g3-s.png"],
+    images: ['/images/products/bc220g3/main.png', '/images/products/bc220g3/front.png', '/images/products/bc220g3/back.png'],
     category: 'server',
     featured: false,
     createdAt: '2026-01-26T07:33:52.483Z'

@@ -23,20 +23,23 @@ export default defineNuxtConfig({
   // Modules
   modules: [
     '@nuxtjs/tailwindcss',
+    '@nuxt/image',
     '@nuxtjs/i18n',
-    // '@nuxt/image' - 可選：安裝後啟用圖片優化
-    // 運行: npm install @nuxt/image
+    '@nuxtjs/supabase',
   ],
 
-  // 圖片優化配置（需要先安裝 @nuxt/image）
-  // image: {
-  //   // 格式優化
-  //   formats: ['webp', 'avif'],
-  //   // 質量設置
-  //   quality: 80,
-  //   // 使用內部圖片服務
-  //   internalUrl: '/_image',
-  // },
+  // 圖片優化配置
+  image: {
+    // 格式優化
+    format: ['webp', 'avif'],
+    // 質量設置
+    quality: 80,
+  },
+
+  // Supabase Configuration
+  supabase: {
+    redirect: false,
+  },
 
   // Tailwind CSS
   tailwindcss: {
@@ -64,7 +67,7 @@ export default defineNuxtConfig({
     bundle: {
       optimizeTranslationDirective: false,
     },
-    vueI18n: './i18n/i18n.config.ts',
+    vueI18n: 'i18n.config.ts',
   },
 
   // CSS

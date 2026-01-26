@@ -7,10 +7,13 @@
         :class="{ 'py-3 md:py-4': scrolled }">
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center space-x-3 group">
-          <div
-            class="relative w-8 h-8 flex items-center justify-center overflow-hidden bg-swiss-text group-hover:bg-black transition-all duration-500 shadow-sm">
-            <span class="text-white font-bold text-lg">B</span>
-          </div>
+          <NuxtImg
+            src="/images/logo.png"
+            alt="Boer Tech Logo"
+            width="32"
+            height="32"
+            class="object-contain"
+          />
           <TypographyHeader :level="3" size="h5" class="hidden sm:block !mb-0 tracking-[0.2em] font-black uppercase">
             BOER TECH
           </TypographyHeader>

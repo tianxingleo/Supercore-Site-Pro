@@ -8,4 +8,4 @@ export default defineI18nConfig(() => ({
     en: ['en'],
     default: ['zh-HK'],
   },
-})
+}))
