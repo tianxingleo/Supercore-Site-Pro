@@ -29,11 +29,15 @@ export default {
       // Typography
       fontFamily: {
         sans: [
+          'HarmonyOS Sans SC',
+          'HarmonyOS Sans TC',
           'Inter',
           'system-ui',
           'sans-serif',
         ],
         display: [
+          'HarmonyOS Sans SC',
+          'HarmonyOS Sans TC',
           'Inter', // Use Inter for both for that consistent Swiss look
           'system-ui',
           'sans-serif',

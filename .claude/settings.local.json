@@ -21,7 +21,9 @@
       "Bash(then echo \"✓ $icon exists\")",
       "Bash(else echo \"✗ $icon MISSING\")",
       "Bash(fi:*)",
-      "Bash(done)"
+      "Bash(done)",
+      "mcp__search__tavily_search",
+      "Bash(if exist:*)"
     ]
   }
 }

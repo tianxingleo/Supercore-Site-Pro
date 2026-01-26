@@ -6,34 +6,36 @@
     <!-- Hero Section with 3D Scene -->
     <section class="min-h-screen flex items-center relative overflow-hidden bg-white" id="hero-section">
       <!-- Engineering Details -->
-      <div class="absolute top-12 left-12 text-[8px] font-mono text-swiss-text opacity-20 tracking-[0.4em] uppercase hidden lg:block">
+      <div
+        class="absolute top-12 left-12 text-[8px] font-mono text-swiss-text opacity-20 tracking-[0.4em] uppercase hidden lg:block">
         ref_id: 2026_HK_BOER // 22.3193° N, 114.1694° E
       </div>
-      <div class="absolute bottom-12 right-12 text-[8px] font-mono text-swiss-text opacity-20 tracking-[0.4em] uppercase hidden lg:block vertical-text">
+      <div
+        class="absolute bottom-12 right-12 text-[8px] font-mono text-swiss-text opacity-20 tracking-[0.4em] uppercase hidden lg:block vertical-text">
         infrastructure_simplified_v4.0
       </div>
 
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-12 xl:col-span-8 flex flex-col justify-center py-24 lg:py-0 relative z-10">
-          <TypographyHeader :level="1" size="display"
-            class="mb-8">
+          <TypographyHeader :level="1" size="display" class="mb-8">
             {{ $t('home.hero.title') }}
           </TypographyHeader>
-          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal"
-            class="mb-12 max-w-2xl opacity-90">
+          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="mb-12 max-w-2xl opacity-90">
             {{ $t('home.hero.subtitle') }}
           </TypographyHeader>
           <div class="flex flex-col sm:flex-row gap-6">
-            <SwissButton variant="primary" size="lg" class="!px-10">
+            <SwissButton variant="primary" size="lg" class="!px-10" @click="navigateTo(localePath('/solutions'))">
               {{ $t('home.hero.cta') }}
             </SwissButton>
-            <SwissButton variant="ghost" size="lg" class="!px-10 border-swiss-text">
+            <SwissButton variant="ghost" size="lg" class="!px-10 border-swiss-text"
+              @click="navigateTo(localePath('/contact'))">
               {{ $t('home.hero.ctaSecondary') }}
             </SwissButton>
           </div>
         </div>
 
-        <div class="col-span-12 lg:col-span-12 xl:col-span-4 min-h-[400px] lg:min-h-[500px] relative mt-12 lg:mt-0 flex items-center justify-center">
+        <div
+          class="col-span-12 lg:col-span-12 xl:col-span-4 min-h-[400px] lg:min-h-[500px] relative mt-12 lg:mt-0 flex items-center justify-center">
           <!-- 桌面端：3D 場景 -->
           <ServerScene v-if="canUseAdvanced3D()" ref="serverSceneRef" background-color="#FFFFFF" :auto-rotate="false"
             :mouse-parallax="true" :initial-rotation="{ x: 0, y: (70 * Math.PI) / 180, z: 0 }" />
@@ -118,7 +120,7 @@
           <TypographyHeader :level="2" size="h4" color="secondary" weight="normal" class="mb-8 leading-relaxed">
             {{ $t('company.slogan') }}
           </TypographyHeader>
-          <SwissButton variant="secondary" @click="$router.push('/about')">
+          <SwissButton variant="secondary" @click="navigateTo(localePath('/about'))">
             {{ $t('products.viewDetails') }}
           </SwissButton>
         </div>
@@ -186,6 +188,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 useHead({
   title: '首页 - 广东博迩科技有限公司',

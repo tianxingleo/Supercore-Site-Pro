@@ -54,7 +54,7 @@ export default defineNuxtConfig({
 
   // i18n Configuration
   i18n: {
-    defaultLocale: 'zh-HK',
+    defaultLocale: 'en',
     strategy: 'prefix_except_default',
     locales: [
       { code: 'zh-HK', iso: 'zh-HK', name: '繁體中文（香港）', file: 'zh-HK.json' },
@@ -64,8 +64,9 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      fallbackLocale: 'zh-HK',
-      redirectOn: 'root',
+      fallbackLocale: 'en',
+      redirectOn: 'all',
+      alwaysRedirect: true,
     },
     langDir: 'locales',
     lazy: false,
@@ -118,8 +119,13 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
         { rel: 'apple-touch-icon', href: '/favicon.png' },
+        { rel: 'preconnect', href: 'https://lf3-static.bytednsdoc.com' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/h7ovhziv/harmonyos-sans/harmonyos-sans.css',
+        },
         {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+HK:wght@300;400;500;700&display=swap',
