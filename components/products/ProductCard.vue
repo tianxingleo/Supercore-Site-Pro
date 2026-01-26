@@ -29,10 +29,10 @@
     <!-- Product Info -->
     <div class="p-6">
       <TypographyHeader level="3" size="h4" class="mb-2 group-hover:text-swiss-accent transition-colors">
-        {{ product.name[locale] || product.name.zhHK }}
+        {{ product.name[currentLocale] }}
       </TypographyHeader>
       <p class="text-swiss-secondary text-sm line-clamp-2 mb-4">
-        {{ product.description[locale] || product.description.zhHK }}
+        {{ product.description[currentLocale] }}
       </p>
 
       <!-- Key Specs Preview -->
@@ -56,6 +56,15 @@ interface Props {
 
 const props = defineProps<Props>()
 const { locale } = useI18n()
+
+// Map locale to property names
+const localeMap: Record<string, 'zhHK' | 'zhCN' | 'en'> = {
+  'zh-HK': 'zhHK',
+  'zh-CN': 'zhCN',
+  'en': 'en',
+}
+
+const currentLocale = computed(() => localeMap[locale.value] || 'zhHK')
 
 const categoryLabels: Record<string, string> = {
   server: '伺服器',

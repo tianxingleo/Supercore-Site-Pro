@@ -17,12 +17,12 @@
 
     <!-- Title -->
     <TypographyHeader level="3" size="h4" class="mb-3 group-hover:text-swiss-accent transition-colors">
-      {{ solution.title[locale] || solution.title.zhHK }}
+      {{ solution.title[currentLocale] }}
     </TypographyHeader>
 
     <!-- Description -->
     <p class="text-swiss-secondary text-sm mb-6">
-      {{ solution.description[locale] || solution.description.zhHK }}
+      {{ solution.description[currentLocale] }}
     </p>
 
     <!-- Features List -->
@@ -62,6 +62,15 @@ interface Props {
 
 const props = defineProps<Props>()
 const { locale } = useI18n()
+
+// Map locale to property names
+const localeMap: Record<string, 'zhHK' | 'zhCN' | 'en'> = {
+  'zh-HK': 'zhHK',
+  'zh-CN': 'zhCN',
+  'en': 'en',
+}
+
+const currentLocale = computed(() => localeMap[locale.value] || 'zhHK')
 
 // Icon components (simplified SVG icons)
 const icons = {
