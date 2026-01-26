@@ -202,3 +202,151 @@ MIT License
 ---
 
 **Project NEXUS (HK)** - 為香港及海外市場提供專業基礎設施解決方案
+
+# 第一部分：数据库架构设计 (Supabase PostgreSQL)
+
+我们不需要复杂的几十张表，只需 **6 张核心表** 即可支撑整个业务。
+
+### 1. 核心表结构 (Schema Design)
+
+#### A. `products` (产品表 - 核心资产)
+
+这是最复杂的表，利用 `JSONB` 存储多语言和不定的规格参数。
+
+| **字段名**     | **类型**  | **说明**          | **示例数据 (JSON 结构)**                                     |
+| -------------- | --------- | ----------------- | ------------------------------------------------------------ |
+| `id`           | int8      | 主键              | 1001                                                         |
+| `slug`         | text      | URL 标识 (Unique) | `nexus-g2-server`                                            |
+| `name`         | **jsonb** | **多语言名称**    | `{"hk": "NEXUS G2 伺服器", "cn": "NEXUS G2 服务器", "en": "NEXUS G2 Server"}` |
+| `description`  | **jsonb** | **多语言简介**    | `{"hk": "专为 AI 训练设计...", "en": "Designed for AI..."}`  |
+| `category`     | text      | 分类              | `server`, `storage`, `network`                               |
+| `specs`        | **jsonb** | **规格参数**      | `{"cpu": "2x AMD EPYC", "ram": "2TB", "gpu": "8x H100"}`     |
+| `images`       | text[]    | 图片数组          | `["/p/server-front.png", "/p/server-open.png"]`              |
+| `model_3d_url` | text      | Spline/GLB 链接   | `https://prod.spline.design/...`                             |
+| `is_featured`  | bool      | 首页推荐          | `true`                                                       |
+| `status`       | text      | 状态              | `published`, `draft`, `archived`                             |
+
+#### B. `posts` (资讯/博客表)
+
+用于发布行业动态和公司新闻。
+
+| **字段名**     | **类型**    | **说明**             | **示例数据**                                    |
+| -------------- | ----------- | -------------------- | ----------------------------------------------- |
+| `id`           | int8        | 主键                 |                                                 |
+| `title`        | **jsonb**   | 多语言标题           | `{"hk": "本公司获得...", "en": "We won..."}`    |
+| `content`      | **jsonb**   | 多语言正文(Markdown) | `{"hk": "# 大事记...", "en": "# Milestone..."}` |
+| `cover_image`  | text        | 封面图               | 必须是黑白或去底风格                            |
+| `published_at` | timestamptz | 发布时间             |                                                 |
+| `tags`         | text[]      | 标签                 | `["AI", "Infrastructure"]`                      |
+
+#### C. `solutions` (解决方案表)
+
+用于展示“IDC建设”、“运维咨询”等非实体产品。
+
+| **字段名** | **类型** | **说明**                           |
+| ---------- | -------- | ---------------------------------- |
+| `id`       | int8     | 主键                               |
+| `title`    | jsonb    | 多语言标题                         |
+| `icon`     | text     | Lucide 图标代号 (如 `ServerCrash`) |
+| `features` | jsonb    | 核心卖点列表                       |
+
+#### D. `inquiries` (客户询盘表)
+
+存储联系表单提交的数据。
+
+| **字段名** | **类型** | **说明**                     |
+| ---------- | -------- | ---------------------------- |
+| `id`       | int8     | 主键                         |
+| `email`    | text     | 客户邮箱                     |
+| `company`  | text     | 公司名称                     |
+| `message`  | text     | 留言内容                     |
+| `status`   | text     | `new`, `contacted`, `closed` |
+
+#### E. `site_config` (全站配置 - 这里的“开关”很重要)
+
+用于控制网站的全局状态，无需重新部署代码。
+
+| **字段名** | **类型** | **说明** | **示例**                                   |
+| ---------- | -------- | -------- | ------------------------------------------ |
+| `key`      | text     | 配置键   | `promo_banner`                             |
+| `value`    | jsonb    | 配置值   | `{"enabled": true, "text_hk": "双11优惠"}` |
+
+#### F. `profiles` (管理员表)
+
+Supabase Auth 的扩展表，用于通过 RLS 控制后台访问权限。
+
+------
+
+### 2. 存储设计 (Storage Buckets)
+
+在 Supabase Storage 创建两个公开的 Bucket：
+
+1. **`product-assets`**: 存放去底的产品 PNG、3D 模型文件。
+2. **`site-media`**: 存放博客封面、Banner 图。
+
+**关键策略：** 开启 Supabase 的 Image Transformation 功能。前端请求图片时，可以加上 `?width=800&format=webp`，自动优化性能。
+
+------
+
+### 3. 安全策略 (RLS - Row Level Security)
+
+这是最重要的一步，防止数据库裸奔。
+
+- **Public (匿名用户):** 仅拥有 `products`, `posts`, `solutions` 的 `SELECT` 权限 (且 `status = 'published'`)。
+- **Admin (管理员):** 拥有所有表的 `ALL` 权限 (CRUD)。
+
+------
+
+# 第二部分：管理后台设计 (Admin Panel)
+
+**设计原则：** 后台也要“瑞士风”。简洁、克制、无废话。不要用花哨的 Admin 模板，直接用 Nuxt UI 手写布局。
+
+### 1. 技术栈
+
+- **框架:** Nuxt 3 (与前台在同一个项目中，路由为 `/admin/...`)
+- **UI 组件:** **Nuxt UI** (基于 Tailwind，自带 Dark Mode，极简风格)。
+- **编辑器:** **Tiptap** (Headless 富文本编辑器) 或 **Vue-Markdown-Editor**。
+
+### 2. 功能模块规划 (Sitemap)
+
+- **`/admin/login`**: 极简登录页 (Email + Password)。
+- **`/admin/dashboard`**:
+  - 显示今日询盘数量。
+  - 显示网站当前的“系统状态” (3D 地球是否开启，促销条是否开启)。
+- **`/admin/products`**:
+  - **列表页:** 表格展示，带缩略图。
+  - **编辑页 (重点):**
+    - *基本信息:* 输入框。
+    - *多语言切换器:* 一个 Tab 栏 `[ 繁体 | 简体 | English ]`，切换 Tab 时输入框绑定的 JSON 字段不同。
+    - *规格生成器:* "Add Spec" 按钮，点击添加一行 `Key - Value` 键值对。
+    - *图片上传:* 拖拽上传区，上传后自动显示预览，**并强制提示：“请确保图片为透明背景 PNG”**。
+- **`/admin/news`**: Markdown 编辑器。
+- **`/admin/inquiries`**: 查看客户留言。
+
+------
+
+# 第三部分：防呆设计与工作流 (The Workflow)
+
+为了确保同事（非技术人员）不会破坏网站美感，后台必须加入“硬限制”。
+
+### 1. 自动化的图片处理
+
+在后台上传图片时，触发 Supabase Edge Function 或前端 JS：
+
+- **限制:** 仅允许 PNG/JPG/WEBP。
+- **压缩:** 上传前自动调用 `browser-image-compression` 库进行压缩。
+- **校验:** 如果图片长宽比太离谱（比如超长条），弹出警告。
+
+### 2. 多语言自动补全 (AI 辅助)
+
+在编辑产品时，增加一个 **"✨ AI Translate"** 按钮。
+
+- **逻辑:** 同事只输入“繁体中文”的内容，点击按钮，调用 OpenAI/Gemini API，自动填好“简体中文”和“英文”的输入框。
+- **Prompt:** *"Translate this technical server description into Hong Kong Traditional Chinese (professional IT terminology) and English."*
+
+### 3. 内容预览 (Preview Mode)
+
+在发布前，必须提供一个 **"Preview"** 按钮。
+
+- 点击后，弹出一个新窗口，渲染真实的前端页面（传入 `preview=true` 参数，让 RLS 允许读取 draft 状态的数据）。
+- 让同事看到：“哦，原来我这段字太长了，把排版撑破了”，然后回去改。
