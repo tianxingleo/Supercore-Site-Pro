@@ -5,10 +5,10 @@
       <GridContainer>
         <div class="col-span-12 text-center">
           <TypographyHeader level="1" size="h1" class="mb-4">
-            {{ $t('nav.about') }}
+            關於博迩
           </TypographyHeader>
           <p class="text-swiss-secondary max-w-2xl mx-auto">
-            專注於為香港及海外市場提供高品質基礎設施解決方案
+            企業基礎設施一體化解決方案服務提供商
           </p>
         </div>
       </GridContainer>
@@ -23,38 +23,66 @@
           </TypographyHeader>
           <div class="space-y-4 text-swiss-secondary">
             <p>
-              Project NEXUS 是一家專注於企業級基礎設施解決方案的提供商，致力於為香港及海外市場的客戶提供高品質的伺服器、存儲、網絡及相關服務。
+              廣東博迩科技有限公司是一家專注於企業級基礎設施解決方案的提供商，致力於為廣州及全國市場的客戶提供高品質的服務器、存儲、網絡及相關服務。
             </p>
             <p>
-              我們擁有超過 10 年的行業經驗，團隊由資深工程師和技術專家組成，累積服務超過 500 家企業客戶。
+              我們擁有豐富的行業經驗，專注於為企業提供從規劃到實施的全套服務，幫助客戶構建安全、可靠、高效的信息技術基礎設施。
             </p>
-            <p>
-              我們的使命是通過先進的技術和專業的服務，幫助客戶構建安全、可靠、高效的信息技術基礎設施。
-            </p>
+            <div class="bg-white rounded-lg p-6 mt-6 border-l-4 border-swiss-accent">
+              <TypographyHeader level="3" size="h5" class="mb-3 text-swiss-text">
+                經營理念
+              </TypographyHeader>
+              <ul class="space-y-2 text-sm">
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-swiss-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  了解客戶需求
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-swiss-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  理解客戶需求
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-swiss-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  滿足客戶需求
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-swiss-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  為客戶提供超預期的產品與服務
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div class="col-span-12 lg:col-span-6">
           <div class="bg-white rounded-lg p-8 shadow-sm">
             <TypographyHeader level="3" size="h4" class="mb-6">
-              關鍵數據
+              核心優勢
             </TypographyHeader>
             <div class="grid grid-cols-2 gap-6">
               <div class="text-center">
-                <div class="text-4xl font-bold text-swiss-accent mb-2">10+</div>
-                <div class="text-sm text-swiss-secondary">年行業經驗</div>
-              </div>
-              <div class="text-center">
-                <div class="text-4xl font-bold text-swiss-accent mb-2">500+</div>
-                <div class="text-sm text-swiss-secondary">企業客戶</div>
+                <div class="text-4xl font-bold text-swiss-accent mb-2">7x24</div>
+                <div class="text-sm text-swiss-secondary">技術支援</div>
               </div>
               <div class="text-center">
                 <div class="text-4xl font-bold text-swiss-accent mb-2">99.9%</div>
                 <div class="text-sm text-swiss-secondary">服務可用性</div>
               </div>
               <div class="text-center">
-                <div class="text-4xl font-bold text-swiss-accent mb-2">24/7</div>
-                <div class="text-sm text-swiss-secondary">技術支援</div>
+                <div class="text-4xl font-bold text-swiss-accent mb-2">快速</div>
+                <div class="text-sm text-swiss-secondary">響應速度</div>
+              </div>
+              <div class="text-center">
+                <div class="text-4xl font-bold text-swiss-accent mb-2">專業</div>
+                <div class="text-sm text-swiss-secondary">技術團隊</div>
               </div>
             </div>
           </div>
@@ -62,102 +90,107 @@
       </GridContainer>
     </section>
 
-    <!-- Timeline -->
+    <!-- Solutions Section -->
     <section class="mb-24">
       <GridContainer>
         <div class="col-span-12 mb-12">
           <TypographyHeader level="2" size="h2" class="text-center">
-            發展歷程
-          </TypographyHeader>
-        </div>
-
-        <div class="col-span-12">
-          <div class="relative">
-            <!-- Timeline Line -->
-            <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-swiss-secondary/20"></div>
-
-            <!-- Timeline Items -->
-            <div class="space-y-12">
-              <div
-                v-for="(milestone, index) in milestones"
-                :key="index"
-                class="relative pl-20"
-              >
-                <!-- Timeline Dot -->
-                <div class="absolute left-6 w-5 h-5 bg-swiss-accent rounded-full border-4 border-white"></div>
-
-                <!-- Year -->
-                <div class="text-sm font-bold text-swiss-accent mb-2">
-                  {{ milestone.year }}
-                </div>
-
-                <!-- Content -->
-                <TypographyHeader level="3" size="h5" class="mb-2">
-                  {{ milestone.title }}
-                </TypographyHeader>
-                <p class="text-swiss-secondary">
-                  {{ milestone.description }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </GridContainer>
-    </section>
-
-    <!-- Values -->
-    <section>
-      <GridContainer>
-        <div class="col-span-12 mb-12">
-          <TypographyHeader level="2" size="h2" class="text-center">
-            核心價值
+            解決方案特點
           </TypographyHeader>
         </div>
 
         <div class="col-span-12 md:col-span-4 mb-8">
-          <div class="bg-white rounded-lg p-8 shadow-sm h-full">
-            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mb-4">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
               <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
               </svg>
             </div>
-            <TypographyHeader level="3" size="h4" class="mb-3">
-              品質優先
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              後台穩定
             </TypographyHeader>
             <p class="text-swiss-secondary text-sm">
-              我們堅持使用最高品質的產品和材料，確保每一個解決方案都能達到金融級的可靠性和穩定性。
+              產品成熟，穩定可靠
             </p>
           </div>
         </div>
 
         <div class="col-span-12 md:col-span-4 mb-8">
-          <div class="bg-white rounded-lg p-8 shadow-sm h-full">
-            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mb-4">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
               <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3-2-1.343-2-3-2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <TypographyHeader level="3" size="h4" class="mb-3">
-              客戶為本
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              節省成本
             </TypographyHeader>
             <p class="text-swiss-secondary text-sm">
-              我們深入了解每個客戶的獨特需求，提供量身定制的解決方案和專業的技術支援服務。
+              節省人力維護和時間成本
             </p>
           </div>
         </div>
 
         <div class="col-span-12 md:col-span-4 mb-8">
-          <div class="bg-white rounded-lg p-8 shadow-sm h-full">
-            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mb-4">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
               <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <TypographyHeader level="3" size="h4" class="mb-3">
-              創新驅動
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              最新技術
             </TypographyHeader>
             <p class="text-swiss-secondary text-sm">
-              我們持續追蹤和採用最新的技術趨勢，為客戶提供領先業界的創新解決方案。
+              不斷創新產品的應用
+            </p>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              安全可靠
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              保護用戶數據安全
+            </p>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              快速響應
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              響應速度迅速，反應及時
+            </p>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              一站式服務
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              從規劃到實施全套服務
             </p>
           </div>
         </div>
@@ -167,35 +200,7 @@
 </template>
 
 <script setup lang="ts">
-const milestones = [
-  {
-    year: '2014',
-    title: '公司成立',
-    description: '在香港成立，專注於企業級伺服器解決方案',
-  },
-  {
-    year: '2016',
-    title: '業務擴展',
-    description: '擴展至存儲和網絡解決方案，服務客戶超過 100 家',
-  },
-  {
-    year: '2018',
-    title: '區域發展',
-    description: '開始服務海外市場，建立跨境運維團隊',
-  },
-  {
-    year: '2020',
-    title: '數字轉型',
-    description: '推出雲端服務和 AI 運維解決方案',
-  },
-  {
-    year: '2024',
-    title: '持續創新',
-    description: '累積服務超過 500 家企業，成為行業領先的基礎設施解決方案提供商',
-  },
-]
-
 useHead({
-  title: '關於我們 - Project NEXUS (HK)',
+  title: '關於博迩 - 廣東博迩科技有限公司',
 })
 </script>

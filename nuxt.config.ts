@@ -16,8 +16,19 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/i18n',
-    // Supabase will be added on Day 3
+    // '@nuxt/image' - 可選：安裝後啟用圖片優化
+    // 運行: npm install @nuxt/image
   ],
+
+  // 圖片優化配置（需要先安裝 @nuxt/image）
+  image: {
+    // 格式優化
+    formats: ['webp', 'avif'],
+    // 質量設置
+    quality: 80,
+    // 使用內部圖片服務
+    internalUrl: '/_image',
+  },
 
   // Tailwind CSS
   tailwindcss: {
@@ -45,20 +56,20 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'Project NEXUS (HK)',
+      title: '廣東博迩科技有限公司',
       meta: [
-        { name: 'description', content: '香港及海外市场的高端基础设施解决方案' },
-        { name: 'keywords', content: '伺服器,基礎設施,IDC,數據中心,香港,雲端運維' },
-        { name: 'author', content: 'Project NEXUS (HK)' },
+        { name: 'description', content: '企業基礎設施一體化解決方案服務提供商，提供服務器、網絡、數據中心等產品和解決方案' },
+        { name: 'keywords', content: '服務器,網絡,數據中心,基礎設施整體解決方案,IDC,HPC,存儲,交換機' },
+        { name: 'author', content: '廣東博迩科技有限公司' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:site_name', content: 'Project NEXUS (HK)' },
+        { property: 'og:site_name', content: '廣東博迩科技有限公司' },
         { property: 'og:locale', content: 'zh_HK' },
-        { property: 'og:title', content: 'Project NEXUS (HK) - 專業基礎設施解決方案' },
-        { property: 'og:description', content: '為香港及海外市場提供企業級伺服器、存儲、網絡及運維解決方案' },
+        { property: 'og:title', content: '廣東博迩科技有限公司 - 專業基礎設施解決方案服務提供商' },
+        { property: 'og:description', content: '提供企業級服務器、存儲、網絡產品和整體解決方案，服務廣州及全國市場' },
         { property: 'og:image', content: '/og-image.jpg' },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'Project NEXUS (HK) - 專業基礎設施解決方案' },
-        { name: 'twitter:description', content: '為香港及海外市場提供企業級伺服器、存儲、網絡及運維解決方案' },
+        { name: 'twitter:title', content: '廣東博迩科技有限公司 - 專業基礎設施解決方案服務提供商' },
+        { name: 'twitter:description', content: '提供企業級服務器、存儲、網絡產品和整體解決方案，服務廣州及全國市場' },
         { name: 'twitter:image', content: '/og-image.jpg' },
       ],
       htmlAttrs: {

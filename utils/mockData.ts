@@ -1,316 +1,400 @@
 import type { Product, News, Solution } from '~/types'
 
 /**
- * Mock Products Data
+ * Mock Products Data - 基于博迩科技产品线
  */
 export const mockProducts: Product[] = [
+  // 通用计算服务器
   {
     id: '1',
-    slug: 'enterprise-server-rack',
+    slug: 'general-compute-server',
     name: {
-      zhHK: '企業級伺服器機櫃',
-      zhCN: '企业级服务器机柜',
-      en: 'Enterprise Server Rack'
+      zhHK: '通用計算服務器',
+      zhCN: '通用计算服务器',
+      en: 'General Compute Server'
     },
     description: {
-      zhHK: '高性能企業級伺服器解決方案，提供卓越的運算能力和存儲擴展性。',
-      zhCN: '高性能企业级服务器解决方案，提供卓越的运算能力和存储扩展性。',
-      en: 'High-performance enterprise server solution with superior computing power and storage scalability.'
+      zhHK: '通用計算和數據處理服務器，適用於多種企業應用、數據庫管理、虛擬化等應用場景，具有較高的靈活性和通用性。',
+      zhCN: '通用计算和数据处理服务器，适用于多种企业应用、数据库管理、虚拟化等应用场景，具有较高的灵活性和通用性。',
+      en: 'General computing and data processing servers suitable for various enterprise applications, database management, and virtualization scenarios with high flexibility and versatility.'
     },
     specs: {
-      cpu: 'Intel Xeon Gold 6248R',
-      cores: 48,
-      threads: 96,
-      ram: '256GB DDR4',
-      storage: '2TB NVMe SSD',
-      power: '1200W',
-      rackUnits: '42U'
+      cpu: 'Intel Xeon / AMD EPYC',
+      cores: '32-128',
+      ram: '128GB-2TB DDR4/DDR5',
+      storage: '可選配置',
+      power: '800W-1600W',
+      rackUnits: '1U-2U'
     },
-    images: ['/images/products/server-rack.jpg'],
+    images: ['/images/products/general-compute.jpg'],
     category: 'server',
     featured: true,
-    createdAt: '2025-01-24T00:00:00Z'
+    createdAt: '2025-01-26T00:00:00Z'
   },
+  // 高性能计算服务器
   {
     id: '2',
-    slug: 'high-performance-storage',
+    slug: 'hpc-server',
     name: {
-      zhHK: '高性能存儲陣列',
-      zhCN: '高性能存储阵列',
-      en: 'High-Performance Storage Array'
+      zhHK: '高性能計算服務器',
+      zhCN: '高性能计算服务器',
+      en: 'High-Performance Compute Server'
     },
     description: {
-      zhHK: '專為大數據和雲端應用設計的存儲解決方案，提供極速響應時間。',
-      zhCN: '专为大数据和云端应用设计的存储解决方案，提供极速响应时间。',
-      en: 'Storage solution designed for big data and cloud applications with ultra-fast response times.'
+      zhHK: '高性能計算服務器，適用於科學計算、深度學習、人工智能等需要大規模並行計算的領域。',
+      zhCN: '高性能计算服务器，适用于科学计算、深度学习、人工智能等需要大规模并行计算的领域。',
+      en: 'High-performance computing servers for scientific computing, deep learning, AI, and fields requiring massive parallel computing.'
     },
     specs: {
-      capacity: '100TB RAW',
-      drives: 24,
-      raid: 'RAID 6',
-      cache: '64GB',
-      throughput: '10GB/s',
-      rackUnits: '4U'
+      cpu: 'AMD EPYC 9004系列 / Intel Xeon Platinum',
+      cores: '64-256',
+      ram: '512GB-4TB DDR5',
+      gpu: 'NVIDIA A100/H100',
+      interconnect: 'PCIe 5.0 / CXL',
+      rackUnits: '2U-4U'
     },
-    images: ['/images/products/storage-array.jpg'],
-    category: 'storage',
+    images: ['/images/products/hpc-server.jpg'],
+    category: 'server',
     featured: true,
-    createdAt: '2025-01-24T00:00:00Z'
+    createdAt: '2025-01-26T00:00:00Z'
   },
+  // 高性能存储
   {
     id: '3',
-    slug: 'managed-switch',
+    slug: 'high-performance-storage',
     name: {
-      zhHK: '託管型網絡交換機',
-      zhCN: '托管型网络交换机',
-      en: 'Managed Network Switch'
+      zhHK: '高性能存儲服務器',
+      zhCN: '高性能存储服务器',
+      en: 'High-Performance Storage Server'
     },
     description: {
-      zhHK: '支持 VLAN、QoS 和遠端管理的企業級網絡交換機。',
-      zhCN: '支持 VLAN、QoS 和远程管理的企业级网络交换机。',
-      en: 'Enterprise-grade network switch with VLAN, QoS and remote management support.'
+      zhHK: '高性能存儲服務器，用於提供高速、高性能數據存儲訪問，適用於大規模數據分析、高性能計算、雲計算以及大規模數據庫管理。',
+      zhCN: '高性能存储服务器，用于提供高速、高性能数据存储访问，适用于大规模数据分析、高性能计算、云计算以及大规模数据库管理。',
+      en: 'High-performance storage servers providing fast, high-performance data storage access for large-scale data analysis, HPC, cloud computing, and large database management.'
     },
     specs: {
-      ports: 48,
-      speed: '10Gbps',
-      uplinkPorts: 4,
-      switchingCapacity: '1.28Tbps',
-      packetForwarding: '720Mpps',
-      power: '120W'
+      capacity: '200TB-2PB',
+      drives: '24-48',
+      interface: 'NVMe/SAS/SATA',
+      raid: 'RAID 0/1/5/6/10/50/60',
+      cache: '64GB-256GB',
+      throughput: '50GB/s',
+      rackUnits: '4U-42U'
     },
-    images: ['/images/products/switch.jpg'],
+    images: ['/images/products/hp-storage.jpg'],
+    category: 'storage',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+  // 通用存储
+  {
+    id: '4',
+    slug: 'general-storage',
+    name: {
+      zhHK: '通用存儲服務器',
+      zhCN: '通用存储服务器',
+      en: 'General Storage Server'
+    },
+    description: {
+      zhHK: '通用存儲服務器，適用於大規模數據處理、數據存儲場景，滿足大容量、可擴展性以及高可用存儲需求。',
+      zhCN: '通用存储服务器，适用于大规模数据处理、数据存储场景，满足大容量、可扩展性以及高可用存储需求。',
+      en: 'General storage servers for large-scale data processing and storage scenarios, meeting requirements for large capacity, scalability, and high availability.'
+    },
+    specs: {
+      capacity: '50TB-500TB',
+      drives: '12-24',
+      interface: 'SAS/SATA/NVMe',
+      raid: 'RAID 0/1/5/6/10',
+      powerSupply: '冗余電源',
+      rackUnits: '2U-4U'
+    },
+    images: ['/images/products/general-storage.jpg'],
+    category: 'storage',
+    featured: false,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+  // IB交换机
+  {
+    id: '5',
+    slug: 'infiniband-switch',
+    name: {
+      zhHK: 'IB交換機',
+      zhCN: 'IB交换机',
+      en: 'InfiniBand Switch'
+    },
+    description: {
+      zhHK: 'IB交換機通常用於高性能計算(HPC)、數據中心、雲計算和大規模存儲等領域，以滿足高性能計算和數據傳輸的需求，近年來已成為GPU服務器的首選網絡互連技術。',
+      zhCN: 'IB交换机通常用于高性能计算(HPC)、数据中心、云计算和大规模存储等领域，以满足高性能计算和数据传输的需求，近年来已成为GPU服务器的首选网络互连技术。',
+      en: 'InfiniBand switches are commonly used in HPC, data centers, cloud computing, and large-scale storage to meet high-performance computing and data transmission requirements. Recently become the preferred network interconnect technology for GPU servers.'
+    },
+    specs: {
+      speed: 'HDR 200Gb/s / NDR 400Gb/s',
+      ports: '32-128',
+      latency: '<100ns',
+      architecture: '架構式交換',
+      power: '150W-500W',
+      rackUnits: '1U-2U'
+    },
+    images: ['/images/products/ib-switch.jpg'],
+    category: 'network',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+  // 以太网交换机
+  {
+    id: '6',
+    slug: 'ethernet-switch',
+    name: {
+      zhHK: '以太網交換機',
+      zhCN: '以太网交换机',
+      en: 'Ethernet Switch'
+    },
+    description: {
+      zhHK: '基於以太網傳輸數據，連接各服務器與網絡防火牆、路由器等網絡設備互聯，從而實現所有設備的互聯互通；應用於企業網絡、運營商網絡、數據中心網絡和工業網絡場景。',
+      zhCN: '基于以太网传输数据，连接各服务器与网络防火墙、路由器等网络设备互联，从而实现所有设备的互联互通；应用于企业网络、运营商网络、数据中心网络和工业网络场景。',
+      en: 'Data transmission via Ethernet, connecting servers with network equipment like firewalls and routers to enable interconnectivity; used in enterprise, carrier, data center, and industrial network scenarios.'
+    },
+    specs: {
+      ports: '24-48',
+      speed: '1G/10G/25G/40G/100G',
+      uplinkPorts: '4-8',
+      switchingCapacity: '1.28Tbps-10Tbps',
+      packetForwarding: '720Mpps-3000Mpps',
+      power: '100W-300W'
+    },
+    images: ['/images/products/ethernet-switch.jpg'],
     category: 'network',
     featured: false,
-    createdAt: '2025-01-24T00:00:00Z'
+    createdAt: '2025-01-26T00:00:00Z'
   }
 ]
 
 /**
- * Mock News Data
+ * Mock News Data - 博迩科技行业资讯
  */
 export const mockNews: News[] = [
   {
     id: '1',
-    slug: 'new-data-center-open',
+    slug: 'amd-epyc-4004-series',
     title: {
-      zhHK: '全新數據中心正式啟用',
-      zhCN: '全新数据中心正式启用',
-      en: 'New Data Center Now Operational'
+      zhHK: 'AMD擴展EPYC CPU產品組合，為中小企業帶來更高性能和價值',
+      zhCN: 'AMD扩展EPYC CPU产品组合，为中小企业带来更高性能和价值',
+      en: 'AMD Expands EPYC CPU Portfolio to Bring Higher Performance and Value to SMBs'
     },
     content: {
-      zhHK: '我們很高興宣佈位於香港的新數據中心已正式啟用。這個最先進的設施將為我們的客戶提供更高的可靠性和更快的響應時間...',
-      zhCN: '我们很高兴宣布位于香港的新数据中心已正式启用。这个最先进的设施将为我们的客户提供更高的可靠性和更快的响应时间...',
-      en: 'We are excited to announce that our new data center in Hong Kong is now operational. This state-of-the-art facility will provide our clients with enhanced reliability and faster response times...'
+      zhHK: 'AMD EPYC 4004系列處理器為領先服務器供應商的入門級系統設計提供更廣泛的支持...',
+      zhCN: 'AMD EPYC 4004系列处理器为领先服务器供应商的入门级系统设计提供更广泛的支持...',
+      en: 'AMD EPYC 4004 series processors provide broader support for entry-level system designs from leading server vendors...'
     },
     excerpt: {
-      zhHK: '投資逾千萬港元，打造金融級基礎設施，服務全港企業。',
-      zhCN: '投资逾千万港元，打造金融级基础设施，服务全港企业。',
-      en: 'Over 10 million HKD investment to build financial-grade infrastructure serving enterprises across Hong Kong.'
+      zhHK: 'AMD EPYC 4004系列處理器推出，為中小企業提供高性價比的解決方案。',
+      zhCN: 'AMD EPYC 4004系列处理器推出，为中小企业提供高性价比的解决方案。',
+      en: 'AMD EPYC 4004 series processors launch, bringing cost-effective solutions to SMBs.'
     },
     locale: 'zh-HK',
-    publishDate: '2025-01-15',
-    author: 'Project NEXUS Team',
-    imageUrl: '/images/news/datacenter.jpg',
+    publishDate: '2024-06-11',
+    author: '博迩科技團隊',
+    imageUrl: '/images/news/amd-epyc.jpg',
     featured: true,
-    createdAt: '2025-01-15T00:00:00Z'
+    createdAt: '2024-06-11T00:00:00Z'
   },
   {
     id: '2',
-    slug: 'ai-solutions-launch',
+    slug: 'amd-zen5-rylon-ai',
     title: {
-      zhHK: '推出 AI 驅動的智能運維解決方案',
-      zhCN: '推出 AI 驱动的智能运维解决方案',
-      en: 'AI-Powered Operations Management Solution Launched'
+      zhHK: 'AMD 推出 "Zen 5"架構下一代銳龍處理器以賦能超前AI體驗',
+      zhCN: 'AMD 推出 "Zen 5"架构下一代锐龙处理器以赋能超前AI体验',
+      en: 'AMD Unveils Next-Gen Ryzen Processors with "Zen 5" Architecture for AI Experiences'
     },
     content: {
-      zhHK: '通過引入人工智能和機器學習技術，我們的智能運維平台可以提前預警潛在問題，實現預測性維護...',
-      zhCN: '通过引入人工智能和机器学习技术，我们的智能运维平台可以提前预警潜在问题，实现预测性维护...',
-      en: 'By leveraging AI and machine learning technologies, our intelligent operations platform can proactively alert to potential issues and enable predictive maintenance...'
+      zhHK: 'AMD 銳龍 AI 300 系列處理器解鎖面向 Windows Copilot+ PC 的革命性 AI體驗；AMD 銳龍 9000 系列處理器為效率、性能和內容創作設定新標杆...',
+      zhCN: 'AMD 锐龙 AI 300 系列处理器解锁面向 Windows Copilot+ PC 的革命性 AI体验；AMD 锐龙 9000 系列处理器为效率、性能和内容创作设定新标杆...',
+      en: 'AMD Ryzen AI 300 series processors unlock revolutionary AI experiences for Windows Copilot+ PCs; AMD Ryzen 9000 series sets new benchmarks for efficiency, performance, and content creation...'
     },
     excerpt: {
-      zhHK: '利用先進的 AI 技術，實現 7x24 小時自動監控和智能故障診斷。',
-      zhCN: '利用先进的 AI 技术，实现 7x24 小时自动监控和智能故障诊断。',
-      en: 'Leveraging advanced AI technology for 7x24 automated monitoring and intelligent fault diagnosis.'
+      zhHK: '新一代處理器為 AI 應用和內容創作帶來革命性提升。',
+      zhCN: '新一代处理器为 AI 应用和内容创作带来革命性提升。',
+      en: 'New-generation processors bring revolutionary improvements to AI applications and content creation.'
     },
     locale: 'zh-HK',
-    publishDate: '2025-01-10',
-    author: 'Project NEXUS Team',
-    imageUrl: '/images/news/ai-ops.jpg',
+    publishDate: '2024-06-11',
+    author: '博迩科技團隊',
+    imageUrl: '/images/news/rylon-ai.jpg',
     featured: true,
-    createdAt: '2025-01-10T00:00:00Z'
+    createdAt: '2024-06-11T00:00:00Z'
   },
   {
     id: '3',
-    slug: 'cloud-migration-success',
+    slug: 'amd-computex-2024',
     title: {
-      zhHK: '成功協助金融客戶完成雲端遷移',
-      zhCN: '成功协助金融客户完成云端迁移',
-      en: 'Successful Cloud Migration for Financial Client'
+      zhHK: 'AMD 在 Computex 2024 上擴大其在數據中心和個人電腦領域的AI和高性能計算領先地位',
+      zhCN: 'AMD 在 Computex 2024 上扩大其在数据中心和个人电脑领域的AI和高性能计算领先地位',
+      en: 'AMD Expands AI and HPC Leadership in Data Center and PC at Computex 2024'
     },
     content: {
-      zhHK: '我們很榮幸協助一家知名金融機構成功遷移其核心業務系統到雲端平台，實現了零停機遷移...',
-      zhCN: '我们很荣幸协助一家知名金融机构成功迁移其核心业务系统到云端平台，实现了零停机迁移...',
-      en: 'We are honored to have assisted a renowned financial institution in successfully migrating their core business systems to the cloud platform, achieving zero-downtime migration...'
+      zhHK: '下一代 AMD EPYC 處理器將擴大數據中心 CPU 的領先地位；全新 AMD 銳龍 AI 300 系列筆記本電腦和 AMD 銳龍 9000 系列台式機處理器為 Copilot+ PC、遊戲、內容創造和工作效率提供領先性能...',
+      zhCN: '下一代 AMD EPYC 处理器将扩大数据中心 CPU 的领先地位；全新 AMD 锐龙 AI 300 系列笔记本电脑和 AMD 锐龙 9000 系列台式机处理器为 Copilot+ PC、游戏、内容创造和工作效率提供领先性能...',
+      en: 'Next-gen AMD EPYC processors will extend data center CPU leadership; new AMD Ryzen AI 300 series laptops and AMD Ryzen 9000 series desktop processors deliver leading performance for Copilot+ PCs, gaming, content creation, and productivity...'
     },
     excerpt: {
-      zhHK: '為期三個月的遷移項目，業務連續性達到 99.99%。',
-      zhCN: '为期三个月的迁移项目，业务连续性达到 99.99%。',
-      en: 'Three-month migration project with 99.99% business continuity.'
+      zhHK: 'AMD 在 Computex 2024 展示最新的處理器技術和 AI 解決方案。',
+      zhCN: 'AMD 在 Computex 2024 展示最新的处理器技术和 AI 解决方案。',
+      en: 'AMD showcases latest processor technologies and AI solutions at Computex 2024.'
     },
     locale: 'zh-HK',
-    publishDate: '2025-01-05',
-    author: 'Project NEXUS Team',
-    imageUrl: '/images/news/cloud.jpg',
+    publishDate: '2024-06-11',
+    author: '博迩科技團隊',
+    imageUrl: '/images/news/computex-2024.jpg',
     featured: false,
-    createdAt: '2025-01-05T00:00:00Z'
+    createdAt: '2024-06-11T00:00:00Z'
   }
 ]
 
 /**
- * Mock Solutions Data
+ * Mock Solutions Data - 博迩科技解决方案
  */
 export const mockSolutions: Solution[] = [
   {
     id: '1',
-    slug: 'data-center-services',
+    slug: 'stable-backend',
     title: {
-      zhHK: '數據中心服務',
-      zhCN: '数据中心服务',
-      en: 'Data Center Services'
+      zhHK: '後台穩定',
+      zhCN: '后台稳定',
+      en: 'Stable Backend'
     },
     description: {
-      zhHK: '提供從設計、建設到運維的全生命週期數據中心服務。',
-      zhCN: '提供从设计、建设到运维的全生命周期数据中心服务。',
-      en: 'Full-lifecycle data center services from design and construction to operations.'
+      zhHK: '產品成熟，穩定可靠，為您的業務提供堅實的技術支撐。',
+      zhCN: '产品成熟，稳定可靠，为您的业务提供坚实的技术支撑。',
+      en: 'Mature and reliable products providing solid technical support for your business.'
     },
     icon: 'Server',
     category: 'idc',
     features: [
-      '機櫃租用',
-      '託管服務',
-      '災難恢復',
-      '安全監控',
-      '能源管理'
+      '企業級硬件',
+      '99.9% 可用性',
+      '7x24 監控',
+      '快速故障響應',
+      '預防性維護'
     ],
     order: 1
   },
   {
     id: '2',
-    slug: 'network-infrastructure',
+    slug: 'cost-saving',
     title: {
-      zhHK: '網絡基建',
-      zhCN: '网络基建',
-      en: 'Network Infrastructure'
+      zhHK: '節省成本',
+      zhCN: '节省成本',
+      en: 'Cost Saving'
     },
     description: {
-      zhHK: '構建高可靠、高安全的企業級網絡架構。',
-      zhCN: '构建高可靠、高安全的企业级网络架构。',
-      en: 'Building highly reliable and secure enterprise-grade network architecture.'
+      zhHK: '優化資源配置，節省人力維護和時間成本。',
+      zhCN: '优化资源配置，节省人力维护和时间成本。',
+      en: 'Optimize resource allocation to save on maintenance and time costs.'
     },
-    icon: 'Network',
-    category: 'idc',
+    icon: 'Settings',
+    category: 'operations',
     features: [
-      'SD-WAN',
-      '網絡安全',
-      '負載均衡',
-      'VPN 隧道',
-      '帶寬管理'
+      '按需擴展',
+      '能耗優化',
+      '自動化運維',
+      '資源統一管理',
+      '降低TCO'
     ],
     order: 2
   },
   {
     id: '3',
-    slug: 'managed-operations',
+    slug: 'latest-technology',
     title: {
-      zhHK: '託管運維',
-      zhCN: '托管运维',
-      en: 'Managed Operations'
+      zhHK: '最新技術',
+      zhCN: '最新技术',
+      en: 'Latest Technology'
     },
     description: {
-      zhHK: '7x24 小時專業運維團隊，保障您的業務系統穩定運行。',
-      zhCN: '7x24 小时专业运维团队，保障您的业务系统稳定运行。',
-      en: '7x24 professional operations team ensuring stable operation of your business systems.'
+      zhHK: '不斷創新產品的應用，引領行業技術發展。',
+      zhCN: '不断创新产品的应用，引领行业技术发展。',
+      en: 'Continuously innovate product applications and lead industry technology development.'
     },
-    icon: 'Settings',
-    category: 'operations',
+    icon: 'Code',
+    category: 'development',
     features: [
-      '全天候監控',
-      '故障響應',
-      '性能優化',
-      '安全補丁',
-      '備份恢復'
+      'AI 賦能',
+      '雲端整合',
+      '容器化部署',
+      '微服務架構',
+      'DevOps 實踐'
     ],
     order: 3
   },
   {
     id: '4',
-    slug: 'custom-development',
+    slug: 'secure-reliable',
     title: {
-      zhHK: '定制開發',
-      zhCN: '定制开发',
-      en: 'Custom Development'
+      zhHK: '安全可靠',
+      zhCN: '安全可靠',
+      en: 'Secure & Reliable'
     },
     description: {
-      zhHK: '根據業務需求，提供定制化軟件開發和解決方案。',
-      zhCN: '根据业务需求，提供定制化软件开发和解决方案。',
-      en: 'Customized software development and solutions based on business requirements.'
+      zhHK: '保護用戶數據安全，提供全方位的安全防護。',
+      zhCN: '保护用户数据安全，提供全方位的安全防护。',
+      en: 'Protect user data security with comprehensive security protection.'
     },
-    icon: 'Code',
-    category: 'development',
+    icon: 'Shield',
+    category: 'operations',
     features: [
-      '需求分析',
-      '系統架構',
-      '敏捷開發',
-      '測試部署',
-      '持續支持'
+      '數據加密',
+      '訪問控制',
+      '安全審計',
+      '威脅檢測',
+      '合規認證'
     ],
     order: 4
   },
   {
     id: '5',
-    slug: 'security-solutions',
+    slug: 'fast-response',
     title: {
-      zhHK: '安全解決方案',
-      zhCN: '安全解决方案',
-      en: 'Security Solutions'
+      zhHK: '快速響應',
+      zhCN: '快速响应',
+      en: 'Fast Response'
     },
     description: {
-      zhHK: '多層次的安全防護體系，保護您的數字資產。',
-      zhCN: '多层次的安全防护体系，保护您的数字资产。',
-      en: 'Multi-layered security protection system safeguarding your digital assets.'
+      zhHK: '響應速度迅速，反應及時，確保業務連續性。',
+      zhCN: '响应速度迅速，反应及时，确保业务连续性。',
+      en: 'Rapid response speed and timely reaction ensure business continuity.'
     },
-    icon: 'Shield',
+    icon: 'Cloud',
     category: 'operations',
     features: [
-      '防火牆',
-      '入侵檢測',
-      '數據加密',
-      '訪問控制',
-      '安全審計'
+      '專業技術團隊',
+      '多渠道支持',
+      '工單系統',
+      '遠程協助',
+      '現場支援'
     ],
     order: 5
   },
   {
     id: '6',
-    slug: 'cloud-services',
+    slug: 'one-stop-service',
     title: {
-      zhHK: '雲端服務',
-      zhCN: '云端服务',
-      en: 'Cloud Services'
+      zhHK: '一站式服務',
+      zhCN: '一站式服务',
+      en: 'One-Stop Service'
     },
     description: {
-      zhHK: '提供公有雲、私有雲和混合雲部署方案。',
-      zhCN: '提供公有云、私有云和混合云部署方案。',
-      en: 'Public, private and hybrid cloud deployment solutions.'
+      zhHK: '從規劃到實施全套服務，提供完整解決方案。',
+      zhCN: '从规划到实施全套服务，提供完整解决方案。',
+      en: 'Complete service from planning to implementation, providing comprehensive solutions.'
     },
-    icon: 'Cloud',
-    category: 'development',
+    icon: 'Network',
+    category: 'idc',
     features: [
-      '雲端遷移',
-      '容器化',
-      '微服務',
-      'DevOps',
-      '成本優化'
+      '需求分析',
+      '方案設計',
+      '設備選型',
+      '部署實施',
+      '培訓支持'
     ],
     order: 6
   }

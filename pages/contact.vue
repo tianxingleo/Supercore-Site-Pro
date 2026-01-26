@@ -45,8 +45,8 @@
                 </div>
                 <div>
                   <div class="text-sm text-swiss-secondary mb-1">電郵</div>
-                  <a href="mailto:info@projectnexus.hk" class="text-swiss-text hover:text-swiss-accent transition-colors">
-                    info@projectnexus.hk
+                  <a href="mailto:sales@boer.cn" class="text-swiss-text hover:text-swiss-accent transition-colors">
+                    sales@boer.cn
                   </a>
                 </div>
               </div>
@@ -59,9 +59,9 @@
                   </svg>
                 </div>
                 <div>
-                  <div class="text-sm text-swiss-secondary mb-1">電話</div>
-                  <a href="tel:+85212345678" class="text-swiss-text hover:text-swiss-accent transition-colors">
-                    +852 1234 5678
+                  <div class="text-sm text-swiss-secondary mb-1">聯繫電話</div>
+                  <a href="tel:020-89816175" class="text-swiss-text hover:text-swiss-accent transition-colors">
+                    020-89816175
                   </a>
                 </div>
               </div>
@@ -77,26 +77,12 @@
                 <div>
                   <div class="text-sm text-swiss-secondary mb-1">地址</div>
                   <div class="text-swiss-text">
-                    香港九龍觀塘道<br>
-                    觀塘創新中心 18 樓
+                    廣東省廣州市天河區<br>
+                    大觀中路95號科匯園1棟303-305
                   </div>
                 </div>
               </div>
-
-              <!-- WhatsApp -->
-              <div class="flex items-start">
-                <div class="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.017-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-sm text-swiss-secondary mb-1">WhatsApp</div>
-                  <a href="https://wa.me/85212345678" target="_blank" rel="noopener noreferrer" class="text-swiss-text hover:text-swiss-accent transition-colors">
-                    +852 1234 5678
-                  </a>
-                </div>
-              </div>
+            </div>
             </div>
           </div>
 
@@ -109,11 +95,11 @@
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
                 <span class="text-swiss-secondary">星期一 - 星期五</span>
-                <span class="text-swiss-text">9:00 - 18:00</span>
+                <span class="text-swiss-text">09:30 - 18:30</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-swiss-secondary">星期六</span>
-                <span class="text-swiss-text">9:00 - 13:00</span>
+                <span class="text-swiss-text">休息</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-swiss-secondary">星期日及公眾假期</span>
@@ -123,7 +109,7 @@
 
             <div class="mt-4 p-3 bg-swiss-bg rounded">
               <p class="text-xs text-swiss-secondary">
-                緊急技術支援：24/7 全天候服務
+                如有緊急需求，請致電聯繫
               </p>
             </div>
           </div>
@@ -143,6 +129,6 @@ const handleFormSubmit = (data: ContactFormData) => {
 }
 
 useHead({
-  title: '聯絡我們 - Project NEXUS (HK)',
+  title: '聯絡我們 - 廣東博迩科技有限公司',
 })
 </script>

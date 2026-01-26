@@ -11,7 +11,7 @@
         <NuxtLink to="/" class="flex items-center space-x-2 group">
           <div class="w-8 h-8 bg-swiss-text rounded-sm group-hover:bg-swiss-accent transition-colors duration-300"></div>
           <TypographyHeader level="3" size="h5" class="hidden sm:block">
-            Project NEXUS
+            博迩科技
           </TypographyHeader>
         </NuxtLink>
 
