@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen">
-    <div class="pt-24 md:pt-28">
+    <div :class="{ 'pt-24 md:pt-28': !$route.path.startsWith('/admin') }">
       <slot />
     </div>
   </div>

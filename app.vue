@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-swiss-bg">
-    <!-- Navigation -->
-    <AppNavbar />
+    <!-- Navigation (Hidden on Admin) -->
+    <AppNavbar v-if="!$route.path.startsWith('/admin')" />
 
     <!-- Page Content with Transition -->
     <NuxtLayout>

@@ -38,7 +38,12 @@ export default defineNuxtConfig({
 
   // Supabase Configuration
   supabase: {
-    redirect: false,
+    redirect: true,
+    redirectOptions: {
+      login: '/admin/login',
+      callback: '/admin',
+      exclude: ['/', '/products/**', '/solutions/**', '/about', '/contact'],
+    },
   },
 
   // Tailwind CSS
