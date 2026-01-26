@@ -51,10 +51,10 @@
               Technical Specification / 01
             </div>
             <TypographyHeader :level="1" size="h1" class="mb-8">
-              {{ product.name[locale] || product.name.zhHK }}
+              {{ product.name[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.name['zh-HK'] }}
             </TypographyHeader>
             <p class="text-swiss-text-muted text-lg leading-relaxed font-medium mb-16">
-              {{ product.description[locale] || product.description.zhHK }}
+              {{ product.description[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.description['zh-HK'] }}
             </p>
 
             <!-- Actions -->

@@ -4,10 +4,10 @@
     <section class="pt-48 pb-24 border-b border-gray-100 mb-12">
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-8">
-          <TypographyHeader level="1" size="display" class="mb-8">
+          <TypographyHeader :level="1" size="display" class="mb-8">
             {{ $t('nav.contact') }}
           </TypographyHeader>
-          <TypographyHeader level="2" size="h3" color="secondary" weight="normal" class="max-w-2xl opacity-80">
+          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-2xl opacity-80">
             {{ $t('contact.pageSubtitle') }}
           </TypographyHeader>
         </div>
