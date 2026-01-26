@@ -1,9 +1,11 @@
 <template>
   <div class="min-h-screen">
-    <slot />
+    <div class="pt-24 md:pt-28">
+      <slot />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// Default layout - can be extended later for specific page layouts
+// Default layout with padding for fixed navbar
 </script>

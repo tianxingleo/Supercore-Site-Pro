@@ -5,7 +5,7 @@
 
     <!-- Hero Section with 3D Scene -->
     <section class="min-h-screen flex items-center" id="hero-section">
-      <GridContainer>
+      <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-6 flex flex-col justify-center">
           <TypographyHeader level="1" size="display" class="mb-6">
             {{ $t('home.hero.title') }}
@@ -40,7 +40,7 @@
 
     <!-- Features Section -->
     <section class="py-24 bg-white">
-      <GridContainer>
+      <GridContainer :grid="true">
         <!-- Section Header -->
         <div class="col-span-12 text-center mb-16">
           <TypographyHeader level="2" size="h2" align="center" class="mb-4">
@@ -86,13 +86,30 @@
       </GridContainer>
     </section>
 
+    <!-- About Section -->
+    <section class="py-24 bg-swiss-bg">
+      <GridContainer :grid="true">
+        <div class="col-span-12 text-center mb-12">
+          <TypographyHeader level="2" size="h2" align="center" class="mb-4">
+            {{ $t('about.title') }}
+          </TypographyHeader>
+          <p class="text-swiss-secondary max-w-3xl mx-auto">
+            {{ $t('company.slogan') }}
+          </p>
+        </div>
+        <div class="col-span-12 text-center">
+          <p class="text-swiss-text max-w-4xl mx-auto text-lg">
+            {{ $t('company.mission') }}
+          </p>
+        </div>
+      </GridContainer>
+    </section>
+
     <!-- Component Demo Section -->
     <section class="py-24 bg-swiss-bg">
-      <GridContainer>
+      <GridContainer :grid="true">
         <div class="col-span-12 mb-12">
-          <TypographyHeader level="2" size="h2">
-            Swiss Design Components
-          </TypographyHeader>
+          <TypographyHeader level="2" size="h2"> Swiss Design Components </TypographyHeader>
           <p class="text-swiss-secondary mt-4">
             Swiss International Style - 瑞士国际主义风格组件库
           </p>
@@ -100,9 +117,7 @@
 
         <!-- Button Variants -->
         <div class="col-span-12 mb-8">
-          <TypographyHeader level="3" size="h4" class="mb-4">
-            Button Variants
-          </TypographyHeader>
+          <TypographyHeader level="3" size="h4" class="mb-4"> Button Variants </TypographyHeader>
           <div class="flex flex-wrap gap-4">
             <SwissButton variant="primary">Primary</SwissButton>
             <SwissButton variant="secondary">Secondary</SwissButton>
@@ -113,9 +128,7 @@
 
         <!-- Button Sizes -->
         <div class="col-span-12 mb-8">
-          <TypographyHeader level="3" size="h4" class="mb-4">
-            Button Sizes
-          </TypographyHeader>
+          <TypographyHeader level="3" size="h4" class="mb-4"> Button Sizes </TypographyHeader>
           <div class="flex flex-wrap gap-4 items-center">
             <SwissButton variant="primary" size="sm">Small</SwissButton>
             <SwissButton variant="primary" size="md">Medium</SwissButton>
@@ -125,9 +138,7 @@
 
         <!-- Typography Examples -->
         <div class="col-span-12">
-          <TypographyHeader level="3" size="h4" class="mb-4">
-            Typography Scale
-          </TypographyHeader>
+          <TypographyHeader level="3" size="h4" class="mb-4"> Typography Scale </TypographyHeader>
           <div class="space-y-4">
             <TypographyHeader level="1" size="h1">
               Display Heading (H1) - 专业基礎設施解決方案
@@ -152,7 +163,7 @@
 const { t } = useI18n()
 
 useHead({
-  title: t('nav.home'),
+  title: '首页 - 广东博迩科技有限公司',
 })
 
 // 設備檢測

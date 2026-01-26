@@ -6,7 +6,8 @@
       "Bash(npx nuxi@latest init:*)",
       "Bash(npm install:*)",
       "Bash(npx husky init:*)",
-      "Bash(npx nuxt prepare:*)"
+      "Bash(npx nuxt prepare:*)",
+      "mcp__web-reader__webReader"
     ]
   }
 }

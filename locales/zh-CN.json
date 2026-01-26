@@ -6,26 +6,43 @@
     "about": "关于我们",
     "contact": "联系我们"
   },
+  "company": {
+    "name": "广东博迩科技有限公司",
+    "nameShort": "博迩科技",
+    "slogan": "企业基础设施一体化解决方案服务提供商",
+    "mission": "了解客户需求；理解客户需求；满足客户需求；为客户提供超预期的产品与服务",
+    "description": "企业基础设施一体化解决方案服务提供商，提供服务器、网络、数据中心等产品和服务",
+    "address": "广东省广州市天河区大观中路95号科汇园1栋303-305",
+    "phone": "020-89816175",
+    "email": "sales@boer.cn",
+    "website": "https://www.boer.cn"
+  },
   "home": {
     "hero": {
-      "title": "专业基础设施解决方案",
-      "subtitle": "服务香港及海外市场",
-      "cta": "了解更多",
-      "ctaSecondary": "联系我们"
+      "title": "企业基础设施一体化解决方案服务提供商",
+      "subtitle": "了解需求 · 理解需求 · 满足需求 · 超越预期",
+      "cta": "了解产品",
+      "ctaSecondary": "联系咨询"
+    },
+    "animation": {
+      "phase1": "欢迎使用",
+      "phase2": "探索我们的产品",
+      "phase3": "专业的技术支持",
+      "phase4": "开启数字化转型之旅"
     },
     "features": {
       "title": "核心优势",
       "feature1": {
-        "title": "高性能服务器",
-        "description": "提供企业级服务器解决方案，确保业务连续性"
+        "title": "产品成熟，稳定可靠",
+        "description": "成熟可靠的产品，为您的业务提供坚实的技术支撑"
       },
       "feature2": {
-        "title": "专业运维服务",
-        "description": "24/7 全天候技术支持，保障系统稳定运行"
+        "title": "节省成本，快速响应",
+        "description": "优化资源配置，节省人力维护和时间成本，响应速度迅速"
       },
       "feature3": {
-        "title": "安全可靠",
-        "description": "金融级安全标准，保护您的数据资产"
+        "title": "最新技术，安全可靠",
+        "description": "不断创新产品应用，保护用户数据安全，提供全方位安全防护"
       }
     }
   },
@@ -39,6 +56,12 @@
   "solutions": {
     "title": "解决方案",
     "subtitle": "为您的业务量身定制",
+    "categories": {
+      "all": "全部",
+      "idc": "IDC 服务",
+      "operations": "运维服务",
+      "development": "开发服务"
+    },
     "idc": "数据中心服务",
     "operations": "运维管理",
     "development": "开发服务"
@@ -48,11 +71,84 @@
     "subtitle": "值得信赖的基础设施合作伙伴",
     "mission": "我们的使命",
     "vision": "我们的愿景",
-    "timeline": "发展历程"
+    "timeline": "发展历程",
+    "pageTitle": "关于博迩",
+    "pageSubtitle": "企业基础设施一体化解决方案服务提供商",
+    "companyOverview": {
+      "title": "关于我们",
+      "description1": "广东博迩科技有限公司是一家专注于企业级基础设施解决方案的提供商，致力于为广州及全国市场的客户提供高品质的服务器、存储、网络及相关服务。",
+      "description2": "我们拥有丰富的行业经验，专注于为企业提供从规划到实施的全套服务，帮助客户构建安全、可靠、高效的信息技术基础设施。",
+      "philosophy": {
+        "title": "经营理念",
+        "point1": "了解客户需求",
+        "point2": "理解客户需求",
+        "point3": "满足客户需求",
+        "point4": "为客户提供超预期的产品与服务"
+      }
+    },
+    "coreAdvantages": {
+      "title": "核心优势",
+      "support24": {
+        "value": "7x24",
+        "label": "技术支持"
+      },
+      "availability": {
+        "value": "99.9%",
+        "label": "服务可用性"
+      },
+      "response": {
+        "value": "快速",
+        "label": "响应速度"
+      },
+      "team": {
+        "value": "专业",
+        "label": "技术团队"
+      }
+    },
+    "solutionFeatures": {
+      "title": "解决方案特点",
+      "stable": {
+        "title": "后台稳定",
+        "description": "产品成熟，稳定可靠"
+      },
+      "cost": {
+        "title": "节省成本",
+        "description": "节省人力维护和时间成本"
+      },
+      "technology": {
+        "title": "最新技术",
+        "description": "不断创新产品的应用"
+      },
+      "security": {
+        "title": "安全可靠",
+        "description": "保护用户数据安全"
+      },
+      "responseSpeed": {
+        "title": "快速响应",
+        "description": "响应速度迅速，反应及时"
+      },
+      "oneStop": {
+        "title": "一站式服务",
+        "description": "从规划到实施全套服务"
+      }
+    }
   },
   "contact": {
     "title": "联系我们",
     "subtitle": "我们随时为您服务",
+    "pageSubtitle": "我们期待与您合作，为您的业务提供专业的基础设施解决方案",
+    "sendMessage": "发送消息",
+    "contactInfo": "联系方式",
+    "email": "电邮",
+    "phone": "联系电话",
+    "address": "地址",
+    "businessHours": "办公时间",
+    "mondayToFriday": "星期一 - 星期五",
+    "weekend": "星期六",
+    "sundayHoliday": "星期日及公众假期",
+    "closed": "休息",
+    "workingHours": "09:30 - 18:30",
+    "emergencyContact": "如有紧急需求，请联系",
     "form": {
       "name": "姓名",
       "email": "电子邮件",

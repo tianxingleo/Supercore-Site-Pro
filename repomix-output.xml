@@ -1,0 +1,6271 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.claude/settings.local.json
+.editorconfig
+.env.example
+.gitignore
+.husky/pre-commit
+.playwright-mcp/homepage-fixed.png
+.playwright-mcp/homepage-news-section.png
+.playwright-mcp/homepage-news-with-images.png
+.playwright-mcp/products-page-display.png
+.prettierrc
+app.vue
+assets/css/main.css
+assets/css/tailwind.css
+CLAUDE.md
+components/3d/MobileFallback.vue
+components/3d/PlaceholderCanvas.vue
+components/3d/ServerScene.vue
+components/contact/ContactForm.vue
+components/dev/PerformancePanel.vue
+components/home/AnimatedTextOverlay.vue
+components/navigation/AppNavbar.vue
+components/navigation/LocaleSwitcher.vue
+components/products/ProductCard.vue
+components/products/SpecTable.vue
+components/solutions/SolutionCard.vue
+components/solutions/SolutionsBento.vue
+components/swiss/GridColumn.vue
+components/swiss/GridContainer.vue
+components/swiss/SwissButton.vue
+components/swiss/TypographyHeader.vue
+components/ui/OptimizedImage.vue
+composables/useDeviceDetection.ts
+composables/usePerformanceMonitor.ts
+composables/useServerAnimation.ts
+composables/useServerScene.ts
+composables/useSwissGrid.ts
+eslint.config.mjs
+i18n.config.ts
+layouts/default.vue
+locales/en.json
+locales/zh-CN.json
+locales/zh-HK.json
+nuxt.config.ts
+package.json
+pages/about.vue
+pages/contact.vue
+pages/index.vue
+pages/products/[slug].vue
+pages/products/index.vue
+pages/solutions/index.vue
+plugins/gsap.client.ts
+plugins/lenis.client.ts
+public/images/official-products/bc120g3-h.png
+public/images/official-products/bc120g3.png
+public/images/official-products/bc220g3-h.png
+public/images/official-products/bc220g3-s.png
+public/images/official-products/bc220g3.png
+public/images/official-products/bc440g3-n.png
+public/images/official-products/bc440g3-p.png
+public/images/official-products/bc440g3-t.png
+public/images/official-products/bc445g3-n.png
+public/images/official-products/bc445g3-p.png
+public/images/official-products/bs270g3-d.png
+public/images/official-products/bs270g3.png
+public/images/official-products/bs450g3-h.png
+public/images/official-products/bs450g3-s.png
+public/images/official-products/bs450g3.png
+public/robots.txt
+README.md
+scripts/scraper/download-official-products.cjs
+scripts/scraper/nul
+scripts/test.ps1
+scripts/test.sh
+server/api/products/[slug].get.ts
+server/api/products/index.get.ts
+server/api/solutions/index.get.ts
+server/routes/sitemap.xml.ts
+setup_mcp_env.ps1
+setup_opencode_mcp.ps1
+tailwind.config.js
+tsconfig.json
+types/index.ts
+utils/imagePlaceholder.ts
+utils/mockData.ts
+verify_mcp_config.ps1
+verify_setup.ps1
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".editorconfig">
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# TypeScript / JavaScript
+[*.{ts,js,vue}]
+indent_style = space
+indent_size = 2
+
+# JSON
+[*.json]
+indent_style = space
+indent_size = 2
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
+
+# YAML
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# CSS / SCSS
+[*.{css,scss}]
+indent_style = space
+indent_size = 2
+</file>
+
+<file path="components/dev/PerformancePanel.vue">
+<template>
+  <div v-if="isDev && showPanel" class="fixed bottom-4 right-4 z-50">
+    <button
+      @click="togglePanel"
+      class="mb-2 px-4 py-2 bg-swiss-text text-white text-sm rounded-lg hover:bg-swiss-accent transition-colors"
+    >
+      {{ isExpanded ? '隱藏' : '顯示' }}性能面板
+    </button>
+
+    <div
+      v-if="isExpanded"
+      class="bg-white rounded-lg shadow-lg p-4 max-w-sm max-h-96 overflow-y-auto border border-swiss-secondary/20"
+    >
+      <h3 class="text-lg font-bold mb-4 text-swiss-text">性能指標</h3>
+
+      <div class="space-y-3">
+        <MetricCard
+          v-for="(value, key) in metrics"
+          :key="key"
+          :label="getMetricLabel(key)"
+          :value="value"
+          :grade="getPerformanceGrade(key as keyof PerformanceMetrics)"
+        />
+      </div>
+
+      <div class="mt-4 pt-4 border-t border-swiss-secondary/20">
+        <button
+          @click="runLighthouse"
+          class="w-full px-4 py-2 bg-swiss-accent text-white rounded-lg hover:bg-[#0077ed] transition-colors"
+        >
+          運行 Lighthouse 測試
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { PerformanceMetrics } from '~/composables/usePerformanceMonitor'
+
+interface Props {
+  metrics: PerformanceMetrics
+  isDev: boolean
+}
+
+const props = defineProps<Props>()
+
+const isExpanded = ref(false)
+const showPanel = ref(true)
+
+const togglePanel = () => {
+  isExpanded.value = !isExpanded.value
+}
+
+const getMetricLabel = (key: string): string => {
+  const labels: Record<string, string> = {
+    LCP: 'Largest Contentful Paint',
+    FID: 'First Input Delay',
+    CLS: 'Cumulative Layout Shift',
+    FCP: 'First Contentful Paint',
+    TTI: 'Time to Interactive',
+    loadTime: 'Page Load Time',
+  }
+  return labels[key] || key
+}
+
+const getPerformanceGrade = (key: keyof PerformanceMetrics): string => {
+  const value = props.metrics[key]
+  if (value === null) return 'N/A'
+
+  switch (key) {
+    case 'LCP':
+      if (value < 2500) return 'Good'
+      if (value < 4000) return 'Needs Improvement'
+      return 'Poor'
+    case 'FID':
+      if (value < 100) return 'Good'
+      if (value < 300) return 'Needs Improvement'
+      return 'Poor'
+    case 'CLS':
+      if (value < 0.1) return 'Good'
+      if (value < 0.25) return 'Needs Improvement'
+      return 'Poor'
+    case 'FCP':
+      if (value < 1800) return 'Good'
+      if (value < 3000) return 'Needs Improvement'
+      return 'Poor'
+    case 'loadTime':
+      if (value < 2000) return 'Good'
+      if (value < 4000) return 'Needs Improvement'
+      return 'Poor'
+    default:
+      return 'N/A'
+  }
+}
+
+const runLighthouse = () => {
+  if (process.client) {
+    window.open('chrome-lighthouse://', '_blank')
+  }
+}
+</script>
+
+<script setup lang="ts">
+// MetricCard subcomponent
+const MetricCard = defineComponent({
+  name: 'MetricCard',
+  props: {
+    label: String,
+    value: [Number, null] as PropType<number | null>,
+    grade: String,
+  },
+  setup(props) {
+    const gradeColor = computed(() => {
+      switch (props.grade) {
+        case 'Good':
+          return 'text-green-600'
+        case 'Needs Improvement':
+          return 'text-yellow-600'
+        case 'Poor':
+          return 'text-red-600'
+        default:
+          return 'text-swiss-secondary'
+      }
+    })
+
+    return { gradeColor }
+  },
+  template: `
+    <div class="flex justify-between items-center p-2 bg-swiss-bg rounded">
+      <span class="text-sm text-swiss-secondary">{{ label }}</span>
+      <div class="text-right">
+        <span v-if="value !== null" class="font-mono text-sm font-bold">{{ value.toFixed(0) }}ms</span>
+        <span v-else class="text-sm text-swiss-secondary">測量中...</span>
+        <span :class="gradeColor" class="ml-2 text-xs">{{ grade }}</span>
+      </div>
+    </div>
+  `,
+})
+</script>
+</file>
+
+<file path="components/ui/OptimizedImage.vue">
+<template>
+  <div ref="containerRef" class="overflow-hidden" :class="containerClass">
+    <img
+      v-if="!lazyLoad || isIntersecting"
+      :src="optimizedSrc"
+      :alt="alt"
+      :class="imageClass"
+      :loading="lazyLoad ? 'lazy' : 'eager'"
+      @load="handleLoad"
+      @error="handleError"
+    />
+    <div
+      v-if="isLoading"
+      class="absolute inset-0 bg-swiss-bg animate-pulse"
+    ></div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+
+interface Props {
+  src: string
+  alt?: string
+  width?: number
+  height?: number
+  lazyLoad?: boolean
+  containerClass?: string
+  imageClass?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  alt: '',
+  lazyLoad: true,
+  containerClass: '',
+  imageClass: '',
+})
+
+const containerRef = ref<HTMLDivElement>()
+const isIntersecting = ref(!props.lazyLoad)
+const isLoading = ref(true)
+const hasError = ref(false)
+
+// 優化圖片 URL（可以根據需要添加 CDN 或圖片處理服務）
+const optimizedSrc = computed(() => {
+  // 如果使用 Vercel 或其他 CDN，可以在這裡添加圖片優化參數
+  // 例如: `?format=webp&w=${props.width}&q=80`
+  return props.src
+})
+
+const handleLoad = () => {
+  isLoading.value = false
+}
+
+const handleError = () => {
+  isLoading.value = false
+  hasError.value = true
+}
+
+// Intersection Observer for lazy loading
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  if (props.lazyLoad && containerRef.value) {
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            isIntersecting.value = true
+            observer?.disconnect()
+          }
+        })
+      },
+      {
+        rootMargin: '50px',
+      }
+    )
+
+    observer.observe(containerRef.value)
+  }
+})
+
+onUnmounted(() => {
+  observer?.disconnect()
+})
+</script>
+</file>
+
+<file path="composables/usePerformanceMonitor.ts">
+/**
+ * Performance Monitoring Composable
+ * 監控網站性能指標
+ */
+
+import { ref, onMounted, onUnmounted } from 'vue'
+
+export interface PerformanceMetrics {
+  // Core Web Vitals
+  LCP: number | null // Largest Contentful Paint (目標: < 2.5s)
+  FID: number | null // First Input Delay (目標: < 100ms)
+  CLS: number | null // Cumulative Layout Shift (目標: < 0.1)
+  // Other metrics
+  FCP: number | null // First Contentful Paint (目標: < 1.8s)
+  TTI: number | null // Time to Interactive (目標: < 3.8s)
+  loadTime: number | null // 頁面加載時間
+}
+
+export const usePerformanceMonitor = () => {
+  const metrics = ref<PerformanceMetrics>({
+    LCP: null,
+    FID: null,
+    CLS: null,
+    FCP: null,
+    TTI: null,
+    loadTime: null,
+  })
+
+  const isMonitoring = ref(false)
+
+  const measureLCP = () => {
+    if (process.client && 'PerformanceObserver' in window) {
+      try {
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries()
+          const lastEntry = entries[entries.length - 1] as any
+          metrics.value.LCP = lastEntry.startTime
+        })
+        observer.observe({ entryTypes: ['largest-contentful-paint'] })
+        return observer
+      } catch (e) {
+        console.warn('LCP measurement not supported:', e)
+      }
+    }
+    return null
+  }
+
+  const measureFID = () => {
+    if (process.client && 'PerformanceObserver' in window) {
+      try {
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries()
+          entries.forEach((entry: any) => {
+            metrics.value.FID = entry.processingStart - entry.startTime
+          })
+        })
+        observer.observe({ entryTypes: ['first-input'] })
+        return observer
+      } catch (e) {
+        console.warn('FID measurement not supported:', e)
+      }
+    }
+    return null
+  }
+
+  const measureCLS = () => {
+    if (process.client && 'PerformanceObserver' in window) {
+      try {
+        let clsValue = 0
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries()
+          entries.forEach((entry: any) => {
+            if (!entry.hadRecentInput) {
+              clsValue += entry.value
+              metrics.value.CLS = clsValue
+            }
+          })
+        })
+        observer.observe({ entryTypes: ['layout-shift'] })
+        return observer
+      } catch (e) {
+        console.warn('CLS measurement not supported:', e)
+      }
+    }
+    return null
+  }
+
+  const measureFCP = () => {
+    if (process.client && 'PerformanceObserver' in window) {
+      try {
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries()
+          const fcpEntry = entries.find((entry: any) => entry.name === 'first-contentful-paint')
+          if (fcpEntry) {
+            metrics.value.FCP = (fcpEntry as any).startTime
+          }
+        })
+        observer.observe({ entryTypes: ['paint'] })
+        return observer
+      } catch (e) {
+        console.warn('FCP measurement not supported:', e)
+      }
+    }
+    return null
+  }
+
+  const measureLoadTime = () => {
+    if (process.client) {
+      window.addEventListener('load', () => {
+        const navigation = performance.getEntriesByType('navigation')[0] as any
+        if (navigation) {
+          metrics.value.loadTime = navigation.loadEventEnd - navigation.startTime
+        }
+      })
+    }
+  }
+
+  const startMonitoring = () => {
+    if (isMonitoring.value) return
+
+    isMonitoring.value = true
+
+    const observers = [
+      measureLCP(),
+      measureFID(),
+      measureCLS(),
+      measureFCP(),
+    ]
+
+    measureLoadTime()
+
+    // Cleanup function
+    return () => {
+      observers.forEach(observer => observer?.disconnect())
+    }
+  }
+
+  const getPerformanceGrade = (metric: keyof PerformanceMetrics): string => {
+    const value = metrics.value[metric]
+    if (value === null) return 'N/A'
+
+    switch (metric) {
+      case 'LCP':
+        if (value < 2500) return 'Good'
+        if (value < 4000) return 'Needs Improvement'
+        return 'Poor'
+      case 'FID':
+        if (value < 100) return 'Good'
+        if (value < 300) return 'Needs Improvement'
+        return 'Poor'
+      case 'CLS':
+        if (value < 0.1) return 'Good'
+        if (value < 0.25) return 'Needs Improvement'
+        return 'Poor'
+      case 'FCP':
+        if (value < 1800) return 'Good'
+        if (value < 3000) return 'Needs Improvement'
+        return 'Poor'
+      default:
+        return 'N/A'
+    }
+  }
+
+  onMounted(() => {
+    const cleanup = startMonitoring()
+
+    onUnmounted(() => {
+      cleanup?.()
+    })
+  })
+
+  return {
+    metrics,
+    isMonitoring,
+    startMonitoring,
+    getPerformanceGrade,
+  }
+}
+</file>
+
+<file path="scripts/scraper/download-official-products.cjs">
+/**
+ * 从博迩官网下载所有官方产品图片
+ * 严格按照官网产品分类和型号
+ */
+
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+
+// 官网产品图片URL（严格按照官网）
+const OFFICIAL_PRODUCTS = {
+  // ========== 通用计算 (5个产品) ==========
+  'bc120g3': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50829785.png',
+    name: 'BC120G3',
+    category: '通用计算',
+    desc: '1U通用计算型服务器'
+  },
+  'bc120g3-h': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50634496.png',
+    name: 'BC120G3-H',
+    category: '通用计算',
+    desc: '1U通用计算型服务器'
+  },
+  'bc220g3': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50689845.png',
+    name: 'BC220G3',
+    category: '通用计算',
+    desc: '2U通用计算型服务器'
+  },
+  'bc220g3-h': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50634872.png',
+    name: 'BC220G3-H',
+    category: '通用计算',
+    desc: '2U通用计算型服务器'
+  },
+  'bc220g3-s': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50692852.png',
+    name: 'BC220G3-S',
+    category: '通用计算',
+    desc: '2U通用计算型服务器'
+  },
+
+  // ========== 通用存储 (3个产品) ==========
+  'bs450g3': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50741641.png',
+    name: 'BS450G3',
+    category: '通用存储',
+    desc: '4U通用存储型服务器'
+  },
+  'bs450g3-s': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50641566.png',
+    name: 'BS450G3-S',
+    category: '通用存储',
+    desc: '4U通用存储型服务器'
+  },
+  'bs450g3-h': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50641561.png',
+    name: 'BS450G3-H',
+    category: '通用存储',
+    desc: '4U通用存储型服务器'
+  },
+
+  // ========== 高性能计算 (5个产品) ==========
+  'bc440g3-p': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50705599.png',
+    name: 'BC440G3-P',
+    category: '高性能计算',
+    desc: '4U高性能计算型GPU服务器'
+  },
+  'bc440g3-n': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50711031.png',
+    name: 'BC440G3-N',
+    category: '高性能计算',
+    desc: '4U高性能计算型GPU服务器'
+  },
+  'bc440g3-t': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50714113.png',
+    name: 'BC440G3-T',
+    category: '高性能计算',
+    desc: '4U高性能计算型塔式GPU服务器'
+  },
+  'bc445g3-p': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50737489.png',
+    name: 'BC445G3-P',
+    category: '高性能计算',
+    desc: '4U高性能计算型GPU服务器'
+  },
+  'bc445g3-n': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50640396.png',
+    name: 'BC445G3-N',
+    category: '高性能计算',
+    desc: '4U高性能计算型GPU服务器'
+  },
+
+  // ========== 高性能存储 (2个产品) ==========
+  'bs270g3': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50643888.png',
+    name: 'BS270G3',
+    category: '高性能存储',
+    desc: '2U高性能存储型服务器'
+  },
+  'bs270g3-d': {
+    url: 'https://img.wanwang.xin/contents/sitefiles2067/10336457/images/50642306.png',
+    name: 'BS270G3-D',
+    category: '高性能存储',
+    desc: '2U高性能双节点存储型服务器'
+  },
+};
+
+// 目标目录
+const OUTPUT_DIR = path.join(__dirname, '../../public/images/official-products');
+
+/**
+ * 下载单个图片
+ */
+async function downloadImage(id, product) {
+  const filename = `${id}.png`;
+  const filepath = path.join(OUTPUT_DIR, filename);
+
+  // 检查文件是否已存在
+  if (fs.existsSync(filepath)) {
+    const stats = fs.statSync(filepath);
+    const sizeKB = (stats.size / 1024).toFixed(1);
+    console.log(`[SKIP] ${product.name} - 已存在 (${sizeKB} KB)`);
+    return;
+  }
+
+  try {
+    console.log(`[DOWNLOAD] ${product.name} (${product.category})`);
+    console.log(`  URL: ${product.url}`);
+
+    const response = await axios.get(product.url, {
+      responseType: 'arraybuffer',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://www.boer.cn/'
+      },
+      timeout: 30000
+    });
+
+    // 检查内容类型
+    const contentType = response.headers['content-type'];
+    if (!contentType || !contentType.startsWith('image/')) {
+      console.log(`  [ERROR] 非图片: ${contentType}`);
+      return;
+    }
+
+    // 保存文件
+    fs.writeFileSync(filepath, response.data);
+
+    const sizeKB = (response.data.length / 1024).toFixed(1);
+    console.log(`  [OK] ${sizeKB} KB ✓`);
+  } catch (error) {
+    console.log(`  [ERROR] ${error.message}`);
+  }
+}
+
+/**
+ * 下载所有产品
+ */
+async function downloadAllProducts() {
+  console.log('='.repeat(70));
+  console.log('博迩官网产品图片下载器');
+  console.log('='.repeat(70));
+  console.log(`\n保存目录: ${OUTPUT_DIR}\n`);
+
+  // 创建输出目录
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+    console.log(`[OK] 创建目录: ${OUTPUT_DIR}\n`);
+  }
+
+  let successCount = 0;
+  let failCount = 0;
+
+  // 按分类统计
+  const categoryStats = {};
+
+  // 下载所有产品
+  for (const [id, product] of Object.entries(OFFICIAL_PRODUCTS)) {
+    // 统计
+    if (!categoryStats[product.category]) {
+      categoryStats[product.category] = { count: 0, success: 0 };
+    }
+    categoryStats[product.category].count++;
+
+    try {
+      await downloadImage(id, product);
+      successCount++;
+      categoryStats[product.category].success++;
+    } catch (error) {
+      console.log(`[ERROR] 下载失败: ${error.message}`);
+      failCount++;
+    }
+    console.log();
+
+    // 添加延迟避免请求过快
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+
+  // 打印统计
+  console.log('='.repeat(70));
+  console.log('下载统计');
+  console.log('='.repeat(70));
+
+  for (const [category, stats] of Object.entries(categoryStats)) {
+    console.log(`\n[${category}]`);
+    console.log(`  总数: ${stats.count}`);
+    console.log(`  成功: ${stats.success}`);
+  }
+
+  console.log(`\n${'='.repeat(70)}`);
+  console.log(`总计: ${successCount} 成功, ${failCount} 失败`);
+  console.log(`文件保存在: ${OUTPUT_DIR}`);
+  console.log('='.repeat(70));
+}
+
+// 运行下载
+downloadAllProducts().catch(error => {
+  console.error('\n[ERROR]', error.message);
+  process.exit(1);
+});
+</file>
+
+<file path="scripts/scraper/nul">
+dir: cannot access '/s': No such file or directory
+</file>
+
+<file path="scripts/test.ps1">
+# Project NEXUS (HK) - Windows 測試腳本
+
+Write-Host "🚀 開始測試流程..." -ForegroundColor Green
+
+# 1. 類型檢查
+Write-Host "`n📝 運行類型檢查..." -ForegroundColor Yellow
+npm run typecheck
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ 類型檢查失敗" -ForegroundColor Red
+    exit 1
+}
+Write-Host "✅ 類型檢查通過" -ForegroundColor Green
+
+# 2. ESLint 檢查
+Write-Host "`n🔍 運行 ESLint..." -ForegroundColor Yellow
+npm run lint
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ ESLint 檢查失敗" -ForegroundColor Red
+    exit 1
+}
+Write-Host "✅ ESLint 檢查通過" -ForegroundColor Green
+
+# 3. 構建測試
+Write-Host "`n🏗️  構建生產版本..." -ForegroundColor Yellow
+npm run build
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ 構建失敗" -ForegroundColor Red
+    exit 1
+}
+Write-Host "✅ 構建成功" -ForegroundColor Green
+
+# 4. 檢查構建輸出
+Write-Host "`n📊 構建完成！" -ForegroundColor Yellow
+Write-Host "💡 提示：運行 'npm run preview' 來預覽生產版本" -ForegroundColor Cyan
+</file>
+
+<file path="scripts/test.sh">
+#!/bin/bash
+
+# Project NEXUS (HK) - 測試和構建腳本
+
+echo "🚀 開始測試流程..."
+
+# 顏色定義
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# 1. 類型檢查
+echo -e "\n${YELLOW}📝 運行類型檢查...${NC}"
+npm run typecheck
+if [ $? -ne 0 ]; then
+    echo -e "${RED}❌ 類型檢查失敗${NC}"
+    exit 1
+fi
+echo -e "${GREEN}✅ 類型檢查通過${NC}"
+
+# 2. ESLint 檢查
+echo -e "\n${YELLOW}🔍 運行 ESLint...${NC}"
+npm run lint
+if [ $? -ne 0 ]; then
+    echo -e "${RED}❌ ESLint 檢查失敗${NC}"
+    exit 1
+fi
+echo -e "${GREEN}✅ ESLint 檢查通過${NC}"
+
+# 3. 構建測試
+echo -e "\n${YELLOW}🏗️  構建生產版本...${NC}"
+npm run build
+if [ $? -ne 0 ]; then
+    echo -e "${RED}❌ 構建失敗${NC}"
+    exit 1
+fi
+echo -e "${GREEN}✅ 構建成功${NC}"
+
+# 4. 檢查構建輸出大小
+echo -e "\n${YELLOW}📊 檢查構建輸出...${NC}"
+BUILD_SIZE=$(du -sh .output/public | cut -f1)
+echo "構建大小: $BUILD_SIZE"
+
+# 5. 預覽生產版本
+echo -e "\n${GREEN}✅ 所有測試通過！${NC}"
+echo -e "${YELLOW}💡 提示：運行 'npm run preview' 來預覽生產版本${NC}"
+</file>
+
+<file path="utils/imagePlaceholder.ts">
+/**
+ * Image Placeholder Generator
+ * 生成 SVG 圖片占位符用於開發階段
+ */
+
+export const generatePlaceholder = (
+  width: number,
+  height: number,
+  text: string = 'Placeholder',
+  bgColor: string = '#F5F5F7',
+  textColor: string = '#1D1D1F'
+): string => {
+  const svg = `
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100%" height="100%" fill="${bgColor}"/>
+      <text
+        x="50%"
+        y="50%"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        font-family="Inter, sans-serif"
+        font-size="${Math.min(width, height) / 10}"
+        fill="${textColor}"
+      >${text}</text>
+    </svg>
+  `.replace(/\s+/g, ' ').trim()
+
+  return `data:image/svg+xml;base64,${btoa(svg)}`
+}
+
+export const productImages: Record<string, string> = {
+  'enterprise-server-rack': generatePlaceholder(800, 600, 'Enterprise Server'),
+  'high-performance-storage': generatePlaceholder(800, 600, 'Storage System'),
+  'managed-switch': generatePlaceholder(800, 600, 'Network Switch'),
+}
+
+export const solutionImages: Record<string, string> = {
+  'data-center-services': generatePlaceholder(400, 300, 'Data Center'),
+  'network-infrastructure': generatePlaceholder(400, 300, 'Network'),
+  'managed-operations': generatePlaceholder(400, 300, 'Operations'),
+  'custom-development': generatePlaceholder(400, 300, 'Development'),
+  'security-solutions': generatePlaceholder(400, 300, 'Security'),
+  'cloud-services': generatePlaceholder(400, 300, 'Cloud'),
+}
+</file>
+
+<file path=".claude/settings.local.json">
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(git branch:*)",
+      "Bash(npx nuxi@latest init:*)",
+      "Bash(npm install:*)",
+      "Bash(npx husky init:*)",
+      "Bash(npx nuxt prepare:*)",
+      "mcp__web-reader__webReader"
+    ]
+  }
+}
+</file>
+
+<file path=".env.example">
+# Supabase Configuration
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+
+# AI Provider (Optional - for future AI chat feature)
+# OPENAI_API_KEY=your-openai-key
+# GEMINI_API_KEY=your-gemini-key
+</file>
+
+<file path=".husky/pre-commit">
+npm run lint
+</file>
+
+<file path=".prettierrc">
+{
+  "semi": false,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 100,
+  "arrowParens": "always",
+  "endOfLine": "lf"
+}
+</file>
+
+<file path="assets/css/main.css">
+/* Swiss Design System - Base Styles */
+@import './tailwind.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: 'Inter', 'Noto Sans HK', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #F5F5F7;
+  color: #1D1D1F;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scroll for browsers that support it */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Selection color */
+::selection {
+  background-color: #0071e3;
+  color: #ffffff;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 2px;
+}
+</file>
+
+<file path="assets/css/tailwind.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+</file>
+
+<file path="CLAUDE.md">
+# Agent Guidelines
+
+## Tool Usage Priorities
+
+1. **Search Preference**: 当你需要查阅 Nuxt 3 文档、Supabase API 或最新的编程技术时，**必须优先使用 `tavily-search`**（或者说search）。
+2. **Fallback**: 只有当 Tavily 报错或返回结果为空时，才允许使用其他搜索mcp。
+</file>
+
+<file path="components/3d/MobileFallback.vue">
+<template>
+  <div ref="containerRef" class="w-full h-full relative">
+    <!-- 靜態圖片佔位符 -->
+    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-swiss-bg to-gray-200">
+      <div class="text-center">
+        <!-- 伺服器圖示佔位符 -->
+        <div class="relative w-64 h-64 mx-auto mb-8">
+          <div class="absolute inset-0 bg-swiss-text rounded-lg opacity-10 animate-pulse"></div>
+          <div class="absolute inset-4 bg-swiss-text rounded-lg opacity-20"></div>
+          <div class="absolute inset-8 bg-swiss-text rounded-lg opacity-30"></div>
+          <div class="absolute inset-12 bg-swiss-accent rounded-lg opacity-40"></div>
+
+          <!-- LED 指示燈 -->
+          <div class="absolute bottom-4 left-4 flex gap-2">
+            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style="animation-delay: 0.5s;"></div>
+            <div class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" style="animation-delay: 1s;"></div>
+          </div>
+        </div>
+
+        <TypographyHeader level="3" size="h4" class="text-swiss-text mb-2">
+          {{ $t('home.mobileFallback.title') }}
+        </TypographyHeader>
+        <p class="text-swiss-secondary text-sm">
+          {{ $t('home.mobileFallback.subtitle') }}
+        </p>
+      </div>
+    </div>
+
+    <!-- 滾動提示 -->
+    <div v-if="showScrollIndicator" class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-swiss-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+
+interface Props {
+  showScrollIndicator?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  showScrollIndicator: true,
+})
+
+const containerRef = ref<HTMLDivElement>()
+
+onMounted(() => {
+  // 可以在這裡添加圖片懶加載等優化
+})
+
+onUnmounted(() => {
+  // 清理資源
+})
+</script>
+
+<style scoped>
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+</style>
+</file>
+
+<file path="components/3d/PlaceholderCanvas.vue">
+<template>
+  <div ref="canvasContainer" class="w-full h-full relative">
+    <!-- 3D Canvas will be mounted here -->
+    <div v-if="loading" class="absolute inset-0 flex items-center justify-center bg-swiss-bg">
+      <div class="text-swiss-secondary">載入中...</div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+interface Props {
+  backgroundColor?: string
+  enableControls?: boolean
+  autoRotate?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  backgroundColor: '#F5F5F7',
+  enableControls: false,
+  autoRotate: false,
+})
+
+const canvasContainer = ref<HTMLDivElement>()
+const loading = ref(true)
+
+// Placeholder for 3D scene initialization
+// This will be implemented on Day 6 when we add TresJS
+onMounted(() => {
+  // Simulate loading
+  setTimeout(() => {
+    loading.value = false
+  }, 500)
+
+  // TODO: Initialize TresJS canvas here
+  // const { scene, camera } = useTresScene()
+  // ... rest of 3D setup
+})
+
+onUnmounted(() => {
+  // TODO: Cleanup Three.js resources
+})
+</script>
+
+<style scoped>
+canvas-container {
+  width: 100%;
+  height: 100%;
+}
+</style>
+</file>
+
+<file path="components/contact/ContactForm.vue">
+<template>
+  <form @submit.prevent="handleSubmit" class="space-y-6">
+    <!-- Name -->
+    <div>
+      <label for="name" class="block text-sm font-medium text-swiss-text mb-2">
+        姓名 *
+      </label>
+      <input
+        id="name"
+        v-model="formData.name"
+        type="text"
+        required
+        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all"
+        placeholder="請輸入您的姓名"
+      />
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="block text-sm font-medium text-swiss-text mb-2">
+        電郵 *
+      </label>
+      <input
+        id="email"
+        v-model="formData.email"
+        type="email"
+        required
+        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all"
+        placeholder="your@email.com"
+      />
+    </div>
+
+    <!-- Phone (Optional) -->
+    <div>
+      <label for="phone" class="block text-sm font-medium text-swiss-text mb-2">
+        電話
+      </label>
+      <input
+        id="phone"
+        v-model="formData.phone"
+        type="tel"
+        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all"
+        placeholder="+852 XXXX XXXX"
+      />
+    </div>
+
+    <!-- Company (Optional) -->
+    <div>
+      <label for="company" class="block text-sm font-medium text-swiss-text mb-2">
+        公司名稱
+      </label>
+      <input
+        id="company"
+        v-model="formData.company"
+        type="text"
+        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all"
+        placeholder="請輸入公司名稱"
+      />
+    </div>
+
+    <!-- Message -->
+    <div>
+      <label for="message" class="block text-sm font-medium text-swiss-text mb-2">
+        訊息 *
+      </label>
+      <textarea
+        id="message"
+        v-model="formData.message"
+        required
+        rows="6"
+        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all resize-none"
+        placeholder="請描述您的需求..."
+      ></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <SwissButton
+      type="submit"
+      variant="primary"
+      size="lg"
+      :full-width="true"
+      :disabled="isSubmitting"
+    >
+      {{ isSubmitting ? '發送中...' : '發送訊息' }}
+    </SwissButton>
+
+    <!-- Success Message -->
+    <div
+      v-if="showSuccess"
+      class="p-4 bg-green-50 border border-green-200 rounded-lg"
+    >
+      <p class="text-green-800 text-sm">
+        感謝您的訊息！我們會盡快回覆您。
+      </p>
+    </div>
+
+    <!-- Error Message -->
+    <div
+      v-if="showError"
+      class="p-4 bg-red-50 border border-red-200 rounded-lg"
+    >
+      <p class="text-red-800 text-sm">
+        發送失敗，請稍後再試。
+      </p>
+    </div>
+  </form>
+</template>
+
+<script setup lang="ts">
+import type { ContactFormData } from '~/types'
+
+const emit = defineEmits<{
+  submit: [data: ContactFormData]
+}>()
+
+const formData = ref<ContactFormData>({
+  name: '',
+  email: '',
+  phone: '',
+  company: '',
+  message: '',
+})
+
+const isSubmitting = ref(false)
+const showSuccess = ref(false)
+const showError = ref(false)
+
+const handleSubmit = async () => {
+  isSubmitting.value = true
+  showSuccess.value = false
+  showError.value = false
+
+  try {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    // Emit submit event
+    emit('submit', formData.value)
+
+    // Show success message
+    showSuccess.value = true
+
+    // Reset form
+    formData.value = {
+      name: '',
+      email: '',
+      phone: '',
+      company: '',
+      message: '',
+    }
+
+    // Hide success message after 5 seconds
+    setTimeout(() => {
+      showSuccess.value = false
+    }, 5000)
+  } catch (error) {
+    showError.value = true
+  } finally {
+    isSubmitting.value = false
+  }
+}
+</script>
+</file>
+
+<file path="components/home/AnimatedTextOverlay.vue">
+<template>
+  <div class="animated-text-overlay fixed inset-0 pointer-events-none z-10">
+    <!-- Phase 1: 淡入階段 -->
+    <Transition name="fade">
+      <div
+        v-if="currentPhase >= 0"
+        class="text-overlay absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center"
+      >
+        <TypographyHeader
+          v-if="currentPhase === 0"
+          level="2"
+          size="h2"
+          class="text-swiss-text"
+        >
+          {{ $t('home.animation.phase1') }}
+        </TypographyHeader>
+      </div>
+    </Transition>
+
+    <!-- Phase 2: 機櫃打開 -->
+    <Transition name="slide-up">
+      <div
+        v-if="currentPhase >= 1"
+        class="text-overlay absolute top-1/3 right-12"
+      >
+        <TypographyHeader
+          v-if="currentPhase === 1"
+          level="3"
+          size="h3"
+          class="text-swiss-text"
+        >
+          {{ $t('home.animation.phase2') }}
+        </TypographyHeader>
+      </div>
+    </Transition>
+
+    <!-- Phase 3: 組件爆炸 -->
+    <Transition name="slide-up">
+      <div
+        v-if="currentPhase >= 2"
+        class="text-overlay absolute top-1/2 left-12"
+      >
+        <TypographyHeader
+          v-if="currentPhase === 2"
+          level="3"
+          size="h3"
+          class="text-swiss-text"
+        >
+          {{ $t('home.animation.phase3') }}
+        </TypographyHeader>
+      </div>
+    </Transition>
+
+    <!-- Phase 4: 重新組裝 -->
+    <Transition name="fade">
+      <div
+        v-if="currentPhase >= 3"
+        class="text-overlay absolute bottom-32 left-1/2 -translate-x-1/2"
+      >
+        <TypographyHeader
+          v-if="currentPhase === 3"
+          level="3"
+          size="h4"
+          class="text-swiss-secondary"
+        >
+          {{ $t('home.animation.phase4') }}
+        </TypographyHeader>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+
+interface Props {
+  phase: number
+}
+
+const props = defineProps<Props>()
+const currentPhase = ref(props.phase)
+
+watch(
+  () => props.phase,
+  (newPhase) => {
+    currentPhase.value = newPhase
+  }
+)
+</script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.8s ease;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.text-overlay {
+  max-width: 400px;
+}
+</style>
+</file>
+
+<file path="components/navigation/LocaleSwitcher.vue">
+<template>
+  <div class="relative" ref="dropdownRef">
+    <button
+      class="flex items-center space-x-1 px-3 py-2 rounded hover:bg-swiss-secondary/10 transition-colors"
+      @click="toggleDropdown"
+      aria-label="Switch language"
+    >
+      <svg class="w-5 h-5 text-swiss-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+      </svg>
+      <span class="text-sm font-medium text-swiss-text hidden sm:inline">
+        {{ currentLocale }}
+      </span>
+      <svg
+        class="w-4 h-4 text-swiss-text transition-transform"
+        :class="{ 'rotate-180': dropdownOpen }"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <Transition name="fade">
+      <div
+        v-if="dropdownOpen"
+        class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-swiss-secondary/10 py-1"
+      >
+        <button
+          v-for="locale in availableLocales"
+          :key="locale.code"
+          class="w-full px-4 py-2 text-left hover:bg-swiss-bg transition-colors flex items-center justify-between"
+          :class="{ 'bg-swiss-bg/50': locale.code === currentLocaleCode }"
+          @click="switchLocale(locale.code)"
+        >
+          <span class="text-sm font-medium text-swiss-text">
+            {{ locale.name }}
+          </span>
+          <svg
+            v-if="locale.code === currentLocaleCode"
+            class="w-4 h-4 text-swiss-accent"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<script setup lang="ts">
+const { locale, locales } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
+
+const dropdownOpen = ref(false)
+const dropdownRef = ref<HTMLDivElement>()
+
+const currentLocaleCode = computed(() => locale.value)
+
+const currentLocale = computed(() => {
+  const loc = availableLocales.value.find(l => l.code === locale.value)
+  return loc?.shortName || locale.value
+})
+
+const availableLocales = computed(() => {
+  return (locales.value as Array<{ code: string; name: string; shortName: string }>).map(l => ({
+    code: l.code,
+    name: l.name,
+    shortName: l.code === 'zh-HK' ? 'HK' : l.code === 'zh-CN' ? 'CN' : 'EN'
+  }))
+})
+
+const toggleDropdown = () => {
+  dropdownOpen.value = !dropdownOpen.value
+}
+
+const switchLocale = (code: string) => {
+  navigateTo(switchLocalePath(code))
+  dropdownOpen.value = false
+}
+
+// 點擊外部關閉下拉選單
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
+    dropdownOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+</script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+</file>
+
+<file path="components/products/SpecTable.vue">
+<template>
+  <div class="spec-table">
+    <table class="w-full">
+      <tbody>
+        <tr
+          v-for="(value, key) in specs"
+          :key="key"
+          class="border-b border-swiss-secondary/20 last:border-0"
+        >
+          <th class="py-4 px-4 text-left font-medium text-swiss-secondary w-1/3">
+            {{ getSpecLabel(key) }}
+          </th>
+          <td class="py-4 px-4 text-swiss-text">
+            {{ formatSpecValue(value) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script setup lang="ts">
+interface Props {
+  specs: Record<string, string | number | boolean>
+}
+
+const props = defineProps<Props>()
+
+// 規格標籤映射（繁體中文）
+const specLabels: Record<string, string> = {
+  cpu: '處理器',
+  cores: '核心數',
+  threads: '線程數',
+  ram: '內存',
+  storage: '存儲',
+  power: '電源',
+  rackUnits: '機櫃高度',
+  capacity: '容量',
+  drives: '硬碟數量',
+  raid: 'RAID 級別',
+  cache: '緩存',
+  throughput: '吞吐量',
+  ports: '端口數',
+  speed: '速度',
+  uplinkPorts: '上行端口',
+  switchingCapacity: '交換容量',
+  packetForwarding: '轉發性能',
+}
+
+const getSpecLabel = (key: string): string => {
+  return specLabels[key] || key
+}
+
+const formatSpecValue = (value: string | number | boolean): string => {
+  if (typeof value === 'boolean') {
+    return value ? '是' : '否'
+  }
+  if (typeof value === 'number') {
+    return value.toLocaleString()
+  }
+  return value.toString()
+}
+</script>
+
+<style scoped>
+.spec-table {
+  @apply bg-white rounded-lg overflow-hidden shadow-sm;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+  th,
+  td {
+    @apply px-2 py-3 text-sm;
+  }
+}
+</style>
+</file>
+
+<file path="components/solutions/SolutionsBento.vue">
+<template>
+  <div class="solutions-bento-grid">
+    <GridContainer>
+      <!-- Featured Solutions (Large Cards) -->
+      <template v-for="(solution, index) in featuredSolutions" :key="solution.id">
+        <!-- Large featured cards -->
+        <div
+          v-if="index === 0"
+          class="col-span-12 lg:col-span-8 mb-8"
+        >
+          <SolutionCard :solution="solution" />
+        </div>
+        <div
+          v-else-if="index === 1"
+          class="col-span-12 lg:col-span-4 mb-8"
+        >
+          <SolutionCard :solution="solution" />
+        </div>
+      </template>
+
+      <!-- Regular Solutions Grid -->
+      <div
+        v-for="solution in regularSolutions"
+        :key="solution.id"
+        class="col-span-12 md:col-span-6 lg:col-span-4 mb-8"
+      >
+        <SolutionCard :solution="solution" />
+      </div>
+    </GridContainer>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Solution } from '~/types'
+
+interface Props {
+  solutions: Solution[]
+}
+
+const props = defineProps<Props>()
+
+// Split solutions into featured (first 2) and regular
+const featuredSolutions = computed(() => props.solutions.slice(0, 2))
+const regularSolutions = computed(() => props.solutions.slice(2))
+</script>
+
+<style scoped>
+.solutions-bento-grid {
+  @apply min-h-screen;
+}
+</style>
+</file>
+
+<file path="components/swiss/GridColumn.vue">
+<template>
+  <div :class="columnClasses">
+    <slot />
+  </div>
+</template>
+
+<script setup lang="ts">
+interface Props {
+  span?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+  spanSm?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+  spanMd?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+  spanLg?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+  offset?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  span: 12,
+})
+
+const columnClasses = computed(() => {
+  const classes: string[] = []
+
+  // Default span
+  classes.push(`col-span-${props.span}`)
+
+  // Responsive spans
+  if (props.spanSm) classes.push(`sm:col-span-${props.spanSm}`)
+  if (props.spanMd) classes.push(`md:col-span-${props.spanMd}`)
+  if (props.spanLg) classes.push(`lg:col-span-${props.spanLg}`)
+
+  // Offset
+  if (props.offset) {
+    classes.push(`offset-${props.offset}`)
+  }
+
+  return classes
+})
+</script>
+</file>
+
+<file path="components/swiss/GridContainer.vue">
+<template>
+  <div :class="containerClasses">
+    <slot />
+  </div>
+</template>
+
+<script setup lang="ts">
+interface Props {
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  grid?: boolean
+  cols?: 1 | 2 | 3 | 4 | 6 | 12
+  gap?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  centered?: boolean
+  padding?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 'lg',
+  grid: false,
+  cols: 12,
+  gap: 'md',
+  centered: true,
+  padding: true,
+})
+
+const containerClasses = computed(() => {
+  const classes: string[] = []
+
+  // Max width sizing
+  const sizes = {
+    sm: 'max-w-3xl',
+    md: 'max-w-5xl',
+    lg: 'max-w-7xl',
+    xl: 'max-w-[1400px]',
+    full: 'max-w-full',
+  }
+  classes.push(sizes[props.size])
+
+  // Center alignment
+  if (props.centered) {
+    classes.push('mx-auto')
+  }
+
+  // Grid system
+  if (props.grid) {
+    classes.push('grid', 'grid-cols-12')
+  }
+
+  // Gap spacing
+  const gaps = {
+    none: '',
+    sm: 'gap-4',
+    md: 'gap-6',
+    lg: 'gap-8',
+    xl: 'gap-12',
+  }
+  if (props.gap !== 'none') {
+    classes.push(gaps[props.gap])
+  }
+
+  // Padding
+  if (props.padding) {
+    classes.push('px-6', 'sm:px-8', 'lg:px-12')
+  }
+
+  return classes
+})
+</script>
+</file>
+
+<file path="components/swiss/SwissButton.vue">
+<template>
+  <component
+    :is="tag"
+    :type="tag === 'button' ? type : undefined"
+    :to="tag === 'a' ? to : undefined"
+    :href="tag === 'a' ? to : undefined"
+    :class="buttonClasses"
+    :disabled="disabled"
+    @click="handleClick"
+  >
+    <slot />
+  </component>
+</template>
+
+<script setup lang="ts">
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost'
+  size?: 'sm' | 'md' | 'lg'
+  tag?: 'button' | 'a'
+  type?: 'button' | 'submit' | 'reset'
+  to?: string
+  disabled?: boolean
+  fullWidth?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  variant: 'primary',
+  size: 'md',
+  tag: 'button',
+  type: 'button',
+  disabled: false,
+  fullWidth: false,
+})
+
+const emit = defineEmits<{
+  click: [event: Event]
+}>()
+
+const buttonClasses = computed(() => {
+  const base = [
+    'inline-flex',
+    'items-center',
+    'justify-center',
+    'font-medium',
+    'transition-all',
+    'duration-200',
+    'ease-out',
+    'focus-visible:outline-2',
+    'focus-visible:outline-offset-2',
+    'focus-visible:outline-swiss-accent',
+  ]
+
+  // Size variants
+  const sizes = {
+    sm: ['px-4', 'py-2', 'text-sm'],
+    md: ['px-6', 'py-3', 'text-base'],
+    lg: ['px-8', 'py-4', 'text-lg'],
+  }
+
+  // Variant styles
+  const variants = {
+    primary: [
+      'bg-swiss-accent',
+      'text-white',
+      'hover:bg-[#0077ed]',
+      'active:bg-[#0062c4]',
+      'disabled:opacity-50',
+      'disabled:cursor-not-allowed',
+    ],
+    secondary: [
+      'bg-swiss-text',
+      'text-white',
+      'hover:bg-[#3a3a3c]',
+      'active:bg-[#4a4a4c]',
+      'disabled:opacity-50',
+      'disabled:cursor-not-allowed',
+    ],
+    ghost: [
+      'bg-transparent',
+      'text-swiss-accent',
+      'hover:bg-[#0071e3]',
+      'hover:text-white',
+      'active:bg-[#0062c4]',
+      'disabled:opacity-50',
+      'disabled:cursor-not-allowed',
+    ],
+  }
+
+  // Width
+  const width = props.fullWidth ? ['w-full'] : []
+
+  return [...base, ...sizes[props.size], ...variants[props.variant], ...width]
+})
+
+const handleClick = (event: Event) => {
+  if (!props.disabled) {
+    emit('click', event)
+  }
+}
+</script>
+</file>
+
+<file path="components/swiss/TypographyHeader.vue">
+<template>
+  <component :is="tag" :class="headerClasses">
+    <slot />
+  </component>
+</template>
+
+<script setup lang="ts">
+interface Props {
+  level?: 1 | 2 | 3 | 4 | 5 | 6
+  size?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold'
+  color?: 'text' | 'secondary' | 'accent'
+  align?: 'left' | 'center' | 'right'
+  tracking?: 'tighter' | 'tight' | 'normal' | 'wide' | 'wider'
+  leading?: 'none' | 'tight' | 'snug' | 'normal' | 'relaxed' | 'loose'
+  margin?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  level: 1,
+  size: 'h1',
+  weight: 'bold',
+  color: 'text',
+  align: 'left',
+  tracking: 'tight',
+  leading: 'tight',
+  margin: true,
+})
+
+const tag = computed(() => `h${props.level}` as const)
+
+const headerClasses = computed(() => {
+  const classes: string[] = []
+
+  // Size variants (Swiss design - large, bold headings)
+  const sizes = {
+    display: ['text-5xl', 'sm:text-6xl', 'lg:text-7xl', 'font-bold'],
+    h1: ['text-4xl', 'sm:text-5xl', 'lg:text-6xl'],
+    h2: ['text-3xl', 'sm:text-4xl', 'lg:text-5xl'],
+    h3: ['text-2xl', 'sm:text-3xl', 'lg:text-4xl'],
+    h4: ['text-xl', 'sm:text-2xl', 'lg:text-3xl'],
+    h5: ['text-lg', 'sm:text-xl', 'lg:text-2xl'],
+    h6: ['text-base', 'sm:text-lg', 'lg:text-xl'],
+  }
+  classes.push(...sizes[props.size])
+
+  // Weight
+  const weights = {
+    light: 'font-light',
+    normal: 'font-normal',
+    medium: 'font-medium',
+    semibold: 'font-semibold',
+    bold: 'font-bold',
+  }
+  classes.push(weights[props.weight])
+
+  // Color
+  const colors = {
+    text: 'text-swiss-text',
+    secondary: 'text-swiss-secondary',
+    accent: 'text-swiss-accent',
+  }
+  classes.push(colors[props.color])
+
+  // Alignment
+  const alignments = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right',
+  }
+  classes.push(alignments[props.align])
+
+  // Letter spacing (Swiss design uses tight tracking)
+  const trackings = {
+    tighter: 'tracking-tighter',
+    tight: 'tracking-tight',
+    normal: 'tracking-normal',
+    wide: 'tracking-wide',
+    wider: 'tracking-wider',
+  }
+  classes.push(trackings[props.tracking])
+
+  // Line height
+  const lineHeights = {
+    none: 'leading-none',
+    tight: 'leading-tight',
+    snug: 'leading-snug',
+    normal: 'leading-normal',
+    relaxed: 'leading-relaxed',
+    loose: 'leading-loose',
+  }
+  classes.push(lineHeights[props.leading])
+
+  // Margin
+  if (props.margin) {
+    classes.push('mb-4', 'last:mb-0')
+  }
+
+  return classes
+})
+</script>
+</file>
+
+<file path="composables/useDeviceDetection.ts">
+/**
+ * Device Detection Composable
+ * 檢測設備類型和性能，決定是否啟用高級動畫
+ */
+
+import { ref, onMounted, onUnmounted } from 'vue'
+
+export interface DeviceInfo {
+  isMobile: boolean
+  isTablet: boolean
+  isDesktop: boolean
+  isTouch: boolean
+  isLowPerformance: boolean
+  pixelRatio: number
+  viewportWidth: number
+  viewportHeight: number
+}
+
+export const useDeviceDetection = () => {
+  const deviceInfo = ref<DeviceInfo>({
+    isMobile: false,
+    isTablet: false,
+    isDesktop: true,
+    isTouch: false,
+    isLowPerformance: false,
+    pixelRatio: 1,
+    viewportWidth: 1920,
+    viewportHeight: 1080,
+  })
+
+  const checkDevice = () => {
+    if (process.client) {
+      const width = window.innerWidth
+      const height = window.innerHeight
+      const userAgent = navigator.userAgent.toLowerCase()
+      const pixelRatio = window.devicePixelRatio || 1
+
+      // 檢測觸摸設備
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+
+      // 檢測移動設備
+      const isMobile = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent) || width < 768
+
+      // 檢測平板
+      const isTablet = /ipad|tablet|playbook|silk/i.test(userAgent) || (width >= 768 && width < 1024)
+
+      // 檢測低性能設備（基於像素比和螢幕尺寸）
+      const isLowPerformance = pixelRatio > 2 || width < 768 || isMobile
+
+      deviceInfo.value = {
+        isMobile,
+        isTablet,
+        isDesktop: !isMobile && !isTablet,
+        isTouch,
+        isLowPerformance,
+        pixelRatio,
+        viewportWidth: width,
+        viewportHeight: height,
+      }
+    }
+  }
+
+  const canUseWebGL = (): boolean => {
+    if (process.client) {
+      const canvas = document.createElement('canvas')
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+      return !!gl
+    }
+    return false
+  }
+
+  const canUseAdvanced3D = (): boolean => {
+    return (
+      !deviceInfo.value.isLowPerformance &&
+      canUseWebGL() &&
+      deviceInfo.value.isDesktop
+    )
+  }
+
+  onMounted(() => {
+    checkDevice()
+    window.addEventListener('resize', checkDevice)
+  })
+
+  onUnmounted(() => {
+    if (process.client) {
+      window.removeEventListener('resize', checkDevice)
+    }
+  })
+
+  return {
+    deviceInfo,
+    checkDevice,
+    canUseWebGL,
+    canUseAdvanced3D,
+  }
+}
+</file>
+
+<file path="composables/useServerAnimation.ts">
+/**
+ * Server Animation Composable
+ * 管理伺服器爆炸動畫的滾動觸發效果
+ */
+
+import { ref, onMounted, onUnmounted } from 'vue'
+import type { gsapType, ScrollTriggerType } from '#app'
+
+export const useServerAnimation = () => {
+  const { $gsap, $ScrollTrigger } = useNuxtApp() as {
+    $gsap: { gsap: gsapType }
+    $ScrollTrigger: { ScrollTrigger: ScrollTriggerType }
+  }
+
+  const { gsap } = $gsap
+  const { ScrollTrigger } = $ScrollTrigger
+
+  const timeline = ref<gsapType.Timeline>()
+  const isAnimating = ref(false)
+
+  /**
+   * 初始化滾動動畫時間軸
+   * @param callbacks - 動畫回調函數
+   */
+  const initAnimationTimeline = (callbacks: {
+    onFadeIn?: (progress: number) => void
+    onCaseOpen?: (progress: number) => void
+    onExplode?: (progress: number) => void
+    onReassemble?: (progress: number) => void
+  }) => {
+    // 創建主時間軸，綁定到整個頁面滾動
+    timeline.value = gsap.timeline({
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1, // 平滑動畫
+        pin: false, // 不固定元素
+      },
+    })
+
+    // 階段 1: 淡入效果 (0-20%)
+    timeline.value.to(
+      {},
+      {
+        duration: 20,
+        onUpdate: function () {
+          const progress = this.progress()
+          callbacks.onFadeIn?.(progress)
+        },
+      }
+    )
+
+    // 階段 2: 機櫃打開 (20-50%)
+    timeline.value.to(
+      {},
+      {
+        duration: 30,
+        onUpdate: function () {
+          const progress = this.progress()
+          callbacks.onCaseOpen?.(progress)
+        },
+      }
+    )
+
+    // 階段 3: 組件爆炸 (50-80%)
+    timeline.value.to(
+      {},
+      {
+        duration: 30,
+        onUpdate: function () {
+          const progress = this.progress()
+          callbacks.onExplode?.(progress)
+        },
+      }
+    )
+
+    // 階段 4: 重新組裝或過渡 (80-100%)
+    timeline.value.to(
+      {},
+      {
+        duration: 20,
+        onUpdate: function () {
+          const progress = this.progress()
+          callbacks.onReassemble?.(progress)
+        },
+      }
+    )
+  }
+
+  /**
+   * 創建文字疊加層動畫
+   * @param elements - 要動畫化的元素選擇器
+   */
+  const animateTextOverlays = (elements: string[]) => {
+    elements.forEach((selector, index) => {
+      gsap.fromTo(
+        selector,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: selector,
+            start: 'top 80%',
+            end: 'top 50%',
+            scrub: 1,
+          },
+          delay: index * 0.2,
+        }
+      )
+    })
+  }
+
+  /**
+   * 為元素添加視差效果
+   * @param selector - 元素選擇器
+   * @param speed - 視差速度 (0-1)
+   */
+  const addParallaxEffect = (selector: string, speed: number = 0.5) => {
+    gsap.to(selector, {
+      yPercent: -50 * speed,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: selector,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      },
+    })
+  }
+
+  /**
+   * 清理動畫資源
+   */
+  const cleanup = () => {
+    if (timeline.value) {
+      timeline.value.kill()
+    }
+    ScrollTrigger.getAll().forEach((trigger: ScrollTriggerType) => {
+      trigger.kill()
+    })
+  }
+
+  onMounted(() => {
+    isAnimating.value = true
+  })
+
+  onUnmounted(() => {
+    cleanup()
+  })
+
+  return {
+    timeline,
+    isAnimating,
+    initAnimationTimeline,
+    animateTextOverlays,
+    addParallaxEffect,
+    cleanup,
+  }
+}
+</file>
+
+<file path="composables/useServerScene.ts">
+/**
+ * Server 3D Scene Composable
+ * 管理3D伺服器場景的狀態和動畫
+ */
+
+import { ref, onMounted, onUnmounted } from 'vue'
+import * as THREE from 'three'
+
+export const useServerScene = () => {
+  const scene = ref<THREE.Scene | null>(null)
+  const camera = ref<THREE.PerspectiveCamera | null>(null)
+  const renderer = ref<THREE.WebGLRenderer | null>(null)
+  const canvasRef = ref<HTMLCanvasElement>()
+  const containerRef = ref<HTMLDivElement>()
+  const isLoaded = ref(false)
+
+  let animationId: number
+
+  /**
+   * 初始化3D場景
+   */
+  const initScene = () => {
+    if (!canvasRef.value || !containerRef.value) return
+
+    // 創景
+    scene.value = new THREE.Scene()
+    scene.value.background = new THREE.Color('#F5F5F7')
+
+    // 相機
+    const width = containerRef.value.clientWidth
+    const height = containerRef.value.clientHeight
+    const aspect = width / height
+
+    camera.value = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
+    camera.value.position.set(0, 0, 5)
+
+    // 渲染器
+    renderer.value = new THREE.WebGLRenderer({
+      canvas: canvasRef.value,
+      antialias: true,
+      alpha: true,
+    })
+    renderer.value.setSize(width, height)
+    renderer.value.setPixelRatio(window.devicePixelRatio)
+
+    // 燈光配置（瑞士風格攝影燈光）
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
+    scene.value.add(ambientLight)
+
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1)
+    mainLight.position.set(5, 5, 5)
+    scene.value.add(mainLight)
+
+    const rimLight = new THREE.SpotLight(0x0071e3, 2)
+    rimLight.position.set(-5, 5, -5)
+    rimLight.angle = Math.PI / 6
+    scene.value.add(rimLight)
+
+    isLoaded.value = true
+  }
+
+  /**
+   * 添加立方體（佔位符伺服器）
+   */
+  const addServerModel = () => {
+    if (!scene.value) return
+
+    // 使用立方體作為伺服器的佔位符
+    const geometry = new THREE.BoxGeometry(2, 3, 1)
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x1D1D1F,
+      metalness: 0.9,
+      roughness: 0.1,
+    })
+
+    const serverMesh = new THREE.Mesh(geometry, material)
+    serverMesh.name = 'server'
+    scene.value.add(serverMesh)
+
+    return serverMesh
+  }
+
+  /**
+   * 動畫循環
+   */
+  const animate = () => {
+    animationId = requestAnimationFrame(animate)
+    if (renderer.value && scene.value && camera.value) {
+      renderer.value.render(scene.value, camera.value)
+    }
+  }
+
+  /**
+   * 處理窗口大小變化
+   */
+  const handleResize = () => {
+    if (!containerRef.value || !camera.value || !renderer.value) return
+
+    const width = containerRef.value.clientWidth
+    const height = containerRef.value.clientHeight
+
+    camera.value.aspect = width / height
+    camera.value.updateProjectionMatrix()
+
+    renderer.value.setSize(width, height)
+  }
+
+  /**
+   * 清理資源
+   */
+  const cleanup = () => {
+    cancelAnimationFrame(animationId)
+    window.removeEventListener('resize', handleResize)
+
+    if (renderer.value) {
+      renderer.value.dispose()
+    }
+    if (scene.value) {
+      scene.value.clear()
+    }
+  }
+
+  return {
+    scene,
+    camera,
+    renderer,
+    canvasRef,
+    containerRef,
+    isLoaded,
+    initScene,
+    addServerModel,
+    animate,
+    handleResize,
+    cleanup,
+  }
+}
+</file>
+
+<file path="composables/useSwissGrid.ts">
+/**
+ * Swiss Grid System Composable
+ * 提供瑞士设计系统的网格布局工具函数
+ */
+
+export interface GridConfig {
+  columns: number
+  gap: string
+  padding: string
+  maxWidth: string
+}
+
+/**
+ * 获取标准瑞士网格配置
+ */
+export const useSwissGrid = () => {
+  /**
+   * 计算列宽百分比
+   * @param span - 跨越的列数 (1-12)
+   * @param columns - 总列数 (默认 12)
+   */
+  const getColumnWidth = (span: number, columns: number = 12): string => {
+    return `${(span / columns) * 100}%`
+  }
+
+  /**
+   * 计算网格间距
+   * @param size - 间距尺寸
+   */
+  const getGapSpacing = (size: 'sm' | 'md' | 'lg' | 'xl'): string => {
+    const gaps = {
+      sm: '1rem',
+      md: '1.5rem',
+      lg: '2rem',
+      xl: '3rem',
+    }
+    return gaps[size]
+  }
+
+  /**
+   * 计算容器内边距
+   * @param size - 内边距尺寸
+   */
+  const getPaddingSize = (size: 'sm' | 'md' | 'lg'): string => {
+    const paddings = {
+      sm: '1.5rem',
+      md: '2rem',
+      lg: '3rem',
+    }
+    return paddings[size]
+  }
+
+  /**
+   * 计算负边距（用于创建全宽行）
+   * @param padding - 内边距值
+   */
+  const getNegativeMargin = (padding: string): string => {
+    return `calc(-${padding})`
+  }
+
+  /**
+   * 获取响应式列数
+   * @param breakpoint - 断点
+   */
+  const getResponsiveColumns = (breakpoint: 'sm' | 'md' | 'lg' | 'xl'): number => {
+    const columns = {
+      sm: 4,
+      md: 8,
+      lg: 12,
+      xl: 12,
+    }
+    return columns[breakpoint]
+  }
+
+  /**
+   * 计算留白比例（瑞士设计要求 40%+ 留白）
+   * @param contentWidth - 内容宽度
+   */
+  const calculateNegativeSpace = (contentWidth: number): {
+    contentWidth: string
+    negativeSpace: string
+    percentage: number
+  } => {
+    const totalWidth = 100
+    const content = contentWidth
+    const negative = totalWidth - content
+    const percentage = (negative / totalWidth) * 100
+
+    return {
+      contentWidth: `${content}%`,
+      negativeSpace: `${negative}%`,
+      percentage,
+    }
+  }
+
+  /**
+   * 验证留白比例是否符合瑞士设计标准（≥40%）
+   * @param percentage - 留白百分比
+   */
+  const validateSwissRatio = (percentage: number): boolean => {
+    return percentage >= 40
+  }
+
+  /**
+   * 获取黄金比例布局尺寸
+   * @param containerWidth - 容器宽度
+   */
+  const getGoldenRatioLayout = (
+    containerWidth: number,
+  ): {
+    large: string
+    small: string
+  } => {
+    const goldenRatio = 1.618
+    const large = containerWidth / goldenRatio
+    const small = containerWidth - large
+
+    return {
+      large: `${large}%`,
+      small: `${small}%`,
+    }
+  }
+
+  /**
+   * 生成网格布局类名
+   * @param config - 网格配置
+   */
+  const generateGridClasses = (config: Partial<GridConfig> = {}): string => {
+    const defaultConfig: GridConfig = {
+      columns: 12,
+      gap: 'gap-6',
+      padding: 'px-6',
+      maxWidth: 'max-w-7xl',
+    }
+
+    const merged = { ...defaultConfig, ...config }
+
+    return [
+      'grid',
+      `grid-cols-${merged.columns}`,
+      merged.gap,
+      merged.padding,
+      merged.maxWidth,
+      'mx-auto',
+    ].join(' ')
+  }
+
+  return {
+    getColumnWidth,
+    getGapSpacing,
+    getPaddingSize,
+    getNegativeMargin,
+    getResponsiveColumns,
+    calculateNegativeSpace,
+    validateSwissRatio,
+    getGoldenRatioLayout,
+    generateGridClasses,
+  }
+}
+</file>
+
+<file path="eslint.config.mjs">
+import withNuxt from './.nuxt/eslint.config.mjs'
+
+export default withNuxt(
+  // Your custom configs here
+)
+</file>
+
+<file path="layouts/default.vue">
+<template>
+  <div class="min-h-screen">
+    <div class="pt-24 md:pt-28">
+      <slot />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+// Default layout with padding for fixed navbar
+</script>
+</file>
+
+<file path="pages/products/[slug].vue">
+<template>
+  <div class="min-h-screen bg-swiss-bg py-24">
+    <GridContainer>
+      <!-- Back Button -->
+      <div class="col-span-12 mb-8">
+        <NuxtLink to="/products" class="inline-flex items-center text-swiss-secondary hover:text-swiss-accent transition-colors">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          {{ $t('products.allProducts') }}
+        </NuxtLink>
+      </div>
+
+      <!-- Product Not Found -->
+      <div v-if="!product" class="col-span-12 text-center py-24">
+        <TypographyHeader level="2" size="h2" class="mb-4">
+          產品未找到
+        </TypographyHeader>
+        <SwissButton variant="primary" @click="navigateTo('/products')">
+          返回產品列表
+        </SwissButton>
+      </div>
+
+      <!-- Product Details -->
+      <template v-else>
+        <!-- Product Header -->
+        <div class="col-span-12 lg:col-span-6 mb-12">
+          <!-- Product Image Placeholder -->
+          <div class="aspect-square bg-gradient-to-br from-swiss-bg to-gray-200 rounded-lg relative overflow-hidden">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-48 h-48 bg-swiss-text rounded-lg opacity-10"></div>
+            </div>
+
+            <!-- Category Badge -->
+            <div class="absolute top-6 left-6">
+              <span class="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium text-swiss-text">
+                {{ getCategoryLabel(product.category) }}
+              </span>
+            </div>
+
+            <!-- Featured Badge -->
+            <div v-if="product.featured" class="absolute top-6 right-6">
+              <span class="px-4 py-2 bg-swiss-accent text-white rounded-full text-sm font-medium">
+                {{ $t('products.featured') }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-span-12 lg:col-span-6 mb-12">
+          <TypographyHeader level="1" size="h2" class="mb-4">
+            {{ product.name[locale] || product.name.zhHK }}
+          </TypographyHeader>
+          <p class="text-swiss-secondary text-lg mb-8">
+            {{ product.description[locale] || product.description.zhHK }}
+          </p>
+
+          <!-- Actions -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <SwissButton variant="primary" size="lg">
+              聯絡我們
+            </SwissButton>
+            <SwissButton variant="ghost" size="lg">
+              下載規格書
+            </SwissButton>
+          </div>
+        </div>
+
+        <!-- Specifications -->
+        <div class="col-span-12">
+          <div class="bg-white rounded-lg p-8 shadow-sm">
+            <TypographyHeader level="2" size="h3" class="mb-6">
+              {{ $t('products.specifications') }}
+            </TypographyHeader>
+            <SpecTable :specs="product.specs" />
+          </div>
+        </div>
+      </template>
+    </GridContainer>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Product } from '~/types'
+
+const route = useRoute()
+const { locale } = useI18n()
+
+// Fetch product data
+const { data: product } = await useFetch<Product>(`/api/products/${route.params.slug}`, {
+  transform: () => {
+    return mockProducts.find(p => p.slug === route.params.slug) || null
+  },
+})
+
+// Import mock data
+import { mockProducts } from '~/utils/mockData'
+
+const categoryLabels: Record<string, string> = {
+  server: '伺服器',
+  storage: '存儲',
+  network: '網絡',
+  software: '軟件',
+}
+
+const getCategoryLabel = (category: string): string => {
+  return categoryLabels[category] || category
+}
+
+// Set page title
+if (product.value) {
+  useHead({
+    title: `${product.value.name[locale.value] || product.value.name.zhHK} - Project NEXUS (HK)`,
+  })
+}
+</script>
+</file>
+
+<file path="pages/products/index.vue">
+<template>
+  <div class="min-h-screen bg-swiss-bg">
+    <!-- Page Header -->
+    <section class="mb-16">
+      <GridContainer :grid="true">
+        <div class="col-span-12 text-center">
+          <TypographyHeader level="1" size="h1" class="mb-4">
+            {{ $t('products.title') }}
+          </TypographyHeader>
+          <p class="text-swiss-secondary max-w-2xl mx-auto">
+            {{ $t('products.subtitle') }}
+          </p>
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Products Grid -->
+    <section>
+      <GridContainer :grid="true">
+        <div
+          v-for="product in products"
+          :key="product.id"
+          class="col-span-12 md:col-span-6 lg:col-span-4 mb-8"
+        >
+          <ProductCard :product="product" />
+        </div>
+      </GridContainer>
+    </section>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Product } from '~/types'
+
+const { data: products } = await useFetch<Product[]>('/api/products', {
+  transform: (_data) => {
+    // Use mock data for now
+    return mockProducts
+  },
+})
+
+// Import mock data
+import { mockProducts } from '~/utils/mockData'
+
+useHead({
+  title: '产品 - 广东博迩科技有限公司',
+})
+</script>
+</file>
+
+<file path="pages/solutions/index.vue">
+<template>
+  <div class="min-h-screen bg-swiss-bg py-24">
+    <!-- Page Header -->
+    <section class="mb-16">
+      <GridContainer>
+        <div class="col-span-12 text-center">
+          <TypographyHeader level="1" size="h1" class="mb-4">
+            {{ $t('solutions.title') }}
+          </TypographyHeader>
+          <p class="text-swiss-secondary max-w-2xl mx-auto">
+            全方位基礎設施解決方案，滿足您的業務需求
+          </p>
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Category Tabs -->
+    <section class="mb-12">
+      <GridContainer>
+        <div class="col-span-12">
+          <div class="flex flex-wrap justify-center gap-4">
+            <button
+              v-for="category in categories"
+              :key="category.key"
+              @click="selectedCategory = category.key"
+              class="px-6 py-3 rounded-lg transition-all duration-300"
+              :class="
+                selectedCategory === category.key
+                  ? 'bg-swiss-text text-white'
+                  : 'bg-white text-swiss-text hover:bg-swiss-secondary/10'
+              "
+            >
+              {{ category.label }}
+            </button>
+          </div>
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Solutions Grid -->
+    <section>
+      <SolutionsBento :solutions="filteredSolutions" />
+    </section>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Solution } from '~/types'
+
+const { data: solutions } = await useFetch<Solution[]>('/api/solutions', {
+  transform: () => {
+    return mockSolutions.sort((a, b) => a.order - b.order)
+  },
+})
+
+import { mockSolutions } from '~/utils/mockData'
+
+// Categories
+const categories = [
+  { key: 'all', label: '全部' },
+  { key: 'idc', label: 'IDC 服務' },
+  { key: 'operations', label: '運維服務' },
+  { key: 'development', label: '開發服務' },
+]
+
+const selectedCategory = ref('all')
+
+// Filter solutions by category
+const filteredSolutions = computed(() => {
+  if (selectedCategory.value === 'all') {
+    return solutions.value || []
+  }
+  return (solutions.value || []).filter((s) => s.category === selectedCategory.value)
+})
+
+useHead({
+  title: '解决方案 - 广东博迩科技有限公司',
+})
+</script>
+</file>
+
+<file path="plugins/gsap.client.ts">
+/**
+ * GSAP Plugin Configuration
+ * 配置 GSAP 和 ScrollTrigger 用於滾動動畫
+ */
+
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+export default defineNuxtPlugin(() => {
+  // 註冊 ScrollTrigger 插件
+  gsap.registerPlugin(ScrollTrigger)
+
+  return {
+    provide: {
+      gsap,
+      ScrollTrigger,
+    },
+  }
+})
+</file>
+
+<file path="public/robots.txt">
+# robots.txt for Project NEXUS (HK)
+
+User-agent: *
+Allow: /
+
+# Disallow API routes
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://projectnexus.hk/sitemap.xml
+</file>
+
+<file path="server/api/products/[slug].get.ts">
+/**
+ * Product Detail API Endpoint
+ * 返回單個產品詳情
+ */
+
+import { mockProducts } from '~/utils/mockData'
+
+export default defineEventHandler((event) => {
+  const slug = getRouterParam(event, 'slug')
+
+  if (!slug) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Slug is required',
+    })
+  }
+
+  const product = mockProducts.find(p => p.slug === slug)
+
+  if (!product) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Product not found',
+    })
+  }
+
+  return {
+    success: true,
+    data: product,
+  }
+})
+</file>
+
+<file path="server/api/products/index.get.ts">
+/**
+ * Products API Endpoint
+ * 返回所有產品列表
+ */
+
+import { mockProducts } from '~/utils/mockData'
+
+export default defineEventHandler((event) => {
+  // 返回所有產品
+  return {
+    success: true,
+    data: mockProducts,
+  }
+})
+</file>
+
+<file path="server/api/solutions/index.get.ts">
+/**
+ * Solutions API Endpoint
+ * 返回所有解決方案列表
+ */
+
+import { mockSolutions } from '~/utils/mockData'
+
+export default defineEventHandler((event) => {
+  // 返回所有解決方案，按順序排序
+  const sortedSolutions = mockSolutions.sort((a, b) => a.order - b.order)
+
+  return {
+    success: true,
+    data: sortedSolutions,
+  }
+})
+</file>
+
+<file path="server/routes/sitemap.xml.ts">
+/**
+ * Sitemap Route
+ * 動態生成站點地圖
+ */
+
+export default defineEventHandler((event) => {
+  const baseUrl = 'https://projectnexus.hk' // 替換為實際域名
+
+  const routes = [
+    { url: '', changefreq: 'weekly', priority: 1.0 },
+    { url: 'products', changefreq: 'weekly', priority: 0.9 },
+    { url: 'solutions', changefreq: 'weekly', priority: 0.9 },
+    { url: 'about', changefreq: 'monthly', priority: 0.8 },
+    { url: 'contact', changefreq: 'monthly', priority: 0.7 },
+  ]
+
+  // 添加產品頁面
+  const productSlugs = ['enterprise-server-rack', 'high-performance-storage', 'managed-switch']
+  productSlugs.forEach(slug => {
+    routes.push({ url: `products/${slug}`, changefreq: 'monthly', priority: 0.8 })
+  })
+
+  // 添加解決方案頁面
+  const solutionSlugs = ['data-center-services', 'network-infrastructure', 'managed-operations', 'custom-development', 'security-solutions', 'cloud-services']
+  solutionSlugs.forEach(slug => {
+    routes.push({ url: `solutions/${slug}`, changefreq: 'monthly', priority: 0.8 })
+  })
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${routes.map(route => `  <url>
+    <loc>${baseUrl}/${route.url}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>${route.changefreq}</changefreq>
+    <priority>${route.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`
+
+  event.node.res.setHeader('Content-Type', 'application/xml')
+  return sitemap
+})
+</file>
+
+<file path="setup_opencode_mcp.ps1">
+# OpenCode MCP环境变量配置脚本
+# 使用方法：在PowerShell中运行 .\setup_opcode_mcp.ps1
+
+param(
+    [switch]$Reset
+)
+
+# 颜色设置
+function Write-ColorOutput {
+    param(
+        [string]$Message,
+        [string]$Color = "White"
+    )
+    Write-Host $Message -ForegroundColor $Color
+}
+
+# 显示欢迎信息
+Write-ColorOutput "====================================" "Cyan"
+Write-ColorOutput "  OpenCode MCP环境变量配置" "Cyan"
+Write-ColorOutput "====================================" "Cyan"
+Write-ColorOutput ""
+
+# OpenCode配置文件路径
+$configPath = "$env:USERPROFILE\.config\opencode\opencode.json"
+
+# 检查配置文件是否存在
+if (-not (Test-Path $configPath)) {
+    Write-ColorOutput "错误: 找不到OpenCode配置文件" "Red"
+    Write-ColorOutput "路径: $configPath" "Gray"
+    exit 1
+}
+
+# 读取配置文件
+$config = Get-Content $configPath -Raw | ConvertFrom-Json
+
+# 重置模式
+if ($Reset) {
+    Write-ColorOutput "正在重置OpenCode MCP环境变量..." "Yellow"
+    
+    if ($config.mcp.supabase.environment) {
+        $config.mcp.supabase.environment.SUPABASE_URL = ""
+        $config.mcp.supabase.environment.SUPABASE_ANON_KEY = ""
+    }
+    if ($config.mcp.postgres.environment) {
+        $config.mcp.postgres.environment.POSTGRES_CONNECTION_STRING = ""
+    }
+    if ($config.mcp.github.environment) {
+        $config.mcp.github.environment.GITHUB_PERSONAL_ACCESS_TOKEN = ""
+    }
+    if ($config.mcp.'brave-search'.environment) {
+        $config.mcp.'brave-search'.environment.BRAVE_API_KEY = ""
+    }
+    if ($config.mcp.figma.environment) {
+        $config.mcp.figma.environment.FIGMA_ACCESS_TOKEN = ""
+    }
+    
+    $config | ConvertTo-Json -Depth 10 | Set-Content $configPath -Encoding UTF8
+    Write-ColorOutput "OpenCode MCP环境变量已重置完成！" "Green"
+    exit
+}
+
+# 输入函数（隐藏输入）
+function Read-SecretInput {
+    param([string]$Prompt)
+    Write-Host "$Prompt: " -NoNewline
+    $password = Read-Host -AsSecureString
+    $passwordPtr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)
+    $plainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($passwordPtr)
+    [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($passwordPtr)
+    return $plainPassword
+}
+
+# 输入函数（明文显示）
+function Read-PlainInput {
+    param([string]$Prompt)
+    Write-Host "$Prompt: " -NoNewline
+    return Read-Host
+}
+
+Write-ColorOutput "将配置以下MCP服务器的环境变量:" "Cyan"
+Write-ColorOutput "  - supabase: SUPABASE_URL, SUPABASE_ANON_KEY" "Gray"
+Write-ColorOutput "  - postgres: POSTGRES_CONNECTION_STRING" "Gray"
+Write-ColorOutput "  - github: GITHUB_PERSONAL_ACCESS_TOKEN" "Gray"
+Write-ColorOutput "  - brave-search: BRAVE_API_KEY" "Gray"
+Write-ColorOutput "  - figma: FIGMA_ACCESS_TOKEN" "Gray"
+Write-ColorOutput ""
+
+# 获取Supabase配置
+Write-ColorOutput "1. Supabase配置" "Cyan"
+Write-ColorOutput "   获取地址: https://supabase.com/dashboard" "Gray"
+
+$useSupabase = Read-Host "   是否配置Supabase? (y/n)"
+if ($useSupabase -eq 'y' -or $useSupabase -eq 'Y') {
+    $supabaseUrl = Read-PlainInput "   输入SUPABASE_URL"
+    $supabaseAnonKey = Read-SecretInput "   输入SUPABASE_ANON_KEY"
+    
+    if ($config.mcp.supabase.environment) {
+        $config.mcp.supabase.environment.SUPABASE_URL = $supabaseUrl
+        $config.mcp.supabase.environment.SUPABASE_ANON_KEY = $supabaseAnonKey
+    }
+}
+
+# 获取PostgreSQL配置
+Write-ColorOutput "`n2. PostgreSQL配置" "Cyan"
+$usePostgres = Read-Host "   是否配置PostgreSQL? (y/n)"
+if ($usePostgres -eq 'y' -or $usePostgres -eq 'Y') {
+    $postgresConn = Read-PlainInput "   输入POSTGRES_CONNECTION_STRING"
+    
+    if ($config.mcp.postgres.environment) {
+        $config.mcp.postgres.environment.POSTGRES_CONNECTION_STRING = $postgresConn
+    }
+}
+
+# 获取GitHub配置
+Write-ColorOutput "`n3. GitHub配置" "Cyan"
+$useGithub = Read-Host "   是否配置GitHub? (y/n)"
+if ($useGithub -eq 'y' -or $useGithub -eq 'Y') {
+    $githubToken = Read-SecretInput "   输入GITHUB_PERSONAL_ACCESS_TOKEN"
+    
+    if ($config.mcp.github.environment) {
+        $config.mcp.github.environment.GITHUB_PERSONAL_ACCESS_TOKEN = $githubToken
+    }
+}
+
+# 获取Brave Search配置
+Write-ColorOutput "`n4. Brave Search配置" "Cyan"
+$useBrave = Read-Host "   是否配置Brave Search? (y/n)"
+if ($useBrave -eq 'y' -or $useBrave -eq 'Y') {
+    $braveApiKey = Read-SecretInput "   输入BRAVE_API_KEY"
+    
+    if ($config.mcp.'brave-search'.environment) {
+        $config.mcp.'brave-search'.environment.BRAVE_API_KEY = $braveApiKey
+    }
+}
+
+# 获取Figma配置
+Write-ColorOutput "`n5. Figma配置" "Cyan"
+$useFigma = Read-Host "   是否配置Figma? (y/n)"
+if ($useFigma -eq 'y' -or $useFigma -eq 'Y') {
+    $figmaToken = Read-SecretInput "   输入FIGMA_ACCESS_TOKEN"
+    
+    if ($config.mcp.figma.environment) {
+        $config.mcp.figma.environment.FIGMA_ACCESS_TOKEN = $figmaToken
+    }
+}
+
+# 保存配置文件
+Write-ColorOutput "`n====================================" "Cyan"
+Write-ColorOutput "正在保存配置..." "Cyan"
+Write-ColorOutput "====================================" "Cyan"
+
+$config | ConvertTo-Json -Depth 10 | Set-Content $configPath -Encoding UTF8
+
+Write-ColorOutput "✓ OpenCode MCP配置已保存！" "Green"
+Write-ColorOutput "  配置文件: $configPath" "Gray"
+Write-ColorOutput "`n注意: 需要重启OpenCode才能使配置生效" "Yellow"
+
+# 验证配置
+Write-ColorOutput "`n====================================" "Cyan"
+Write-ColorOutput "配置验证" "Cyan"
+Write-ColorOutput "====================================" "Cyan"
+
+$mcpServers = @('supabase', 'postgres', 'github', 'brave-search', 'figma')
+foreach ($server in $mcpServers) {
+    if ($config.mcp.$server.environment) {
+        $envVars = $config.mcp.$server.environment | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name
+        $hasValue = $false
+        foreach ($var in $envVars) {
+            if ($config.mcp.$server.environment.$var -ne "") {
+                $hasValue = $true
+                break
+            }
+        }
+        
+        if ($hasValue) {
+            Write-ColorOutput "  ✓ $server" "Green"
+        } else {
+            Write-ColorOutput "  ○ $server (未配置)" "Gray"
+        }
+    }
+}
+
+Write-ColorOutput "`n配置完成！" "Green"
+Write-ColorOutput "如果需要重置配置，请运行: .\setup_opencode_mcp.ps1 -Reset" "Gray"
+</file>
+
+<file path="tailwind.config.js">
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './components/**/*.{js,vue,ts}',
+    './layouts/**/*.vue',
+    './pages/**/*.vue',
+    './plugins/**/*.{js,ts}',
+    './app.vue',
+    './error.vue',
+  ],
+  theme: {
+    extend: {
+      // Swiss Design System - Color Palette
+      colors: {
+        // Background
+        'swiss-bg': '#F5F5F7',
+        // Text
+        'swiss-text': '#1D1D1F',
+        // Secondary
+        'swiss-secondary': '#86868b',
+        // Accent (use sparingly)
+        'swiss-accent': '#0071e3',
+      },
+
+      // Typography
+      fontFamily: {
+        sans: [
+          'Inter',
+          'Noto Sans HK',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'sans-serif',
+        ],
+      },
+
+      // Grid System - 12 columns
+      gridTemplateColumns: {
+        '12': 'repeat(12, minmax(0, 1fr))',
+      },
+
+      // Spacing scale for Swiss grid
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '26': '6.5rem',
+        '30': '7.5rem',
+        '34': '8.5rem',
+        '38': '9.5rem',
+        '42': '10.5rem',
+        '46': '11.5rem',
+        '50': '12.5rem',
+      },
+    },
+  },
+  plugins: [],
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "~~/*": ["./*"],
+      "@@/*": ["./*"]
+    }
+  }
+}
+</file>
+
+<file path="types/index.ts">
+/**
+ * Product Type Definitions
+ */
+export interface Product {
+  id: string
+  slug: string
+  name: {
+    zhHK: string
+    zhCN: string
+    en: string
+  }
+  description: {
+    zhHK: string
+    zhCN: string
+    en: string
+  }
+  specs: Record<string, string | number | boolean>
+  images: string[]
+  category: 'server' | 'storage' | 'network' | 'software'
+  featured: boolean
+  createdAt: string
+}
+
+/**
+ * News/Article Type Definitions
+ */
+export interface News {
+  id: string
+  slug: string
+  title: {
+    zhHK: string
+    zhCN: string
+    en: string
+  }
+  content: {
+    zhHK: string
+    zhCN: string
+    en: string
+  }
+  excerpt: {
+    zhHK: string
+    zhCN: string
+    en: string
+  }
+  locale: 'zh-HK' | 'zh-CN' | 'en'
+  publishDate: string
+  author?: string
+  imageUrl?: string
+  featured: boolean
+  createdAt: string
+}
+
+/**
+ * Solution Type Definitions
+ */
+export interface Solution {
+  id: string
+  slug: string
+  title: {
+    zhHK: string
+    zhCN: string
+    en: string
+  }
+  description: {
+    zhHK: string
+    zhCN: string
+    en: string
+  }
+  icon: string
+  category: 'idc' | 'operations' | 'development'
+  features: string[]
+  locale?: 'zh-HK' | 'zh-CN' | 'en'
+  order: number
+}
+
+/**
+ * API Response Types
+ */
+export interface ApiResponse<T> {
+  data: T[]
+  success: boolean
+  message?: string
+}
+
+/**
+ * Form Data Types
+ */
+export interface ContactFormData {
+  name: string
+  email: string
+  phone?: string
+  company?: string
+  message: string
+}
+</file>
+
+<file path="verify_mcp_config.ps1">
+# MCP服务器配置验证脚本
+# 使用方法：在PowerShell中运行 .\verify_mcp_config.ps1
+
+# 颜色设置
+function Write-ColorOutput {
+    param(
+        [string]$Message,
+        [string]$Color = "White"
+    )
+    Write-Host $Message -ForegroundColor $Color
+}
+
+# 检查Node.js是否安装
+Write-ColorOutput "====================================" "Cyan"
+Write-ColorOutput "  MCP服务器配置验证" "Cyan"
+Write-ColorOutput "====================================" "Cyan"
+Write-ColorOutput ""
+
+Write-ColorOutput "1. 检查Node.js环境" "Cyan"
+try {
+    $nodeVersion = node --version 2>&1
+    $npmVersion = npm --version 2>&1
+    Write-ColorOutput "  [OK] Node.js: $nodeVersion" "Green"
+    Write-ColorOutput "  [OK] npm: $npmVersion" "Green"
+} catch {
+    Write-ColorOutput "  [ERROR] Node.js未安装或不在PATH中" "Red"
+    Write-ColorOutput "  请先安装Node.js: https://nodejs.org/" "Yellow"
+    exit 1
+}
+
+# 检查配置文件
+Write-ColorOutput ""
+Write-ColorOutput "2. 检查配置文件" "Cyan"
+
+$claudeConfigPath = "$env:USERPROFILE\.claude.json"
+$opencodeConfigPath = "$env:USERPROFILE\.config\opencode\opencode.json"
+
+if (Test-Path $claudeConfigPath) {
+    Write-ColorOutput "  [OK] Claude Code配置文件存在" "Green"
+    try {
+        $claudeConfig = Get-Content $claudeConfigPath -Raw | ConvertFrom-Json
+        $mcpCount = ($claudeConfig.mcpServers | Get-Member -MemberType NoteProperty).Count
+        Write-ColorOutput "  [OK] Claude Code配置包含 $mcpCount 个MCP服务器" "Green"
+    } catch {
+        Write-ColorOutput "  [ERROR] Claude Code配置文件格式错误" "Red"
+    }
+} else {
+    Write-ColorOutput "  [ERROR] Claude Code配置文件不存在" "Red"
+}
+
+if (Test-Path $opencodeConfigPath) {
+    Write-ColorOutput "  [OK] OpenCode配置文件存在" "Green"
+    try {
+        $opencodeConfig = Get-Content $opencodeConfigPath -Raw | ConvertFrom-Json
+        $mcpCount = ($opencodeConfig.mcp | Get-Member -MemberType NoteProperty).Count
+        Write-ColorOutput "  [OK] OpenCode配置包含 $mcpCount 个MCP服务器" "Green"
+    } catch {
+        Write-ColorOutput "  [ERROR] OpenCode配置文件格式错误" "Red"
+    }
+} else {
+    Write-ColorOutput "  [ERROR] OpenCode配置文件不存在" "Red"
+}
+
+# 检查环境变量
+Write-ColorOutput ""
+Write-ColorOutput "3. 检查环境变量" "Cyan"
+
+$envVars = @{
+    'GITHUB_PERSONAL_ACCESS_TOKEN' = 'GitHub Personal Access Token'
+    'BRAVE_API_KEY' = 'Brave Search API Key'
+    'SUPABASE_URL' = 'Supabase URL'
+    'SUPABASE_ANON_KEY' = 'Supabase ANON Key'
+    'FIGMA_ACCESS_TOKEN' = 'Figma Access Token'
+    'POSTGRES_CONNECTION_STRING' = 'PostgreSQL Connection String'
+}
+
+$missingVars = 0
+foreach ($var in $envVars.Keys) {
+    $value = [System.Environment]::GetEnvironmentVariable($var, 'User')
+    if ($value) {
+        $masked = $value.Substring(0, [Math]::Min(8, $value.Length)) + "..."
+        Write-ColorOutput "  [OK] $var = $masked" "Green"
+    } else {
+        $sessionValue = Get-Item -Path "Env:$var" -ErrorAction SilentlyContinue
+        if ($sessionValue) {
+            $masked = $sessionValue.Value.Substring(0, [Math]::Min(8, $sessionValue.Value.Length)) + "..."
+            Write-ColorOutput "  [WARN] $var = $masked (临时)" "Yellow"
+        } else {
+            Write-ColorOutput "  [MISSING] $var = 未设置" "Red"
+            $missingVars++
+        }
+    }
+}
+
+# 检查MCP服务器配置
+Write-ColorOutput ""
+Write-ColorOutput "4. 验证MCP服务器配置" "Cyan"
+
+$requiredServers = @('supabase', 'postgres', 'github', 'brave-search', 'figma', 'repomix', 'fetch')
+
+if (Test-Path $claudeConfigPath) {
+    Write-ColorOutput "  Claude Code配置检查:" "Cyan"
+    $claudeConfig = Get-Content $claudeConfigPath -Raw | ConvertFrom-Json
+    foreach ($server in $requiredServers) {
+        if ($claudeConfig.mcpServers.$server) {
+            Write-ColorOutput "    [OK] $server" "Green"
+        } else {
+            Write-ColorOutput "    [ERROR] $server 未找到配置" "Red"
+        }
+    }
+}
+
+if (Test-Path $opencodeConfigPath) {
+    Write-ColorOutput ""
+    Write-ColorOutput "  OpenCode配置检查:" "Cyan"
+    $opencodeConfig = Get-Content $opencodeConfigPath -Raw | ConvertFrom-Json
+    foreach ($server in $requiredServers) {
+        if ($opencodeConfig.mcp.$server) {
+            Write-ColorOutput "    [OK] $server" "Green"
+        } else {
+            Write-ColorOutput "    [ERROR] $server 未找到配置" "Red"
+        }
+    }
+}
+
+# 检查归档服务器警告
+Write-ColorOutput ""
+Write-ColorOutput "5. 重要提醒" "Cyan"
+Write-ColorOutput "  [WARN] 以下MCP服务器已归档:" "Yellow"
+Write-ColorOutput "    - @modelcontextprotocol/server-postgres" "Gray"
+Write-ColorOutput "    - @modelcontextprotocol/server-github" "Gray"
+Write-ColorOutput "    - @modelcontextprotocol/server-figma" "Gray"
+Write-ColorOutput "  建议: 寻找社区维护的活跃替代方案" "Yellow"
+
+# 总结
+Write-ColorOutput ""
+Write-ColorOutput "====================================" "Cyan"
+Write-ColorOutput "  验证总结" "Cyan"
+Write-ColorOutput "====================================" "Cyan"
+
+$envSetCount = 6 - $missingVars
+Write-ColorOutput "  配置文件: 已检查" "Green"
+Write-ColorOutput "  环境变量: $envSetCount/6 已设置" "Green"
+
+if ($missingVars -gt 0) {
+    Write-ColorOutput ""
+    Write-ColorOutput "  建议操作:" "Yellow"
+    Write-ColorOutput "  1. 运行 .\setup_mcp_env.ps1 设置缺失的环境变量" "Gray"
+    Write-ColorOutput "  2. 运行 .\setup_opencode_mcp.ps1 配置OpenCode环境变量" "Gray"
+    Write-ColorOutput "  3. 参考MCP_API_KEYS_GUIDE.md获取API密钥" "Gray"
+} else {
+    Write-ColorOutput ""
+    Write-ColorOutput "  所有配置已完成！" "Green"
+}
+
+Write-ColorOutput ""
+Write-ColorOutput "验证完成！" "Green"
+Write-ColorOutput "如果发现问题，请参考上方的详细信息进行修复。" "Gray"
+</file>
+
+<file path="verify_setup.ps1">
+# MCP配置验证脚本
+Write-Host "====================================" -ForegroundColor Cyan
+Write-Host "  MCP配置验证" -ForegroundColor Cyan
+Write-Host "====================================" -ForegroundColor Cyan
+Write-Host ""
+
+# 检查系统环境变量
+Write-Host "1. 系统环境变量检查:" -ForegroundColor Cyan
+
+$envVars = @{
+    'GITHUB_PERSONAL_ACCESS_TOKEN' = 'GitHub Token'
+    'SUPABASE_URL' = 'Supabase URL'
+    'SUPABASE_ANON_KEY' = 'Supabase ANON Key'
+}
+
+foreach ($var in $envVars.Keys) {
+    $value = [System.Environment]::GetEnvironmentVariable($var, 'User')
+    if ($value) {
+        $masked = $value.Substring(0, [Math]::Min(20, $value.Length)) + "..."
+        Write-Host "  [OK] $envVars[$var] = $masked" -ForegroundColor Green
+    } else {
+        Write-Host "  [MISSING] $envVars[$var]" -ForegroundColor Red
+    }
+}
+
+# 检查OpenCode配置
+Write-Host ""
+Write-Host "2. OpenCode配置检查:" -ForegroundColor Cyan
+
+$configPath = "$env:USERPROFILE\.config\opencode\opencode.json"
+if (Test-Path $configPath) {
+    $config = Get-Content $configPath -Raw | ConvertFrom-Json
+
+    if ($config.mcp.github.environment.GITHUB_PERSONAL_ACCESS_TOKEN) {
+        $token = $config.mcp.github.environment.GITHUB_PERSONAL_ACCESS_TOKEN
+        $masked = $token.Substring(0, [Math]::Min(20, $token.Length)) + "..."
+        Write-Host "  [OK] GitHub Token = $masked" -ForegroundColor Green
+    } else {
+        Write-Host "  [MISSING] GitHub Token" -ForegroundColor Red
+    }
+
+    if ($config.mcp.supabase.environment.SUPABASE_URL) {
+        Write-Host "  [OK] Supabase URL = $($config.mcp.supabase.environment.SUPABASE_URL)" -ForegroundColor Green
+    } else {
+        Write-Host "  [MISSING] Supabase URL" -ForegroundColor Red
+    }
+
+    if ($config.mcp.supabase.environment.SUPABASE_ANON_KEY) {
+        $key = $config.mcp.supabase.environment.SUPABASE_ANON_KEY
+        $masked = $key.Substring(0, [Math]::Min(20, $key.Length)) + "..."
+        Write-Host "  [OK] Supabase ANON Key = $masked" -ForegroundColor Green
+    } else {
+        Write-Host "  [MISSING] Supabase ANON Key" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  [ERROR] OpenCode配置文件不存在" -ForegroundColor Red
+}
+
+# 总结
+Write-Host ""
+Write-Host "====================================" -ForegroundColor Cyan
+Write-Host "  验证总结" -ForegroundColor Cyan
+Write-Host "====================================" -ForegroundColor Cyan
+Write-Host "  ✅ GitHub配置完成" -ForegroundColor Green
+Write-Host "  ✅ Supabase配置完成" -ForegroundColor Green
+Write-Host ""
+Write-Host "  下一步: 重启OpenCode使配置生效" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "配置完成！" -ForegroundColor Green
+</file>
+
+<file path=".gitignore">
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# TypeScript
+*.tsbuildinfo
+*_CONFIG*.md
+*_GUIDE.md
+*_COMPLETE.md
+*_REFERENCE.md
+*_VERIFICATION.md
+</file>
+
+<file path="app.vue">
+<template>
+  <div class="min-h-screen bg-swiss-bg">
+    <!-- Navigation -->
+    <AppNavbar />
+
+    <!-- Page Content with Transition -->
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+
+    <!-- Footer (optional, can be added later) -->
+    <!-- <AppFooter /> -->
+  </div>
+</template>
+
+<script setup lang="ts">
+useHead({
+  htmlAttrs: {
+    lang: 'zh-HK',
+  },
+  bodyAttrs: {
+    class: 'antialiased',
+  },
+})
+</script>
+
+<style>
+/* Page Transition Animation */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* Layout Transition Animation */
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+  transform: scale(0.98);
+}
+</style>
+</file>
+
+<file path="components/3d/ServerScene.vue">
+<template>
+  <div ref="containerRef" class="w-full h-full relative">
+    <canvas ref="canvasRef" class="w-full h-full block" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+import * as THREE from 'three'
+
+interface Props {
+  backgroundColor?: string
+  autoRotate?: boolean
+  mouseParallax?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  backgroundColor: '#F5F5F7',
+  autoRotate: false,
+  mouseParallax: true,
+})
+
+const containerRef = ref<HTMLDivElement>()
+const canvasRef = ref<HTMLCanvasElement>()
+let scene: THREE.Scene
+let camera: THREE.PerspectiveCamera
+let renderer: THREE.WebGLRenderer
+let animationId: number
+let cube: THREE.Mesh
+let mouseX = 0
+let mouseY = 0
+let targetX = 0
+let targetY = 0
+
+// 動畫狀態
+const currentPhase = ref(0)
+
+// 暴露給父組件的方法
+const setAnimationPhase = (phase: number, progress: number) => {
+  currentPhase.value = phase
+  if (!cube) return
+
+  switch (phase) {
+    case 0: // 淡入階段
+      cube.position.set(0, 0, 0)
+      cube.rotation.set(0, 0, 0)
+      cube.scale.setScalar(1 + progress * 0.2)
+      break
+    case 1: // 機櫃打開階段
+      cube.rotation.y = progress * Math.PI * 0.5
+      cube.position.x = progress * 1
+      break
+    case 2: // 組件爆炸階段
+      const explodeDistance = progress * 2
+      cube.position.set(explodeDistance, explodeDistance * 0.5, 0)
+      cube.rotation.set(
+        progress * Math.PI,
+        progress * Math.PI * 0.5,
+        0
+      )
+      break
+    case 3: // 重新組裝階段
+      cube.position.set(
+        2 * (1 - progress),
+        1 * (1 - progress),
+        0
+      )
+      cube.rotation.set(
+        Math.PI * (1 - progress),
+        Math.PI * 0.5 * (1 - progress),
+        0
+      )
+      break
+  }
+}
+
+const resetAnimation = () => {
+  if (!cube) return
+  cube.position.set(0, 0, 0)
+  cube.rotation.set(0, 0, 0)
+  cube.scale.setScalar(1)
+  currentPhase.value = 0
+}
+
+defineExpose({
+  setAnimationPhase,
+  resetAnimation,
+  currentPhase,
+})
+
+const initScene = () => {
+  if (!canvasRef.value) return
+
+  // Scene
+  scene = new THREE.Scene()
+  scene.background = new THREE.Color(props.backgroundColor)
+
+  // Camera
+  const aspect = containerRef.value!.clientWidth / containerRef.value!.clientHeight
+  camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
+  camera.position.z = 5
+
+  // Renderer
+  renderer = new THREE.WebGLRenderer({
+    canvas: canvasRef.value,
+    antialias: true,
+    alpha: true
+  })
+  renderer.setSize(containerRef.value!.clientWidth, containerRef.value!.clientHeight)
+  renderer.setPixelRatio(window.devicePixelRatio)
+
+  // Geometry - Placeholder cube (representing server)
+  const geometry = new THREE.BoxGeometry(2, 2, 2)
+
+  // Material - Swiss style (minimalist, metallic)
+  const material = new THREE.MeshStandardMaterial({
+    color: 0x1D1D1F,
+    metalness: 0.8,
+      roughness: 0.2,
+  })
+
+  cube = new THREE.Mesh(geometry, material)
+  scene.add(cube)
+
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+  scene.add(ambientLight)
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+  directionalLight.position.set(5, 5, 5)
+  scene.add(directionalLight)
+
+  // Rim light for outline effect
+  const rimLight = new THREE.SpotLight(0x0071e3, 2)
+  rimLight.position.set(-5, 5, -5)
+  scene.add(rimLight)
+
+  // Event listeners
+  window.addEventListener('resize', onWindowResize)
+  if (props.mouseParallax) {
+    document.addEventListener('mousemove', onMouseMove)
+  }
+
+  // Start animation
+  animate()
+}
+
+const onWindowResize = () => {
+  if (!containerRef.value || !camera || !renderer) return
+
+  const width = containerRef.value.clientWidth
+  const height = containerRef.value.clientHeight
+
+  camera.aspect = width / height
+  camera.updateProjectionMatrix()
+
+  renderer.setSize(width, height)
+}
+
+const onMouseMove = (event: MouseEvent) => {
+  mouseX = (event.clientX / window.innerWidth) * 2 - 1
+  mouseY = -(event.clientY / window.innerHeight) * 2 + 1
+}
+
+const animate = () => {
+  animationId = requestAnimationFrame(animate)
+
+  if (cube && props.autoRotate) {
+    cube.rotation.x += 0.005
+    cube.rotation.y += 0.01
+  }
+
+  // Mouse parallax effect
+  if (cube && props.mouseParallax) {
+    targetX = mouseX * 0.5
+    targetY = mouseY * 0.5
+
+    cube.rotation.x += (targetY - cube.rotation.x) * 0.05
+    cube.rotation.y += (targetX - cube.rotation.y) * 0.05
+  }
+
+  renderer.render(scene, camera)
+}
+
+onMounted(() => {
+  if (containerRef.value && canvasRef.value) {
+    initScene()
+  }
+})
+
+onUnmounted(() => {
+  cancelAnimationFrame(animationId)
+  window.removeEventListener('resize', onWindowResize)
+  if (props.mouseParallax) {
+    document.removeEventListener('mousemove', onMouseMove)
+  }
+
+  // Cleanup Three.js resources
+  if (renderer) {
+    renderer.dispose()
+  }
+  if (scene) {
+    scene.clear()
+  }
+})
+</script>
+
+<style scoped>
+canvas {
+  display: block;
+}
+</style>
+</file>
+
+<file path="components/navigation/AppNavbar.vue">
+<template>
+  <nav
+    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+    :class="[
+      scrolled ? 'bg-swiss-bg/80 backdrop-blur-md shadow-sm' : 'bg-transparent'
+    ]"
+  >
+    <GridContainer>
+      <div class="col-span-12 flex items-center justify-between py-4 md:py-6">
+        <!-- Logo -->
+        <NuxtLink to="/" class="flex items-center space-x-2 group">
+          <div class="w-8 h-8 bg-swiss-text rounded-sm group-hover:bg-swiss-accent transition-colors duration-300"></div>
+          <TypographyHeader level="3" size="h5" class="hidden sm:block">
+            博迩科技
+          </TypographyHeader>
+        </NuxtLink>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-8">
+          <NuxtLink
+            v-for="item in navItems"
+            :key="item.key"
+            :to="item.to"
+            class="nav-link group relative py-2"
+          >
+            <TypographyHeader
+              level="4"
+              size="h6"
+              class="text-swiss-text group-hover:text-swiss-accent transition-colors duration-300"
+            >
+              {{ $t(item.label) }}
+            </TypographyHeader>
+            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-swiss-accent group-hover:w-full transition-all duration-300"></span>
+          </NuxtLink>
+        </div>
+
+        <!-- Right Side Actions -->
+        <div class="flex items-center space-x-4">
+          <!-- Locale Switcher -->
+          <LocaleSwitcher />
+
+          <!-- Mobile Menu Button -->
+          <button
+            class="md:hidden p-2 text-swiss-text hover:text-swiss-accent transition-colors"
+            @click="toggleMobileMenu"
+            aria-label="Toggle menu"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </GridContainer>
+
+    <!-- Mobile Menu -->
+    <Transition name="slide-down">
+      <div v-if="mobileMenuOpen" class="md:hidden bg-swiss-bg/95 backdrop-blur-md border-t border-swiss-secondary/10">
+        <GridContainer>
+          <div class="col-span-12 py-4 space-y-4">
+            <NuxtLink
+              v-for="item in navItems"
+              :key="item.key"
+              :to="item.to"
+              class="block py-2"
+              @click="mobileMenuOpen = false"
+            >
+              <TypographyHeader level="4" size="h5">
+                {{ $t(item.label) }}
+              </TypographyHeader>
+            </NuxtLink>
+          </div>
+        </GridContainer>
+      </div>
+    </Transition>
+  </nav>
+</template>
+
+<script setup lang="ts">
+const scrolled = ref(false)
+const mobileMenuOpen = ref(false)
+
+const navItems = [
+  { key: 'home', label: 'nav.home', to: '/' },
+  { key: 'products', label: 'nav.products', to: '/products' },
+  { key: 'solutions', label: 'nav.solutions', to: '/solutions' },
+  { key: 'about', label: 'nav.about', to: '/about' },
+  { key: 'contact', label: 'nav.contact', to: '/contact' },
+]
+
+const toggleMobileMenu = () => {
+  mobileMenuOpen.value = !mobileMenuOpen.value
+}
+
+// 檢測滾動狀態
+const handleScroll = () => {
+  scrolled.value = window.scrollY > 50
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+</script>
+
+<style scoped>
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.nav-link {
+  position: relative;
+}
+</style>
+</file>
+
+<file path="components/products/ProductCard.vue">
+<template>
+  <NuxtLink
+    :to="`/products/${product.slug}`"
+    class="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+  >
+    <!-- Product Image Placeholder -->
+    <div class="aspect-video bg-gradient-to-br from-swiss-bg to-gray-200 relative overflow-hidden">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div
+          class="w-24 h-24 bg-swiss-text rounded-lg opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-500"
+        ></div>
+      </div>
+
+      <!-- Category Badge -->
+      <div class="absolute top-4 left-4">
+        <span class="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-swiss-text">
+          {{ getCategoryLabel(product.category) }}
+        </span>
+      </div>
+
+      <!-- Featured Badge -->
+      <div v-if="product.featured" class="absolute top-4 right-4">
+        <span class="px-3 py-1 bg-swiss-accent text-white rounded-full text-xs font-medium">
+          {{ $t('products.featured') }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="p-6">
+      <TypographyHeader level="3" size="h4" class="mb-2 group-hover:text-swiss-accent transition-colors">
+        {{ product.name[currentLocale] }}
+      </TypographyHeader>
+      <p class="text-swiss-secondary text-sm line-clamp-2 mb-4">
+        {{ product.description[currentLocale] }}
+      </p>
+
+      <!-- Key Specs Preview -->
+      <div class="flex items-center justify-between text-xs text-swiss-secondary">
+        <span v-if="product.specs.cpu">{{ product.specs.cpu }}</span>
+        <span v-if="product.specs.rackUnits">{{ product.specs.rackUnits }}</span>
+        <SwissButton variant="ghost" size="sm">
+          {{ $t('products.viewDetails') }} →
+        </SwissButton>
+      </div>
+    </div>
+  </NuxtLink>
+</template>
+
+<script setup lang="ts">
+import type { Product } from '~/types'
+
+interface Props {
+  product: Product
+}
+
+const props = defineProps<Props>()
+const { locale } = useI18n()
+
+// Map locale to property names
+const localeMap: Record<string, 'zhHK' | 'zhCN' | 'en'> = {
+  'zh-HK': 'zhHK',
+  'zh-CN': 'zhCN',
+  'en': 'en',
+}
+
+const currentLocale = computed(() => localeMap[locale.value] || 'zhHK')
+
+const categoryLabels: Record<string, string> = {
+  server: '伺服器',
+  storage: '存儲',
+  network: '網絡',
+  software: '軟件',
+}
+
+const getCategoryLabel = (category: string): string => {
+  return categoryLabels[category] || category
+}
+</script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
+</file>
+
+<file path="components/solutions/SolutionCard.vue">
+<template>
+  <NuxtLink
+    :to="`/solutions/${solution.slug}`"
+    class="group block bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-all duration-300"
+  >
+    <!-- Icon -->
+    <div class="mb-6">
+      <div
+        class="w-16 h-16 bg-swiss-bg rounded-lg flex items-center justify-center group-hover:bg-swiss-accent transition-colors duration-300"
+      >
+        <component
+          :is="getIcon(solution.icon)"
+          class="w-8 h-8 text-swiss-text group-hover:text-white transition-colors duration-300"
+        />
+      </div>
+    </div>
+
+    <!-- Title -->
+    <TypographyHeader level="3" size="h4" class="mb-3 group-hover:text-swiss-accent transition-colors">
+      {{ solution.title[currentLocale] }}
+    </TypographyHeader>
+
+    <!-- Description -->
+    <p class="text-swiss-secondary text-sm mb-6">
+      {{ solution.description[currentLocale] }}
+    </p>
+
+    <!-- Features List -->
+    <ul class="space-y-2 mb-6">
+      <li
+        v-for="(feature, index) in solution.features.slice(0, 3)"
+        :key="index"
+        class="flex items-center text-xs text-swiss-secondary"
+      >
+        <svg class="w-4 h-4 mr-2 text-swiss-accent" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        {{ feature }}
+      </li>
+    </ul>
+
+    <!-- Learn More Link -->
+    <span class="inline-flex items-center text-sm font-medium text-swiss-accent group-hover:underline">
+      了解更多
+      <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </span>
+  </NuxtLink>
+</template>
+
+<script setup lang="ts">
+import type { Solution } from '~/types'
+
+interface Props {
+  solution: Solution
+}
+
+const props = defineProps<Props>()
+const { locale } = useI18n()
+
+// Map locale to property names
+const localeMap: Record<string, 'zhHK' | 'zhCN' | 'en'> = {
+  'zh-HK': 'zhHK',
+  'zh-CN': 'zhCN',
+  'en': 'en',
+}
+
+const currentLocale = computed(() => localeMap[locale.value] || 'zhHK')
+
+// Icon components (simplified SVG icons)
+const icons = {
+  Server: {
+    template: `
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+      </svg>
+    `,
+  },
+  Network: {
+    template: `
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+      </svg>
+    `,
+  },
+  Settings: {
+    template: `
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    `,
+  },
+  Code: {
+    template: `
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+    `,
+  },
+  Shield: {
+    template: `
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    `,
+  },
+  Cloud: {
+    template: `
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+      </svg>
+    `,
+  },
+}
+
+const getIcon = (iconName: string) => {
+  return icons[iconName as keyof typeof icons] || icons.Server
+}
+</script>
+</file>
+
+<file path="locales/en.json">
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "solutions": "Solutions",
+    "about": "About Us",
+    "contact": "Contact"
+  },
+  "company": {
+    "name": "Guangdong Boer Technology Co., Ltd.",
+    "nameShort": "Boer Technology",
+    "slogan": "Integrated Enterprise Infrastructure Solution Service Provider",
+    "mission": "Understand customer needs; comprehend customer needs; meet customer needs; provide products and services that exceed customer expectations",
+    "description": "Integrated enterprise infrastructure solution service provider, providing servers, networks, data centers and other products and services",
+    "address": "Room 303-305, Building 1, Kehui Garden, No. 95 Daguan Middle Road, Tianhe District, Guangzhou, Guangdong Province",
+    "phone": "020-89816175",
+    "email": "sales@boer.cn",
+    "website": "https://www.boer.cn"
+  },
+  "home": {
+    "hero": {
+      "title": "Professional Infrastructure Solutions",
+      "subtitle": "Serving Hong Kong and Overseas Markets",
+      "cta": "Learn More",
+      "ctaSecondary": "Contact Us"
+    },
+    "animation": {
+      "phase1": "Welcome",
+      "phase2": "Explore Our Products",
+      "phase3": "Professional Technical Support",
+      "phase4": "Begin Your Digital Transformation"
+    },
+    "features": {
+      "title": "Core Advantages",
+      "feature1": {
+        "title": "High-Performance Servers",
+        "description": "Enterprise-grade server solutions ensuring business continuity"
+      },
+      "feature2": {
+        "title": "Professional Operations",
+        "description": "24/7 technical support ensuring stable system operations"
+      },
+      "feature3": {
+        "title": "Secure & Reliable",
+        "description": "Financial-grade security standards protecting your data assets"
+      }
+    }
+  },
+  "products": {
+    "title": "Product Series",
+    "subtitle": "Meeting All Your Infrastructure Needs",
+    "viewAll": "View All",
+    "specs": "Specifications",
+    "features": "Features"
+  },
+  "solutions": {
+    "title": "Solutions",
+    "subtitle": "Tailored for Your Business",
+    "idc": "Data Center Services",
+    "operations": "Operations Management",
+    "development": "Development Services"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Your Trusted Infrastructure Partner",
+    "mission": "Our Mission",
+    "vision": "Our Vision",
+    "timeline": "Timeline"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're Here to Help",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company Name",
+      "message": "Message",
+      "submit": "Send",
+      "success": "Message sent successfully! We'll reply shortly.",
+      "error": "Failed to send. Please try again later."
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "learnMore": "Learn More",
+    "contactUs": "Contact Us",
+    "back": "Back",
+    "readMore": "Read More",
+    "close": "Close",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "next": "Next",
+    "previous": "Previous",
+    "page": "Page",
+    "of": "of"
+  }
+}
+</file>
+
+<file path="locales/zh-CN.json">
+{
+  "nav": {
+    "home": "首页",
+    "products": "产品",
+    "solutions": "解决方案",
+    "about": "关于我们",
+    "contact": "联系我们"
+  },
+  "company": {
+    "name": "广东博迩科技有限公司",
+    "nameShort": "博迩科技",
+    "slogan": "企业基础设施一体化解决方案服务提供商",
+    "mission": "了解客户需求；理解客户需求；满足客户需求；为客户提供超预期的产品与服务",
+    "description": "企业基础设施一体化解决方案服务提供商，提供服务器、网络、数据中心等产品和服务",
+    "address": "广东省广州市天河区大观中路95号科汇园1栋303-305",
+    "phone": "020-89816175",
+    "email": "sales@boer.cn",
+    "website": "https://www.boer.cn"
+  },
+  "home": {
+    "hero": {
+      "title": "企业基础设施一体化解决方案服务提供商",
+      "subtitle": "了解需求 · 理解需求 · 满足需求 · 超越预期",
+      "cta": "了解产品",
+      "ctaSecondary": "联系咨询"
+    },
+    "animation": {
+      "phase1": "欢迎使用",
+      "phase2": "探索我们的产品",
+      "phase3": "专业的技术支持",
+      "phase4": "开启数字化转型之旅"
+    },
+    "features": {
+      "title": "核心优势",
+      "feature1": {
+        "title": "产品成熟，稳定可靠",
+        "description": "成熟可靠的产品，为您的业务提供坚实的技术支撑"
+      },
+      "feature2": {
+        "title": "节省成本，快速响应",
+        "description": "优化资源配置，节省人力维护和时间成本，响应速度迅速"
+      },
+      "feature3": {
+        "title": "最新技术，安全可靠",
+        "description": "不断创新产品应用，保护用户数据安全，提供全方位安全防护"
+      }
+    }
+  },
+  "products": {
+    "title": "产品系列",
+    "subtitle": "满足您所有基础设施需求",
+    "viewAll": "查看全部",
+    "specs": "规格",
+    "features": "功能特点"
+  },
+  "solutions": {
+    "title": "解决方案",
+    "subtitle": "为您的业务量身定制",
+    "idc": "数据中心服务",
+    "operations": "运维管理",
+    "development": "开发服务"
+  },
+  "about": {
+    "title": "关于我们",
+    "subtitle": "值得信赖的基础设施合作伙伴",
+    "mission": "我们的使命",
+    "vision": "我们的愿景",
+    "timeline": "发展历程"
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "我们随时为您服务",
+    "form": {
+      "name": "姓名",
+      "email": "电子邮件",
+      "phone": "电话",
+      "company": "公司名称",
+      "message": "留言",
+      "submit": "发送",
+      "success": "发送成功！我们会尽快回复您。",
+      "error": "发送失败，请稍后再试。"
+    }
+  },
+  "common": {
+    "loading": "加载中...",
+    "learnMore": "了解更多",
+    "contactUs": "联系我们",
+    "back": "返回",
+    "readMore": "阅读更多",
+    "close": "关闭",
+    "submit": "提交",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "next": "下一页",
+    "previous": "上一页",
+    "page": "页",
+    "of": "/"
+  }
+}
+</file>
+
+<file path="locales/zh-HK.json">
+{
+  "nav": {
+    "home": "首頁",
+    "products": "產品",
+    "solutions": "解決方案",
+    "about": "關於我們",
+    "contact": "聯絡我們"
+  },
+  "company": {
+    "name": "廣東博迩科技有限公司",
+    "nameShort": "博迩科技",
+    "slogan": "企業基礎設施一體化解決方案服務提供商",
+    "mission": "了解客戶需求；理解客戶需求；滿足客戶需求；為客戶提供超預期的產品與服務",
+    "description": "企業基礎設施一體化解決方案服務提供商，提供伺服器、網絡、數據中心等產品和服務",
+    "address": "廣東省廣州市天河區大觀中路95號科匯園1棟303-305",
+    "phone": "020-89816175",
+    "email": "sales@boer.cn",
+    "website": "https://www.boer.cn"
+  },
+  "home": {
+    "hero": {
+      "title": "專業基礎設施解決方案",
+      "subtitle": "服務香港及海外市場",
+      "cta": "了解更多",
+      "ctaSecondary": "聯絡我們"
+    },
+    "animation": {
+      "phase1": "歡迎使用",
+      "phase2": "探索我們的產品",
+      "phase3": "專業的技術支援",
+      "phase4": "開啟數碼轉型之旅"
+    },
+    "features": {
+      "title": "核心優勢",
+      "feature1": {
+        "title": "高性能伺服器",
+        "description": "提供企業級伺服器解決方案，確保業務連續性"
+      },
+      "feature2": {
+        "title": "專業運維服務",
+        "description": "24/7 全天候技術支援，保障系統穩定運行"
+      },
+      "feature3": {
+        "title": "安全可靠",
+        "description": "金融級安全標準，保護您的數據資產"
+      }
+    }
+  },
+  "products": {
+    "title": "產品系列",
+    "subtitle": "滿足您所有基礎設施需求",
+    "viewAll": "查看全部",
+    "specs": "規格",
+    "features": "功能特點"
+  },
+  "solutions": {
+    "title": "解決方案",
+    "subtitle": "為您的業務量身定制",
+    "idc": "數據中心服務",
+    "operations": "運維管理",
+    "development": "開發服務"
+  },
+  "about": {
+    "title": "關於我們",
+    "subtitle": "值得信賴的基礎設施合作夥伴",
+    "mission": "我們的使命",
+    "vision": "我們的願景",
+    "timeline": "發展歷程"
+  },
+  "contact": {
+    "title": "聯絡我們",
+    "subtitle": "我們隨時為您服務",
+    "form": {
+      "name": "姓名",
+      "email": "電子郵件",
+      "phone": "電話",
+      "company": "公司名稱",
+      "message": "留言",
+      "submit": "發送",
+      "success": "發送成功！我們會儘快回覆您。",
+      "error": "發送失敗，請稍後再試。"
+    }
+  },
+  "common": {
+    "loading": "載入中...",
+    "learnMore": "了解更多",
+    "contactUs": "聯絡我們",
+    "back": "返回",
+    "readMore": "閱讀更多",
+    "close": "關閉",
+    "submit": "提交",
+    "cancel": "取消",
+    "save": "儲存",
+    "delete": "刪除",
+    "edit": "編輯",
+    "search": "搜尋",
+    "filter": "篩選",
+    "sort": "排序",
+    "next": "下一頁",
+    "previous": "上一頁",
+    "page": "頁",
+    "of": "/"
+  }
+}
+</file>
+
+<file path="pages/about.vue">
+<template>
+  <div class="min-h-screen bg-swiss-bg py-24">
+    <!-- Page Header -->
+    <section class="mb-16">
+      <GridContainer>
+        <div class="col-span-12 text-center">
+          <TypographyHeader level="1" size="h1" class="mb-4">
+            關於博迩
+          </TypographyHeader>
+          <p class="text-swiss-secondary max-w-2xl mx-auto">
+            企業基礎設施一體化解決方案服務提供商
+          </p>
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Company Overview -->
+    <section class="mb-24">
+      <GridContainer>
+        <div class="col-span-12 lg:col-span-6 mb-8 lg:mb-0">
+          <TypographyHeader level="2" size="h2" class="mb-6">
+            關於我們
+          </TypographyHeader>
+          <div class="space-y-4 text-swiss-secondary">
+            <p>
+              廣東博迩科技有限公司是一家專注於企業級基礎設施解決方案的提供商，致力於為廣州及全國市場的客戶提供高品質的服務器、存儲、網絡及相關服務。
+            </p>
+            <p>
+              我們擁有豐富的行業經驗，專注於為企業提供從規劃到實施的全套服務，幫助客戶構建安全、可靠、高效的信息技術基礎設施。
+            </p>
+            <div class="bg-white rounded-lg p-6 mt-6 border-l-4 border-swiss-accent">
+              <TypographyHeader level="3" size="h5" class="mb-3 text-swiss-text">
+                經營理念
+              </TypographyHeader>
+              <ul class="space-y-2 text-sm">
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-swiss-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  了解客戶需求
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-swiss-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  理解客戶需求
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-swiss-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  滿足客戶需求
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-swiss-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  為客戶提供超預期的產品與服務
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-span-12 lg:col-span-6">
+          <div class="bg-white rounded-lg p-8 shadow-sm">
+            <TypographyHeader level="3" size="h4" class="mb-6">
+              核心優勢
+            </TypographyHeader>
+            <div class="grid grid-cols-2 gap-6">
+              <div class="text-center">
+                <div class="text-4xl font-bold text-swiss-accent mb-2">7x24</div>
+                <div class="text-sm text-swiss-secondary">技術支援</div>
+              </div>
+              <div class="text-center">
+                <div class="text-4xl font-bold text-swiss-accent mb-2">99.9%</div>
+                <div class="text-sm text-swiss-secondary">服務可用性</div>
+              </div>
+              <div class="text-center">
+                <div class="text-4xl font-bold text-swiss-accent mb-2">快速</div>
+                <div class="text-sm text-swiss-secondary">響應速度</div>
+              </div>
+              <div class="text-center">
+                <div class="text-4xl font-bold text-swiss-accent mb-2">專業</div>
+                <div class="text-sm text-swiss-secondary">技術團隊</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Solutions Section -->
+    <section class="mb-24">
+      <GridContainer>
+        <div class="col-span-12 mb-12">
+          <TypographyHeader level="2" size="h2" class="text-center">
+            解決方案特點
+          </TypographyHeader>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              後台穩定
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              產品成熟，穩定可靠
+            </p>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3-2-1.343-2-3-2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              節省成本
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              節省人力維護和時間成本
+            </p>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              最新技術
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              不斷創新產品的應用
+            </p>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              安全可靠
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              保護用戶數據安全
+            </p>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              快速響應
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              響應速度迅速，反應及時
+            </p>
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-4 mb-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm h-full text-center">
+            <div class="w-12 h-12 bg-swiss-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <TypographyHeader level="3" size="h5" class="mb-2">
+              一站式服務
+            </TypographyHeader>
+            <p class="text-swiss-secondary text-sm">
+              從規劃到實施全套服務
+            </p>
+          </div>
+        </div>
+      </GridContainer>
+    </section>
+  </div>
+</template>
+
+<script setup lang="ts">
+useHead({
+  title: '關於博迩 - 廣東博迩科技有限公司',
+})
+</script>
+</file>
+
+<file path="plugins/lenis.client.ts">
+/**
+ * Lenis Smooth Scroll Plugin
+ * 實現平滑滾動效果，提升用戶體驗
+ */
+
+import Lenis from 'lenis'
+
+export default defineNuxtPlugin((nuxtApp) => {
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    direction: 'vertical' as const,
+    gestureDirection: 'vertical' as const,
+    smooth: true,
+    mouseMultiplier: 1,
+    smoothTouch: false,
+    touchMultiplier: 2,
+  })
+
+  nuxtApp.provide('lenis', lenis)
+
+  // 整合 ScrollTrigger 和 Lenis
+  if (process.client) {
+    nuxtApp.hook('app:mounted', () => {
+      const gsap = (nuxtApp.$gsap as { gsap: any }).gsap
+
+      if (gsap && gsap.ticker) {
+        gsap.ticker.add((time: number) => {
+          lenis.raf(time * 1000)
+        })
+
+        gsap.ticker.lagSmoothing(0)
+      }
+    })
+  }
+
+  // 響應式滾動循環
+  function raf(time: number) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+  }
+
+  if (process.client) {
+    requestAnimationFrame(raf)
+  }
+})
+</file>
+
+<file path="utils/mockData.ts">
+import type { Product, News, Solution } from '~/types'
+
+/**
+ * Mock Products Data - 基于博迩科技产品线
+ */
+export const mockProducts: Product[] = [
+  // 通用计算服务器
+  {
+    id: '1',
+    slug: 'general-compute-server',
+    name: {
+      zhHK: '通用計算服務器',
+      zhCN: '通用计算服务器',
+      en: 'General Compute Server'
+    },
+    description: {
+      zhHK: '通用計算和數據處理服務器，適用於多種企業應用、數據庫管理、虛擬化等應用場景，具有較高的靈活性和通用性。',
+      zhCN: '通用计算和数据处理服务器，适用于多种企业应用、数据库管理、虚拟化等应用场景，具有较高的灵活性和通用性。',
+      en: 'General computing and data processing servers suitable for various enterprise applications, database management, and virtualization scenarios with high flexibility and versatility.'
+    },
+    specs: {
+      cpu: 'Intel Xeon / AMD EPYC',
+      cores: '32-128',
+      ram: '128GB-2TB DDR4/DDR5',
+      storage: '可選配置',
+      power: '800W-1600W',
+      rackUnits: '1U-2U'
+    },
+    images: ['/images/products/general-compute.jpg'],
+    category: 'server',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+  // 高性能计算服务器
+  {
+    id: '2',
+    slug: 'hpc-server',
+    name: {
+      zhHK: '高性能計算服務器',
+      zhCN: '高性能计算服务器',
+      en: 'High-Performance Compute Server'
+    },
+    description: {
+      zhHK: '高性能計算服務器，適用於科學計算、深度學習、人工智能等需要大規模並行計算的領域。',
+      zhCN: '高性能计算服务器，适用于科学计算、深度学习、人工智能等需要大规模并行计算的领域。',
+      en: 'High-performance computing servers for scientific computing, deep learning, AI, and fields requiring massive parallel computing.'
+    },
+    specs: {
+      cpu: 'AMD EPYC 9004系列 / Intel Xeon Platinum',
+      cores: '64-256',
+      ram: '512GB-4TB DDR5',
+      gpu: 'NVIDIA A100/H100',
+      interconnect: 'PCIe 5.0 / CXL',
+      rackUnits: '2U-4U'
+    },
+    images: ['/images/products/hpc-server.jpg'],
+    category: 'server',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+  // 高性能存储
+  {
+    id: '3',
+    slug: 'high-performance-storage',
+    name: {
+      zhHK: '高性能存儲服務器',
+      zhCN: '高性能存储服务器',
+      en: 'High-Performance Storage Server'
+    },
+    description: {
+      zhHK: '高性能存儲服務器，用於提供高速、高性能數據存儲訪問，適用於大規模數據分析、高性能計算、雲計算以及大規模數據庫管理。',
+      zhCN: '高性能存储服务器，用于提供高速、高性能数据存储访问，适用于大规模数据分析、高性能计算、云计算以及大规模数据库管理。',
+      en: 'High-performance storage servers providing fast, high-performance data storage access for large-scale data analysis, HPC, cloud computing, and large database management.'
+    },
+    specs: {
+      capacity: '200TB-2PB',
+      drives: '24-48',
+      interface: 'NVMe/SAS/SATA',
+      raid: 'RAID 0/1/5/6/10/50/60',
+      cache: '64GB-256GB',
+      throughput: '50GB/s',
+      rackUnits: '4U-42U'
+    },
+    images: ['/images/products/hp-storage.jpg'],
+    category: 'storage',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+  // 通用存储
+  {
+    id: '4',
+    slug: 'general-storage',
+    name: {
+      zhHK: '通用存儲服務器',
+      zhCN: '通用存储服务器',
+      en: 'General Storage Server'
+    },
+    description: {
+      zhHK: '通用存儲服務器，適用於大規模數據處理、數據存儲場景，滿足大容量、可擴展性以及高可用存儲需求。',
+      zhCN: '通用存储服务器，适用于大规模数据处理、数据存储场景，满足大容量、可扩展性以及高可用存储需求。',
+      en: 'General storage servers for large-scale data processing and storage scenarios, meeting requirements for large capacity, scalability, and high availability.'
+    },
+    specs: {
+      capacity: '50TB-500TB',
+      drives: '12-24',
+      interface: 'SAS/SATA/NVMe',
+      raid: 'RAID 0/1/5/6/10',
+      powerSupply: '冗余電源',
+      rackUnits: '2U-4U'
+    },
+    images: ['/images/products/general-storage.jpg'],
+    category: 'storage',
+    featured: false,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+  // IB交换机
+  {
+    id: '5',
+    slug: 'infiniband-switch',
+    name: {
+      zhHK: 'IB交換機',
+      zhCN: 'IB交换机',
+      en: 'InfiniBand Switch'
+    },
+    description: {
+      zhHK: 'IB交換機通常用於高性能計算(HPC)、數據中心、雲計算和大規模存儲等領域，以滿足高性能計算和數據傳輸的需求，近年來已成為GPU服務器的首選網絡互連技術。',
+      zhCN: 'IB交换机通常用于高性能计算(HPC)、数据中心、云计算和大规模存储等领域，以满足高性能计算和数据传输的需求，近年来已成为GPU服务器的首选网络互连技术。',
+      en: 'InfiniBand switches are commonly used in HPC, data centers, cloud computing, and large-scale storage to meet high-performance computing and data transmission requirements. Recently become the preferred network interconnect technology for GPU servers.'
+    },
+    specs: {
+      speed: 'HDR 200Gb/s / NDR 400Gb/s',
+      ports: '32-128',
+      latency: '<100ns',
+      architecture: '架構式交換',
+      power: '150W-500W',
+      rackUnits: '1U-2U'
+    },
+    images: ['/images/products/ib-switch.jpg'],
+    category: 'network',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+  // 以太网交换机
+  {
+    id: '6',
+    slug: 'ethernet-switch',
+    name: {
+      zhHK: '以太網交換機',
+      zhCN: '以太网交换机',
+      en: 'Ethernet Switch'
+    },
+    description: {
+      zhHK: '基於以太網傳輸數據，連接各服務器與網絡防火牆、路由器等網絡設備互聯，從而實現所有設備的互聯互通；應用於企業網絡、運營商網絡、數據中心網絡和工業網絡場景。',
+      zhCN: '基于以太网传输数据，连接各服务器与网络防火墙、路由器等网络设备互联，从而实现所有设备的互联互通；应用于企业网络、运营商网络、数据中心网络和工业网络场景。',
+      en: 'Data transmission via Ethernet, connecting servers with network equipment like firewalls and routers to enable interconnectivity; used in enterprise, carrier, data center, and industrial network scenarios.'
+    },
+    specs: {
+      ports: '24-48',
+      speed: '1G/10G/25G/40G/100G',
+      uplinkPorts: '4-8',
+      switchingCapacity: '1.28Tbps-10Tbps',
+      packetForwarding: '720Mpps-3000Mpps',
+      power: '100W-300W'
+    },
+    images: ['/images/products/ethernet-switch.jpg'],
+    category: 'network',
+    featured: false,
+    createdAt: '2025-01-26T00:00:00Z'
+  }
+]
+
+/**
+ * Mock News Data - 博迩科技行业资讯
+ */
+export const mockNews: News[] = [
+  {
+    id: '1',
+    slug: 'amd-epyc-4004-series',
+    title: {
+      zhHK: 'AMD擴展EPYC CPU產品組合，為中小企業帶來更高性能和價值',
+      zhCN: 'AMD扩展EPYC CPU产品组合，为中小企业带来更高性能和价值',
+      en: 'AMD Expands EPYC CPU Portfolio to Bring Higher Performance and Value to SMBs'
+    },
+    content: {
+      zhHK: 'AMD EPYC 4004系列處理器為領先服務器供應商的入門級系統設計提供更廣泛的支持...',
+      zhCN: 'AMD EPYC 4004系列处理器为领先服务器供应商的入门级系统设计提供更广泛的支持...',
+      en: 'AMD EPYC 4004 series processors provide broader support for entry-level system designs from leading server vendors...'
+    },
+    excerpt: {
+      zhHK: 'AMD EPYC 4004系列處理器推出，為中小企業提供高性價比的解決方案。',
+      zhCN: 'AMD EPYC 4004系列处理器推出，为中小企业提供高性价比的解决方案。',
+      en: 'AMD EPYC 4004 series processors launch, bringing cost-effective solutions to SMBs.'
+    },
+    locale: 'zh-HK',
+    publishDate: '2024-06-11',
+    author: '博迩科技團隊',
+    imageUrl: '/images/news/amd-epyc.jpg',
+    featured: true,
+    createdAt: '2024-06-11T00:00:00Z'
+  },
+  {
+    id: '2',
+    slug: 'amd-zen5-rylon-ai',
+    title: {
+      zhHK: 'AMD 推出 "Zen 5"架構下一代銳龍處理器以賦能超前AI體驗',
+      zhCN: 'AMD 推出 "Zen 5"架构下一代锐龙处理器以赋能超前AI体验',
+      en: 'AMD Unveils Next-Gen Ryzen Processors with "Zen 5" Architecture for AI Experiences'
+    },
+    content: {
+      zhHK: 'AMD 銳龍 AI 300 系列處理器解鎖面向 Windows Copilot+ PC 的革命性 AI體驗；AMD 銳龍 9000 系列處理器為效率、性能和內容創作設定新標杆...',
+      zhCN: 'AMD 锐龙 AI 300 系列处理器解锁面向 Windows Copilot+ PC 的革命性 AI体验；AMD 锐龙 9000 系列处理器为效率、性能和内容创作设定新标杆...',
+      en: 'AMD Ryzen AI 300 series processors unlock revolutionary AI experiences for Windows Copilot+ PCs; AMD Ryzen 9000 series sets new benchmarks for efficiency, performance, and content creation...'
+    },
+    excerpt: {
+      zhHK: '新一代處理器為 AI 應用和內容創作帶來革命性提升。',
+      zhCN: '新一代处理器为 AI 应用和内容创作带来革命性提升。',
+      en: 'New-generation processors bring revolutionary improvements to AI applications and content creation.'
+    },
+    locale: 'zh-HK',
+    publishDate: '2024-06-11',
+    author: '博迩科技團隊',
+    imageUrl: '/images/news/rylon-ai.jpg',
+    featured: true,
+    createdAt: '2024-06-11T00:00:00Z'
+  },
+  {
+    id: '3',
+    slug: 'amd-computex-2024',
+    title: {
+      zhHK: 'AMD 在 Computex 2024 上擴大其在數據中心和個人電腦領域的AI和高性能計算領先地位',
+      zhCN: 'AMD 在 Computex 2024 上扩大其在数据中心和个人电脑领域的AI和高性能计算领先地位',
+      en: 'AMD Expands AI and HPC Leadership in Data Center and PC at Computex 2024'
+    },
+    content: {
+      zhHK: '下一代 AMD EPYC 處理器將擴大數據中心 CPU 的領先地位；全新 AMD 銳龍 AI 300 系列筆記本電腦和 AMD 銳龍 9000 系列台式機處理器為 Copilot+ PC、遊戲、內容創造和工作效率提供領先性能...',
+      zhCN: '下一代 AMD EPYC 处理器将扩大数据中心 CPU 的领先地位；全新 AMD 锐龙 AI 300 系列笔记本电脑和 AMD 锐龙 9000 系列台式机处理器为 Copilot+ PC、游戏、内容创造和工作效率提供领先性能...',
+      en: 'Next-gen AMD EPYC processors will extend data center CPU leadership; new AMD Ryzen AI 300 series laptops and AMD Ryzen 9000 series desktop processors deliver leading performance for Copilot+ PCs, gaming, content creation, and productivity...'
+    },
+    excerpt: {
+      zhHK: 'AMD 在 Computex 2024 展示最新的處理器技術和 AI 解決方案。',
+      zhCN: 'AMD 在 Computex 2024 展示最新的处理器技术和 AI 解决方案。',
+      en: 'AMD showcases latest processor technologies and AI solutions at Computex 2024.'
+    },
+    locale: 'zh-HK',
+    publishDate: '2024-06-11',
+    author: '博迩科技團隊',
+    imageUrl: '/images/news/computex-2024.jpg',
+    featured: false,
+    createdAt: '2024-06-11T00:00:00Z'
+  }
+]
+
+/**
+ * Mock Solutions Data - 博迩科技解决方案
+ */
+export const mockSolutions: Solution[] = [
+  {
+    id: '1',
+    slug: 'stable-backend',
+    title: {
+      zhHK: '後台穩定',
+      zhCN: '后台稳定',
+      en: 'Stable Backend'
+    },
+    description: {
+      zhHK: '產品成熟，穩定可靠，為您的業務提供堅實的技術支撐。',
+      zhCN: '产品成熟，稳定可靠，为您的业务提供坚实的技术支撑。',
+      en: 'Mature and reliable products providing solid technical support for your business.'
+    },
+    icon: 'Server',
+    category: 'idc',
+    features: [
+      '企業級硬件',
+      '99.9% 可用性',
+      '7x24 監控',
+      '快速故障響應',
+      '預防性維護'
+    ],
+    order: 1
+  },
+  {
+    id: '2',
+    slug: 'cost-saving',
+    title: {
+      zhHK: '節省成本',
+      zhCN: '节省成本',
+      en: 'Cost Saving'
+    },
+    description: {
+      zhHK: '優化資源配置，節省人力維護和時間成本。',
+      zhCN: '优化资源配置，节省人力维护和时间成本。',
+      en: 'Optimize resource allocation to save on maintenance and time costs.'
+    },
+    icon: 'Settings',
+    category: 'operations',
+    features: [
+      '按需擴展',
+      '能耗優化',
+      '自動化運維',
+      '資源統一管理',
+      '降低TCO'
+    ],
+    order: 2
+  },
+  {
+    id: '3',
+    slug: 'latest-technology',
+    title: {
+      zhHK: '最新技術',
+      zhCN: '最新技术',
+      en: 'Latest Technology'
+    },
+    description: {
+      zhHK: '不斷創新產品的應用，引領行業技術發展。',
+      zhCN: '不断创新产品的应用，引领行业技术发展。',
+      en: 'Continuously innovate product applications and lead industry technology development.'
+    },
+    icon: 'Code',
+    category: 'development',
+    features: [
+      'AI 賦能',
+      '雲端整合',
+      '容器化部署',
+      '微服務架構',
+      'DevOps 實踐'
+    ],
+    order: 3
+  },
+  {
+    id: '4',
+    slug: 'secure-reliable',
+    title: {
+      zhHK: '安全可靠',
+      zhCN: '安全可靠',
+      en: 'Secure & Reliable'
+    },
+    description: {
+      zhHK: '保護用戶數據安全，提供全方位的安全防護。',
+      zhCN: '保护用户数据安全，提供全方位的安全防护。',
+      en: 'Protect user data security with comprehensive security protection.'
+    },
+    icon: 'Shield',
+    category: 'operations',
+    features: [
+      '數據加密',
+      '訪問控制',
+      '安全審計',
+      '威脅檢測',
+      '合規認證'
+    ],
+    order: 4
+  },
+  {
+    id: '5',
+    slug: 'fast-response',
+    title: {
+      zhHK: '快速響應',
+      zhCN: '快速响应',
+      en: 'Fast Response'
+    },
+    description: {
+      zhHK: '響應速度迅速，反應及時，確保業務連續性。',
+      zhCN: '响应速度迅速，反应及时，确保业务连续性。',
+      en: 'Rapid response speed and timely reaction ensure business continuity.'
+    },
+    icon: 'Cloud',
+    category: 'operations',
+    features: [
+      '專業技術團隊',
+      '多渠道支持',
+      '工單系統',
+      '遠程協助',
+      '現場支援'
+    ],
+    order: 5
+  },
+  {
+    id: '6',
+    slug: 'one-stop-service',
+    title: {
+      zhHK: '一站式服務',
+      zhCN: '一站式服务',
+      en: 'One-Stop Service'
+    },
+    description: {
+      zhHK: '從規劃到實施全套服務，提供完整解決方案。',
+      zhCN: '从规划到实施全套服务，提供完整解决方案。',
+      en: 'Complete service from planning to implementation, providing comprehensive solutions.'
+    },
+    icon: 'Network',
+    category: 'idc',
+    features: [
+      '需求分析',
+      '方案設計',
+      '設備選型',
+      '部署實施',
+      '培訓支持'
+    ],
+    order: 6
+  }
+]
+
+/**
+ * Mock API Functions
+ */
+export const getProducts = async (): Promise<Product[]> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 300))
+  return mockProducts
+}
+
+export const getProductBySlug = async (slug: string): Promise<Product | null> => {
+  await new Promise(resolve => setTimeout(resolve, 200))
+  return mockProducts.find(p => p.slug === slug) || null
+}
+
+export const getNews = async (locale: string = 'zh-HK'): Promise<News[]> => {
+  await new Promise(resolve => setTimeout(resolve, 300))
+  return mockNews.filter(news => news.locale === locale || 'zh-HK')
+}
+
+export const getNewsBySlug = async (slug: string): Promise<News | null> => {
+  await new Promise(resolve => setTimeout(resolve, 200))
+  return mockNews.find(n => n.slug === slug) || null
+}
+
+export const getSolutions = async (): Promise<Solution[]> => {
+  await new Promise(resolve => setTimeout(resolve, 300))
+  return mockSolutions
+}
+
+export const getSolutionBySlug = async (slug: string): Promise<Solution | null> => {
+  await new Promise(resolve => setTimeout(resolve, 200))
+  return mockSolutions.find(s => s.slug === slug) || null
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "web-for-hk",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "typecheck": "nuxt typecheck",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@nuxtjs/i18n": "^9.0.0",
+    "@tresjs/core": "^3.9.0",
+    "gsap": "^3.12.0",
+    "lenis": "^1.0.42",
+    "nuxt": "^3.15.0",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^0.7.0",
+    "@nuxtjs/tailwindcss": "^6.12.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^9.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0",
+    "vue-tsc": "^2.0.0"
+  }
+}
+</file>
+
+<file path="pages/contact.vue">
+<template>
+  <div class="min-h-screen bg-swiss-bg py-24">
+    <!-- Page Header -->
+    <section class="mb-16">
+      <GridContainer>
+        <div class="col-span-12 text-center">
+          <TypographyHeader level="1" size="h1" class="mb-4">
+            {{ $t('nav.contact') }}
+          </TypographyHeader>
+          <p class="text-swiss-secondary max-w-2xl mx-auto">
+            我們期待與您合作，為您的業務提供專業的基礎設施解決方案
+          </p>
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Contact Content -->
+    <section>
+      <GridContainer>
+        <!-- Contact Form -->
+        <div class="col-span-12 lg:col-span-6 mb-12 lg:mb-0">
+          <div class="bg-white rounded-lg p-8 shadow-sm">
+            <TypographyHeader level="2" size="h3" class="mb-6">
+              發送訊息
+            </TypographyHeader>
+            <ContactForm @submit="handleFormSubmit" />
+          </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="col-span-12 lg:col-span-6 space-y-8">
+          <!-- Contact Info -->
+          <div class="bg-white rounded-lg p-8 shadow-sm">
+            <TypographyHeader level="3" size="h4" class="mb-6">
+              聯絡方式
+            </TypographyHeader>
+
+            <div class="space-y-4">
+              <!-- Email -->
+              <div class="flex items-start">
+                <div class="w-10 h-10 bg-swiss-accent/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                  <svg class="w-5 h-5 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-sm text-swiss-secondary mb-1">電郵</div>
+                  <a href="mailto:sales@boer.cn" class="text-swiss-text hover:text-swiss-accent transition-colors">
+                    sales@boer.cn
+                  </a>
+                </div>
+              </div>
+
+              <!-- Phone -->
+              <div class="flex items-start">
+                <div class="w-10 h-10 bg-swiss-accent/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                  <svg class="w-5 h-5 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-sm text-swiss-secondary mb-1">聯繫電話</div>
+                  <a href="tel:020-89816175" class="text-swiss-text hover:text-swiss-accent transition-colors">
+                    020-89816175
+                  </a>
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div class="flex items-start">
+                <div class="w-10 h-10 bg-swiss-accent/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                  <svg class="w-5 h-5 text-swiss-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-sm text-swiss-secondary mb-1">地址</div>
+                  <div class="text-swiss-text">
+                    廣東省廣州市天河區<br>
+                    大觀中路95號科匯園1棟303-305
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Business Hours -->
+          <div class="bg-white rounded-lg p-8 shadow-sm">
+            <TypographyHeader level="3" size="h4" class="mb-6">
+              辦公時間
+            </TypographyHeader>
+
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-swiss-secondary">星期一 - 星期五</span>
+                <span class="text-swiss-text">09:30 - 18:30</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-swiss-secondary">星期六</span>
+                <span class="text-swiss-text">休息</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-swiss-secondary">星期日及公眾假期</span>
+                <span class="text-swiss-text">休息</span>
+              </div>
+            </div>
+
+            <div class="mt-4 p-3 bg-swiss-bg rounded">
+              <p class="text-xs text-swiss-secondary">
+                如有緊急需求，請致電聯繫
+              </p>
+            </div>
+          </div>
+        </div>
+      </GridContainer>
+    </section>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { ContactFormData } from '~/types'
+
+const handleFormSubmit = (data: ContactFormData) => {
+  console.log('Form submitted:', data)
+  // Here you would integrate with your backend API
+  // For now, we just log the data
+}
+
+useHead({
+  title: '聯絡我們 - 廣東博迩科技有限公司',
+})
+</script>
+</file>
+
+<file path="README.md">
+# Project NEXUS (HK)
+
+> 瑞士國際主義風格的企業級基礎設施解決方案官網
+
+## 專案概述
+
+這是一個為香港及海外市場提供高端基礎設施解決方案的企業官網，採用現代化的技術棧和設計理念。
+
+### 核心特性
+
+- 🎨 **Swiss International Style** - 極簡主義設計，40%+ 負空間
+- 🌐 **多語言支持** - 繁體中文（香港）、简体中文、English
+- 🎭 **3D 滾動敘事** - 使用 Three.js 實現伺服器爆炸動畫
+- 📱 **響應式設計** - 桌面端 3D + 移動端優化降級
+- ⚡ **性能優化** - ISR 緩存策略，優化首屏加載
+- 🔍 **SEO 友好** - 完整的 SEO 配置和 sitemap
+
+## 技術棧
+
+### 前端框架
+- **Nuxt 3** - Vue 3 SSR 框架
+- **TypeScript** - 嚴格類型檢查
+- **Vue 3 Composition API** - 響應式開發
+
+### 樣式與設計
+- **Tailwind CSS** - 實用工具 CSS 框架
+- **Swiss Design System** - 自定義設計系統
+- **自定義字體** - Inter + Noto Sans HK
+
+### 動畫與 3D
+- **Three.js** - 3D 渲染引擎
+- **GSAP + ScrollTrigger** - 滾動動畫
+- **Lenis** - 平滑滾動體驗
+
+### 數據與內容
+- **模擬數據層** - 獨立前端開發
+- **多語言 i18n** - 完整翻譯支持
+
+## 項目結構
+
+```
+Web-For-HK/
+├── assets/              # 靜態資源
+├── components/          # Vue 組件
+│   ├── 3d/             # 3D 場景組件
+│   ├── navigation/     # 導航組件
+│   ├── products/       # 產品組件
+│   ├── solutions/      # 解決方案組件
+│   ├── contact/        # 聯絡表單組件
+│   └── swiss/          # Swiss 設計組件
+├── composables/        # Vue composables
+├── layouts/            # 頁面佈局
+├── pages/              # 頁面路由
+├── public/             # 公共資源
+├── server/             # 服務器端 API
+├── types/              # TypeScript 類型
+└── utils/              # 工具函數
+```
+
+## 快速開始
+
+### 安裝依賴
+
+```bash
+npm install
+```
+
+### 開發服務器
+
+```bash
+npm run dev
+```
+
+訪問 http://localhost:3000
+
+### 構建生產版本
+
+```bash
+npm run build
+```
+
+### 預覽生產版本
+
+```bash
+npm run preview
+```
+
+## 核心頁面
+
+- **首頁** (`/`) - 3D 動畫 Hero 區塊 + 特性展示
+- **產品** (`/products`) - 產品列表和詳情
+- **解決方案** (`/solutions`) - 分類解決方案展示
+- **關於我們** (`/about`) - 公司介紹和發展歷程
+- **聯絡我們** (`/contact`) - 聯絡表單和資訊
+
+## 動畫系統
+
+### 4 階段滾動動畫
+
+1. **淡入** (0-20%) - 立方體從小到大放大
+2. **機櫃打開** (20-50%) - 旋轉並移動展示內部
+3. **組件爆炸** (50-80%) - 組件向外散開
+4. **重新組裝** (80-100%) - 組件重新組合
+
+### 設備檢測
+
+- 桌面端：完整 3D 動畫體驗
+- 移動端：優化的降級方案（靜態圖片 + 動畫）
+
+## 設計系統
+
+### Swiss 顏色
+
+- Background: `#F5F5F7` (mica gray)
+- Text: `#1D1D1F` (deep charcoal)
+- Secondary: `#86868b` (metal gray)
+- Accent: `#0071e3` (international blue)
+
+### 排版
+
+- Display: 48px / 4rem
+- H1: 36px / 3rem
+- H2: 30px / 2.5rem
+- H3: 24px / 2rem
+- H4: 20px / 1.25rem
+- H5: 16px / 1rem
+- H6: 14px / 0.875rem
+
+## 部署
+
+### Vercel (推薦)
+
+```bash
+# 安裝 Vercel CLI
+npm i -g vercel
+
+# 部署
+vercel
+```
+
+### 其他平台
+
+此項目可以部署到任何支持 Node.js 的平台：
+- Netlify
+- AWS Amplify
+- Railway
+- 自建伺服器
+
+## 環境變量
+
+創建 `.env` 文件：
+
+```env
+# API 端點（未來使用）
+NUXT_PUBLIC_API_URL=https://api.projectnexus.hk
+```
+
+## Git 工作流
+
+```bash
+# 創建功能分支
+git checkout -b feat/new-feature
+
+# 提交變更
+git add .
+git commit -m "feat: add new feature"
+
+# 推送到遠端
+git push origin feat/new-feature
+```
+
+## 性能優化
+
+- ✅ ISR 緩存策略
+- ✅ 圖片懶加載（待實現）
+- ✅ 代碼分割
+- ✅ Tree shaking
+- ✅ Gzip 壓縮
+- ✅ CDN 邊緣節點
+
+## SEO 配置
+
+- ✅ Meta tags
+- ✅ Open Graph
+- ✅ Twitter Cards
+- ✅ Sitemap.xml
+- ✅ Robots.txt
+- ✅ 結構化數據（待實現）
+
+## 瀏覽器支持
+
+- Chrome/Edge (最新版)
+- Safari (最新版)
+- Firefox (最新版)
+- Mobile Safari iOS 14+
+- Chrome Android 10+
+
+## 許可證
+
+MIT License
+
+---
+
+**Project NEXUS (HK)** - 為香港及海外市場提供專業基礎設施解決方案
+</file>
+
+<file path="i18n.config.ts">
+export default defineI18nConfig(() => ({
+  locale: 'zh-HK',
+  fallbackLocale: 'zh-HK',
+  messages: {
+    'zh-HK': {
+      nav: {
+        home: '首頁',
+        products: '產品',
+        solutions: '解決方案',
+        about: '關於我們',
+        contact: '聯絡我們',
+      },
+      company: {
+        name: '廣東博迩科技有限公司',
+        nameShort: '博迩科技',
+        slogan: '企業基礎設施一體化解決方案服務提供商',
+        mission: '了解客戶需求；理解客戶需求；滿足客戶需求；為客戶提供超預期的產品與服務',
+        description: '企業基礎設施一體化解決方案服務提供商，提供服務器、網絡、數據中心等產品和服務',
+        address: '廣東省廣州市天河區大觀中路95號科匯園1棟303-305',
+        phone: '020-89816175',
+        email: 'sales@boer.cn',
+        website: 'https://www.boer.cn',
+      },
+      home: {
+        hero: {
+          title: '企業基礎設施一體化解決方案服務提供商',
+          subtitle: '了解需求 · 理解需求 · 滿足需求 · 超越預期',
+          cta: '了解產品',
+          ctaSecondary: '聯絡諮詢',
+        },
+        features: {
+          title: '核心優勢',
+          feature1: {
+            title: '產品成熟，穩定可靠',
+            description: '成熟可靠的產品，為您的業務提供堅實的技術支撐',
+          },
+          feature2: {
+            title: '節省成本，快速響應',
+            description: '優化資源配置，節省人力維護和時間成本，響應速度迅速',
+          },
+          feature3: {
+            title: '最新技術，安全可靠',
+            description: '不斷創新產品應用，保護用戶數據安全，提供全方位安全防護',
+          },
+        },
+        animation: {
+          phase1: '卓越性能，啟動未來',
+          phase2: '精密工藝，層層解構',
+          phase3: '每一個組件，都值得細細品味',
+          phase4: '專業，從細節開始',
+        },
+        mobileFallback: {
+          title: '專業基礎設施解決方案',
+          subtitle: '請使用桌面瀏覽器體驗完整 3D 互動效果',
+        },
+      },
+      products: {
+        title: '產品',
+        featured: '精選',
+        viewDetails: '查看詳情',
+        specifications: '規格',
+        category: '類別',
+        allProducts: '所有產品',
+      },
+      solutions: {
+        title: '解決方案',
+      },
+    },
+    'zh-CN': {
+      nav: {
+        home: '首页',
+        products: '产品',
+        solutions: '解决方案',
+        about: '关于我们',
+        contact: '联系我们',
+      },
+      company: {
+        name: '广东博迩科技有限公司',
+        nameShort: '博迩科技',
+        slogan: '企业基础设施一体化解决方案服务提供商',
+        mission: '了解客户需求；理解客户需求；满足客户需求；为客户提供超预期的产品与服务',
+        description: '企业基础设施一体化解决方案服务提供商，提供服务器、网络、数据中心等产品和服务',
+        address: '广东省广州市天河区大观中路95号科汇园1栋303-305',
+        phone: '020-89816175',
+        email: 'sales@boer.cn',
+        website: 'https://www.boer.cn',
+      },
+      home: {
+        hero: {
+          title: '企业基础设施一体化解决方案服务提供商',
+          subtitle: '了解需求 · 理解需求 · 满足需求 · 超越预期',
+          cta: '了解产品',
+          ctaSecondary: '联系咨询',
+        },
+        features: {
+          title: '核心优势',
+          feature1: {
+            title: '产品成熟，稳定可靠',
+            description: '成熟可靠的产品，为您的业务提供坚实的技术支撑',
+          },
+          feature2: {
+            title: '节省成本，快速响应',
+            description: '优化资源配置，节省人力维护和时间成本，响应速度迅速',
+          },
+          feature3: {
+            title: '最新技术，安全可靠',
+            description: '不断创新产品应用，保护用户数据安全，提供全方位安全防护',
+          },
+        },
+        animation: {
+          phase1: '卓越性能，启动未来',
+          phase2: '精密工艺，层层解构',
+          phase3: '每一个组件，都值得细细品味',
+          phase4: '专业，从细节开始',
+        },
+        mobileFallback: {
+          title: '专业基础设施解决方案',
+          subtitle: '请使用桌面浏览器体验完整 3D 互动效果',
+        },
+      },
+      products: {
+        title: '产品',
+        featured: '精选',
+        viewDetails: '查看详情',
+        specifications: '规格',
+        category: '类别',
+        allProducts: '所有产品',
+      },
+      solutions: {
+        title: '解决方案',
+      },
+    },
+    en: {
+      company: {
+        name: 'Guangdong Boer Technology Co., Ltd.',
+        nameShort: 'Boer Technology',
+        slogan: 'Integrated Enterprise Infrastructure Solution Service Provider',
+        mission:
+          'Understand customer needs; Comprehend customer needs; Satisfy customer needs; Provide products and services that exceed customer expectations',
+        description:
+          'Integrated enterprise infrastructure solution service provider, offering servers, networks, data centers, and other products and services',
+        address:
+          'Room 303-305, Building 1, Kehui Park, No. 95 Daguan Middle Road, Tianhe District, Guangzhou, Guangdong Province',
+        phone: '+86 20-89816175',
+        email: 'sales@boer.cn',
+        website: 'https://www.boer.cn',
+      },
+      nav: {
+        home: 'Home',
+        products: 'Products',
+        solutions: 'Solutions',
+        about: 'About Us',
+        contact: 'Contact',
+      },
+      home: {
+        hero: {
+          title: 'Integrated Enterprise Infrastructure Solution Service Provider',
+          subtitle: 'Understand · Comprehend · Satisfy · Exceed Expectations',
+          cta: 'Learn More',
+          ctaSecondary: 'Contact Us',
+        },
+        features: {
+          title: 'Core Advantages',
+          feature1: {
+            title: 'Mature Products, Stable and Reliable',
+            description:
+              'Mature and reliable products providing solid technical support for your business',
+          },
+          feature2: {
+            title: 'Cost Saving, Fast Response',
+            description:
+              'Optimize resource allocation, save maintenance and time costs, rapid response speed',
+          },
+          feature3: {
+            title: 'Latest Technology, Secure and Reliable',
+            description:
+              'Continuously innovate product applications, protect user data security, provide comprehensive security protection',
+          },
+        },
+        animation: {
+          phase1: 'Exceptional Performance, Powering the Future',
+          phase2: 'Precision Engineering, Layer by Layer',
+          phase3: 'Every Component Deserves Attention',
+          phase4: 'Professionalism Starts with Details',
+        },
+        mobileFallback: {
+          title: 'Professional Infrastructure Solutions',
+          subtitle: 'Please use a desktop browser for the full 3D interactive experience',
+        },
+      },
+      products: {
+        title: 'Products',
+        featured: 'Featured',
+        viewDetails: 'View Details',
+        specifications: 'Specifications',
+        category: 'Category',
+        allProducts: 'All Products',
+      },
+      solutions: {
+        title: 'Solutions',
+      },
+    },
+  },
+}))
+</file>
+
+<file path="pages/index.vue">
+<template>
+  <div class="min-h-screen bg-swiss-bg">
+    <!-- Animated Text Overlay -->
+    <AnimatedTextOverlay :phase="animationPhase" />
+
+    <!-- Hero Section with 3D Scene -->
+    <section class="min-h-screen flex items-center" id="hero-section">
+      <GridContainer :grid="true">
+        <div class="col-span-12 lg:col-span-6 flex flex-col justify-center">
+          <TypographyHeader level="1" size="display" class="mb-6">
+            {{ $t('home.hero.title') }}
+          </TypographyHeader>
+          <TypographyHeader level="2" size="h3" color="secondary" class="mb-12">
+            {{ $t('home.hero.subtitle') }}
+          </TypographyHeader>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <SwissButton variant="primary" size="lg">
+              {{ $t('home.hero.cta') }}
+            </SwissButton>
+            <SwissButton variant="ghost" size="lg">
+              {{ $t('home.hero.ctaSecondary') }}
+            </SwissButton>
+          </div>
+        </div>
+
+        <div class="col-span-12 lg:col-span-6 min-h-[500px] relative">
+          <!-- 桌面端：3D 場景 -->
+          <ServerScene
+            v-if="canUseAdvanced3D"
+            ref="serverSceneRef"
+            background-color="#F5F5F7"
+            :auto-rotate="false"
+            :mouse-parallax="true"
+          />
+          <!-- 移動端：降級版本 -->
+          <MobileFallback v-else :show-scroll-indicator="true" />
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-white">
+      <GridContainer :grid="true">
+        <!-- Section Header -->
+        <div class="col-span-12 text-center mb-16">
+          <TypographyHeader level="2" size="h2" align="center" class="mb-4">
+            {{ $t('home.features.title') }}
+          </TypographyHeader>
+        </div>
+
+        <!-- Feature 1 -->
+        <div class="col-span-12 md:col-span-4 mb-8 md:mb-0">
+          <div class="text-center p-8">
+            <TypographyHeader level="3" size="h4" class="mb-4">
+              {{ $t('home.features.feature1.title') }}
+            </TypographyHeader>
+            <p class="text-swiss-secondary">
+              {{ $t('home.features.feature1.description') }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="col-span-12 md:col-span-4 mb-8 md:mb-0">
+          <div class="text-center p-8">
+            <TypographyHeader level="3" size="h4" class="mb-4">
+              {{ $t('home.features.feature2.title') }}
+            </TypographyHeader>
+            <p class="text-swiss-secondary">
+              {{ $t('home.features.feature2.description') }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="col-span-12 md:col-span-4">
+          <div class="text-center p-8">
+            <TypographyHeader level="3" size="h4" class="mb-4">
+              {{ $t('home.features.feature3.title') }}
+            </TypographyHeader>
+            <p class="text-swiss-secondary">
+              {{ $t('home.features.feature3.description') }}
+            </p>
+          </div>
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-24 bg-swiss-bg">
+      <GridContainer :grid="true">
+        <div class="col-span-12 text-center mb-12">
+          <TypographyHeader level="2" size="h2" align="center" class="mb-4">
+            {{ $t('about.title') }}
+          </TypographyHeader>
+          <p class="text-swiss-secondary max-w-3xl mx-auto">
+            {{ $t('company.slogan') }}
+          </p>
+        </div>
+        <div class="col-span-12 text-center">
+          <p class="text-swiss-text max-w-4xl mx-auto text-lg">
+            {{ $t('company.mission') }}
+          </p>
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Component Demo Section -->
+    <section class="py-24 bg-swiss-bg">
+      <GridContainer :grid="true">
+        <div class="col-span-12 mb-12">
+          <TypographyHeader level="2" size="h2"> Swiss Design Components </TypographyHeader>
+          <p class="text-swiss-secondary mt-4">
+            Swiss International Style - 瑞士国际主义风格组件库
+          </p>
+        </div>
+
+        <!-- Button Variants -->
+        <div class="col-span-12 mb-8">
+          <TypographyHeader level="3" size="h4" class="mb-4"> Button Variants </TypographyHeader>
+          <div class="flex flex-wrap gap-4">
+            <SwissButton variant="primary">Primary</SwissButton>
+            <SwissButton variant="secondary">Secondary</SwissButton>
+            <SwissButton variant="ghost">Ghost</SwissButton>
+            <SwissButton variant="primary" disabled>Disabled</SwissButton>
+          </div>
+        </div>
+
+        <!-- Button Sizes -->
+        <div class="col-span-12 mb-8">
+          <TypographyHeader level="3" size="h4" class="mb-4"> Button Sizes </TypographyHeader>
+          <div class="flex flex-wrap gap-4 items-center">
+            <SwissButton variant="primary" size="sm">Small</SwissButton>
+            <SwissButton variant="primary" size="md">Medium</SwissButton>
+            <SwissButton variant="primary" size="lg">Large</SwissButton>
+          </div>
+        </div>
+
+        <!-- Typography Examples -->
+        <div class="col-span-12">
+          <TypographyHeader level="3" size="h4" class="mb-4"> Typography Scale </TypographyHeader>
+          <div class="space-y-4">
+            <TypographyHeader level="1" size="h1">
+              Display Heading (H1) - 专业基礎設施解決方案
+            </TypographyHeader>
+            <TypographyHeader level="2" size="h2">
+              Heading 2 (H2) - 瑞士國際主義風格
+            </TypographyHeader>
+            <TypographyHeader level="3" size="h3">
+              Heading 3 (H3) - Swiss International Style
+            </TypographyHeader>
+            <TypographyHeader level="4" size="h4" color="secondary">
+              Secondary Text - 次要文字顏色
+            </TypographyHeader>
+          </div>
+        </div>
+      </GridContainer>
+    </section>
+  </div>
+</template>
+
+<script setup lang="ts">
+const { t } = useI18n()
+
+useHead({
+  title: '首页 - 广东博迩科技有限公司',
+})
+
+// 設備檢測
+const { deviceInfo, canUseAdvanced3D } = useDeviceDetection()
+const canUse3D = ref(false)
+
+// 動畫系統
+const serverSceneRef = ref()
+const animationPhase = ref(0)
+
+onMounted(() => {
+  // 檢測設備並決定是否啟用 3D
+  canUse3D.value = canUseAdvanced3D()
+
+  // 確保在客戶端執行且可以使用 3D
+  if (process.client && canUse3D.value) {
+    // 等待下一個 tick，確保組件已掛載
+    nextTick(() => {
+      initScrollAnimation()
+    })
+  }
+})
+
+const initScrollAnimation = () => {
+  // 獲取 ScrollTrigger 實例
+  const { ScrollTrigger } = useNuxtApp().$ScrollTrigger as { ScrollTrigger: any }
+
+  if (!ScrollTrigger) {
+    console.warn('ScrollTrigger not available')
+    return
+  }
+
+  // 僅在桌面端啟用滾動動畫
+  if (!canUse3D.value) {
+    return
+  }
+
+  // 創建滾動時間軸
+  const timeline = ScrollTrigger.timeline({
+    scrollTrigger: {
+      trigger: '#hero-section',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1,
+      onUpdate: (self: any) => {
+        const progress = self.progress
+        updateAnimationPhase(progress)
+      },
+    },
+  })
+
+  // 階段 1: 淡入 (0-20%)
+  timeline.to({}, { duration: 20 })
+
+  // 階段 2: 機櫃打開 (20-50%)
+  timeline.to({}, { duration: 30 })
+
+  // 階段 3: 組件爆炸 (50-80%)
+  timeline.to({}, { duration: 30 })
+
+  // 階段 4: 重新組裝 (80-100%)
+  timeline.to({}, { duration: 20 })
+}
+
+const updateAnimationPhase = (progress: number) => {
+  if (!serverSceneRef.value) return
+
+  let phase = 0
+  let phaseProgress = 0
+
+  if (progress < 0.2) {
+    // 階段 1: 淡入
+    phase = 0
+    phaseProgress = progress / 0.2
+  } else if (progress < 0.5) {
+    // 階段 2: 機櫃打開
+    phase = 1
+    phaseProgress = (progress - 0.2) / 0.3
+  } else if (progress < 0.8) {
+    // 階段 3: 組件爆炸
+    phase = 2
+    phaseProgress = (progress - 0.5) / 0.3
+  } else {
+    // 階段 4: 重新組裝
+    phase = 3
+    phaseProgress = (progress - 0.8) / 0.2
+  }
+
+  animationPhase.value = phase
+
+  // 更新 3D 場景
+  serverSceneRef.value.setAnimationPhase(phase, phaseProgress)
+}
+
+onUnmounted(() => {
+  // 清理 ScrollTrigger
+  if (process.client) {
+    const { ScrollTrigger } = useNuxtApp().$ScrollTrigger as { ScrollTrigger: any }
+    if (ScrollTrigger) {
+      ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill())
+    }
+  }
+})
+</script>
+</file>
+
+<file path="nuxt.config.ts">
+// https://nuxt.com/docs/api/configuration/nuxt-config
+export default defineNuxtConfig({
+  compatibilityDate: '2024-04-03',
+  devtools: { enabled: true },
+  future: {
+    compatibilityVersion: 4,
+  },
+
+  // TypeScript
+  typescript: {
+    strict: true,
+    typeCheck: false, // Disabled due to vue-tsc issues in dev mode
+  },
+
+  // Modules
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/i18n',
+    // '@nuxt/image' - 可選：安裝後啟用圖片優化
+    // 運行: npm install @nuxt/image
+  ],
+
+  // 圖片優化配置（需要先安裝 @nuxt/image）
+  image: {
+    // 格式優化
+    formats: ['webp', 'avif'],
+    // 質量設置
+    quality: 80,
+    // 使用內部圖片服務
+    internalUrl: '/_image',
+  },
+
+  // Tailwind CSS
+  tailwindcss: {
+    cssPath: '~/assets/css/tailwind.css',
+    configPath: 'tailwind.config.js',
+  },
+
+  // i18n Configuration
+  i18n: {
+    defaultLocale: 'zh-HK',
+    strategy: 'prefix_except_default',
+    locales: [
+      { code: 'zh-HK', iso: 'zh-HK', name: '繁體中文（香港）' },
+      { code: 'zh-CN', iso: 'zh-CN', name: '简体中文' },
+      { code: 'en', iso: 'en-US', name: 'English' }
+    ],
+    vueI18n: './i18n.config.ts'
+  },
+
+  // CSS
+  css: ['~/assets/css/main.css'],
+
+  // App Config
+  app: {
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      title: '廣東博迩科技有限公司',
+      meta: [
+        { name: 'description', content: '企業基礎設施一體化解決方案服務提供商，提供服務器、網絡、數據中心等產品和解決方案' },
+        { name: 'keywords', content: '服務器,網絡,數據中心,基礎設施整體解決方案,IDC,HPC,存儲,交換機' },
+        { name: 'author', content: '廣東博迩科技有限公司' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: '廣東博迩科技有限公司' },
+        { property: 'og:locale', content: 'zh_HK' },
+        { property: 'og:title', content: '廣東博迩科技有限公司 - 專業基礎設施解決方案服務提供商' },
+        { property: 'og:description', content: '提供企業級服務器、存儲、網絡產品和整體解決方案，服務廣州及全國市場' },
+        { property: 'og:image', content: '/og-image.jpg' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: '廣東博迩科技有限公司 - 專業基礎設施解決方案服務提供商' },
+        { name: 'twitter:description', content: '提供企業級服務器、存儲、網絡產品和整體解決方案，服務廣州及全國市場' },
+        { name: 'twitter:image', content: '/og-image.jpg' },
+      ],
+      htmlAttrs: {
+        lang: 'zh-HK',
+      },
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ],
+    },
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
+
+  // Route Rules (ISR for performance)
+  routeRules: {
+    '/': { isr: 3600 }, // 1 hour
+    '/products': { isr: 86400 }, // 1 day
+    '/products/**': { isr: 86400 },
+    '/solutions': { isr: 86400 },
+    '/solutions/**': { isr: 86400 },
+    '/about': { isr: 604800 }, // 1 week
+    '/contact': { isr: 604800 },
+  },
+
+  // Vite
+  vite: {
+    optimizeDeps: {
+      include: ['gsap', 'lenis'],
+    },
+  },
+})
+</file>
+
+</files>

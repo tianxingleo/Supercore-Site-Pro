@@ -6,12 +6,29 @@
     "about": "關於我們",
     "contact": "聯絡我們"
   },
+  "company": {
+    "name": "廣東博迩科技有限公司",
+    "nameShort": "博迩科技",
+    "slogan": "企業基礎設施一體化解決方案服務提供商",
+    "mission": "了解客戶需求；理解客戶需求；滿足客戶需求；為客戶提供超預期的產品與服務",
+    "description": "企業基礎設施一體化解決方案服務提供商，提供伺服器、網絡、數據中心等產品和服務",
+    "address": "廣東省廣州市天河區大觀中路95號科匯園1棟303-305",
+    "phone": "020-89816175",
+    "email": "sales@boer.cn",
+    "website": "https://www.boer.cn"
+  },
   "home": {
     "hero": {
       "title": "專業基礎設施解決方案",
       "subtitle": "服務香港及海外市場",
       "cta": "了解更多",
       "ctaSecondary": "聯絡我們"
+    },
+    "animation": {
+      "phase1": "歡迎使用",
+      "phase2": "探索我們的產品",
+      "phase3": "專業的技術支援",
+      "phase4": "開啟數碼轉型之旅"
     },
     "features": {
       "title": "核心優勢",
@@ -39,6 +56,12 @@
   "solutions": {
     "title": "解決方案",
     "subtitle": "為您的業務量身定制",
+    "categories": {
+      "all": "全部",
+      "idc": "IDC 服務",
+      "operations": "運維服務",
+      "development": "開發服務"
+    },
     "idc": "數據中心服務",
     "operations": "運維管理",
     "development": "開發服務"
@@ -48,11 +71,84 @@
     "subtitle": "值得信賴的基礎設施合作夥伴",
     "mission": "我們的使命",
     "vision": "我們的願景",
-    "timeline": "發展歷程"
+    "timeline": "發展歷程",
+    "pageTitle": "關於博迩",
+    "pageSubtitle": "企業基礎設施一體化解決方案服務提供商",
+    "companyOverview": {
+      "title": "關於我們",
+      "description1": "廣東博迩科技有限公司是一家專注於企業級基礎設施解決方案的提供商，致力於為廣州及全國市場的客戶提供高品質的伺服器、存儲、網絡及相關服務。",
+      "description2": "我們擁有豐富的行業經驗，專注於為企業提供從規劃到實施的全套服務，幫助客戶構建安全、可靠、高效的資訊技術基礎設施。",
+      "philosophy": {
+        "title": "經營理念",
+        "point1": "了解客戶需求",
+        "point2": "理解客戶需求",
+        "point3": "滿足客戶需求",
+        "point4": "為客戶提供超預期的產品與服務"
+      }
+    },
+    "coreAdvantages": {
+      "title": "核心優勢",
+      "support24": {
+        "value": "7x24",
+        "label": "技術支援"
+      },
+      "availability": {
+        "value": "99.9%",
+        "label": "服務可用性"
+      },
+      "response": {
+        "value": "快速",
+        "label": "響應速度"
+      },
+      "team": {
+        "value": "專業",
+        "label": "技術團隊"
+      }
+    },
+    "solutionFeatures": {
+      "title": "解決方案特點",
+      "stable": {
+        "title": "後台穩定",
+        "description": "產品成熟，穩定可靠"
+      },
+      "cost": {
+        "title": "節省成本",
+        "description": "節省人力維護和時間成本"
+      },
+      "technology": {
+        "title": "最新技術",
+        "description": "不斷創新產品的應用"
+      },
+      "security": {
+        "title": "安全可靠",
+        "description": "保護用戶數據安全"
+      },
+      "responseSpeed": {
+        "title": "快速響應",
+        "description": "響應速度迅速，反應及時"
+      },
+      "oneStop": {
+        "title": "一站式服務",
+        "description": "從規劃到實施全套服務"
+      }
+    }
   },
   "contact": {
     "title": "聯絡我們",
     "subtitle": "我們隨時為您服務",
+    "pageSubtitle": "我們期待與您合作，為您的業務提供專業的基礎設施解決方案",
+    "sendMessage": "發送訊息",
+    "contactInfo": "聯絡方式",
+    "email": "電郵",
+    "phone": "聯繫電話",
+    "address": "地址",
+    "businessHours": "辦公時間",
+    "mondayToFriday": "星期一 - 星期五",
+    "weekend": "星期六",
+    "sundayHoliday": "星期日及公眾假期",
+    "closed": "休息",
+    "workingHours": "09:30 - 18:30",
+    "emergencyContact": "如有緊急需求，請致電聯繫",
     "form": {
       "name": "姓名",
       "email": "電子郵件",
