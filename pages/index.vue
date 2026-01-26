@@ -45,15 +45,37 @@
       </GridContainer>
     </section>
 
-    <!-- Trust Section (Partners) -->
-    <section class="py-12 bg-white border-y border-gray-100">
+    <!-- Product Categories Section -->
+    <section class="py-24 bg-white border-y border-gray-100">
       <GridContainer>
-        <div
-          class="col-span-12 flex flex-wrap items-center justify-between gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-          <div v-for="i in 5" :key="i"
-            class="flex items-center space-x-2 font-display font-bold text-2xl tracking-tighter">
-            <div class="w-8 h-8 bg-swiss-text rounded-lg"></div>
-            <span>PARTNER {{ i }}</span>
+        <div class="col-span-12 mb-16">
+          <div
+            class="inline-block mb-6 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
+            {{ $t('products.title') }}
+          </div>
+        </div>
+
+        <div class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div v-for="(cat, index) in [
+            'generalCompute',
+            'hpc',
+            'highPerformanceStorage',
+            'generalStorage'
+          ]" :key="cat" class="group">
+            <div
+              class="border-t border-gray-100 pt-8 transition-colors duration-500 group-hover:border-swiss-text h-full">
+              <div class="text-[8px] font-mono text-swiss-text/30 mb-4 uppercase">CAT_0{{ index + 1 }}</div>
+              <TypographyHeader :level="3" size="h5" class="!mb-2 !tracking-tight">
+                {{ $t(`products.categories.${cat}.title`) }}
+              </TypographyHeader>
+              <div class="text-[9px] text-swiss-text/40 font-bold uppercase tracking-widest mb-6">
+                {{ $t(`products.categories.${cat}.subtitle`) }}
+              </div>
+              <p v-if="cat !== 'serverProducts'"
+                class="text-[11px] text-swiss-text-muted leading-relaxed line-clamp-4 group-hover:text-swiss-text transition-colors duration-500">
+                {{ $t(`products.categories.${cat}.description`) }}
+              </p>
+            </div>
           </div>
         </div>
       </GridContainer>
