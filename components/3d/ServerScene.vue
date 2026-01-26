@@ -14,12 +14,14 @@ interface Props {
   backgroundColor?: string
   autoRotate?: boolean
   mouseParallax?: boolean
+  initialRotation?: { x: number, y: number, z: number }
 }
 
 const props = withDefaults(defineProps<Props>(), {
   backgroundColor: '#F5F5F7',
   autoRotate: false,
   mouseParallax: true,
+  initialRotation: () => ({ x: 0, y: 0, z: 0 }),
 })
 
 const containerRef = ref<HTMLDivElement>()
@@ -130,6 +132,11 @@ const initScene = () => {
         const scale = 4 / maxDim
         object.scale.setScalar(scale)
         object.position.set(-center.x * scale, -center.y * scale, -center.z * scale)
+
+        // 應用初始旋轉
+        object.rotation.x = props.initialRotation.x
+        object.rotation.y = props.initialRotation.y
+        object.rotation.z = props.initialRotation.z
 
         const group = new THREE.Group()
         group.add(object)

@@ -11,7 +11,9 @@
       "mcp__playwright__browser_navigate",
       "mcp__search__tavily_extract",
       "Bash(npx tsx:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_run_code"
     ]
   }
 }
