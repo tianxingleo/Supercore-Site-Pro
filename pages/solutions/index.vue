@@ -47,6 +47,8 @@
 <script setup lang="ts">
 import type { Solution } from '~/types'
 
+const { t } = useI18n()
+
 const { data: solutions } = await useFetch<Solution[]>('/api/solutions', {
   transform: () => {
     return mockSolutions.sort((a, b) => a.order - b.order)
@@ -57,10 +59,10 @@ import { mockSolutions } from '~/utils/mockData'
 
 // Categories
 const categories = [
-  { key: 'all', label: $t('solutions.categories.all') },
-  { key: 'idc', label: $t('solutions.categories.idc') },
-  { key: 'operations', label: $t('solutions.categories.operations') },
-  { key: 'development', label: $t('solutions.categories.development') },
+  { key: 'all', label: t('solutions.categories.all') },
+  { key: 'idc', label: t('solutions.categories.idc') },
+  { key: 'operations', label: t('solutions.categories.operations') },
+  { key: 'development', label: t('solutions.categories.development') },
 ]
 
 const selectedCategory = ref('all')

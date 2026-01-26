@@ -21,14 +21,14 @@ export default defineNuxtConfig({
   ],
 
   // 圖片優化配置（需要先安裝 @nuxt/image）
-  image: {
-    // 格式優化
-    formats: ['webp', 'avif'],
-    // 質量設置
-    quality: 80,
-    // 使用內部圖片服務
-    internalUrl: '/_image',
-  },
+  // image: {
+  //   // 格式優化
+  //   formats: ['webp', 'avif'],
+  //   // 質量設置
+  //   quality: 80,
+  //   // 使用內部圖片服務
+  //   internalUrl: '/_image',
+  // },
 
   // Tailwind CSS
   tailwindcss: {
@@ -41,11 +41,15 @@ export default defineNuxtConfig({
     defaultLocale: 'zh-HK',
     strategy: 'prefix_except_default',
     locales: [
+      { code: 'zh', iso: 'zh-HK', name: '中文' },
       { code: 'zh-HK', iso: 'zh-HK', name: '繁體中文（香港）' },
       { code: 'zh-CN', iso: 'zh-CN', name: '简体中文' },
       { code: 'en', iso: 'en-US', name: 'English' }
     ],
-    vueI18n: './i18n.config.ts'
+    bundle: {
+      optimizeTranslationDirective: false
+    },
+    vueI18n: 'i18n.config.ts'
   },
 
   // CSS
