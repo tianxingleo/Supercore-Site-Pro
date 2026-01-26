@@ -8,8 +8,8 @@
 interface Props {
   level?: 1 | 2 | 3 | 4 | 5 | 6
   size?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-  weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold'
-  color?: 'text' | 'secondary' | 'accent'
+  weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'black'
+  color?: 'text' | 'secondary' | 'accent' | 'white'
   align?: 'left' | 'center' | 'right'
   tracking?: 'tighter' | 'tight' | 'normal' | 'wide' | 'wider'
   leading?: 'none' | 'tight' | 'snug' | 'normal' | 'relaxed' | 'loose'
@@ -34,13 +34,13 @@ const headerClasses = computed(() => {
 
   // Size variants (Swiss design - large, bold headings)
   const sizes = {
-    display: ['text-5xl', 'sm:text-6xl', 'lg:text-7xl', 'font-bold'],
-    h1: ['text-4xl', 'sm:text-5xl', 'lg:text-6xl'],
-    h2: ['text-3xl', 'sm:text-4xl', 'lg:text-5xl'],
-    h3: ['text-2xl', 'sm:text-3xl', 'lg:text-4xl'],
-    h4: ['text-xl', 'sm:text-2xl', 'lg:text-3xl'],
-    h5: ['text-lg', 'sm:text-xl', 'lg:text-2xl'],
-    h6: ['text-base', 'sm:text-lg', 'lg:text-xl'],
+    display: ['text-7xl', 'sm:text-8xl', 'lg:text-9xl', 'font-black', 'tracking-tighter', 'leading-[0.9]'],
+    h1: ['text-5xl', 'sm:text-6xl', 'lg:text-7xl', 'font-black', 'tracking-tight'],
+    h2: ['text-4xl', 'sm:text-5xl', 'lg:text-6xl', 'font-bold', 'tracking-tight'],
+    h3: ['text-3xl', 'sm:text-4xl', 'lg:text-4xl', 'font-bold', 'tracking-tight'],
+    h4: ['text-2xl', 'sm:text-3xl', 'lg:text-3xl', 'font-semibold'],
+    h5: ['text-xl', 'sm:text-2xl', 'lg:text-2xl', 'font-semibold'],
+    h6: ['text-lg', 'sm:text-xl', 'lg:text-xl', 'font-semibold'],
   }
   classes.push(...sizes[props.size])
 
@@ -51,14 +51,16 @@ const headerClasses = computed(() => {
     medium: 'font-medium',
     semibold: 'font-semibold',
     bold: 'font-bold',
+    black: 'font-black',
   }
   classes.push(weights[props.weight])
 
   // Color
   const colors = {
     text: 'text-swiss-text',
-    secondary: 'text-swiss-secondary',
+    secondary: 'text-swiss-text-muted',
     accent: 'text-swiss-accent',
+    white: 'text-white',
   }
   classes.push(colors[props.color])
 

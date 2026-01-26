@@ -1,14 +1,18 @@
 <template>
   <NuxtLink
     :to="`/products/${product.slug}`"
-    class="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+    class="group block bg-white border border-gray-100 hover:border-swiss-text transition-all duration-500"
   >
     <!-- Product Image Placeholder -->
-    <div class="aspect-video bg-gradient-to-br from-swiss-bg to-gray-200 relative overflow-hidden">
-      <div class="absolute inset-0 flex items-center justify-center">
+    <div class="aspect-square bg-swiss-bg-soft relative overflow-hidden">
+      <div class="absolute inset-0 flex items-center justify-center p-12">
+        <!-- Isolated Product Look: Monochrome Minimal Icon/Object -->
         <div
-          class="w-24 h-24 bg-swiss-text rounded-lg opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-500"
+          class="w-full h-full bg-swiss-text opacity-[0.03] group-hover:opacity-[0.05] group-hover:scale-105 transition-all duration-700 ease-out"
         ></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+           <div class="w-1/3 h-1/3 border-2 border-swiss-text/10 group-hover:border-swiss-text/20 transition-all duration-500"></div>
+        </div>
       </div>
 
       <!-- Category Badge -->
@@ -20,7 +24,7 @@
 
       <!-- Featured Badge -->
       <div v-if="product.featured" class="absolute top-4 right-4">
-        <span class="px-3 py-1 bg-swiss-accent text-white rounded-full text-xs font-medium">
+        <span class="px-3 py-1 bg-swiss-text text-white rounded-full text-[10px] font-bold tracking-widest uppercase">
           {{ $t('products.featured') }}
         </span>
       </div>

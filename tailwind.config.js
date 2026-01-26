@@ -13,24 +13,28 @@ export default {
       // Swiss Design System - Color Palette
       colors: {
         // Background
-        'swiss-bg': '#F5F5F7',
+        'swiss-bg': '#FFFFFF',
+        'swiss-bg-soft': '#F5F5F7',
+        'swiss-bg-dark': '#000000',
         // Text
         'swiss-text': '#1D1D1F',
-        // Secondary
-        'swiss-secondary': '#86868b',
-        // Accent (use sparingly)
-        'swiss-accent': '#0071e3',
+        'swiss-text-muted': '#86868b',
+        'swiss-text-dark': '#FFFFFF',
+        // Accent (Subtle, mostly monochrome)
+        'swiss-accent': '#000000',
+        'swiss-accent-blue': '#0071e3', // Keep for small interactions only
       },
 
       // Typography
       fontFamily: {
         sans: [
           'Inter',
-          'Noto Sans HK',
-          '-apple-system',
-          'BlinkMacSystemFont',
-          'Segoe UI',
-          'Roboto',
+          'system-ui',
+          'sans-serif',
+        ],
+        display: [
+          'Inter', // Use Inter for both for that consistent Swiss look
+          'system-ui',
           'sans-serif',
         ],
       },

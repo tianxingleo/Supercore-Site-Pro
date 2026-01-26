@@ -22,7 +22,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   // 整合 ScrollTrigger 和 Lenis
   if (process.client) {
     nuxtApp.hook('app:mounted', () => {
-      const gsap = (nuxtApp.$gsap as { gsap: any }).gsap
+      const gsap = nuxtApp.$gsap as any
 
       if (gsap && gsap.ticker) {
         gsap.ticker.add((time: number) => {

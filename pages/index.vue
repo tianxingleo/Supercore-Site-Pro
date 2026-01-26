@@ -4,36 +4,55 @@
     <AnimatedTextOverlay :phase="animationPhase" />
 
     <!-- Hero Section with 3D Scene -->
-    <section class="min-h-screen flex items-center" id="hero-section">
+    <section class="min-h-screen flex items-center relative overflow-hidden bg-white" id="hero-section">
+      <!-- Engineering Details -->
+      <div class="absolute top-12 left-12 text-[8px] font-mono text-swiss-text opacity-20 tracking-[0.4em] uppercase hidden lg:block">
+        ref_id: 2026_HK_BOER // 22.3193° N, 114.1694° E
+      </div>
+      <div class="absolute bottom-12 right-12 text-[8px] font-mono text-swiss-text opacity-20 tracking-[0.4em] uppercase hidden lg:block vertical-text">
+        infrastructure_simplified_v4.0
+      </div>
+
       <GridContainer :grid="true">
-        <div class="col-span-12 lg:col-span-6 flex flex-col justify-center">
-          <TypographyHeader level="1" size="display" class="mb-6">
+        <div class="col-span-12 lg:col-span-12 xl:col-span-8 flex flex-col justify-center py-24 lg:py-0 relative z-10">
+          <TypographyHeader :level="1" size="display"
+            class="mb-8">
             {{ $t('home.hero.title') }}
           </TypographyHeader>
-          <TypographyHeader level="2" size="h3" color="secondary" class="mb-12">
+          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal"
+            class="mb-12 max-w-2xl opacity-90">
             {{ $t('home.hero.subtitle') }}
           </TypographyHeader>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <SwissButton variant="primary" size="lg">
+          <div class="flex flex-col sm:flex-row gap-6">
+            <SwissButton variant="primary" size="lg" class="!px-10">
               {{ $t('home.hero.cta') }}
             </SwissButton>
-            <SwissButton variant="ghost" size="lg">
+            <SwissButton variant="ghost" size="lg" class="!px-10 border-swiss-text">
               {{ $t('home.hero.ctaSecondary') }}
             </SwissButton>
           </div>
         </div>
 
-        <div class="col-span-12 lg:col-span-6 min-h-[500px] relative">
+        <div class="col-span-12 lg:col-span-12 xl:col-span-4 min-h-[400px] lg:min-h-[500px] relative mt-12 lg:mt-0 flex items-center justify-center">
           <!-- 桌面端：3D 場景 -->
-          <ServerScene
-            v-if="canUseAdvanced3D"
-            ref="serverSceneRef"
-            background-color="#F5F5F7"
-            :auto-rotate="false"
-            :mouse-parallax="true"
-          />
+          <ServerScene v-if="canUseAdvanced3D()" ref="serverSceneRef" background-color="#FFFFFF" :auto-rotate="false"
+            :mouse-parallax="true" />
           <!-- 移動端：降級版本 -->
           <MobileFallback v-else :show-scroll-indicator="true" />
+        </div>
+      </GridContainer>
+    </section>
+
+    <!-- Trust Section (Partners) -->
+    <section class="py-12 bg-white border-y border-gray-100">
+      <GridContainer>
+        <div
+          class="col-span-12 flex flex-wrap items-center justify-between gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+          <div v-for="i in 5" :key="i"
+            class="flex items-center space-x-2 font-display font-bold text-2xl tracking-tighter">
+            <div class="w-8 h-8 bg-swiss-text rounded-lg"></div>
+            <span>PARTNER {{ i }}</span>
+          </div>
         </div>
       </GridContainer>
     </section>
@@ -87,19 +106,25 @@
     </section>
 
     <!-- About Section -->
-    <section class="py-24 bg-swiss-bg">
+    <section class="py-32 bg-white relative overflow-hidden">
+      <div
+        class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-swiss-secondary/20 to-transparent">
+      </div>
       <GridContainer :grid="true">
-        <div class="col-span-12 text-center mb-12">
-          <TypographyHeader level="2" size="h2" align="center" class="mb-4">
-            {{ $t('about.title') }}
+        <div class="col-span-12 lg:col-span-5 mb-12 lg:mb-0">
+          <TypographyHeader level="2" size="h2" class="mb-6">
+            {{ $t('about.pageTitle') }}
           </TypographyHeader>
-          <p class="text-swiss-secondary max-w-3xl mx-auto">
+          <TypographyHeader level="2" size="h4" color="secondary" weight="normal" class="mb-8 leading-relaxed">
             {{ $t('company.slogan') }}
-          </p>
+          </TypographyHeader>
+          <SwissButton variant="secondary" @click="$router.push('/about')">
+            {{ $t('products.viewDetails') }}
+          </SwissButton>
         </div>
-        <div class="col-span-12 text-center">
-          <p class="text-swiss-text max-w-4xl mx-auto text-lg">
-            {{ $t('company.mission') }}
+        <div class="col-span-12 lg:col-span-6 lg:col-start-7 flex items-center">
+          <p class="text-swiss-text text-xl sm:text-2xl leading-relaxed font-light italic">
+            "{{ $t('company.mission') }}"
           </p>
         </div>
       </GridContainer>
@@ -189,7 +214,7 @@ onMounted(() => {
 
 const initScrollAnimation = () => {
   // 獲取 ScrollTrigger 實例
-  const { ScrollTrigger } = useNuxtApp().$ScrollTrigger as { ScrollTrigger: any }
+  const ScrollTrigger = useNuxtApp().$ScrollTrigger as any
 
   if (!ScrollTrigger) {
     console.warn('ScrollTrigger not available')

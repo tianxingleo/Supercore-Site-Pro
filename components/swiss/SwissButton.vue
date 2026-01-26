@@ -1,13 +1,6 @@
 <template>
-  <component
-    :is="tag"
-    :type="tag === 'button' ? type : undefined"
-    :to="tag === 'a' ? to : undefined"
-    :href="tag === 'a' ? to : undefined"
-    :class="buttonClasses"
-    :disabled="disabled"
-    @click="handleClick"
-  >
+  <component :is="tag" :type="tag === 'button' ? type : undefined" :to="tag === 'a' ? to : undefined"
+    :href="tag === 'a' ? to : undefined" :class="buttonClasses" :disabled="disabled" @click="handleClick">
     <slot />
   </component>
 </template>
@@ -41,13 +34,18 @@ const buttonClasses = computed(() => {
     'inline-flex',
     'items-center',
     'justify-center',
-    'font-medium',
+    'font-semibold',
     'transition-all',
-    'duration-200',
+    'duration-300',
     'ease-out',
+    'rounded-none',
+    'tracking-widest',
+    'uppercase',
+    'text-[10px]',
+    'font-bold',
     'focus-visible:outline-2',
     'focus-visible:outline-offset-2',
-    'focus-visible:outline-swiss-accent',
+    'focus-visible:outline-swiss-text',
   ]
 
   // Size variants
@@ -60,27 +58,29 @@ const buttonClasses = computed(() => {
   // Variant styles
   const variants = {
     primary: [
-      'bg-swiss-accent',
+      'bg-swiss-text',
       'text-white',
-      'hover:bg-[#0077ed]',
-      'active:bg-[#0062c4]',
+      'hover:bg-black',
+      'active:scale-[0.98]',
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',
     ],
     secondary: [
-      'bg-swiss-text',
-      'text-white',
-      'hover:bg-[#3a3a3c]',
-      'active:bg-[#4a4a4c]',
+      'bg-swiss-bg-soft',
+      'text-swiss-text',
+      'hover:bg-gray-200',
+      'active:scale-[0.98]',
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',
     ],
     ghost: [
       'bg-transparent',
-      'text-swiss-accent',
-      'hover:bg-[#0071e3]',
+      'text-swiss-text',
+      'border',
+      'border-gray-200',
+      'hover:bg-swiss-text',
       'hover:text-white',
-      'active:bg-[#0062c4]',
+      'active:scale-[0.98]',
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',
     ],

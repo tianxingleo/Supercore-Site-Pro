@@ -1,104 +1,99 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="space-y-6">
+  <form @submit.prevent="handleSubmit" class="space-y-12">
     <!-- Name -->
-    <div>
-      <label for="name" class="block text-sm font-medium text-swiss-text mb-2">
-        姓名 *
+    <div class="relative group">
+      <label for="name" class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text">
+        Full Name <span class="text-swiss-text opacity-20">/ {{ $t('contact.name') || '姓名' }}</span>
       </label>
       <input
         id="name"
         v-model="formData.name"
         type="text"
         required
-        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all"
-        placeholder="請輸入您的姓名"
+        class="w-full bg-transparent border-b border-gray-200 py-4 focus:outline-none focus:border-swiss-text transition-all font-bold text-swiss-text placeholder:text-gray-300 placeholder:font-normal"
+        placeholder="Enter your name"
       />
     </div>
 
     <!-- Email -->
-    <div>
-      <label for="email" class="block text-sm font-medium text-swiss-text mb-2">
-        電郵 *
+    <div class="relative group">
+      <label for="email" class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text">
+        Email Address <span class="text-swiss-text opacity-20">/ {{ $t('contact.email') || '電郵' }}</span>
       </label>
       <input
         id="email"
         v-model="formData.email"
         type="email"
         required
-        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all"
+        class="w-full bg-transparent border-b border-gray-200 py-4 focus:outline-none focus:border-swiss-text transition-all font-bold text-swiss-text placeholder:text-gray-300 placeholder:font-normal"
         placeholder="your@email.com"
       />
     </div>
 
-    <!-- Phone (Optional) -->
-    <div>
-      <label for="phone" class="block text-sm font-medium text-swiss-text mb-2">
-        電話
-      </label>
-      <input
-        id="phone"
-        v-model="formData.phone"
-        type="tel"
-        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all"
-        placeholder="+852 XXXX XXXX"
-      />
-    </div>
-
-    <!-- Company (Optional) -->
-    <div>
-      <label for="company" class="block text-sm font-medium text-swiss-text mb-2">
-        公司名稱
+    <!-- Company -->
+    <div class="relative group">
+      <label for="company" class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text">
+        Company <span class="text-swiss-text opacity-20">/ {{ $t('contact.company') || '公司' }}</span>
       </label>
       <input
         id="company"
         v-model="formData.company"
         type="text"
-        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all"
-        placeholder="請輸入公司名稱"
+        class="w-full bg-transparent border-b border-gray-200 py-4 focus:outline-none focus:border-swiss-text transition-all font-bold text-swiss-text placeholder:text-gray-300 placeholder:font-normal"
+        placeholder="Company name"
       />
     </div>
 
     <!-- Message -->
-    <div>
-      <label for="message" class="block text-sm font-medium text-swiss-text mb-2">
-        訊息 *
+    <div class="relative group">
+      <label for="message" class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text">
+        Project Details <span class="text-swiss-text opacity-20">/ {{ $t('contact.message') || '訊息' }}</span>
       </label>
       <textarea
         id="message"
         v-model="formData.message"
         required
-        rows="6"
-        class="w-full px-4 py-3 border border-swiss-secondary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-swiss-accent focus:border-transparent transition-all resize-none"
-        placeholder="請描述您的需求..."
+        rows="4"
+        class="w-full bg-transparent border-b border-gray-200 py-4 focus:outline-none focus:border-swiss-text transition-all font-bold text-swiss-text placeholder:text-gray-300 placeholder:font-normal resize-none"
+        placeholder="Tell us about your requirements"
       ></textarea>
     </div>
 
     <!-- Submit Button -->
-    <SwissButton
-      type="submit"
-      variant="primary"
-      size="lg"
-      :full-width="true"
-      :disabled="isSubmitting"
-    >
-      {{ isSubmitting ? '發送中...' : '發送訊息' }}
-    </SwissButton>
+    <div class="pt-6">
+      <SwissButton
+        type="submit"
+        variant="primary"
+        size="lg"
+        :full-width="true"
+        :disabled="isSubmitting"
+        class="!py-6"
+      >
+        {{ isSubmitting ? 'SENDING...' : 'SEND REQUEST' }}
+      </SwissButton>
+    </div>
 
     <!-- Success Message -->
     <div
       v-if="showSuccess"
-      class="p-4 bg-green-50 border border-green-200 rounded-lg"
+      class="p-6 bg-black text-white text-center"
     >
-      <p class="text-green-800 text-sm">
-        感謝您的訊息！我們會盡快回覆您。
+      <p class="text-[10px] font-bold tracking-widest uppercase">
+        Message Received. We will contact you shortly.
       </p>
     </div>
 
     <!-- Error Message -->
     <div
       v-if="showError"
-      class="p-4 bg-red-50 border border-red-200 rounded-lg"
+      class="p-6 bg-red-600 text-white text-center"
     >
+      <p class="text-[10px] font-bold tracking-widest uppercase">
+        Submission Error. Please try again.
+      </p>
+    </div>
+  </form>
+</template>    >
       <p class="text-red-800 text-sm">
         發送失敗，請稍後再試。
       </p>

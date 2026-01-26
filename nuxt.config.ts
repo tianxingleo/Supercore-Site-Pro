@@ -6,6 +6,14 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
+  // Components Configuration
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
+
   // TypeScript
   typescript: {
     strict: true,
@@ -41,15 +49,16 @@ export default defineNuxtConfig({
     defaultLocale: 'zh-HK',
     strategy: 'prefix_except_default',
     locales: [
-      { code: 'zh', iso: 'zh-HK', name: '中文' },
-      { code: 'zh-HK', iso: 'zh-HK', name: '繁體中文（香港）' },
-      { code: 'zh-CN', iso: 'zh-CN', name: '简体中文' },
-      { code: 'en', iso: 'en-US', name: 'English' }
+      { code: 'zh-HK', iso: 'zh-HK', name: '繁體中文（香港）', file: 'zh-HK.json' },
+      { code: 'zh-CN', iso: 'zh-CN', name: '简体中文', file: 'zh-CN.json' },
+      { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' }
     ],
+    langDir: 'locales/',
+    lazy: true,
     bundle: {
       optimizeTranslationDirective: false
     },
-    vueI18n: 'i18n.config.ts'
+    vueI18n: './i18n/i18n.config.ts'
   },
 
   // CSS
@@ -81,6 +90,9 @@ export default defineNuxtConfig({
       },
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+HK:wght@300;400;500;700&display=swap' },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },

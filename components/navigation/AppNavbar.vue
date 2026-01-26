@@ -1,36 +1,28 @@
 <template>
-  <nav
-    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-    :class="[
-      scrolled ? 'bg-swiss-bg/80 backdrop-blur-md shadow-sm' : 'bg-transparent'
-    ]"
-  >
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" :class="[
+    scrolled ? 'bg-white/90 backdrop-blur-md border-b border-gray-100' : 'bg-transparent'
+  ]">
     <GridContainer>
-      <div class="col-span-12 flex items-center justify-between py-4 md:py-6">
+      <div class="col-span-12 flex items-center justify-between py-5 md:py-8 transition-all duration-500"
+        :class="{ 'py-3 md:py-4': scrolled }">
         <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center space-x-2 group">
-          <div class="w-8 h-8 bg-swiss-text rounded-sm group-hover:bg-swiss-accent transition-colors duration-300"></div>
-          <TypographyHeader level="3" size="h5" class="hidden sm:block">
-            博迩科技
+        <NuxtLink to="/" class="flex items-center space-x-3 group">
+          <div
+            class="relative w-8 h-8 flex items-center justify-center overflow-hidden bg-swiss-text group-hover:bg-black transition-all duration-500 shadow-sm">
+            <span class="text-white font-bold text-lg">B</span>
+          </div>
+          <TypographyHeader level="3" size="h5" class="hidden sm:block !mb-0 tracking-[0.2em] font-black uppercase">
+            BOER TECH
           </TypographyHeader>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center space-x-8">
-          <NuxtLink
-            v-for="item in navItems"
-            :key="item.key"
-            :to="item.to"
-            class="nav-link group relative py-2"
-          >
-            <TypographyHeader
-              level="4"
-              size="h6"
-              class="text-swiss-text group-hover:text-swiss-accent transition-colors duration-300"
-            >
+        <div class="hidden md:flex items-center space-x-12">
+          <NuxtLink v-for="item in navItems" :key="item.key" :to="item.to" class="nav-link group relative py-1 overflow-hidden">
+            <TypographyHeader level="4" size="h6"
+              class="text-swiss-text-muted group-hover:text-swiss-text transition-colors duration-500 !mb-0 font-bold uppercase tracking-widest text-[10px]">
               {{ $t(item.label) }}
             </TypographyHeader>
-            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-swiss-accent group-hover:w-full transition-all duration-300"></span>
           </NuxtLink>
         </div>
 
@@ -40,14 +32,13 @@
           <LocaleSwitcher />
 
           <!-- Mobile Menu Button -->
-          <button
-            class="md:hidden p-2 text-swiss-text hover:text-swiss-accent transition-colors"
-            @click="toggleMobileMenu"
-            aria-label="Toggle menu"
-          >
+          <button class="md:hidden p-2 text-swiss-text hover:text-swiss-accent transition-colors"
+            @click="toggleMobileMenu" aria-label="Toggle menu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-              <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"></path>
+              <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+              </path>
             </svg>
           </button>
         </div>
@@ -59,13 +50,8 @@
       <div v-if="mobileMenuOpen" class="md:hidden bg-swiss-bg/95 backdrop-blur-md border-t border-swiss-secondary/10">
         <GridContainer>
           <div class="col-span-12 py-4 space-y-4">
-            <NuxtLink
-              v-for="item in navItems"
-              :key="item.key"
-              :to="item.to"
-              class="block py-2"
-              @click="mobileMenuOpen = false"
-            >
+            <NuxtLink v-for="item in navItems" :key="item.key" :to="item.to" class="block py-2"
+              @click="mobileMenuOpen = false">
               <TypographyHeader level="4" size="h5">
                 {{ $t(item.label) }}
               </TypographyHeader>

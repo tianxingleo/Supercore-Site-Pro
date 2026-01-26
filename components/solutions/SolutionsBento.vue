@@ -1,31 +1,18 @@
 <template>
   <div class="solutions-bento-grid">
-    <GridContainer>
+    <GridContainer :grid="true" gap="none" class="border-t border-l border-gray-100">
       <!-- Featured Solutions (Large Cards) -->
-      <template v-for="(solution, index) in featuredSolutions" :key="solution.id">
-        <!-- Large featured cards -->
+      <template v-for="(solution, index) in solutions" :key="solution.id">
         <div
-          v-if="index === 0"
-          class="col-span-12 lg:col-span-8 mb-8"
-        >
-          <SolutionCard :solution="solution" />
-        </div>
-        <div
-          v-else-if="index === 1"
-          class="col-span-12 lg:col-span-4 mb-8"
+          class="col-span-12 md:col-span-6 lg:col-span-4 border-r border-b border-gray-100"
+          :class="{
+            'lg:col-span-8': index === 0,
+            'lg:col-span-4': index !== 0
+          }"
         >
           <SolutionCard :solution="solution" />
         </div>
       </template>
-
-      <!-- Regular Solutions Grid -->
-      <div
-        v-for="solution in regularSolutions"
-        :key="solution.id"
-        class="col-span-12 md:col-span-6 lg:col-span-4 mb-8"
-      >
-        <SolutionCard :solution="solution" />
-      </div>
     </GridContainer>
   </div>
 </template>

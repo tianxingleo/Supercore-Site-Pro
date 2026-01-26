@@ -1,55 +1,35 @@
 <template>
   <NuxtLink
     :to="`/solutions/${solution.slug}`"
-    class="group block bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-all duration-300"
+    class="group block bg-white border border-gray-100 p-10 hover:border-swiss-text transition-all duration-500 min-h-full"
   >
     <!-- Icon -->
-    <div class="mb-6">
+    <div class="mb-12">
       <div
-        class="w-16 h-16 bg-swiss-bg rounded-lg flex items-center justify-center group-hover:bg-swiss-accent transition-colors duration-300"
+        class="w-12 h-12 flex items-center justify-center border border-gray-200 group-hover:bg-swiss-text group-hover:border-swiss-text transition-all duration-500"
       >
         <component
           :is="getIcon(solution.icon)"
-          class="w-8 h-8 text-swiss-text group-hover:text-white transition-colors duration-300"
+          class="w-6 h-6 text-swiss-text group-hover:text-white transition-colors duration-500"
         />
       </div>
     </div>
 
     <!-- Title -->
-    <TypographyHeader level="3" size="h4" class="mb-3 group-hover:text-swiss-accent transition-colors">
+    <TypographyHeader level="3" size="h3" class="mb-6 !tracking-tighter">
       {{ solution.title[currentLocale] }}
     </TypographyHeader>
 
     <!-- Description -->
-    <p class="text-swiss-secondary text-sm mb-6">
+    <p class="text-swiss-text-muted text-base leading-relaxed mb-10 max-w-sm">
       {{ solution.description[currentLocale] }}
     </p>
 
-    <!-- Features List -->
-    <ul class="space-y-2 mb-6">
-      <li
-        v-for="(feature, index) in solution.features.slice(0, 3)"
-        :key="index"
-        class="flex items-center text-xs text-swiss-secondary"
-      >
-        <svg class="w-4 h-4 mr-2 text-swiss-accent" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fill-rule="evenodd"
-            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            clip-rule="evenodd"
-          />
-        </svg>
-        {{ feature }}
-      </li>
-    </ul>
-
     <!-- Learn More Link -->
-    <span class="inline-flex items-center text-sm font-medium text-swiss-accent group-hover:underline">
-      了解更多
-      <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-    </span>
+    <div class="mt-auto pt-4 flex items-center text-xs font-bold tracking-widest uppercase text-swiss-text group-hover:translate-x-2 transition-transform duration-500">
+      {{ $t('common.learnMore') || 'Explore' }}
+      <span class="ml-2">→</span>
+    </div>
   </NuxtLink>
 </template>
 

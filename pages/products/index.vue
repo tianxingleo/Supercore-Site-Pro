@@ -1,28 +1,28 @@
 <template>
-  <div class="min-h-screen bg-swiss-bg">
+  <div class="min-h-screen bg-white">
     <!-- Page Header -->
-    <section class="mb-16">
+    <section class="pt-48 pb-24 border-b border-gray-100 mb-12">
       <GridContainer :grid="true">
-        <div class="col-span-12 text-center">
-          <TypographyHeader level="1" size="h1" class="mb-4">
+        <div class="col-span-12 lg:col-span-8">
+          <TypographyHeader level="1" size="display" class="mb-8">
             {{ $t('products.title') }}
           </TypographyHeader>
-          <p class="text-swiss-secondary max-w-2xl mx-auto">
+          <TypographyHeader level="2" size="h3" color="secondary" weight="normal" class="max-w-2xl opacity-80">
             {{ $t('products.subtitle') }}
-          </p>
+          </TypographyHeader>
         </div>
       </GridContainer>
     </section>
 
     <!-- Products Grid -->
-    <section>
-      <GridContainer :grid="true">
+    <section class="pb-32">
+      <GridContainer :grid="true" gap="none" class="border-t border-l border-gray-100">
         <div
           v-for="product in products"
           :key="product.id"
-          class="col-span-12 md:col-span-6 lg:col-span-4 mb-8"
+          class="col-span-12 md:col-span-6 lg:col-span-4 border-r border-b border-gray-100"
         >
-          <ProductCard :product="product" />
+          <ProductCard :product="product" class="!border-none" />
         </div>
       </GridContainer>
     </section>

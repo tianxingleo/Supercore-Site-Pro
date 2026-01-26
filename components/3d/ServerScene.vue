@@ -101,18 +101,34 @@ const initScene = () => {
     renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
 
-    // Geometry - Placeholder cube (representing server)
-    const geometry = new THREE.BoxGeometry(2, 2, 2)
+    // Geometry - Server Rack representation
+    const group = new THREE.Group()
 
-    // Material - Swiss style (minimalist, metallic)
-    const material = new THREE.MeshStandardMaterial({
-      color: 0x1d1d1f,
-      metalness: 0.8,
-      roughness: 0.2,
+    // Main Body
+    const bodyGeom = new THREE.BoxGeometry(2, 4, 2)
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: 0x2a2a2e,
+      metalness: 0.9,
+      roughness: 0.1,
     })
+    const body = new THREE.Mesh(bodyGeom, bodyMat)
+    group.add(body)
 
-    cube = new THREE.Mesh(geometry, material)
-    scene.add(cube)
+    // Segments (Server units)
+    for (let i = 0; i < 8; i++) {
+      const segGeom = new THREE.BoxGeometry(1.9, 0.3, 0.1)
+      const segMat = new THREE.MeshStandardMaterial({
+        color: i % 3 === 0 ? 0x0071e3 : 0x1d1d1f,
+        emissive: i % 3 === 0 ? 0x0071e3 : 0x000000,
+        emissiveIntensity: 0.5,
+      })
+      const seg = new THREE.Mesh(segGeom, segMat)
+      seg.position.set(0, 1.4 - i * 0.4, 1.01)
+      group.add(seg)
+    }
+
+    cube = group as any // Reusing the 'cube' variable name for the group
+    scene.add(group)
 
     // Lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
