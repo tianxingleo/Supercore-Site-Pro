@@ -7,7 +7,9 @@
       "Bash(npm install:*)",
       "Bash(npx husky init:*)",
       "Bash(npx nuxt prepare:*)",
-      "mcp__web-reader__webReader"
+      "mcp__web-reader__webReader",
+      "mcp__playwright__browser_navigate",
+      "mcp__search__tavily_extract"
     ]
   }
 }

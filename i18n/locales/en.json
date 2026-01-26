@@ -14,7 +14,7 @@
     "description": "Integrated enterprise infrastructure solution service provider, providing servers, networks, data centers and other products and services",
     "address": "Room 303-305, Building 1, Kehui Garden, No. 95 Daguan Middle Road, Tianhe District, Guangzhou, Guangdong Province",
     "phone": "020-89816175",
-    "email": "sales@boer.cn",
+    "email": "sales{'@'}boer.cn",
     "website": "https://www.boer.cn"
   },
   "home": {
@@ -29,6 +29,10 @@
       "phase2": "Explore Our Products",
       "phase3": "Professional Technical Support",
       "phase4": "Begin Your Digital Transformation"
+    },
+    "mobileFallback": {
+      "title": "Boer Technology",
+      "subtitle": "Enterprise Infrastructure Solution Experts"
     },
     "features": {
       "title": "Core Advantages",
@@ -50,7 +54,10 @@
     "title": "Product Series",
     "subtitle": "Meeting All Your Infrastructure Needs",
     "viewAll": "View All",
+    "featured": "Featured",
+    "viewDetails": "View Details",
     "specs": "Specifications",
+    "specifications": "Specifications",
     "features": "Features"
   },
   "solutions": {
@@ -140,6 +147,9 @@
     "sendMessage": "Send Message",
     "contactInfo": "Contact Information",
     "email": "Email",
+    "name": "Name",
+    "company": "Company",
+    "message": "Message",
     "phone": "Phone Number",
     "address": "Address",
     "businessHours": "Business Hours",

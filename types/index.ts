@@ -16,7 +16,7 @@ export interface Product {
   }
   specs: Record<string, string | number | boolean>
   images: string[]
-  category: 'server' | 'storage' | 'network' | 'software'
+  category: 'server' | 'storage' | 'network' | 'software' | 'hpc' | 'storage-hp'
   featured: boolean
   createdAt: string
 }

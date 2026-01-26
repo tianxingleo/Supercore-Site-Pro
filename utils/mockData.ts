@@ -1,39 +1,75 @@
 import type { Product, News, Solution } from '~/types'
 
 /**
- * Mock Products Data - 基于博迩科技产品�?
+ * Mock Products Data - 基于博迩科技实际产品
+ * Data sourced from https://boer.cn/products
  */
 export const mockProducts: Product[] = [
-  // 通用计算服务�?
+  // === 通用计算服务器 General Computing ===
+
+  // BC120G3 - 1U通用计算服务器
   {
-    id: '1',
-    slug: 'general-compute-server',
+    id: 'bc120g3',
+    slug: 'bc120g3',
     name: {
-      'zh-HK': '通用計算服務器',
-      'zh-CN': '通用计算服务器',
-      en: 'General Compute Server'
+      'zh-HK': 'BC120G3 通用計算服務器',
+      'zh-CN': 'BC120G3 通用计算服务器',
+      en: 'BC120G3 General Compute Server'
     },
     description: {
-      'zh-HK': '通用計算和數據處理服務器，適用於多種企業應用、數據庫管理、虛擬化等應用場景，具有較高的靈活性和通用性。',
-      'zh-CN': '通用计算和数据处理服务器，适用于多种企业应用、数据库管理、虚拟化等应用场景，具有较高的灵活性和通用性。',
-      en: 'General computing and data processing servers suitable for various enterprise applications, database management, and virtualization scenarios with high flexibility and versatility.'
+      'zh-HK': '1U通用計算服務器，搭載雙路第三代Intel® Xeon® 可擴展處理器和Intel C621A芯片組。支持PCIe 4.0，最多16個DDR4內存插槽(3200MT/s)，以及多種熱插拔硬盤配置(SATA/SAS/NVMe)。',
+      'zh-CN': '1U通用计算服务器，搭载双路第三代Intel® Xeon® 可扩展处理器和Intel C621A芯片组。支持PCIe 4.0，最多16个DDR4内存插槽(3200MT/s)，以及多种热插拔硬盘配置(SATA/SAS/NVMe)。',
+      en: 'A 1U general-purpose computing server equipped with dual 3rd Gen Intel® Xeon® Scalable processors and Intel C621A chipset. Supports PCIe 4.0, up to 16 DDR4 memory slots (3200MT/s), and various hot-swappable drive configurations (SATA/SAS/NVMe).'
     },
     specs: {
-      cpu: 'Intel Xeon / AMD EPYC',
-      cores: '32-128',
-      ram: '128GB-2TB DDR4/DDR5',
-      storage: '可選配置',
-      power: '800W-1600W',
-      rackUnits: '1U-2U'
+      model: 'BC120G3',
+      cpu: '双路 Intel® Xeon® 第三代可扩展处理器',
+      chipset: 'Intel C621A',
+      memory: '16x DDR4-3200 DIMM slots, 最大4TB',
+      storage: '热插拔 2.5" SATA/SAS/NVMe',
+      pcie: 'PCIe 4.0',
+      power: '冗余电源',
+      rackUnits: '1U'
     },
-    images: ['/images/products/general-compute.jpg'],
+    images: ['/images/categories/general-compute.png'],
     category: 'server',
     featured: true,
     createdAt: '2025-01-26T00:00:00Z'
   },
-  // 高性能计算服务�?
+
+  // BC220G3 - 2U通用计算服务器
   {
-    id: '2',
+    id: 'bc220g3',
+    slug: 'bc220g3',
+    name: {
+      'zh-HK': 'BC220G3 通用計算服務器',
+      'zh-CN': 'BC220G3 通用计算服务器',
+      en: 'BC220G3 General Compute Server'
+    },
+    description: {
+      'zh-HK': '2U通用計算服務器，採用第三代Intel Xeon可擴展處理器。支持最多4TB內存，配備16個DIMM插槽，提供高性能計算能力。',
+      'zh-CN': '2U通用计算服务器，采用第三代Intel Xeon可扩展处理器。支持最多4TB内存，配备16个DIMM插槽，提供高性能计算能力。',
+      en: 'A 2U general-purpose computing server featuring 3rd Gen Intel Xeon Scalable processors. It supports up to 4TB of memory across 16 DIMM slots, providing high-performance computing capabilities.'
+    },
+    specs: {
+      model: 'BC220G3',
+      cpu: '双路 Intel® Xeon® 第三代可扩展处理器',
+      memory: '16x DIMM slots, 最大4TB',
+      storage: '热插拔硬盘',
+      expansion: '多PCIe扩展槽',
+      power: '冗余电源',
+      rackUnits: '2U'
+    },
+    images: ['/images/categories/general-compute.png'],
+    category: 'server',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+
+  // === 高性能计算服务器 High-Performance Computing ===
+
+  {
+    id: 'hpc-server',
     slug: 'hpc-server',
     name: {
       'zh-HK': '高性能計算服務器',
@@ -41,26 +77,88 @@ export const mockProducts: Product[] = [
       en: 'High-Performance Compute Server'
     },
     description: {
-      'zh-HK': '高性能計算服務器，適用於科學計算、深度學習、人工智能等需要大規模並行計算的領域。',
-      'zh-CN': '高性能计算服务器，适用于科学计算、深度学习、人工智能等需要大规模并行计算的领域。',
-      en: 'High-performance computing servers for scientific computing, deep learning, AI, and fields requiring massive parallel computing.'
+      'zh-HK': '高性能計算服務器，適用於科學計算、深度學習、人工智能等需要大規模並行計算的領域。支持GPU加速和高速互連。',
+      'zh-CN': '高性能计算服务器，适用于科学计算、深度学习、人工智能等需要大规模并行计算的领域。支持GPU加速和高速互连。',
+      en: 'High-performance computing servers for scientific computing, deep learning, AI, and fields requiring massive parallel computing. Supports GPU acceleration and high-speed interconnects.'
     },
     specs: {
       cpu: 'AMD EPYC 9004系列 / Intel Xeon Platinum',
-      cores: '64-256',
-      ram: '512GB-4TB DDR5',
+      cores: '64-256核',
+      memory: '512GB-4TB DDR5',
       gpu: 'NVIDIA A100/H100',
-      interconnect: 'PCIe 5.0 / CXL',
+      interconnect: 'PCIe 5.0 / InfiniBand',
       rackUnits: '2U-4U'
     },
-    images: ['/images/products/hpc-server.jpg'],
-    category: 'server',
+    images: ['/images/categories/hpc.png'],
+    category: 'hpc',
     featured: true,
     createdAt: '2025-01-26T00:00:00Z'
   },
-  // 高性能存储
+
+  // === 通用存储服务器 General Storage ===
+
+  // BS450G3 - 4U通用存储服务器
   {
-    id: '3',
+    id: 'bs450g3',
+    slug: 'bs450g3',
+    name: {
+      'zh-HK': 'BS450G3 通用存儲服務器',
+      'zh-CN': 'BS450G3 通用存储服务器',
+      en: 'BS450G3 General Storage Server'
+    },
+    description: {
+      'zh-HK': '4U通用存儲服務器，配備雙路第三代Intel® Xeon®可擴展處理器。具有16個ECC DDR4-3200內存插槽，2個Intel® Optane™持久內存插槽，以及36個熱插拔SAS3/SATA3硬盤位。',
+      'zh-CN': '4U通用存储服务器，配备双路第三代Intel® Xeon®可扩展处理器。具有16个ECC DDR4-3200内存插槽，2个Intel® Optane™持久内存插槽，以及36个热插拔SAS3/SATA3硬盘位。',
+      en: 'A 4U general-purpose storage server with dual 3rd Gen Intel® Xeon® Scalable processors. Features 16 ECC DDR4-3200 memory slots, 2 Intel® Optane™ persistent memory slots, and 36 hot-swappable SAS3/SATA3 drive bays.'
+    },
+    specs: {
+      model: 'BS450G3',
+      cpu: '双路 Intel® Xeon® 第三代可扩展处理器',
+      memory: '16x DDR4-3200 + 2x Intel® Optane™',
+      storage: '36x 热插拔 3.5" SAS3/SATA3',
+      capacity: '最大576TB',
+      raid: '硬件RAID支持',
+      rackUnits: '4U'
+    },
+    images: ['/images/categories/general-storage.png'],
+    category: 'storage',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+
+  // BS450G3-S - 4U高密度存储服务器
+  {
+    id: 'bs450g3-s',
+    slug: 'bs450g3-s',
+    name: {
+      'zh-HK': 'BS450G3-S 高密度存儲服務器',
+      'zh-CN': 'BS450G3-S 高密度存储服务器',
+      en: 'BS450G3-S High-Density Storage Server'
+    },
+    description: {
+      'zh-HK': '4U高密度存儲服務器，支持最多60個熱插拔3.5英寸SATA3/SAS3硬盤位，配備雙路第三代Intel® Xeon®可擴展處理器以及靈活的M.2 NVMe存儲選項。',
+      'zh-CN': '4U高密度存储服务器，支持最多60个热插拔3.5英寸SATA3/SAS3硬盘位，配备双路第三代Intel® Xeon®可扩展处理器以及灵活的M.2 NVMe存储选项。',
+      en: 'A 4U high-density storage server that supports up to 60 hot-swappable 3.5-inch SATA3/SAS3 drive bays, along with dual 3rd Gen Intel® Xeon® Scalable processors and flexible M.2 NVMe storage options.'
+    },
+    specs: {
+      model: 'BS450G3-S',
+      cpu: '双路 Intel® Xeon® 第三代可扩展处理器',
+      storage: '60x 热插拔 3.5" SATA3/SAS3',
+      capacity: '最大960TB',
+      cacheStorage: 'M.2 NVMe',
+      raid: '硬件RAID支持',
+      rackUnits: '4U'
+    },
+    images: ['/images/categories/general-storage.png'],
+    category: 'storage',
+    featured: true,
+    createdAt: '2025-01-26T00:00:00Z'
+  },
+
+  // === 高性能存储 High-Performance Storage ===
+
+  {
+    id: 'high-performance-storage',
     slug: 'high-performance-storage',
     name: {
       'zh-HK': '高性能存儲服務器',
@@ -74,48 +172,24 @@ export const mockProducts: Product[] = [
     },
     specs: {
       capacity: '200TB-2PB',
-      drives: '24-48',
-      interface: 'NVMe/SAS/SATA',
+      drives: 'NVMe全闪存阵列',
+      interface: 'NVMe-oF',
       raid: 'RAID 0/1/5/6/10/50/60',
       cache: '64GB-256GB',
-      throughput: '50GB/s',
-      rackUnits: '4U-42U'
-    },
-    images: ['/images/products/hp-storage.jpg'],
-    category: 'storage',
-    featured: true,
-    createdAt: '2025-01-26T00:00:00Z'
-  },
-  // 通用存储
-  {
-    id: '4',
-    slug: 'general-storage',
-    name: {
-      'zh-HK': '通用存儲服務器',
-      'zh-CN': '通用存储服务器',
-      en: 'General Storage Server'
-    },
-    description: {
-      'zh-HK': '通用存儲服務器，適用於大規模數據處理、數據存儲場景，滿足大容量、可擴展性以及高可用存儲需求。',
-      'zh-CN': '通用存储服务器，适用于大规模数据处理、数据存储场景，满足大容量、可扩展性以及高可用存储需求。',
-      en: 'General storage servers for large-scale data processing and storage scenarios, meeting requirements for large capacity, scalability, and high availability.'
-    },
-    specs: {
-      capacity: '50TB-500TB',
-      drives: '12-24',
-      interface: 'SAS/SATA/NVMe',
-      raid: 'RAID 0/1/5/6/10',
-      powerSupply: '冗余電源',
+      throughput: '50GB/s+',
       rackUnits: '2U-4U'
     },
-    images: ['/images/products/general-storage.jpg'],
-    category: 'storage',
+    images: ['/images/categories/hp-storage.png'],
+    category: 'storage-hp',
     featured: false,
     createdAt: '2025-01-26T00:00:00Z'
   },
-  // IB交换�?
+
+  // === 网络产品 Network Products ===
+
+  // IB交换机
   {
-    id: '5',
+    id: 'infiniband-switch',
     slug: 'infiniband-switch',
     name: {
       'zh-HK': 'IB交換機',
@@ -129,20 +203,21 @@ export const mockProducts: Product[] = [
     },
     specs: {
       speed: 'HDR 200Gb/s / NDR 400Gb/s',
-      ports: '32-128',
+      ports: '32-128端口',
       latency: '<100ns',
-      architecture: '架構式交�',
+      architecture: '无阻塞架构',
       power: '150W-500W',
       rackUnits: '1U-2U'
     },
-    images: ['/images/products/ib-switch.jpg'],
+    images: ['/images/categories/ib-switch.png'],
     category: 'network',
     featured: true,
     createdAt: '2025-01-26T00:00:00Z'
   },
+
   // 以太网交换机
   {
-    id: '6',
+    id: 'ethernet-switch',
     slug: 'ethernet-switch',
     name: {
       'zh-HK': '以太網交換機',
@@ -150,19 +225,19 @@ export const mockProducts: Product[] = [
       en: 'Ethernet Switch'
     },
     description: {
-      'zh-HK': '基於以太網傳輸數據，連接各服務器與網絡防火牆、路由器等網絡設備互聯，從而實現所有設備的互聯互通；應用於企業網絡、運營商網絡、數據中心網絡和工業網絡場景�',
-      'zh-CN': '基于以太网传输数据，连接各服务器与网络防火墙、路由器等网络设备互联，从而实现所有设备的互联互通；应用于企业网络、运营商网络、数据中心网络和工业网络场景�',
+      'zh-HK': '基於以太網傳輸數據，連接各服務器與網絡防火牆、路由器等網絡設備互聯，從而實現所有設備的互聯互通；應用於企業網絡、運營商網絡、數據中心網絡和工業網絡場景。',
+      'zh-CN': '基于以太网传输数据，连接各服务器与网络防火墙、路由器等网络设备互联，从而实现所有设备的互联互通；应用于企业网络、运营商网络、数据中心网络和工业网络场景。',
       en: 'Data transmission via Ethernet, connecting servers with network equipment like firewalls and routers to enable interconnectivity; used in enterprise, carrier, data center, and industrial network scenarios.'
     },
     specs: {
-      ports: '24-48',
+      ports: '24-48端口',
       speed: '1G/10G/25G/40G/100G',
-      uplinkPorts: '4-8',
+      uplinkPorts: '4-8上行端口',
       switchingCapacity: '1.28Tbps-10Tbps',
       packetForwarding: '720Mpps-3000Mpps',
       power: '100W-300W'
     },
-    images: ['/images/products/ethernet-switch.jpg'],
+    images: ['/images/categories/ethernet-switch.png'],
     category: 'network',
     featured: false,
     createdAt: '2025-01-26T00:00:00Z'

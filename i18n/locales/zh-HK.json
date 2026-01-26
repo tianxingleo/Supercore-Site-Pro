@@ -30,6 +30,10 @@
       "phase3": "專業的技術支援",
       "phase4": "開啟數碼轉型之旅"
     },
+    "mobileFallback": {
+      "title": "博迩科技",
+      "subtitle": "企業基礎設施解決方案專家"
+    },
     "features": {
       "title": "核心優勢",
       "feature1": {
@@ -50,7 +54,10 @@
     "title": "產品系列",
     "subtitle": "滿足您所有基礎設施需求",
     "viewAll": "查看全部",
+    "featured": "精選產品",
+    "viewDetails": "查看詳情",
     "specs": "規格",
+    "specifications": "技術規格",
     "features": "功能特點"
   },
   "solutions": {
@@ -140,6 +147,9 @@
     "sendMessage": "發送訊息",
     "contactInfo": "聯絡方式",
     "email": "電郵",
+    "name": "姓名",
+    "company": "公司名稱",
+    "message": "訊息",
     "phone": "聯繫電話",
     "address": "地址",
     "businessHours": "辦公時間",

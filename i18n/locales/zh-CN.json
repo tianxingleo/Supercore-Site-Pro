@@ -30,6 +30,10 @@
       "phase3": "专业的技术支持",
       "phase4": "开启数字化转型之旅"
     },
+    "mobileFallback": {
+      "title": "博迩科技",
+      "subtitle": "企业基础设施解决方案专家"
+    },
     "features": {
       "title": "核心优势",
       "feature1": {
@@ -50,7 +54,10 @@
     "title": "产品系列",
     "subtitle": "满足您所有基础设施需求",
     "viewAll": "查看全部",
+    "featured": "精选产品",
+    "viewDetails": "查看详情",
     "specs": "规格",
+    "specifications": "技术规格",
     "features": "功能特点"
   },
   "solutions": {
@@ -140,6 +147,9 @@
     "sendMessage": "发送消息",
     "contactInfo": "联系方式",
     "email": "电邮",
+    "name": "姓名",
+    "company": "公司名称",
+    "message": "留言",
     "phone": "联系电话",
     "address": "地址",
     "businessHours": "办公时间",
