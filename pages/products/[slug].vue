@@ -28,9 +28,17 @@
         <!-- Product Image (Left) -->
         <div class="col-span-12 lg:col-span-7 border-r border-b border-gray-100 flex items-center justify-center bg-swiss-bg-soft">
           <div class="aspect-square w-full p-24 flex items-center justify-center relative">
-             <div class="w-2/3 h-2/3 border border-swiss-text/5 bg-swiss-bg flex items-center justify-center shadow-2xl">
-                <div class="w-1/2 h-1/2 bg-swiss-text opacity-5"></div>
-             </div>
+            <!-- Product Image -->
+            <img
+              v-if="product.images && product.images.length > 0"
+              :src="product.images[0]"
+              :alt="product.name[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.name['zh-HK']"
+              class="max-w-full max-h-full object-contain"
+            />
+            <!-- Fallback placeholder -->
+            <div v-else class="w-2/3 h-2/3 border border-swiss-text/5 bg-swiss-bg flex items-center justify-center shadow-2xl">
+              <div class="w-1/2 h-1/2 bg-swiss-text opacity-5"></div>
+            </div>
 
             <!-- Meta Labels -->
             <div class="absolute top-12 left-12 flex flex-col gap-2">

@@ -7,7 +7,7 @@
         :class="{ 'py-3 md:py-4': scrolled }">
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center space-x-3 group">
-          <NuxtImg
+          <img
             src="/images/logo.png"
             alt="Boer Tech Logo"
             width="32"

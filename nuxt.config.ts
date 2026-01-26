@@ -22,10 +22,10 @@ export default defineNuxtConfig({
 
   // Modules
   modules: [
-    '@nuxtjs/tailwindcss',
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/supabase',
+    '@nuxt/ui',
   ],
 
   // 圖片優化配置
@@ -43,8 +43,8 @@ export default defineNuxtConfig({
 
   // Tailwind CSS
   tailwindcss: {
-    cssPath: '~/assets/css/tailwind.css',
     configPath: 'tailwind.config.js',
+    viewer: true,
   },
 
   // i18n Configuration
@@ -98,20 +98,21 @@ export default defineNuxtConfig({
           property: 'og:description',
           content: '提供企業級服務器、存儲、網絡產品和整體解決方案，服務廣州及全國市場',
         },
-        { property: 'og:image', content: '/og-image.jpg' },
+        { property: 'og:image', content: '/og-image.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: '廣東博迩科技有限公司 - 專業基礎設施解決方案服務提供商' },
         {
           name: 'twitter:description',
           content: '提供企業級服務器、存儲、網絡產品和整體解決方案，服務廣州及全國市場',
         },
-        { name: 'twitter:image', content: '/og-image.jpg' },
+        { name: 'twitter:image', content: '/og-image.png' },
       ],
       htmlAttrs: {
         lang: 'zh-HK',
       },
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+        { rel: 'apple-touch-icon', href: '/favicon.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {

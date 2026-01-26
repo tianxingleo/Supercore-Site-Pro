@@ -15,7 +15,13 @@
       "mcp__playwright__browser_click",
       "mcp__playwright__browser_run_code",
       "Bash(ls:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(for:*)",
+      "Bash(do if [ -f \"public/images/categories/$icon\" ])",
+      "Bash(then echo \"✓ $icon exists\")",
+      "Bash(else echo \"✗ $icon MISSING\")",
+      "Bash(fi:*)",
+      "Bash(done)"
     ]
   }
 }

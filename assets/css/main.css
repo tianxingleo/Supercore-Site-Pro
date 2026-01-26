@@ -1,5 +1,6 @@
-/* Swiss Design System - Base Styles */
-@import './tailwind.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 *,
 *::before,

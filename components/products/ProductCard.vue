@@ -5,7 +5,7 @@
   >
     <!-- Product Image -->
     <div class="aspect-square bg-swiss-bg-soft relative overflow-hidden">
-      <NuxtImg
+      <img
         v-if="product.images && product.images.length > 0"
         :src="product.images[0]"
         :alt="product.name[currentLocale]"
