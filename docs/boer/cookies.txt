@@ -1,0 +1,6 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+boer.cn	TRUE	/	FALSE	1999999999	ASP.NET_SessionId	lpu4zo4s4lp3xtq235sprkmd
+boer.cn	TRUE	/	FALSE	1999999999	SameSite	Lax
+boer.cn	TRUE	/	FALSE	1999999999	__RequestVerificationToken	lw0eWU8hCkMONZRKiriBwW_I0zg3DfsycmomHXsWpkasqhRrk6rTVD0E_FljIO53YN-KJT5ahRvXtqDaPXFzKHOkufu-79w7gcb9N98mtwA1
+
