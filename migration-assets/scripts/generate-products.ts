@@ -117,7 +117,7 @@ export async function generateFromJson(jsonPath: string): Promise<Product[]> {
 }
 
 // 示例使用 / Usage Example
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   const exampleRawProduct: RawProduct = {
     product_id: 'bc440g3-p',
     source_url: 'https://boer.cn/products/bc440g3-p',

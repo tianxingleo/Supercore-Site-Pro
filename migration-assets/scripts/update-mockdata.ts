@@ -135,7 +135,7 @@ export async function updateWithProducts(products: RawProduct[]): Promise<void> 
 }
 
 // 示例使用 / Usage Example
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   const exampleProducts: RawProduct[] = [
     {
       product_id: 'example-product',

@@ -7,13 +7,13 @@
  */
 
 // 动态导入 opencc-js 以兼容 ESM
-import { createConverter } from 'opencc-js'
+import { Converter } from 'opencc-js'
 
 /**
  * 初始化转换器 (简体 → 繁体香港)
  * Initialize converter (Simplified → Traditional Hong Kong)
  */
-const converter = createConverter({ from: 'cn', to: 'hk' })
+const converter = Converter({ from: 'cn', to: 'hk' })
 
 /**
  * 将简体中文转换为繁体中文（香港）
@@ -90,7 +90,7 @@ export function convertProducts(products: any[]): any[] {
 }
 
 // 示例使用 / Usage Example
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   const example = {
     name: { 'zh-CN': 'BC440G3-P 高性能计算服务器' },
     description: { 'zh-CN': '2U高性能计算服务器，适用于科学计算、深度学习、人工智能等需要大规模并行计算的领域。' }

@@ -1,10 +1,13 @@
 {
   "nav": {
     "home": "首頁",
-    "products": "產品",
+    "products": "產品資訊",
     "solutions": "解決方案",
-    "about": "關於我們",
-    "contact": "聯絡我們"
+    "support": "技術支援",
+    "news": "行業資訊",
+    "about": "關於博迩",
+    "contact": "聯絡我們",
+    "supercore": "SUPERCORE"
   },
   "company": {
     "name": "廣東博迩科技有限公司",
@@ -37,28 +40,68 @@
     "features": {
       "title": "核心優勢",
       "feature1": {
-        "title": "高性能伺服器",
-        "description": "提供企業級伺服器解決方案，確保業務連續性"
+        "title": "產品成熟，穩定可靠",
+        "description": "成熟可靠的產品，為您的業務提供堅實的技術支撐"
       },
       "feature2": {
-        "title": "專業運維服務",
-        "description": "24/7 全天候技術支援，保障系統穩定運行"
+        "title": "節省成本，快速響應",
+        "description": "優化資源配置，節省人力維護和時間成本，響應速度迅速"
       },
       "feature3": {
-        "title": "安全可靠",
-        "description": "金融級安全標準，保護您的數據資產"
+        "title": "最新技術，安全可靠",
+        "description": "不斷創新產品應用，保護用戶數據安全，提供全方位安全防護"
       }
     }
   },
   "products": {
-    "title": "產品系列",
+    "title": "產品資訊",
     "subtitle": "滿足您所有基礎設施需求",
     "viewAll": "查看全部",
     "featured": "精選產品",
     "viewDetails": "查看詳情",
     "specs": "規格",
     "specifications": "技術規格",
-    "features": "功能特點"
+    "features": "功能特點",
+    "categories": {
+      "generalCompute": {
+        "title": "通用計算",
+        "subtitle": "General Compute Products",
+        "description": "通用計算和數據處理伺服器，適用於多種企業應用、資料庫管理、虛擬化等應用場景，具有較高的靈活性和通用性"
+      },
+      "hpc": {
+        "title": "高性能計算",
+        "subtitle": "High-Performance Compute Products",
+        "description": "高性能計算伺服器，適用於科學計算、深度學習、人工智能等需要大規模並行計算的領域"
+      },
+      "highPerformanceStorage": {
+        "title": "高性能存儲",
+        "subtitle": "High-Performance Storage Products",
+        "description": "高性能存儲伺服器，用於提供高速、高性能數據存儲訪問，適用於大規模數據分析、高性能計算、雲計算以及大規模資料庫管理"
+      },
+      "serverProducts": {
+        "title": "伺服器產品",
+        "subtitle": "Server Products"
+      },
+      "generalStorage": {
+        "title": "通用存儲",
+        "subtitle": "General Storage Products",
+        "description": "通用存儲伺服器，適用於大規模數據處理、數據存儲場景，滿足大容量、可擴展性以及高可用存儲需求"
+      },
+      "network": {
+        "title": "網絡產品",
+        "subtitle": "Network Products"
+      },
+      "ibSwitch": {
+        "title": "IB交換機",
+        "subtitle": "InfiniBand Switch",
+        "description": "IB交換機通常用於高性能計算(HPC)、數據中心、雲計算和大規模存儲等領域，以滿足高性能計算和數據傳輸的需求，近年來已成為GPU伺服器的首選網絡互連技術"
+      },
+      "ethernetSwitch": {
+        "title": "以太網交換機",
+        "subtitle": "Ethernet Switch",
+        "description": "基於以太網傳輸數據，連接各伺服器與網絡防火牆、路由器等網絡設備互聯，從而實現所有設備的互聯互通；應用於企業網絡、運營商網絡、數據中心網絡和工業網絡場景"
+      }
+    }
   },
   "solutions": {
     "title": "解決方案",
@@ -72,6 +115,10 @@
     "idc": "數據中心服務",
     "operations": "運維管理",
     "development": "開發服務"
+  },
+  "news": {
+    "title": "行業資訊",
+    "subtitle": "INFORMATION"
   },
   "about": {
     "title": "關於我們",
@@ -152,13 +199,14 @@
     "message": "訊息",
     "phone": "聯繫電話",
     "address": "地址",
-    "businessHours": "辦公時間",
-    "mondayToFriday": "星期一 - 星期五",
-    "weekend": "星期六",
-    "sundayHoliday": "星期日及公眾假期",
+    "businessHours": "服務時間",
+    "mondayToFriday": "週一至週五",
+    "weekend": "週六",
+    "sundayHoliday": "週日及公眾假期",
     "closed": "休息",
-    "workingHours": "09:30 - 18:30",
+    "workingHours": "09:30-18:30",
     "emergencyContact": "如有緊急需求，請致電聯繫",
+    "wechatQR": "微信二維碼",
     "form": {
       "name": "姓名",
       "email": "電子郵件",

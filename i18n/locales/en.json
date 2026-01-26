@@ -3,8 +3,11 @@
     "home": "Home",
     "products": "Products",
     "solutions": "Solutions",
-    "about": "About Us",
-    "contact": "Contact"
+    "support": "Technical Support",
+    "news": "Industry News",
+    "about": "About Boer",
+    "contact": "Contact Us",
+    "supercore": "SUPERCORE"
   },
   "company": {
     "name": "Guangdong Boer Technology Co., Ltd.",
@@ -20,7 +23,7 @@
   "home": {
     "hero": {
       "title": "Infrastructure Simplified.",
-      "subtitle": "Precision Engineering for the Digital Enterprise.",
+      "subtitle": "Precision Engineering for Digital Enterprise.",
       "cta": "Explore Solutions",
       "ctaSecondary": "Consultation"
     },
@@ -37,28 +40,68 @@
     "features": {
       "title": "Core Advantages",
       "feature1": {
-        "title": "High-Performance Servers",
-        "description": "Enterprise-grade server solutions ensuring business continuity"
+        "title": "Mature and Reliable Products",
+        "description": "Providing solid technical support for your business"
       },
       "feature2": {
-        "title": "Professional Operations",
-        "description": "24/7 technical support ensuring stable system operations"
+        "title": "Cost Saving & Fast Response",
+        "description": "Optimize resource allocation, save on manpower and time costs, with rapid response speed"
       },
       "feature3": {
-        "title": "Secure & Reliable",
-        "description": "Financial-grade security standards protecting your data assets"
+        "title": "Latest Technology & Security",
+        "description": "Continuously innovating product applications, protecting user data security, providing comprehensive security protection"
       }
     }
   },
   "products": {
-    "title": "Product Series",
+    "title": "Products",
     "subtitle": "Meeting All Your Infrastructure Needs",
     "viewAll": "View All",
     "featured": "Featured",
     "viewDetails": "View Details",
     "specs": "Specifications",
     "specifications": "Specifications",
-    "features": "Features"
+    "features": "Features",
+    "categories": {
+      "generalCompute": {
+        "title": "General Compute",
+        "subtitle": "General Compute Products",
+        "description": "General-purpose computing and data processing servers suitable for various enterprise applications, database management, virtualization, and other application scenarios with high flexibility and versatility"
+      },
+      "hpc": {
+        "title": "High-Performance Compute",
+        "subtitle": "High-Performance Compute Products",
+        "description": "High-performance computing servers suitable for scientific computing, deep learning, artificial intelligence, and other fields requiring large-scale parallel computing"
+      },
+      "highPerformanceStorage": {
+        "title": "High-Performance Storage",
+        "subtitle": "High-Performance Storage Products",
+        "description": "High-performance storage servers providing high-speed, high-performance data storage access, suitable for large-scale data analysis, high-performance computing, cloud computing, and large-scale database management"
+      },
+      "serverProducts": {
+        "title": "Server Products",
+        "subtitle": "Server Products"
+      },
+      "generalStorage": {
+        "title": "General Storage",
+        "subtitle": "General Storage Products",
+        "description": "General-purpose storage servers suitable for large-scale data processing and storage scenarios, meeting large capacity, scalability, and high-availability storage needs"
+      },
+      "network": {
+        "title": "Network Products",
+        "subtitle": "Network Products"
+      },
+      "ibSwitch": {
+        "title": "IB Switch",
+        "subtitle": "InfiniBand Switch",
+        "description": "InfiniBand switches are typically used in high-performance computing (HPC), data centers, cloud computing, and large-scale storage fields to meet high-performance computing and data transmission requirements. In recent years, they have become the preferred network interconnect technology for GPU servers"
+      },
+      "ethernetSwitch": {
+        "title": "Ethernet Switch",
+        "subtitle": "Ethernet Switch",
+        "description": "Transmits data based on Ethernet, connecting various servers with network firewalls, routers, and other network devices to achieve interconnection of all devices; applied to enterprise networks, carrier networks, data center networks, and industrial network scenarios"
+      }
+    }
   },
   "solutions": {
     "title": "Solutions",
@@ -72,6 +115,10 @@
     "idc": "Data Center Services",
     "operations": "Operations Management",
     "development": "Development Services"
+  },
+  "news": {
+    "title": "Industry News",
+    "subtitle": "INFORMATION"
   },
   "about": {
     "title": "About Us",
@@ -152,13 +199,14 @@
     "message": "Message",
     "phone": "Phone Number",
     "address": "Address",
-    "businessHours": "Business Hours",
-    "mondayToFriday": "Monday - Friday",
+    "businessHours": "Service Hours",
+    "mondayToFriday": "Monday to Friday",
     "weekend": "Saturday",
     "sundayHoliday": "Sunday & Public Holidays",
     "closed": "Closed",
-    "workingHours": "09:30 - 18:30",
+    "workingHours": "09:30-18:30",
     "emergencyContact": "For emergency needs, please contact us by phone",
+    "wechatQR": "WeChat QR Code",
     "form": {
       "name": "Name",
       "email": "Email",

@@ -10,7 +10,8 @@
       "mcp__web-reader__webReader",
       "mcp__playwright__browser_navigate",
       "mcp__search__tavily_extract",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(node:*)"
     ]
   }
 }
