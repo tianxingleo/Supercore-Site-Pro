@@ -14,16 +14,16 @@
             </NuxtLink>
             <span class="text-gray-300">/</span>
             <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-swiss-text">
-              {{ solution.title }}
+              {{ localizedTitle }}
             </span>
           </div>
 
           <TypographyHeader :level="1" size="display" class="mb-8 !tracking-[0.02em]">
-            {{ solution.title }}
+            {{ localizedTitle }}
           </TypographyHeader>
 
           <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-2xl opacity-80 mb-12">
-            {{ solution.description }}
+            {{ localizedDescription }}
           </TypographyHeader>
 
           <div class="flex flex-wrap gap-6">
@@ -47,7 +47,7 @@
 
             <div class="prose prose-2xl max-w-none text-swiss-text font-medium leading-relaxed">
               <p class="mb-12 text-3xl md:text-4xl tracking-tight">
-                {{ solution.description }}
+                {{ localizedDescription }}
               </p>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mt-24">
@@ -94,13 +94,29 @@ import type { Solution } from '~/types'
 
 const route = useRoute()
 const localePath = useLocalePath()
+const { locale } = useI18n()
 const slug = route.params.slug as string
 
 const { data: response, pending } = await useFetch<{ success: boolean, data: Solution }>(`/api/solutions/${slug}`)
 
 const solution = computed(() => response.value?.data)
 
+// Get localized content
+const localizedTitle = computed(() => {
+  if (!solution.value) return ''
+  return typeof solution.value.title === 'object'
+    ? solution.value.title[locale.value as keyof typeof solution.value.title] || solution.value.title['zh-CN']
+    : solution.value.title
+})
+
+const localizedDescription = computed(() => {
+  if (!solution.value) return ''
+  return typeof solution.value.description === 'object'
+    ? solution.value.description[locale.value as keyof typeof solution.value.description] || solution.value.description['zh-CN']
+    : solution.value.description
+})
+
 useHead({
-  title: solution.value ? `${solution.value.title} - Solutions` : 'Loading Solution...',
+  title: localizedTitle.value ? `${localizedTitle.value} - Solutions` : 'Loading Solution...',
 })
 </script>

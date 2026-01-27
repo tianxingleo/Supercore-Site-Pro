@@ -242,7 +242,7 @@ export const mockProducts: Product[] = [
     featured: false,
     createdAt: '2025-01-26T00:00:00Z'
   }
-,
+  ,
 
   // BC120G3 通用计算服务器
   {
@@ -259,14 +259,14 @@ export const mockProducts: Product[] = [
       en: '[TRANSLATE] 1U通用计算型服务器，搭载双路3rd Gen Intel Xeon Scalable系列处理器，Intel C621A芯片组，支持PCIe4.0协议，提供最大16根3200MT/s DDR4内存插槽，前置支持4块3.5寸SATA/SAS或8块2.5寸SATA/SAS+2块2.5寸NVME/SATA/SAS 热插拔硬盘，满足计算需求'
     },
     specs: {
-          "model": "BC120G3",
-          "cpu": "双路 Intel Xeon 第三代可扩展处理器",
-          "chipset": "Intel C621A",
-          "memory": "16x DDR4-3200 DIMM slots, 最大4TB",
-          "storage": "热插拔 2.5\" SATA/SAS/NVMe",
-          "pcie": "PCIe 4.0",
-          "power": "2x 860W 冗余白金级电源",
-          "rackUnits": "1U"
+      "model": "BC120G3",
+      "cpu": "双路 Intel Xeon 第三代可扩展处理器",
+      "chipset": "Intel C621A",
+      "memory": "16x DDR4-3200 DIMM slots, 最大4TB",
+      "storage": "热插拔 2.5\" SATA/SAS/NVMe",
+      "pcie": "PCIe 4.0",
+      "power": "2x 860W 冗余白金级电源",
+      "rackUnits": "1U"
     },
     images: ['/images/products/bc120g3/main.png', '/images/products/bc120g3/front.png', '/images/products/bc120g3/back.png'],
     category: 'server',
@@ -289,14 +289,14 @@ export const mockProducts: Product[] = [
       en: '[TRANSLATE] 1U通用计算型服务器，搭载双路3rd Gen Intel Xeon Scalable系列处理器，可扩展至32个DIMM插槽和8TB ECC DDR4 DRAM；最多支持4个PCIe 4.0插槽，提供高速数据传输和扩展性；最多提供12个2.5英寸硬盘插槽，满足大容量存储需求；配备最多两个1200瓦冗余钛金级PSU，确保稳定的电源供应，提高系统可靠性'
     },
     specs: {
-          "model": "BC120G3-H",
-          "cpu": "双路 Intel Xeon 第三代可扩展处理器，支持 CPU TDP 最高 270W",
-          "chipset": "Intel C621A",
-          "memory": "32x DDR4-3200 DIMM slots, 最大8TB, 支持 Intel Optane 持久内存 200 系列",
-          "storage": "12x 2.5\" 热插拔 NVMe/SATA/SAS",
-          "pcie": "4x PCIe 4.0 插槽",
-          "power": "2x 1200W 冗余钛金级电源",
-          "rackUnits": "1U"
+      "model": "BC120G3-H",
+      "cpu": "双路 Intel Xeon 第三代可扩展处理器，支持 CPU TDP 最高 270W",
+      "chipset": "Intel C621A",
+      "memory": "32x DDR4-3200 DIMM slots, 最大8TB, 支持 Intel Optane 持久内存 200 系列",
+      "storage": "12x 2.5\" 热插拔 NVMe/SATA/SAS",
+      "pcie": "4x PCIe 4.0 插槽",
+      "power": "2x 1200W 冗余钛金级电源",
+      "rackUnits": "1U"
     },
     images: ['/images/products/bc120g3/main.png', '/images/products/bc120g3/front.png', '/images/products/bc120g3/back.png'],
     category: 'server',
@@ -319,13 +319,13 @@ export const mockProducts: Product[] = [
       en: '[TRANSLATE] 2U通用计算型服务器，搭载第3代Intel Xeon Scalable处理器；支持高达4TB内存，拥有16个DIMM插槽，兼容3200MHz ECC DDR4 RDIMM或LRDIMM；配备8个3.5\"热插拔SATA/SAS驱动器插槽和1个M.2 NVMe插槽；包含2个PCIe 4.0 x8 LP插槽和4个PCIe 4.0 x16 LP插槽，满足高速数据传输和扩展需求'
     },
     specs: {
-          "model": "BC220G3",
-          "cpu": "双路 Intel Xeon 第三代可扩展处理器",
-          "memory": "16x DDR4-3200 DIMM slots, 最大4TB",
-          "storage": "8x 3.5\" 热插拔 SATA/SAS + 1x M.2 NVMe",
-          "pcie": "6x PCIe 4.0 插槽",
-          "power": "冗余电源",
-          "rackUnits": "2U"
+      "model": "BC220G3",
+      "cpu": "双路 Intel Xeon 第三代可扩展处理器",
+      "memory": "16x DDR4-3200 DIMM slots, 最大4TB",
+      "storage": "8x 3.5\" 热插拔 SATA/SAS + 1x M.2 NVMe",
+      "pcie": "6x PCIe 4.0 插槽",
+      "power": "冗余电源",
+      "rackUnits": "2U"
     },
     images: ['/images/products/bc220g3/main.png', '/images/products/bc220g3/front.png', '/images/products/bc220g3/back.png'],
     category: 'server',
@@ -348,13 +348,13 @@ export const mockProducts: Product[] = [
       en: '[TRANSLATE] 2U通用计算型服务器，搭载双路3rd Gen Intel Xeon Scalable系列处理器；拥有32个DIMM插槽，支持最高8TB的3200MHz ECC DDR4内存；正面具备24个2.5英寸热插拔驱动器插槽，支持NVMe、SATA或SAS类型的固态硬盘驱动器；最高支持6个PCIe 4.0插槽，提供海量存储和全域需求计算能力'
     },
     specs: {
-          "model": "BC220G3-H",
-          "cpu": "双路 Intel Xeon 第三代可扩展处理器",
-          "memory": "32x DDR4-3200 DIMM slots, 最大8TB",
-          "storage": "24x 2.5\" 热插拔 NVMe/SATA/SAS",
-          "pcie": "6x PCIe 4.0 插槽",
-          "power": "冗余电源",
-          "rackUnits": "2U"
+      "model": "BC220G3-H",
+      "cpu": "双路 Intel Xeon 第三代可扩展处理器",
+      "memory": "32x DDR4-3200 DIMM slots, 最大8TB",
+      "storage": "24x 2.5\" 热插拔 NVMe/SATA/SAS",
+      "pcie": "6x PCIe 4.0 插槽",
+      "power": "冗余电源",
+      "rackUnits": "2U"
     },
     images: ['/images/products/bc220g3/main.png', '/images/products/bc220g3/front.png', '/images/products/bc220g3/back.png'],
     category: 'server',
@@ -377,13 +377,13 @@ export const mockProducts: Product[] = [
       en: '[TRANSLATE] 2U通用计算型服务器，搭载第3代Intel Xeon Scalable处理器，支持高达270W的CPU TDP；具有丰富的存储和扩展选项，最高支持16个DIMM插槽共4TB DDR4内存；拥有12个3.5英寸热插拔驱动器插槽，同时支持SATA3和NVMe RAID，适合大规模数据处理和存储需求；配备两个1200W冗余钛级电源单元'
     },
     specs: {
-          "model": "BC220G3-S",
-          "cpu": "双路 Intel Xeon 第三代可扩展处理器，支持 CPU TDP 最高 270W",
-          "memory": "16x DDR4-3200 DIMM slots, 最大4TB",
-          "storage": "12x 3.5\" 热插拔 SATA3/SAS, 支持 NVMe RAID",
-          "pcie": "多 PCIe 扩展槽",
-          "power": "2x 1200W 冗余钛级电源",
-          "rackUnits": "2U"
+      "model": "BC220G3-S",
+      "cpu": "双路 Intel Xeon 第三代可扩展处理器，支持 CPU TDP 最高 270W",
+      "memory": "16x DDR4-3200 DIMM slots, 最大4TB",
+      "storage": "12x 3.5\" 热插拔 SATA3/SAS, 支持 NVMe RAID",
+      "pcie": "多 PCIe 扩展槽",
+      "power": "2x 1200W 冗余钛级电源",
+      "rackUnits": "2U"
     },
     images: ['/images/products/bc220g3/main.png', '/images/products/bc220g3/front.png', '/images/products/bc220g3/back.png'],
     category: 'server',
@@ -474,151 +474,108 @@ export const mockNews: News[] = [
 
 /**
  * Mock Solutions Data - 博迩科技解决方案
+ * Data sourced from https://www.boer.cn/solutions
  */
 export const mockSolutions: Solution[] = [
   {
     id: '1',
-    slug: 'stable-backend',
+    slug: 'ai-computing-networking',
     title: {
-      'zh-HK': '後台穩定',
-      'zh-CN': '后台稳定',
-      en: 'Stable Backend'
+      'zh-HK': 'AI算力與組網方案',
+      'zh-CN': 'AI算力与组网方案',
+      en: 'AI Computing and Networking Solution'
     },
     description: {
-      'zh-HK': '產品成熟，穩定可靠，為您的業務提供堅實的技術支撐。',
-      'zh-CN': '产品成熟，稳定可靠，为您的业务提供坚实的技术支撑。',
-      en: 'Mature and reliable products providing solid technical support for your business.'
+      'zh-HK': '為美國AI算力與組網項目提供算、存、網一體化建設。融合新舊設備解決供給難題，網絡優化設計超出用戶預期。',
+      'zh-CN': '为美国AI算力与组网项目提供算、存、网一体化建设。融合新旧设备解决供给难题，网络优化设计超出用户预期。',
+      en: 'Provides integrated construction of computing, storage, and networking for USA AI projects. Merges new and old equipment to solve supply challenges with network optimization exceeding expectations.'
     },
     icon: 'Server',
     category: 'idc',
     features: [
-      '企業級硬件',
-      '99.9% 可用性',
-      '7x24 監控',
-      '快速故障響應',
-      '預防性維護'
+      '骨干网：多ISP高速光口连接',
+      '业务网：防火墙+多层交换机MLAG',
+      '带外网：OOB-SW远程管理',
+      '算力网：HPC高速交换机',
+      '存储服务器：新旧设备融合',
+      'SDWAN：HA高可用技术'
     ],
     order: 1
   },
   {
     id: '2',
-    slug: 'cost-saving',
+    slug: 'gpu-server-cluster',
     title: {
-      'zh-HK': '節省成�',
-      'zh-CN': '节省成本',
-      en: 'Cost Saving'
+      'zh-HK': 'GPU算力服務器集群組網方案',
+      'zh-CN': 'GPU算力服务器集群组网方案',
+      en: 'GPU Computing Server Cluster Networking Solution'
     },
     description: {
-      'zh-HK': '優化資源配置，節省人力維護和時間成本�',
-      'zh-CN': '优化资源配置，节省人力维护和时间成本�',
-      en: 'Optimize resource allocation to save on maintenance and time costs.'
+      'zh-HK': '綜合分層架構，分為計算、網絡和存儲層。GPU和CPU計算節點配合管理節點實現資源協調優化，專為提升大數據和深度學習效率而設計。',
+      'zh-CN': '综合分层架构，分为计算、网络和存储层。GPU和CPU计算节点配合管理节点实现资源协调优化，专为提升大数据和深度学习效率而设计。',
+      en: 'Comprehensive tiered architecture with computing, networking, and storage layers. GPU and CPU nodes with management coordination, designed to enhance big data and deep learning efficiency.'
     },
-    icon: 'Settings',
-    category: 'operations',
+    icon: 'Code',
+    category: 'development',
     features: [
-      '按需擴展',
-      '能耗優�',
-      '自動化運�',
-      '資源統一管理',
-      '降低TCO'
+      '计算层：GPU+CPU节点+管理节点',
+      '网络层：IB高速网络',
+      '带内管理网络',
+      'OOB带外管理',
+      '存储层：全闪NVMe SSD阵列',
+      '高容量SAS HDD存储'
     ],
     order: 2
   },
   {
     id: '3',
-    slug: 'latest-technology',
+    slug: 'vr-gaming-networking',
     title: {
-      'zh-HK': '最新技術',
-      'zh-CN': '最新技术',
-      en: 'Latest Technology'
+      'zh-HK': 'VR遊戲組網方案',
+      'zh-CN': 'VR游戏组网方案',
+      en: 'VR Gaming Networking Solution'
     },
     description: {
-      'zh-HK': '不斷創新產品的應用，引領行業技術發展。',
-      'zh-CN': '不断创新产品的应用，引领行业技术发展。',
-      en: 'Continuously innovate product applications and lead industry technology development.'
+      'zh-HK': '確保VR遊戲場景的流暢性和穩定性，提供高帶寬低延遲。星型拓撲易於管理和擴展，高性能GPU服務器處理複雜場景計算。',
+      'zh-CN': '确保VR游戏场景的流畅性和稳定性，提供高带宽低延迟。星型拓扑易于管理和扩展，高性能GPU服务器处理复杂场景计算。',
+      en: 'Ensures smoothness and stability for VR gaming with high bandwidth and low latency. Star topology for easy management, high-performance GPU servers for complex calculations.'
     },
-    icon: 'Code',
-    category: 'development',
+    icon: 'Network',
+    category: 'operations',
     features: [
-      'AI 賦能',
-      '雲端整合',
-      '容器化部署',
-      '微服務架構',
-      'DevOps 實踐'
+      '星型拓扑结构',
+      '高性能GPU服务器',
+      '先进无线AP接入点',
+      '最新Wi-Fi标准支持',
+      '集成防火墙和入侵检测',
+      '实时网络监控'
     ],
     order: 3
   },
   {
     id: '4',
-    slug: 'secure-reliable',
+    slug: 'volcano-engine-cloud',
     title: {
-      'zh-HK': '安全可靠',
-      'zh-CN': '安全可靠',
-      en: 'Secure & Reliable'
+      'zh-HK': '火山引擎雲產品方案',
+      'zh-CN': '火山引擎云产品方案',
+      en: 'Volcano Engine Cloud Product Solution'
     },
     description: {
-      'zh-HK': '保護用戶數據安全，提供全方位的安全防護。',
-      'zh-CN': '保护用户数据安全，提供全方位的安全防护。',
-      en: 'Protect user data security with comprehensive security protection.'
-    },
-    icon: 'Shield',
-    category: 'operations',
-    features: [
-      '數據加密',
-      '訪問控制',
-      '安全審計',
-      '威脅檢測',
-      '合規認證'
-    ],
-    order: 4
-  },
-  {
-    id: '5',
-    slug: 'fast-response',
-    title: {
-      'zh-HK': '快速響應',
-      'zh-CN': '快速响应',
-      en: 'Fast Response'
-    },
-    description: {
-      'zh-HK': '響應速度迅速，反應及時，確保業務連續性。',
-      'zh-CN': '响应速度迅速，反应及时，确保业务连续性。',
-      en: 'Rapid response speed and timely reaction ensure business continuity.'
+      'zh-HK': '一站式數字化轉型解決方案，覆蓋計算、存儲、網絡、AI、大數據和容器服務。提供極致性能、彈性擴展和多層安全保障。',
+      'zh-CN': '一站式数字化转型解决方案，覆盖计算、存储、网络、AI、大数据和容器服务。提供极致性能、弹性扩展和多层安全保障。',
+      en: 'One-stop digital transformation solution covering computing, storage, networking, AI, big data, and container services with extreme performance and elastic scaling.'
     },
     icon: 'Cloud',
-    category: 'operations',
+    category: 'development',
     features: [
-      '專業技術團隊',
-      '多渠道支持',
-      '工單系統',
-      '遠程協助',
-      '現場支援'
+      '极致性能：先进架构处理大规模数据',
+      '弹性扩展：动态资源调整',
+      '安全可靠：多层安全防护',
+      '丰富功能：AI+大数据分析',
+      '企业应用部署',
+      '内容分发服务'
     ],
-    order: 5
-  },
-  {
-    id: '6',
-    slug: 'one-stop-service',
-    title: {
-      'zh-HK': '一站式服務',
-      'zh-CN': '一站式服务',
-      en: 'One-Stop Service'
-    },
-    description: {
-      'zh-HK': '從規劃到實施全套服務，提供完整解決方案。',
-      'zh-CN': '从规划到实施全套服务，提供完整解决方案。',
-      en: 'Complete service from planning to implementation, providing comprehensive solutions.'
-    },
-    icon: 'Network',
-    category: 'idc',
-    features: [
-      '需求分析',
-      '方案設計',
-      '設備選型',
-      '部署實施',
-      '培訓支持'
-    ],
-    order: 6
+    order: 4
   }
 ]
 

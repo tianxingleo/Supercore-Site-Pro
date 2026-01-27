@@ -1,8 +1,20 @@
 <template>
-  <component :is="tag" :type="tag === 'button' ? type : undefined" :to="tag === 'a' ? to : undefined"
-    :href="tag === 'a' ? to : undefined" :class="buttonClasses" :disabled="disabled" @click="handleClick">
+  <NuxtLink v-if="tag === 'a' && to" :to="to" custom v-slot="{ navigate }">
+    <a
+      @click="navigate"
+      :class="buttonClasses"
+      :href="to"
+      @click.exact="handleClick($event, navigate)"
+    >
+      <slot />
+    </a>
+  </NuxtLink>
+  <a v-else-if="tag === 'a'" :href="to" :class="buttonClasses" @click="handleClick">
     <slot />
-  </component>
+  </a>
+  <button v-else :type="type" :class="buttonClasses" :disabled="disabled" @click="handleClick">
+    <slot />
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -92,8 +104,12 @@ const buttonClasses = computed(() => {
   return [...base, ...sizes[props.size], ...variants[props.variant], ...width]
 })
 
-const handleClick = (event: Event) => {
+const handleClick = (event: Event, navigate?: () => void) => {
   if (!props.disabled) {
+    if (navigate) {
+      event.preventDefault()
+      navigate()
+    }
     emit('click', event)
   }
 }

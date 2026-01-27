@@ -144,12 +144,22 @@
         </div>
 
         <div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-l border-gray-100">
-          <template v-if="latestPosts && latestPosts.length > 0">
+          <!-- Loading State -->
+          <template v-if="pendingNews">
+            <div v-for="i in 3" :key="i" class="border-r border-b border-gray-100">
+              <NewsSkeleton class="!border-none" />
+            </div>
+          </template>
+
+          <!-- Data Loaded State -->
+          <template v-else-if="latestPosts && latestPosts.length > 0">
             <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100">
               <NewsCard :post="post" class="!border-none" />
             </div>
           </template>
-          <div v-else-if="!pendingNews" class="col-span-3 py-24 text-center border-r border-b border-gray-100">
+
+          <!-- Empty State -->
+          <div v-else class="col-span-3 py-24 text-center border-r border-b border-gray-100">
             <p class="text-swiss-secondary uppercase tracking-widest text-sm opacity-50">{{ $t('news.noNews') }}</p>
           </div>
         </div>

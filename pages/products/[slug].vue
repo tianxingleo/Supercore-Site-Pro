@@ -20,8 +20,16 @@
       gap="none"
       class="border-l border-gray-100 min-h-[calc(100vh-140px)]"
     >
+      <!-- Loading State -->
+      <div v-if="pending" class="col-span-12 flex items-center justify-center py-48 border-r border-b border-gray-100">
+        <div class="text-center">
+          <div class="w-12 h-12 border-2 border-swiss-text border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+          <p class="text-swiss-text-muted text-sm font-medium">Loading product details...</p>
+        </div>
+      </div>
+
       <!-- Product Not Found -->
-      <div v-if="!product" class="col-span-12 text-center py-48 border-r border-b border-gray-100">
+      <div v-else-if="!product" class="col-span-12 text-center py-48 border-r border-b border-gray-100">
         <TypographyHeader :level="2" size="h2" class="mb-8"> 404_NOT_FOUND </TypographyHeader>
         <SwissButton variant="primary" @click="navigateTo(localePath('/products'))">
           RETURN_TO_COLLECTION
@@ -130,8 +138,8 @@ const route = useRoute()
 const localePath = useLocalePath()
 const { locale } = useI18n()
 
-// 使用 useLazyFetch 避免阻塞渲染，防止路由切换时白屏
-const { data: product, error } = useLazyFetch<Product>(`/api/products/${route.params.slug}`)
+// 使用 useFetch 在服务端预加载数据，避免闪烁
+const { data: product, pending, error } = useFetch<Product>(`/api/products/${route.params.slug}`)
 
 // Handle error state
 watchEffect(() => {
