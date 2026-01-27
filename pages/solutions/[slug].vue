@@ -84,8 +84,8 @@
     </section>
   </div>
 
-  <div v-else-if="pending" class="min-h-screen flex items-center justify-center">
-    <div class="w-12 h-12 border-4 border-swiss-text border-t-transparent rounded-full animate-spin"></div>
+  <div v-else-if="pending">
+    <ArticleSkeleton />
   </div>
 </template>
 
@@ -97,7 +97,9 @@ const localePath = useLocalePath()
 const { locale } = useI18n()
 const slug = route.params.slug as string
 
-const { data: response, pending } = await useFetch<{ success: boolean, data: Solution }>(`/api/solutions/${slug}`)
+const { data: response, pending } = useLazyFetch<{ success: boolean, data: Solution }>(`/api/solutions/${slug}`, {
+  default: () => ({ success: false, data: null as any })
+})
 
 const solution = computed(() => response.value?.data)
 

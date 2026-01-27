@@ -60,7 +60,7 @@
                                     Article</span>
                                 <span
                                     class="text-sm font-bold group-hover:text-swiss-accent transition-colors line-clamp-1">{{
-                                    prevPost.title[lang] }}</span>
+                                        prevPost.title[lang] }}</span>
                             </NuxtLink>
                             <div v-else></div>
 
@@ -70,7 +70,7 @@
                                     Article</span>
                                 <span
                                     class="text-sm font-bold group-hover:text-swiss-accent transition-colors line-clamp-1">{{
-                                    nextPost.title[lang] }}</span>
+                                        nextPost.title[lang] }}</span>
                             </NuxtLink>
                             <div v-else></div>
                         </div>
@@ -80,9 +80,7 @@
         </template>
 
         <template v-else-if="pending">
-            <div class="min-h-screen flex items-center justify-center">
-                <div class="w-12 h-12 border-4 border-gray-100 border-t-swiss-text rounded-full animate-spin"></div>
-            </div>
+            <ArticleSkeleton />
         </template>
 
         <template v-else>
@@ -108,7 +106,7 @@ const slug = route.params.slug as string
 
 // 使用 useLazyFetch 避免阻塞渲染，防止路由切换时白屏
 const { data: newsData, pending, error } = useLazyFetch<{ post: Post, prevPost?: Post, nextPost?: Post }>(`/api/news/${slug}`, {
-  default: () => ({ post: null as any })
+    default: () => ({ post: null as any })
 })
 
 const post = computed(() => newsData.value?.post)
@@ -117,9 +115,9 @@ const nextPost = computed(() => newsData.value?.nextPost)
 
 // 处理错误
 watchEffect(() => {
-  if (error.value) {
-    console.error('Failed to load news article:', error.value)
-  }
+    if (error.value) {
+        console.error('Failed to load news article:', error.value)
+    }
 })
 
 const lang = computed(() => {

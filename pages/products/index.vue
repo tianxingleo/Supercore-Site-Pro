@@ -40,12 +40,13 @@
 <script setup lang="ts">
 import type { Product } from '~/types'
 
-// 使用 useFetch 在服务端预加载数据，避免闪烁
-const { data: products, pending } = useFetch<Product[]>('/api/products/public', {
+// 使用 useLazyFetch 确保加载动画可见
+const { data: products, pending } = useLazyFetch<Product[]>('/api/products/public', {
   transform: (data) => {
     if (!data || data.length === 0) return []
     return data
   },
+  default: () => []
 })
 
 useHead({

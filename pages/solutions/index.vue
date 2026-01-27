@@ -24,8 +24,8 @@
             <button v-for="category in categories" :key="category.key" @click="selectedCategory = category.key"
               class="px-8 py-3 border border-gray-200 text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-500 font-mono"
               :class="selectedCategory === category.key
-                  ? 'bg-swiss-text text-white border-black'
-                  : 'bg-white text-swiss-text hover:border-black'
+                ? 'bg-swiss-text text-white border-black'
+                : 'bg-white text-swiss-text hover:border-black'
                 ">
               [{{ category.label }}]
             </button>
@@ -36,7 +36,14 @@
 
     <!-- Solutions Grid -->
     <section class="pb-32">
-      <SolutionsBento :solutions="filteredSolutions" />
+      <template v-if="pending">
+        <GridContainer :grid="true" gap="none" class="border-t border-l border-gray-100">
+          <div v-for="i in 4" :key="i" class="col-span-12 md:col-span-6 border-r border-b border-gray-100">
+            <SolutionSkeleton />
+          </div>
+        </GridContainer>
+      </template>
+      <SolutionsBento v-else :solutions="filteredSolutions" />
     </section>
   </div>
 </template>
@@ -46,10 +53,11 @@ import type { Solution } from '~/types'
 
 const { t } = useI18n()
 
-const { data: solutions } = await useFetch<Solution[]>('/api/solutions', {
+const { data: solutions, pending } = useLazyFetch<Solution[]>('/api/solutions', {
   transform: () => {
     return mockSolutions.sort((a, b) => a.order - b.order)
   },
+  default: () => []
 })
 
 import { mockSolutions } from '~/utils/mockData'
