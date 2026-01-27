@@ -21,8 +21,21 @@ export interface Product {
   createdAt: string
 }
 
+export interface Post {
+  id: number
+  slug: string
+  title: Record<string, string>
+  summary?: Record<string, string>
+  content: Record<string, string>
+  cover_image?: string
+  tags?: string[]
+  published_at?: string
+  created_at: string
+  updated_at: string
+}
+
 /**
- * News/Article Type Definitions
+ * News/Article Type Definitions (Legacy or UI Specific)
  */
 export interface News {
   id: string

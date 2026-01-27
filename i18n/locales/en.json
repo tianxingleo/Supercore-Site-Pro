@@ -118,7 +118,11 @@
   },
   "news": {
     "title": "Industry News",
-    "subtitle": "INFORMATION"
+    "subtitle": "Latest Industry Updates",
+    "noNews": "No news available",
+    "backToList": "Back to news list",
+    "latest": "Latest Information",
+    "viewMore": "View more news"
   },
   "about": {
     "title": "About Us",

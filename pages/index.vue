@@ -116,6 +116,37 @@
       </GridContainer>
     </section>
 
+    <!-- Latest News Section -->
+    <section class="py-24 bg-white border-b border-gray-100">
+      <GridContainer>
+        <div class="col-span-12 flex justify-between items-end mb-16">
+          <div>
+            <div
+              class="inline-block mb-6 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
+              {{ $t('news.title') }}
+            </div>
+            <TypographyHeader :level="2" size="h2" class="!tracking-tighter">
+              {{ $t('news.latest') }}
+            </TypographyHeader>
+          </div>
+          <NuxtLink :to="localePath('/news')"
+            class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center mb-1">
+            {{ $t('news.viewMore') }} <span class="ml-2">→</span>
+          </NuxtLink>
+        </div>
+
+        <div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-l border-gray-100">
+          <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100">
+            <NewsCard :post="post" class="!border-none" />
+          </div>
+          <div v-if="!latestPosts?.length && !pendingNews"
+            class="col-span-3 py-24 text-center border-r border-b border-gray-100">
+            <p class="text-swiss-secondary uppercase tracking-widest text-sm opacity-50">{{ $t('news.noNews') }}</p>
+          </div>
+        </div>
+      </GridContainer>
+    </section>
+
     <!-- About Section -->
     <section class="py-32 bg-white relative overflow-hidden">
       <div
@@ -196,8 +227,14 @@
 </template>
 
 <script setup lang="ts">
+import type { Post } from '~/types'
+
 const { t } = useI18n()
 const localePath = useLocalePath()
+
+const { data: latestPosts, pending: pendingNews } = await useFetch<Post[]>('/api/news', {
+  query: { limit: 3 }
+})
 
 useHead({
   title: '首页 - 超核技術有限公司',

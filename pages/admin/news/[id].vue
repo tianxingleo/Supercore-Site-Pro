@@ -9,11 +9,27 @@
             <form @submit.prevent="savePost" class="space-y-6 pb-24">
                 <UCard>
                     <div class="space-y-6">
-                        <UFormGroup label="標題" required>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <UFormGroup label="標題" required class="flex-1">
+                                <UTabs :items="langTabs">
+                                    <template #item="{ item }">
+                                        <UInput v-model="form.title[item.key]" :placeholder="`輸入 ${item.label} 標題`"
+                                            class="mt-2" />
+                                    </template>
+                                </UTabs>
+                            </UFormGroup>
+
+                            <UFormGroup label="URL Slug (唯一標識)" required>
+                                <UInput v-model="form.slug" placeholder="industry-news-title" class="mt-2" />
+                                <p class="text-xs text-gray-400 mt-1">用於網址，例如：/news/industry-news-title</p>
+                            </UFormGroup>
+                        </div>
+
+                        <UFormGroup label="摘要" required>
                             <UTabs :items="langTabs">
                                 <template #item="{ item }">
-                                    <UInput v-model="form.title[item.key]" :placeholder="`輸入 ${item.label} 標題`"
-                                        class="mt-2" />
+                                    <UTextarea v-model="form.summary[item.key]" :placeholder="`輸入 ${item.label} 摘要`"
+                                        class="mt-2" rows="3" />
                                 </template>
                             </UTabs>
                         </UFormGroup>
@@ -72,8 +88,10 @@ const langTabs = [
 ]
 
 const form = ref({
-    title: { hk: '', cn: '', en: '' },
-    content: { hk: '', cn: '', en: '' },
+    slug: '',
+    title: { hk: '', cn: '', en: '' } as Record<string, string>,
+    summary: { hk: '', cn: '', en: '' } as Record<string, string>,
+    content: { hk: '', cn: '', en: '' } as Record<string, string>,
     cover_image: '',
     tags: [] as string[],
     published_at: null as string | null

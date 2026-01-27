@@ -19,7 +19,9 @@ CREATE TABLE IF NOT EXISTS products (
 -- 2. Posts Table
 CREATE TABLE IF NOT EXISTS posts (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    slug TEXT UNIQUE NOT NULL,
     title JSONB NOT NULL,
+    summary JSONB, -- {"hk": "...", "cn": "...", "en": "..."}
     content JSONB NOT NULL, -- Markdown content
     cover_image TEXT,
     tags TEXT[],

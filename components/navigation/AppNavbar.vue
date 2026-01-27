@@ -74,6 +74,7 @@ const navItems = [
   { key: 'home', label: 'nav.home', to: '/' },
   { key: 'products', label: 'nav.products', to: '/products' },
   { key: 'solutions', label: 'nav.solutions', to: '/solutions' },
+  { key: 'news', label: 'nav.news', to: '/news' },
   { key: 'about', label: 'nav.about', to: '/about' },
   { key: 'contact', label: 'nav.contact', to: '/contact' },
 ]

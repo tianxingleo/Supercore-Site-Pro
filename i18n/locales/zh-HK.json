@@ -118,7 +118,11 @@
   },
   "news": {
     "title": "行業資訊",
-    "subtitle": "INFORMATION"
+    "subtitle": "Latest Industry Updates",
+    "noNews": "暫無相關資訊",
+    "backToList": "返回資訊列表",
+    "latest": "最新資訊",
+    "viewMore": "查看更多動態"
   },
   "about": {
     "title": "關於我們",
