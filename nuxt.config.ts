@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
-  srcDir: '.',
   devtools: { enabled: true },
   future: {
     compatibilityVersion: 4,
@@ -20,10 +19,7 @@ export default defineNuxtConfig({
     }
   },
 
-  // Experimental features
-  experimental: {
-    appManifest: true,
-  },
+  // Experimental features - removed to avoid #app-manifest errors
 
   // Components Configuration
   components: [

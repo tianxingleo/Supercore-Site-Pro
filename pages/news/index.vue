@@ -63,7 +63,10 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
 
-const { data: posts, pending } = await useFetch<Post[]>('/api/news/public')
+// 使用 useLazyFetch 避免阻塞渲染，防止路由切换时白屏
+const { data: posts, pending, error } = useLazyFetch<Post[]>('/api/news/public', {
+  default: () => []
+})
 
 useHead({
   title: '行业咨询 - SUPERCORE',
@@ -73,5 +76,12 @@ useHead({
       content: '超核技術有限公司海外官方网站行业咨询界面，为您提供最新的行业动态及公司快讯。',
     },
   ],
+})
+
+// 处理错误
+watchEffect(() => {
+  if (error.value) {
+    console.error('Failed to load news:', error.value)
+  }
 })
 </script>

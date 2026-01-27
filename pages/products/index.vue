@@ -37,17 +37,17 @@
 
 <script setup lang="ts">
 import type { Product } from '~/types'
+import { mockProducts } from '~/utils/mockData'
 
-const { data: products } = await useFetch<Product[]>('/api/products/public', {
+// 使用 useLazyFetch 避免阻塞渲染，防止路由切换时白屏
+const { data: products } = useLazyFetch<Product[]>('/api/products/public', {
+  default: () => mockProducts,
   transform: (data) => {
     // If data is empty or error, use mock data for now
     if (!data || data.length === 0) return mockProducts
     return data
   },
 })
-
-// Import mock data
-import { mockProducts } from '~/utils/mockData'
 
 useHead({
   title: '产品 - 超核技術有限公司',

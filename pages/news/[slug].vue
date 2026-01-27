@@ -106,10 +106,21 @@ const localePath = useLocalePath()
 const { locale } = useI18n()
 const slug = route.params.slug as string
 
-const { data: newsData, pending } = await useFetch<{ post: Post, prevPost?: Post, nextPost?: Post }>(`/api/news/${slug}`)
+// 使用 useLazyFetch 避免阻塞渲染，防止路由切换时白屏
+const { data: newsData, pending, error } = useLazyFetch<{ post: Post, prevPost?: Post, nextPost?: Post }>(`/api/news/${slug}`, {
+  default: () => ({ post: null as any })
+})
+
 const post = computed(() => newsData.value?.post)
 const prevPost = computed(() => newsData.value?.prevPost)
 const nextPost = computed(() => newsData.value?.nextPost)
+
+// 处理错误
+watchEffect(() => {
+  if (error.value) {
+    console.error('Failed to load news article:', error.value)
+  }
+})
 
 const lang = computed(() => {
     const l = locale.value

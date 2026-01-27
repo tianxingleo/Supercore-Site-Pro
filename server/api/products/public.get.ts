@@ -12,25 +12,21 @@ export default defineEventHandler(async (event) => {
   if (!supabaseUrl || !supabaseKey) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Supabase configuration is missing'
+      statusMessage: 'Supabase configuration is missing',
     })
   }
 
-  const client = createClient(
-    supabaseUrl,
-    supabaseKey,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
-    }
-  )
+  const client = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  })
 
   let queryBuilder = client
     .from('products')
     .select('*')
-    .eq('status', 'published')  // 只获取已发布的产品
+    .eq('status', 'published') // 只获取已发布的产品
     .order('created_at', { ascending: false })
 
   if (limit) {
@@ -42,9 +38,22 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: error.message
+      statusMessage: error.message,
     })
   }
 
-  return (data as Product[]) || []
+  // 数据库字段映射到 Product 类型
+  const mappedProducts: Product[] = (data || []).map((item) => ({
+    id: String(item.id),
+    slug: item.slug,
+    name: item.name,
+    description: item.description,
+    specs: item.specs || {},
+    images: item.images || [],
+    category: item.category,
+    featured: item.is_featured || false,
+    createdAt: item.created_at,
+  }))
+
+  return mappedProducts
 })

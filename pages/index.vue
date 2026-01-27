@@ -149,8 +149,7 @@
               <NewsCard :post="post" class="!border-none" />
             </div>
           </template>
-          <div v-else-if="!pendingNews"
-            class="col-span-3 py-24 text-center border-r border-b border-gray-100">
+          <div v-else-if="!pendingNews" class="col-span-3 py-24 text-center border-r border-b border-gray-100">
             <p class="text-swiss-secondary uppercase tracking-widest text-sm opacity-50">{{ $t('news.noNews') }}</p>
           </div>
         </div>
@@ -278,44 +277,48 @@ onMounted(() => {
 })
 
 const initScrollAnimation = () => {
-  // 獲取 ScrollTrigger 實例
-  const ScrollTrigger = useNuxtApp().$ScrollTrigger as any
+  // 获取 GSAP 和 ScrollTrigger 实例
+  const { $gsap, $ScrollTrigger } = useNuxtApp() as any
 
-  if (!ScrollTrigger) {
-    console.warn('ScrollTrigger not available')
+  if (!$gsap || !$ScrollTrigger) {
+    console.warn('GSAP or ScrollTrigger not available')
     return
   }
 
-  // 僅在桌面端啟用滾動動畫
+  // 仅在桌面端启用滚动动画
   if (!canUse3D.value) {
     return
   }
 
-  // 創建滾動時間軸
-  const timeline = ScrollTrigger.timeline({
-    scrollTrigger: {
-      trigger: '#hero-section',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1,
-      onUpdate: (self: any) => {
-        const progress = self.progress
-        updateAnimationPhase(progress)
+  try {
+    // 创建滚动时间轴 - 使用 gsap.timeline() 而不是 ScrollTrigger.timeline()
+    const timeline = $gsap.timeline({
+      scrollTrigger: {
+        trigger: '#hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1,
+        onUpdate: (self: any) => {
+          const progress = self.progress
+          updateAnimationPhase(progress)
+        },
       },
-    },
-  })
+    })
 
-  // 階段 1: 淡入 (0-20%)
-  timeline.to({}, { duration: 20 })
+    // 阶段 1: 淡入 (0-20%)
+    timeline.to({}, { duration: 20 })
 
-  // 階段 2: 機櫃打開 (20-50%)
-  timeline.to({}, { duration: 30 })
+    // 阶段 2: 机柜打开 (20-50%)
+    timeline.to({}, { duration: 30 })
 
-  // 階段 3: 組件爆炸 (50-80%)
-  timeline.to({}, { duration: 30 })
+    // 阶段 3: 组件爆炸 (50-80%)
+    timeline.to({}, { duration: 30 })
 
-  // 階段 4: 重新組裝 (80-100%)
-  timeline.to({}, { duration: 20 })
+    // 阶段 4: 重新组装 (80-100%)
+    timeline.to({}, { duration: 20 })
+  } catch (error) {
+    console.error('Failed to initialize scroll animation:', error)
+  }
 }
 
 const updateAnimationPhase = (progress: number) => {
@@ -351,9 +354,9 @@ const updateAnimationPhase = (progress: number) => {
 onUnmounted(() => {
   // 清理 ScrollTrigger
   if (process.client) {
-    const { ScrollTrigger } = useNuxtApp().$ScrollTrigger as { ScrollTrigger: any }
-    if (ScrollTrigger) {
-      ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill())
+    const { $ScrollTrigger } = useNuxtApp() as any
+    if ($ScrollTrigger) {
+      $ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill())
     }
   }
 })
