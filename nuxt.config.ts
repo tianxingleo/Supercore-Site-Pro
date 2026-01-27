@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
+  srcDir: '.',
   devtools: { enabled: true },
   future: {
     compatibilityVersion: 4,
@@ -21,7 +22,7 @@ export default defineNuxtConfig({
 
   // Experimental features
   experimental: {
-    appManifest: false, // Disable app manifest to resolve #app-manifest import errors
+    appManifest: true,
   },
 
   // Components Configuration
@@ -82,6 +83,7 @@ export default defineNuxtConfig({
         '/zh-CN/**',
         '/en',
         '/en/**',
+        '/_nuxt/**',
       ],
     },
   },
@@ -157,8 +159,8 @@ export default defineNuxtConfig({
         lang: 'zh-HK',
       },
       link: [
-        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
-        { rel: 'apple-touch-icon', href: '/favicon.png' },
+        { rel: 'icon', type: 'image/png', href: '/supercore.png' },
+        { rel: 'apple-touch-icon', href: '/supercore.png' },
         { rel: 'preconnect', href: 'https://lf3-static.bytednsdoc.com' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
@@ -190,6 +192,10 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: ['gsap', 'lenis'],
+      exclude: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js']
     },
   },
-})
+  // Build
+  build: {
+    transpile: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js'],
+  },})

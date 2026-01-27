@@ -6,15 +6,10 @@
       <div class="col-span-12 flex items-center justify-between py-5 md:py-8 transition-all duration-500"
         :class="{ 'py-3 md:py-4': scrolled }">
         <!-- Logo -->
-        <NuxtLink :to="localePath('/')" class="flex items-center space-x-3 group">
-          <img src="/images/logo.png" alt="SUPERCORE Logo"
+        <NuxtLink :to="localePath('/')" class="flex items-center group">
+          <img src="/supercore.png" alt="SUPERCORE Logo"
             class="object-contain drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)] transition-all duration-500 w-20 h-20 md:w-32 md:h-32"
             :class="{ '!w-12 !h-12 md:!w-20 md:!h-20': scrolled }" />
-          <TypographyHeader :level="3" size="h4"
-            class="hidden sm:block !mb-0 tracking-[0.2em] font-black uppercase transition-all duration-500 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
-            :color="scrolled ? 'text' : 'white'">
-            SUPERCORE
-          </TypographyHeader>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
@@ -89,6 +84,7 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
+  handleScroll()
   window.addEventListener('scroll', handleScroll)
 })
 

@@ -85,7 +85,6 @@ definePageMeta({
   layout: 'admin',
 })
 
-const client = useSupabaseClient()
 const loading = ref(true)
 const inquiries = ref([])
 
@@ -103,28 +102,40 @@ onMounted(async () => {
 
 async function fetchInquiries() {
   loading.value = true
-  const { data } = await client
-    .from('inquiries')
-    .select('*')
-    .order('created_at', { ascending: false })
-
-  if (data) inquiries.value = data
-  loading.value = false
+  try {
+    const response = (await $fetch('/api/inquiries')) as any
+    if (response.success) {
+      inquiries.value = response.data
+    }
+  } catch (error) {
+    console.error('獲取詢盤列表失敗:', error)
+  } finally {
+    loading.value = false
+  }
 }
 
 async function markAsRead(id: number) {
-  const { error } = await client.from('inquiries').update({ status: 'read' }).eq('id', id)
-  if (!error) {
+  try {
+    await $fetch(`/api/inquiries/${id}`, {
+      method: 'PUT',
+      body: { status: 'read' },
+    })
     const item = inquiries.value.find((i: any) => i.id === id)
     if (item) item.status = 'read'
+  } catch (error) {
+    console.error('標記為已讀失敗:', error)
   }
 }
 
 async function deleteInquiry(id: number) {
   if (!confirm('確定刪除此詢盤？')) return
-  const { error } = await client.from('inquiries').delete().eq('id', id)
-  if (!error) {
+  try {
+    await $fetch(`/api/inquiries/${id}`, {
+      method: 'DELETE',
+    })
     inquiries.value = inquiries.value.filter((i: any) => i.id !== id)
+  } catch (error) {
+    console.error('刪除詢盤失敗:', error)
   }
 }
 

@@ -2,8 +2,12 @@
   <form @submit.prevent="handleSubmit" class="space-y-12">
     <!-- Name -->
     <div class="relative group">
-      <label for="name" class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text">
-        Full Name <span class="text-swiss-text opacity-20">/ {{ $t('contact.name') || '姓名' }}</span>
+      <label
+        for="name"
+        class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text"
+      >
+        Full Name
+        <span class="text-swiss-text opacity-20">/ {{ $t('contact.name') || '姓名' }}</span>
       </label>
       <input
         id="name"
@@ -17,8 +21,12 @@
 
     <!-- Email -->
     <div class="relative group">
-      <label for="email" class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text">
-        Email Address <span class="text-swiss-text opacity-20">/ {{ $t('contact.email') || '電郵' }}</span>
+      <label
+        for="email"
+        class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text"
+      >
+        Email Address
+        <span class="text-swiss-text opacity-20">/ {{ $t('contact.email') || '電郵' }}</span>
       </label>
       <input
         id="email"
@@ -32,8 +40,12 @@
 
     <!-- Company -->
     <div class="relative group">
-      <label for="company" class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text">
-        Company <span class="text-swiss-text opacity-20">/ {{ $t('contact.company') || '公司' }}</span>
+      <label
+        for="company"
+        class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text"
+      >
+        Company
+        <span class="text-swiss-text opacity-20">/ {{ $t('contact.company') || '公司' }}</span>
       </label>
       <input
         id="company"
@@ -46,8 +58,12 @@
 
     <!-- Message -->
     <div class="relative group">
-      <label for="message" class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text">
-        Project Details <span class="text-swiss-text opacity-20">/ {{ $t('contact.message') || '訊息' }}</span>
+      <label
+        for="message"
+        class="block text-[10px] font-bold text-swiss-text/40 uppercase tracking-widest mb-2 transition-colors group-focus-within:text-swiss-text"
+      >
+        Project Details
+        <span class="text-swiss-text opacity-20">/ {{ $t('contact.message') || '訊息' }}</span>
       </label>
       <textarea
         id="message"
@@ -74,20 +90,14 @@
     </div>
 
     <!-- Success Message -->
-    <div
-      v-if="showSuccess"
-      class="p-6 bg-black text-white text-center"
-    >
+    <div v-if="showSuccess" class="p-6 bg-black text-white text-center">
       <p class="text-[10px] font-bold tracking-widest uppercase">
         Message Received. We will contact you shortly.
       </p>
     </div>
 
     <!-- Error Message -->
-    <div
-      v-if="showError"
-      class="p-6 bg-red-600 text-white text-center"
-    >
+    <div v-if="showError" class="p-6 bg-red-600 text-white text-center">
       <p class="text-[10px] font-bold tracking-widest uppercase">
         Submission Error. Please try again.
       </p>
@@ -120,30 +130,33 @@ const handleSubmit = async () => {
   showError.value = false
 
   try {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const response = await $fetch('/api/inquiries', {
+      method: 'POST',
+      body: {
+        email: formData.value.email,
+        company: formData.value.company,
+        message: formData.value.message,
+      },
+    })
 
-    // Emit submit event
-    emit('submit', formData.value)
+    if (response.success) {
+      showSuccess.value = true
 
-    // Show success message
-    showSuccess.value = true
+      formData.value = {
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        message: '',
+      }
 
-    // Reset form
-    formData.value = {
-      name: '',
-      email: '',
-      phone: '',
-      company: '',
-      message: '',
+      setTimeout(() => {
+        showSuccess.value = false
+      }, 5000)
     }
-
-    // Hide success message after 5 seconds
-    setTimeout(() => {
-      showSuccess.value = false
-    }, 5000)
-  } catch (error) {
+  } catch (error: any) {
     showError.value = true
+    console.error('提交詢盤失敗:', error)
   } finally {
     isSubmitting.value = false
   }

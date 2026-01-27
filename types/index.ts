@@ -105,3 +105,12 @@ export interface ContactFormData {
   company?: string
   message: string
 }
+
+export interface Inquiry {
+  id: number
+  email: string
+  company?: string
+  message: string
+  status: 'new' | 'read' | 'archived'
+  created_at: string
+}

@@ -134,12 +134,10 @@ const runLighthouse = () => {
     window.open('chrome-lighthouse://', '_blank')
   }
 }
-</script>  }
-}
-</script>
 
-<script setup lang="ts">
 // MetricCard subcomponent
+import { defineComponent, type PropType, computed } from 'vue'
+
 const MetricCard = defineComponent({
   name: 'MetricCard',
   props: {

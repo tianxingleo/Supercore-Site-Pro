@@ -38,10 +38,11 @@
 <script setup lang="ts">
 import type { Product } from '~/types'
 
-const { data: products } = await useFetch<Product[]>('/api/products', {
-  transform: (_data) => {
-    // Use mock data for now
-    return mockProducts
+const { data: products } = await useFetch<Product[]>('/api/products/public', {
+  transform: (data) => {
+    // If data is empty or error, use mock data for now
+    if (!data || data.length === 0) return mockProducts
+    return data
   },
 })
 

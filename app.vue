@@ -1,26 +1,13 @@
 <template>
   <div class="min-h-screen bg-swiss-bg">
-    <!-- Navigation (Hidden on Admin) -->
-    <AppNavbar v-if="!isAdminPath" />
-
-    <!-- Page Content with Transition -->
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-
-    <!-- Footer (optional, can be added later) -->
-    <!-- <AppFooter /> -->
   </div>
 </template>
 
 <script setup lang="ts">
 const { locale } = useI18n()
-const route = useRoute()
-
-// 判斷是否為管理介面路徑（支持多語言前綴）
-const isAdminPath = computed(() => {
-  return route.path.split('/').some(segment => segment === 'admin')
-})
 
 useHead({
   htmlAttrs: {
