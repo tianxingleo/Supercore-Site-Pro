@@ -10,15 +10,15 @@
     "supercore": "SUPERCORE"
   },
   "company": {
-    "name": "Guangdong Boer Technology Co., Ltd.",
-    "nameShort": "Boer Technology",
-    "slogan": "Integrated Enterprise Infrastructure Solution Service Provider",
+    "name": "SUPERCORE TECHNOLOGY LIMITED",
+    "nameShort": "SUPERCORE",
+    "slogan": "AI-driven, Reconstructing Enterprise Intelligent Productivity",
     "mission": "Understand customer needs; comprehend customer needs; meet customer needs; provide products and services that exceed customer expectations",
-    "description": "Integrated enterprise infrastructure solution service provider, providing servers, networks, data centers and other products and services",
-    "address": "Room 303-305, Building 1, Kehui Garden, No. 95 Daguan Middle Road, Tianhe District, Guangzhou, Guangdong Province",
-    "phone": "020-89816175",
-    "email": "sales{'@'}boer.cn",
-    "website": "https://www.boer.cn"
+    "description": "Global leading AI computing infrastructure service provider, focusing on R&D, production and full-stack solution delivery of AI servers and GPU computing clusters",
+    "address": "ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL",
+    "phone": "+852 XXXX XXXX",
+    "email": "sales{'@'}supercore.com",
+    "website": "https://www.supercore.com"
   },
   "home": {
     "hero": {
@@ -34,8 +34,8 @@
       "phase4": "Begin Your Digital Transformation"
     },
     "mobileFallback": {
-      "title": "Boer Technology",
-      "subtitle": "Enterprise Infrastructure Solution Experts"
+      "title": "SUPERCORE",
+      "subtitle": "AI Computing Infrastructure Experts"
     },
     "features": {
       "title": "Core Advantages",
@@ -126,12 +126,12 @@
     "mission": "Our Mission",
     "vision": "Our Vision",
     "timeline": "Timeline",
-    "pageTitle": "About Boer",
-    "pageSubtitle": "Integrated Enterprise Infrastructure Solution Service Provider",
+    "pageTitle": "About SUPERCORE",
+    "pageSubtitle": "Global Leading AI Computing Infrastructure Service Provider",
     "companyOverview": {
       "title": "About Us",
-      "description1": "Guangdong Boer Technology Co., Ltd. is a provider focused on enterprise-level infrastructure solutions, dedicated to providing high-quality servers, storage, networks and related services to customers in Guangzhou and national markets.",
-      "description2": "We have rich industry experience and focus on providing full services from planning to implementation for enterprises, helping customers build safe, reliable and efficient information technology infrastructure.",
+      "description1": "SUPERCORE TECHNOLOGY LIMITED is a global leading AI computing infrastructure service provider, focusing on R&D, production and full-stack solution delivery of AI servers and GPU computing clusters.",
+      "description2": "We cooperate with the world's top IDC service providers and cloud manufacturers to provide deployment and operation and maintenance services for AI supercomputing clusters.",
       "philosophy": {
         "title": "Business Philosophy",
         "point1": "Understand customer needs",
@@ -216,6 +216,83 @@
       "submit": "Send",
       "success": "Message sent successfully! We'll reply shortly.",
       "error": "Failed to send. Please try again later."
+    }
+  },
+  "support": {
+    "title": "Technical Support",
+    "subtitle": "Professional technical support, at your service 24/7",
+    "pageTitle": "Technical Support",
+    "features": {
+      "title": "Service Features",
+      "fastResponse": {
+        "title": "Fast Response",
+        "description1": "We provide 7x24 hours all-weather response speed",
+        "description2": "At your service anytime, anywhere"
+      },
+      "innovation": {
+        "title": "Continuous Innovation",
+        "description1": "Through unremitting pioneering innovation and keeping pace with the times",
+        "description2": "The company continues to open up new situations and achieve new leaps"
+      },
+      "integrity": {
+        "title": "Integrity First",
+        "description1": "The company adheres to the business philosophy of people-oriented and pursuit of transcendence",
+        "description2": "Abide by integrity as the foundation and customer supremacy as the service purpose"
+      },
+      "customized": {
+        "title": "Customized Service",
+        "description": "Provide professional solutions tailored to your needs"
+      }
+    },
+    "serviceScope": {
+      "title": "Service Scope",
+      "businessScope": "Business Service Scope",
+      "coverage": "More than 40 service outlets in 31 provinces (municipalities directly under the Central Government/autonomous regions) across the country, as well as Hong Kong, Macao and Taiwan regions",
+      "primaryCities": "First-level spare parts cities: Beijing, Shanghai, Shenzhen, Guangzhou, Wuhan, Chengdu, Tianjin, Qingdao, Hangzhou, etc.",
+      "secondaryCities": "Second-level spare parts cities: Hefei, Nanjing, Yizheng, Changshu, Suqian, Nantong, Heyuan, Qingyuan, Shenyang, Langfang, Sanhe, Ulanqab, Huailai, Xiamen, Lingqiu, Hohhot, Zhongwei, etc.",
+      "otherCities": "Spare parts transfer: For non-key spare parts in other cities, transfer will be made through nearby cities",
+      "hkMacauTaiwan": "Hong Kong, Macao and Taiwan: Local service team independent spare parts warehouse",
+      "warranty": {
+        "title": "Warranty Period",
+        "point1": "The warranty period starts from the date of first purchase of the product (\"purchase date\"), and the purchase date is subject to the invoice date of the purchased product. If there is no valid invoice, the warranty period will start from the date of product receipt.",
+        "point2": "If the product invoice date is later than the actual delivery date of the product, the warranty period will start from the date of product receipt. If the delivery note date cannot be verified, the date of server manufacture recorded by SUPERCORE shall prevail."
+      }
+    },
+    "contact": {
+      "title": "Contact Information",
+      "phone": "+852 XXXX XXXX",
+      "email": "sales{'@'}supercore.com"
+    }
+  },
+  "supercore": {
+    "title": "SUPERCORE",
+    "subtitle": "AI-driven, Reconstructing Enterprise Intelligent Productivity",
+    "hero": {
+      "title": "About SUPERCORE"
+    },
+    "companyName": "SUPERCORE TECHNOLOGY LIMITED",
+    "companyNameEn": "SUPERCORE TECHNOLOGY LIMITED",
+    "address": "ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL",
+    "addressEn": "ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL",
+    "description": "SUPERCORE is a global leading AI computing infrastructure service provider, focusing on the R&D, production and full-stack solution delivery of AI servers and GPU computing clusters. With \"AI-driven, reconstructing enterprise intelligent productivity\" as its core mission, it provides high-performance and highly reliable computing bases for global enterprises. SUPERCORE cooperates with the world's top IDC service providers and cloud manufacturers to provide deployment and operation and maintenance services for AI supercomputing clusters.",
+    "mission": "SUPERCORE always uses \"technology + service\" two-wheel drive to enable enterprises to efficiently obtain the core productivity of the AI era.",
+    "features": {
+      "title": "Customized Service",
+      "communication": {
+        "title": "Communicate Customer Needs",
+        "description": "Combine industry characteristics to accurately capture core corporate demands"
+      },
+      "implementation": {
+        "title": "Formulate Implementation Plan",
+        "description": "Match business scenarios and design exclusive landing implementation plans for customers in different fields"
+      },
+      "oneStop": {
+        "title": "One-Stop Solution",
+        "description": "Full-process coverage, delivering customized high-level services"
+      }
+    },
+    "partners": {
+      "title": "Partners"
     }
   },
   "common": {

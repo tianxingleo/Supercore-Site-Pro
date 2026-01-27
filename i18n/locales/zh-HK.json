@@ -10,15 +10,15 @@
     "supercore": "SUPERCORE"
   },
   "company": {
-    "name": "廣東博迩科技有限公司",
-    "nameShort": "博迩科技",
-    "slogan": "企業基礎設施一體化解決方案服務提供商",
+    "name": "超核技術有限公司",
+    "nameShort": "超核技術",
+    "slogan": "AI驅動，重構企業智能生產力",
     "mission": "了解客戶需求；理解客戶需求；滿足客戶需求；為客戶提供超預期的產品與服務",
-    "description": "企業基礎設施一體化解決方案服務提供商，提供伺服器、網絡、數據中心等產品和服務",
-    "address": "廣東省廣州市天河區大觀中路95號科匯園1棟303-305",
-    "phone": "020-89816175",
-    "email": "sales{'@'}boer.cn",
-    "website": "https://www.boer.cn"
+    "description": "全球領先的AI算力基礎設施服務商，專注於AI伺服器與GPU計算集群的研發、生產與全棧解決方案交付",
+    "address": "九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位",
+    "phone": "+852 XXXX XXXX",
+    "email": "sales{'@'}supercore.com",
+    "website": "https://www.supercore.com"
   },
   "home": {
     "hero": {
@@ -34,8 +34,8 @@
       "phase4": "開啟數碼轉型之旅"
     },
     "mobileFallback": {
-      "title": "博迩科技",
-      "subtitle": "企業基礎設施解決方案專家"
+      "title": "超核技術",
+      "subtitle": "AI算力基礎設施專家"
     },
     "features": {
       "title": "核心優勢",
@@ -126,12 +126,12 @@
     "mission": "我們的使命",
     "vision": "我們的願景",
     "timeline": "發展歷程",
-    "pageTitle": "關於博迩",
-    "pageSubtitle": "企業基礎設施一體化解決方案服務提供商",
+    "pageTitle": "關於超核",
+    "pageSubtitle": "全球領先的AI算力基礎設施服務商",
     "companyOverview": {
       "title": "關於我們",
-      "description1": "廣東博迩科技有限公司是一家專注於企業級基礎設施解決方案的提供商，致力於為廣州及全國市場的客戶提供高品質的伺服器、存儲、網絡及相關服務。",
-      "description2": "我們擁有豐富的行業經驗，專注於為企業提供從規劃到實施的全套服務，幫助客戶構建安全、可靠、高效的資訊技術基礎設施。",
+      "description1": "超核技術有限公司是全球領先的AI算力基礎設施服務商，專注於AI伺服器與GPU計算集群的研發、生產與全棧解決方案交付。",
+      "description2": "我們與全球頂級IDC服務商、雲廠商合作，提供AI超算集群的部署與運維服務，以\"AI驅動，重構企業智能生產力\"為核心使命。",
       "philosophy": {
         "title": "經營理念",
         "point1": "了解客戶需求",
@@ -185,6 +185,30 @@
         "title": "一站式服務",
         "description": "從規劃到實施全套服務"
       }
+    },
+    "certifications": {
+      "title": "行業認證",
+      "list": [
+        "超聚變金牌經銷商",
+        "KUNLUN註冊經銷商",
+        "XSKY金牌合作夥伴",
+        "火山引擎合作夥伴",
+        "銳捷行業白金認證"
+      ]
+    },
+    "customers": {
+      "title": "優質客戶"
+    },
+    "partners": {
+      "title": "合作夥伴"
+    },
+    "timeline": {
+      "title": "發展歷程",
+      "years": {
+        "2024": "增加信創產品、增加自研存儲產品及軟件系統",
+        "2023": "提供服務器、網絡、機房等基礎設施一體化解決方案與實施",
+        "2022": "專注服務器與存儲產品銷售和售後技術服務"
+      }
     }
   },
   "contact": {
@@ -216,6 +240,83 @@
       "submit": "發送",
       "success": "發送成功！我們會儘快回覆您。",
       "error": "發送失敗，請稍後再試。"
+    }
+  },
+  "support": {
+    "title": "技術支援",
+    "subtitle": "專業技術支援，全天候為您服務",
+    "pageTitle": "技術支援",
+    "features": {
+      "title": "服務特點",
+      "fastResponse": {
+        "title": "快速響應",
+        "description1": "我們提供7x24小時的全天候響應速度",
+        "description2": "隨時隨地為您服務"
+      },
+      "innovation": {
+        "title": "堅持不斷創新",
+        "description1": "通過堅持不懈地開拓創新、與時俱進",
+        "description2": "公司不斷開創新局面、實現新跨越"
+      },
+      "integrity": {
+        "title": "誠信至上",
+        "description1": "公司秉承以人為本、追求超越的經營理念",
+        "description2": "恪守誠信為本、客戶至尊為服務宗旨"
+      },
+      "customized": {
+        "title": "定制化服務",
+        "description": "為您提供量身定制的專業解決方案"
+      }
+    },
+    "serviceScope": {
+      "title": "服務範圍",
+      "businessScope": "業務服務範圍",
+      "coverage": "全國31個省（直轄市/自治區），以及港澳台地區一共超過40個城市服務網點",
+      "primaryCities": "一級備件城市：北京、上海、深圳、廣州、武漢、成都、天津、青島、杭州等",
+      "secondaryCities": "二級備件城市：合肥、南京、儀征、常熟、宿遷、南通、河源、清遠、瀋陽、廊坊、三河、烏蘭察布、懷來、廈門、靈丘、呼和浩特、中衛等",
+      "otherCities": "備件調撥：其他城市非重點備件通過臨近城市進行調撥",
+      "hkMacauTaiwan": "港澳台：本地服務團隊獨立備件倉",
+      "warranty": {
+        "title": "保修期限",
+        "point1": "保修期自產品首次購買日（\"購買日\"）起算，購買日以購買產品的發票日期為準。如無有效發票，則保修期將自產品簽收單日期起算。",
+        "point2": "產品發票日期晚於產品實際交付日的，保修期自產品簽收單日期起算。如送貨單日期無法查實，以超核記錄的服務器出廠日期為準。"
+      }
+    },
+    "contact": {
+      "title": "聯絡方式",
+      "phone": "+852 XXXX XXXX",
+      "email": "sales{'@'}supercore.com"
+    }
+  },
+  "supercore": {
+    "title": "SUPERCORE",
+    "subtitle": "AI驅動，重構企業智能生產力",
+    "hero": {
+      "title": "關於SUPERCORE"
+    },
+    "companyName": "超核技術有限公司",
+    "companyNameEn": "SUPERCORE TECHNOLOGY LIMITED",
+    "address": "九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位",
+    "addressEn": "ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL",
+    "description": "SUPERCORE 是全球領先的AI 算力基礎設施服務商，專注於 AI 服務器與 GPU 計算集群的研發、生產與全棧解決方案交付，以 \"AI 驅動，重構企業智能生產力\" 為核心使命，為全球企業提供高性能、高可靠的算力底座。SUPERCORE與全球頂級 IDC 服務商、雲廠商合作，提供 AI 超算集群的部署與運維服務。",
+    "mission": "SUPERCORE 始終以 \"技術 + 服務\" 雙輪驅動，讓企業高效獲取 AI 時代的核心生產力。",
+    "features": {
+      "title": "定制化服務",
+      "communication": {
+        "title": "溝通客戶需求",
+        "description": "結合行業特性，精準捕捉企業核心訴求"
+      },
+      "implementation": {
+        "title": "制定實施方案",
+        "description": "匹配業務場景，針對不同領域客戶設計專屬落地執行方案"
+      },
+      "oneStop": {
+        "title": "一站式解決",
+        "description": "全流程覆蓋，交付定制化高級服務"
+      }
+    },
+    "partners": {
+      "title": "合作夥伴"
     }
   },
   "common": {

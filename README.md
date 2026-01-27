@@ -6,6 +6,14 @@
 
 這是一個為香港及海外市場提供高端基礎設施解決方案的企業官網，採用現代化的技術棧和設計理念。
 
+公司名稱：超核技術有限公司
+公司地址：九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位
+
+Company Name:SUPERCORE TECHNOLOGY LIMITED
+Company Address:ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL
+
+香港公司 Supercore
+国内公司 BOER
 ### 核心特性
 
 - 🎨 **Swiss International Style** - 極簡主義設計，40%+ 負空間

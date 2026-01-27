@@ -155,7 +155,7 @@
 
 <script setup lang="ts">
 useHead({
-  title: '關於博迩 - 廣東博迩科技有限公司',
+  title: '關於超核 - 超核技術有限公司',
 })
 
 const solutionFeatures = {

@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-swiss-bg">
     <!-- Navigation (Hidden on Admin) -->
-    <AppNavbar v-if="!$route.path.startsWith('/admin')" />
+    <AppNavbar v-if="!isAdminPath" />
 
     <!-- Page Content with Transition -->
     <NuxtLayout>
@@ -15,6 +15,12 @@
 
 <script setup lang="ts">
 const { locale } = useI18n()
+const route = useRoute()
+
+// 判斷是否為管理介面路徑（支持多語言前綴）
+const isAdminPath = computed(() => {
+  return route.path.split('/').some(segment => segment === 'admin')
+})
 
 useHead({
   htmlAttrs: {

@@ -8,4 +8,8 @@ export default defineI18nConfig(() => ({
     en: ['en'],
     default: ['en'],
   },
+  // Disable linked messages to allow @ symbol in translations
+  missingWarn: false,
+  fallbackWarn: false,
+  modifiers: {},
 }))

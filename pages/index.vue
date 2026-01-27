@@ -1,20 +1,7 @@
 <template>
   <div class="min-h-screen bg-swiss-bg">
-    <!-- Animated Text Overlay -->
-    <AnimatedTextOverlay :phase="animationPhase" />
-
     <!-- Hero Section with 3D Scene -->
     <section class="min-h-screen flex items-center relative overflow-hidden bg-white" id="hero-section">
-      <!-- Engineering Details -->
-      <div
-        class="absolute top-12 left-12 text-[8px] font-mono text-swiss-text opacity-20 tracking-[0.4em] uppercase hidden lg:block">
-        ref_id: 2026_HK_BOER // 22.3193° N, 114.1694° E
-      </div>
-      <div
-        class="absolute bottom-12 right-12 text-[8px] font-mono text-swiss-text opacity-20 tracking-[0.4em] uppercase hidden lg:block vertical-text">
-        infrastructure_simplified_v4.0
-      </div>
-
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-12 xl:col-span-8 flex flex-col justify-center py-24 lg:py-0 relative z-10">
           <TypographyHeader :level="1" size="display" class="mb-8">
@@ -154,8 +141,8 @@
       </GridContainer>
     </section>
 
-    <!-- Component Demo Section -->
-    <section class="py-24 bg-swiss-bg">
+    <!-- Component Demo Section - Hidden by request -->
+    <section v-if="false" class="py-24 bg-swiss-bg">
       <GridContainer :grid="true">
         <div class="col-span-12 mb-12">
           <TypographyHeader :level="2" size="h2"> Swiss Design Components </TypographyHeader>
@@ -213,7 +200,7 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 
 useHead({
-  title: '首页 - 广东博迩科技有限公司',
+  title: '首页 - 超核技術有限公司',
 })
 
 // 設備檢測

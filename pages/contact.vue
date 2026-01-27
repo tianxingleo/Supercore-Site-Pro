@@ -83,6 +83,6 @@ const handleFormSubmit = (data: ContactFormData) => {
 }
 
 useHead({
-  title: '聯絡我們 - 廣東博迩科技有限公司',
+  title: '聯絡我們 - 超核技術有限公司',
 })
 </script>
