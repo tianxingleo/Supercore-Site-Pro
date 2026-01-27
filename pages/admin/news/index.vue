@@ -20,7 +20,7 @@
       <UTable
         :rows="posts"
         :columns="columns"
-        :loading="loading"
+        :loading="pending"
         :ui="{
           wrapper: 'overflow-x-auto',
           thead: 'bg-swiss-bg-soft',
@@ -73,8 +73,8 @@ definePageMeta({
   layout: 'admin',
 })
 
-const loading = ref(true)
-const posts = ref([])
+const search = ref('')
+const refreshKey = ref(0)
 
 const columns = [
   { key: 'title', label: '標題' },
@@ -82,22 +82,24 @@ const columns = [
   { key: 'actions', label: '' },
 ]
 
-onMounted(async () => {
-  await fetchPosts()
+// 使用 useLazyFetch 实现动态数据加载和自动刷新
+const { data: response, pending, refresh, error } = await useLazyFetch('/api/news', {
+  key: () => `news-${refreshKey.value}`,
+  transform: (data: any) => data,
+  default: () => ({ success: false, data: [] })
 })
 
-async function fetchPosts() {
-  loading.value = true
-  try {
-    const response = (await $fetch('/api/news')) as any
-    if (response.success) {
-      posts.value = response.data
-    }
-  } catch (error) {
-    console.error('获取文章列表失败:', error)
-  } finally {
-    loading.value = false
+const posts = computed(() => response.value?.success ? response.value.data : [])
+
+// 监听错误
+watchEffect(() => {
+  if (error.value) {
+    console.error('获取文章列表失败:', error.value)
   }
+})
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('zh-HK')
 }
 
 async function deletePost(id: number) {
@@ -107,7 +109,9 @@ async function deletePost(id: number) {
     await $fetch(`/api/news/${id}`, {
       method: 'DELETE',
     })
-    posts.value = posts.value.filter((p: any) => p.id !== id)
+    // 立刻刷新数据，实现动态更新
+    refreshKey.value++
+    await refresh()
   } catch (error: any) {
     console.error('刪除失敗:', error)
     const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
@@ -115,7 +119,8 @@ async function deletePost(id: number) {
   }
 }
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('zh-HK')
-}
+// 暴露刷新函数供外部使用
+defineExpose({
+  refresh
+})
 </script>

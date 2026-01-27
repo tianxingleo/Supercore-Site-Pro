@@ -27,6 +27,108 @@
       </div>
     </div>
 
+    <!-- Server Status -->
+    <div class="bg-white border border-swiss-text/10">
+      <div class="p-6 md:p-8 border-b border-swiss-text/10">
+        <TypographyHeader :level="3" size="h4" class="!mb-0">
+          服务器状态 Server Status
+        </TypographyHeader>
+      </div>
+      <div class="p-6 md:p-8 space-y-4">
+        <!-- Frontend Status -->
+        <div class="flex items-center justify-between p-4 border border-swiss-text/10">
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-1">
+              Frontend Server
+            </p>
+            <p class="text-sm text-swiss-text/60">{{ serverStatus.frontend.url }}</p>
+          </div>
+          <div class="text-right">
+            <div class="flex items-center justify-end gap-2 mb-1">
+              <span
+                class="w-3 h-3 rounded-full"
+                :class="{
+                  'bg-green-500': serverStatus.frontend.status === 'online',
+                  'bg-red-500': serverStatus.frontend.status === 'offline',
+                  'bg-yellow-500':
+                    serverStatus.frontend.status === 'error' ||
+                    serverStatus.frontend.status === 'unknown',
+                }"
+              ></span>
+              <span
+                class="text-xs font-bold uppercase tracking-wider"
+                :class="{
+                  'text-green-600': serverStatus.frontend.status === 'online',
+                  'text-red-600': serverStatus.frontend.status === 'offline',
+                  'text-yellow-600':
+                    serverStatus.frontend.status === 'error' ||
+                    serverStatus.frontend.status === 'unknown',
+                }"
+              >
+                {{ serverStatus.frontend.status }}
+              </span>
+            </div>
+            <p class="text-[10px] font-mono text-swiss-text-muted">
+              {{
+                serverStatus.frontend.responseTime
+                  ? `${serverStatus.frontend.responseTime}ms`
+                  : '--'
+              }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Backend Status -->
+        <div class="flex items-center justify-between p-4 border border-swiss-text/10">
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-1">
+              Backend Server (Supabase)
+            </p>
+            <p class="text-sm text-swiss-text/60">{{ serverStatus.backend.url }}</p>
+          </div>
+          <div class="text-right">
+            <div class="flex items-center justify-end gap-2 mb-1">
+              <span
+                class="w-3 h-3 rounded-full"
+                :class="{
+                  'bg-green-500': serverStatus.backend.status === 'online',
+                  'bg-red-500': serverStatus.backend.status === 'offline',
+                  'bg-yellow-500':
+                    serverStatus.backend.status === 'error' ||
+                    serverStatus.backend.status === 'unknown',
+                }"
+              ></span>
+              <span
+                class="text-xs font-bold uppercase tracking-wider"
+                :class="{
+                  'text-green-600': serverStatus.backend.status === 'online',
+                  'text-red-600': serverStatus.backend.status === 'offline',
+                  'text-yellow-600':
+                    serverStatus.backend.status === 'error' ||
+                    serverStatus.backend.status === 'unknown',
+                }"
+              >
+                {{ serverStatus.backend.status }}
+              </span>
+            </div>
+            <p class="text-[10px] font-mono text-swiss-text-muted">
+              {{
+                serverStatus.backend.responseTime ? `${serverStatus.backend.responseTime}ms` : '--'
+              }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Last Updated -->
+        <div
+          class="flex items-center justify-between text-[10px] text-swiss-text-muted uppercase tracking-widest pt-2"
+        >
+          <span>Last Updated</span>
+          <span>{{ lastUpdated }}</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Recent Inquiries -->
     <div class="bg-white border border-swiss-text/10">
       <div class="p-6 md:p-8 border-b border-swiss-text/10 flex justify-between items-center">
@@ -111,10 +213,21 @@ const stats = ref([
 ])
 
 const inquiries = ref<any[]>([])
+const serverStatus = ref({
+  frontend: { url: '', status: 'unknown', responseTime: null } as any,
+  backend: { url: '', status: 'unknown', responseTime: null } as any,
+})
+const lastUpdated = ref('')
 
 onMounted(async () => {
   await fetchStats()
   await fetchInquiries()
+  await fetchServerStatus()
+
+  // 自动刷新服务器状态（每30秒）
+  setInterval(() => {
+    fetchServerStatus()
+  }, 30000)
 })
 
 async function fetchStats() {
@@ -138,6 +251,23 @@ async function fetchInquiries() {
     }
   } catch (error) {
     console.error('获取询盘失败:', error)
+  }
+}
+
+async function fetchServerStatus() {
+  try {
+    const response = (await $fetch('/api/system/ping')) as any
+    if (response.success) {
+      serverStatus.value = response.data
+      lastUpdated.value = new Date().toLocaleString('zh-HK')
+    }
+  } catch (error) {
+    console.error('获取服务器状态失败:', error)
+    serverStatus.value = {
+      frontend: { url: '-', status: 'error', responseTime: null },
+      backend: { url: '-', status: 'error', responseTime: null },
+    }
+    lastUpdated.value = new Date().toLocaleString('zh-HK')
   }
 }
 

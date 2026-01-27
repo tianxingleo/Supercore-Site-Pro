@@ -6,24 +6,19 @@
     </div>
 
     <div class="bg-white border border-swiss-text/10">
-      <UTable
-        :rows="inquiries"
-        :columns="columns"
-        :loading="loading"
-        :ui="{
-          wrapper: 'overflow-x-auto',
-          thead: 'bg-swiss-bg-soft',
-          th: {
-            base: 'text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted',
-          },
-          td: {
-            base: 'text-sm text-swiss-text',
-          },
-          tr: {
-            active: 'bg-swiss-bg-soft',
-          },
-        }"
-      >
+      <UTable :rows="inquiries" :columns="columns" :loading="loading" :ui="{
+        wrapper: 'overflow-x-auto',
+        thead: 'bg-swiss-bg-soft',
+        th: {
+          base: 'text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted',
+        },
+        td: {
+          base: 'text-sm text-swiss-text',
+        },
+        tr: {
+          active: 'bg-swiss-bg-soft',
+        },
+      }">
         <template #email-data="{ row }">
           <div>
             <div class="font-medium text-swiss-text">{{ row.email }}</div>
@@ -40,40 +35,25 @@
         <template #created_at-data="{ row }">
           <span class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
             formatDate(row.created_at)
-          }}</span>
+            }}</span>
         </template>
 
         <template #status-data="{ row }">
-          <span
-            class="px-2 py-1 text-[10px] font-bold uppercase tracking-widest"
-            :class="[
-              row.status === 'new'
-                ? 'bg-swiss-text text-white'
-                : 'bg-swiss-bg-soft text-swiss-text-muted',
-            ]"
-          >
+          <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-widest" :class="[
+            row.status === 'new'
+              ? 'bg-swiss-text text-white'
+              : 'bg-swiss-bg-soft text-swiss-text-muted',
+          ]">
             {{ row.status }}
           </span>
         </template>
 
         <template #actions-data="{ row }">
-          <UButton
-            v-if="row.status === 'new'"
-            size="sm"
-            color="black"
-            variant="ghost"
-            @click="markAsRead(row.id)"
-            class="text-[10px] font-bold uppercase tracking-widest"
-          >
+          <UButton v-if="row.status === 'new'" size="sm" color="black" variant="ghost" @click="markAsRead(row.id)"
+            class="text-[10px] font-bold uppercase tracking-widest">
             標記為已讀
           </UButton>
-          <UButton
-            icon="i-heroicons-trash"
-            color="red"
-            variant="ghost"
-            size="sm"
-            @click="deleteInquiry(row.id)"
-          />
+          <UButton icon="i-heroicons-trash" color="red" variant="ghost" size="sm" @click="deleteInquiry(row.id)" />
         </template>
       </UTable>
     </div>
@@ -85,8 +65,7 @@ definePageMeta({
   layout: 'admin',
 })
 
-const loading = ref(true)
-const inquiries = ref([])
+const refreshKey = ref(0)
 
 const columns = [
   { key: 'email', label: '客戶聯絡' },
@@ -96,22 +75,24 @@ const columns = [
   { key: 'actions', label: '' },
 ]
 
-onMounted(async () => {
-  await fetchInquiries()
+// 使用 useLazyFetch 实现动态数据加载和自动刷新
+const { data: response, pending: loading, refresh, error } = await useLazyFetch('/api/inquiries', {
+  key: () => `inquiries-${refreshKey.value}`,
+  transform: (data: any) => data,
+  default: () => ({ success: false, data: [] })
 })
 
-async function fetchInquiries() {
-  loading.value = true
-  try {
-    const response = (await $fetch('/api/inquiries')) as any
-    if (response.success) {
-      inquiries.value = response.data
-    }
-  } catch (error) {
-    console.error('獲取詢盤列表失敗:', error)
-  } finally {
-    loading.value = false
+const inquiries = computed(() => response.value?.success ? response.value.data : [])
+
+// 监听错误
+watchEffect(() => {
+  if (error.value) {
+    console.error('獲取詢盤列表失敗:', error.value)
   }
+})
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleString('zh-HK')
 }
 
 async function markAsRead(id: number) {
@@ -120,8 +101,9 @@ async function markAsRead(id: number) {
       method: 'PUT',
       body: { status: 'read' },
     })
-    const item = inquiries.value.find((i: any) => i.id === id)
-    if (item) item.status = 'read'
+    // 刷新数据
+    refreshKey.value++
+    await refresh()
   } catch (error) {
     console.error('標記為已讀失敗:', error)
   }
@@ -133,13 +115,16 @@ async function deleteInquiry(id: number) {
     await $fetch(`/api/inquiries/${id}`, {
       method: 'DELETE',
     })
-    inquiries.value = inquiries.value.filter((i: any) => i.id !== id)
+    // 立刻刷新数据，实现动态更新
+    refreshKey.value++
+    await refresh()
   } catch (error) {
     console.error('刪除詢盤失敗:', error)
   }
 }
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleString('zh-HK')
-}
+// 暴露刷新函数供外部使用
+defineExpose({
+  refresh
+})
 </script>

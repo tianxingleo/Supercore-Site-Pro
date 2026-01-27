@@ -36,7 +36,7 @@
       <UTable
         :rows="filteredProducts"
         :columns="columns"
-        :loading="loading"
+        :loading="pending"
         :ui="{
           wrapper: 'overflow-x-auto',
           thead: 'bg-swiss-bg-soft',
@@ -54,7 +54,16 @@
         <template #name-data="{ row }">
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-swiss-bg-soft overflow-hidden flex-shrink-0">
-              <img v-if="row.images?.[0]" :src="row.images[0]" class="w-full h-full object-cover" />
+              <img
+                v-if="row.images?.[0]"
+                :src="row.images[0]"
+                :alt="row.name?.['zh-HK'] || row.name?.['hk']"
+                loading="lazy"
+                class="w-full h-full object-cover"
+              />
+              <div v-else class="w-full h-full bg-swiss-bg flex items-center justify-center">
+                <span class="text-[8px] text-swiss-text-muted">No Image</span>
+              </div>
             </div>
             <div>
               <div class="font-medium text-swiss-text">
@@ -101,12 +110,11 @@ definePageMeta({
   layout: 'admin',
 })
 
-const loading = ref(true)
-const products = ref([])
 const search = ref('')
 const selectedCategory = ref('All')
+const refreshKey = ref(0)
 
-const categories = ['All', 'server', 'storage', 'network']
+const categories = ['All', 'server', 'storage', 'network', 'hpc', 'storage-hp']
 
 const columns = [
   { key: 'name', label: '產品信息' },
@@ -114,6 +122,22 @@ const columns = [
   { key: 'status', label: '狀態' },
   { key: 'actions', label: '' },
 ]
+
+// 使用 useLazyFetch 实现动态数据加载和自动刷新
+const { data: response, pending, refresh, error } = await useLazyFetch('/api/products', {
+  key: () => `products-${refreshKey.value}`,
+  transform: (data: any) => data,
+  default: () => ({ success: false, data: [] })
+})
+
+const products = computed(() => response.value?.success ? response.value.data : [])
+
+// 监听错误
+watchEffect(() => {
+  if (error.value) {
+    console.error('获取产品列表失败:', error.value)
+  }
+})
 
 const getActionItems = (row: any) => [
   [
@@ -149,24 +173,6 @@ const filteredProducts = computed(() => {
   })
 })
 
-onMounted(async () => {
-  await fetchProducts()
-})
-
-async function fetchProducts() {
-  loading.value = true
-  try {
-    const response = (await $fetch('/api/products')) as any
-    if (response.success) {
-      products.value = response.data
-    }
-  } catch (error) {
-    console.error('获取产品列表失败:', error)
-  } finally {
-    loading.value = false
-  }
-}
-
 async function deleteProduct(id: number) {
   if (!confirm('確定要刪除此產品嗎？')) return
 
@@ -174,11 +180,18 @@ async function deleteProduct(id: number) {
     await $fetch(`/api/products/${id}`, {
       method: 'DELETE',
     })
-    products.value = products.value.filter((p: any) => p.id !== id)
+    // 立刻刷新数据，实现动态更新
+    refreshKey.value++
+    await refresh()
   } catch (error: any) {
     console.error('刪除失敗:', error)
     const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
     alert(errorMessage)
   }
 }
+
+// 暴露刷新函数供外部使用
+defineExpose({
+  refresh
+})
 </script>
