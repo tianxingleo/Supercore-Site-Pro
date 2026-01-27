@@ -5,62 +5,42 @@
         <TypographyHeader :level="2" size="h2" class="mb-4"> 產品管理 Products </TypographyHeader>
         <p class="text-swiss-text-muted">管理您的產品目錄及 3D 模型配置。</p>
       </div>
-      <SwissButton
-        tag="a"
-        to="/admin/products/new"
-        variant="primary"
-        size="lg"
-        class="w-full md:w-auto"
-      >
+      <SwissButton tag="a" to="/admin/products/new" variant="primary" size="lg" class="w-full md:w-auto">
         新增產品
       </SwissButton>
     </div>
 
     <!-- Filters -->
     <div class="flex flex-wrap gap-4">
-      <input
-        v-model="search"
-        placeholder="搜索產品..."
-        class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-64 focus:outline-none focus:border-swiss-text placeholder-swiss-text-muted/40"
-      />
-      <select
-        v-model="selectedCategory"
-        class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-40 focus:outline-none focus:border-swiss-text"
-      >
+      <input v-model="search" placeholder="搜索產品..."
+        class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-64 focus:outline-none focus:border-swiss-text placeholder-swiss-text-muted/40" />
+      <select v-model="selectedCategory"
+        class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-40 focus:outline-none focus:border-swiss-text">
         <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
       </select>
     </div>
 
     <!-- Products Table -->
     <div class="bg-white border border-swiss-text/10">
-      <UTable
-        :rows="filteredProducts"
-        :columns="columns"
-        :loading="pending"
-        :ui="{
-          wrapper: 'overflow-x-auto',
-          thead: 'bg-swiss-bg-soft',
-          th: {
-            base: 'text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted',
-          },
-          td: {
-            base: 'text-sm text-swiss-text',
-          },
-          tr: {
-            active: 'bg-swiss-bg-soft',
-          },
-        }"
-      >
+      <TableSkeleton v-if="pending" />
+      <UTable v-else :rows="filteredProducts" :columns="columns" :loading="false" :ui="{
+        wrapper: 'overflow-x-auto',
+        thead: 'bg-swiss-bg-soft',
+        th: {
+          base: 'text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted',
+        },
+        td: {
+          base: 'text-sm text-swiss-text',
+        },
+        tr: {
+          active: 'bg-swiss-bg-soft',
+        },
+      }">
         <template #name-data="{ row }">
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-swiss-bg-soft overflow-hidden flex-shrink-0">
-              <img
-                v-if="row.images?.[0]"
-                :src="row.images[0]"
-                :alt="row.name?.['zh-HK'] || row.name?.['hk']"
-                loading="lazy"
-                class="w-full h-full object-cover"
-              />
+              <img v-if="row.images?.[0]" :src="row.images[0]" :alt="row.name?.['zh-HK'] || row.name?.['hk']"
+                loading="lazy" class="w-full h-full object-cover" />
               <div v-else class="w-full h-full bg-swiss-bg flex items-center justify-center">
                 <span class="text-[8px] text-swiss-text-muted">No Image</span>
               </div>
@@ -79,18 +59,15 @@
         <template #category-data="{ row }">
           <span class="text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted">{{
             row.category
-          }}</span>
+            }}</span>
         </template>
 
         <template #status-data="{ row }">
-          <span
-            class="px-2 py-1 text-[10px] font-bold uppercase tracking-widest"
-            :class="[
-              row.status === 'published'
-                ? 'bg-swiss-text text-white'
-                : 'bg-swiss-bg-soft text-swiss-text-muted',
-            ]"
-          >
+          <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-widest" :class="[
+            row.status === 'published'
+              ? 'bg-swiss-text text-white'
+              : 'bg-swiss-bg-soft text-swiss-text-muted',
+          ]">
             {{ row.status }}
           </span>
         </template>

@@ -3,8 +3,13 @@
         class="group block bg-white border border-gray-100 hover:border-swiss-text transition-all duration-500 overflow-hidden">
         <!-- Cover Image -->
         <div class="aspect-video bg-gray-50 relative overflow-hidden">
-            <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title[lang]"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <!-- Shimmer Placeholder (Visible until image loads) -->
+            <div v-if="post.cover_image && !imageLoaded" class="shimmer absolute inset-0 z-10"></div>
+
+            <img v-if="post.cover_image" :src="post.cover_image" :alt="post.title[lang]" @load="imageLoaded = true"
+                class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+                :class="[imageLoaded ? 'opacity-100' : 'opacity-0']" />
+
             <div v-else class="absolute inset-0 flex items-center justify-center bg-gray-50">
                 <div class="w-12 h-12 text-gray-200">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -19,7 +24,7 @@
             </div>
 
             <!-- Date Badge -->
-            <div class="absolute bottom-4 left-4">
+            <div class="absolute bottom-4 left-4 z-20">
                 <span
                     class="px-3 py-1 bg-white/90 backdrop-blur-sm text-[10px] font-bold tracking-widest text-swiss-text uppercase">
                     {{ formatDate(post.published_at || post.created_at) }}
@@ -63,11 +68,12 @@ const props = defineProps<{
 
 const localePath = useLocalePath()
 const { locale } = useI18n()
+const imageLoaded = ref(false)
 
 const lang = computed(() => {
-    const l = locale.value
-    if (l === 'zh-HK' || l === 'hk') return 'hk'
-    if (l === 'zh-CN' || l === 'cn') return 'cn'
+    const l = locale.value as string
+    if (l.includes('HK') || l.includes('hk')) return 'hk'
+    if (l.includes('CN') || l.includes('cn')) return 'cn'
     return 'en'
 })
 
@@ -83,10 +89,32 @@ function formatDate(dateStr: string) {
 </script>
 
 <style scoped>
+.shimmer {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.4) 45%,
+            rgba(255, 255, 255, 0.5) 50%,
+            rgba(255, 255, 255, 0.4) 55%,
+            rgba(255, 255, 255, 0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
 .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    line-clamp: 2;
     overflow: hidden;
 }
 
@@ -94,6 +122,7 @@ function formatDate(dateStr: string) {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    line-clamp: 3;
     overflow: hidden;
 }
 </style>

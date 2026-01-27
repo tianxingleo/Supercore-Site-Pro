@@ -3,9 +3,14 @@
     class="group block bg-white border border-gray-100 hover:border-swiss-text transition-all duration-500">
     <!-- Product Image -->
     <div class="aspect-square bg-swiss-bg-soft relative overflow-hidden">
+      <!-- Shimmer Placeholder -->
+      <div v-if="product.images && product.images.length > 0 && !imageLoaded" class="shimmer absolute inset-0 z-10">
+      </div>
+
       <img v-if="product.images && product.images.length > 0" :src="product.images[0]"
-        :alt="product.name[currentLocale]" width="400" height="400"
-        class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+        :alt="product.name[currentLocale]" width="400" height="400" @load="imageLoaded = true"
+        class="w-full h-full object-contain group-hover:scale-105 transition-all duration-500"
+        :class="[imageLoaded ? 'opacity-100' : 'opacity-0']" />
       <div v-else class="absolute inset-0 flex items-center justify-center p-12">
         <!-- Fallback placeholder -->
         <div class="w-full h-full bg-swiss-text opacity-[0.03] group-hover:opacity-[0.05] transition-all duration-500">
@@ -13,14 +18,14 @@
       </div>
 
       <!-- Category Badge -->
-      <div class="absolute top-4 left-4">
+      <div class="absolute top-4 left-4 z-20">
         <span class="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-swiss-text">
           {{ getCategoryLabel(product.category) }}
         </span>
       </div>
 
       <!-- Featured Badge -->
-      <div v-if="product.featured" class="absolute top-4 right-4">
+      <div v-if="product.featured" class="absolute top-4 right-4 z-20">
         <span class="px-3 py-1 bg-swiss-text text-white rounded-full text-[10px] font-bold tracking-widest uppercase">
           {{ $t('products.featured') }}
         </span>
@@ -58,6 +63,7 @@ interface Props {
 const props = defineProps<Props>()
 const localePath = useLocalePath()
 const { locale } = useI18n()
+const imageLoaded = ref(false)
 
 const currentLocale = computed(() => locale.value as 'zh-HK' | 'zh-CN' | 'en')
 
@@ -74,6 +80,27 @@ const getCategoryLabel = (category: string): string => {
 </script>
 
 <style scoped>
+.shimmer {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.4) 45%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0.4) 55%,
+      rgba(255, 255, 255, 0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

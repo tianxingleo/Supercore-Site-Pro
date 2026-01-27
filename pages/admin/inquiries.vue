@@ -6,7 +6,8 @@
     </div>
 
     <div class="bg-white border border-swiss-text/10">
-      <UTable :rows="inquiries" :columns="columns" :loading="loading" :ui="{
+      <TableSkeleton v-if="loading" />
+      <UTable v-else :rows="inquiries" :columns="columns" :loading="false" :ui="{
         wrapper: 'overflow-x-auto',
         thead: 'bg-swiss-bg-soft',
         th: {
@@ -35,7 +36,7 @@
         <template #created_at-data="{ row }">
           <span class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
             formatDate(row.created_at)
-            }}</span>
+          }}</span>
         </template>
 
         <template #status-data="{ row }">

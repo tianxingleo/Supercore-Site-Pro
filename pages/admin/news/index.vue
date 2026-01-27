@@ -5,36 +5,26 @@
         <TypographyHeader :level="2" size="h2" class="mb-4"> 資訊管理 News </TypographyHeader>
         <p class="text-swiss-text-muted">發佈行業動態及公司新聞。</p>
       </div>
-      <SwissButton
-        tag="a"
-        to="/admin/news/new"
-        variant="primary"
-        size="lg"
-        class="w-full md:w-auto"
-      >
+      <SwissButton tag="a" to="/admin/news/new" variant="primary" size="lg" class="w-full md:w-auto">
         發佈諮訊
       </SwissButton>
     </div>
 
     <div class="bg-white border border-swiss-text/10">
-      <UTable
-        :rows="posts"
-        :columns="columns"
-        :loading="pending"
-        :ui="{
-          wrapper: 'overflow-x-auto',
-          thead: 'bg-swiss-bg-soft',
-          th: {
-            base: 'text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted',
-          },
-          td: {
-            base: 'text-sm text-swiss-text',
-          },
-          tr: {
-            active: 'bg-swiss-bg-soft',
-          },
-        }"
-      >
+      <TableSkeleton v-if="pending" />
+      <UTable v-else :rows="posts" :columns="columns" :loading="false" :ui="{
+        wrapper: 'overflow-x-auto',
+        thead: 'bg-swiss-bg-soft',
+        th: {
+          base: 'text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted',
+        },
+        td: {
+          base: 'text-sm text-swiss-text',
+        },
+        tr: {
+          active: 'bg-swiss-bg-soft',
+        },
+      }">
         <template #title-data="{ row }">
           <div class="font-medium text-swiss-text">
             {{ row.title?.['zh-HK'] || row.title?.['hk'] }}
@@ -44,24 +34,13 @@
         <template #published_at-data="{ row }">
           <span class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
             row.published_at ? formatDate(row.published_at) : '未發佈'
-          }}</span>
+            }}</span>
         </template>
 
         <template #actions-data="{ row }">
-          <UButton
-            icon="i-heroicons-pencil-square"
-            variant="ghost"
-            color="gray"
-            :to="`/admin/news/${row.id}`"
-            size="sm"
-          />
-          <UButton
-            icon="i-heroicons-trash"
-            variant="ghost"
-            color="red"
-            @click="deletePost(row.id)"
-            size="sm"
-          />
+          <UButton icon="i-heroicons-pencil-square" variant="ghost" color="gray" :to="`/admin/news/${row.id}`"
+            size="sm" />
+          <UButton icon="i-heroicons-trash" variant="ghost" color="red" @click="deletePost(row.id)" size="sm" />
         </template>
       </UTable>
     </div>

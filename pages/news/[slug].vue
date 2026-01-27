@@ -121,15 +121,16 @@ watchEffect(() => {
 })
 
 const lang = computed(() => {
-    const l = locale.value
-    if (l === 'zh-HK' || l === 'hk') return 'hk'
-    if (l === 'zh-CN' || l === 'cn') return 'cn'
+    const l = locale.value as string
+    if (l.includes('HK') || l.includes('hk')) return 'hk'
+    if (l.includes('CN') || l.includes('cn')) return 'cn'
     return 'en'
 })
 
 const renderedContent = computed(() => {
-    if (!post.value || !post.value.content[lang.value]) return ''
-    return marked(post.value.content[lang.value])
+    const content = post.value?.content?.[lang.value]
+    if (!content) return ''
+    return marked(String(content))
 })
 
 function formatDate(dateStr: string) {
@@ -170,6 +171,7 @@ useHead({
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    line-clamp: 1;
     overflow: hidden;
 }
 </style>
