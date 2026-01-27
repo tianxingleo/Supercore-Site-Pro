@@ -128,7 +128,6 @@
 <script setup lang="ts">
 
 const route = useRoute()
-const client = useSupabaseClient()
 const isNew = computed(() => route.params.id === 'new')
 const saving = ref(false)
 const uploading = ref(false)
@@ -173,15 +172,22 @@ const publishedAtLocal = computed({
 
 onMounted(async () => {
     if (!isNew.value) {
-        const { data } = await client.from('posts').select('*').eq('id', route.params.id).single()
-        if (data) {
-            form.value = {
-                ...form.value,
-                ...data,
-                title: { ...form.value.title, ...data.title },
-                summary: { ...form.value.summary, ...data.summary },
-                content: { ...form.value.content, ...data.content },
+        try {
+            const response = await $fetch(`/api/news/${route.params.id}`) as any
+            if (response.success) {
+                const data = response.data
+                form.value = {
+                    ...form.value,
+                    ...data,
+                    title: { ...form.value.title, ...data.title },
+                    summary: { ...form.value.summary, ...data.summary },
+                    content: { ...form.value.content, ...data.content },
+                }
             }
+        } catch (error: any) {
+            console.error('获取文章失败:', error)
+            const errorMessage = error.data?.statusMessage || error.message || '获取文章失敗'
+            alert(errorMessage)
         }
     }
 })

@@ -1,9 +1,13 @@
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
+import { requireAdminAuth } from '~/server/utils/auth'
 import type { Post } from '~/types'
 
 export default defineEventHandler(async (event) => {
-    const client = await serverSupabaseClient(event)
+    // 1. 检查身份验证
+    await requireAdminAuth(event)
 
+    // 2. 获取所有文章
+    const client = serverSupabaseServiceRole(event)
     const { data, error } = await client
         .from('posts')
         .select('*')
@@ -17,5 +21,8 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    return data as Post[]
+    return {
+        success: true,
+        data: data as Post[]
+    }
 })

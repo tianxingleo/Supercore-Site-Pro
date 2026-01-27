@@ -1,52 +1,50 @@
 <template>
-    <NuxtLayout name="admin">
-        <div class="space-y-8">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight">詢盤管理 Inquiries</h2>
-                <p class="text-gray-500 mt-2">來自客戶的聯繫表單提交。</p>
-            </div>
-
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <UTable :rows="inquiries" :columns="columns" :loading="loading">
-                    <template #email-data="{ row }">
-                        <div>
-                            <div class="font-medium">{{ row.email }}</div>
-                            <div class="text-xs text-gray-400 capitalize">{{ row.company || '個人' }}</div>
-                        </div>
-                    </template>
-
-                    <template #message-data="{ row }">
-                        <div class="truncate max-w-sm" :title="row.message">{{ row.message }}</div>
-                    </template>
-
-                    <template #created_at-data="{ row }">
-                        <span class="text-xs text-gray-500">{{ formatDate(row.created_at) }}</span>
-                    </template>
-
-                    <template #status-data="{ row }">
-                        <UBadge :color="row.status === 'new' ? 'blue' : 'gray'" variant="soft"
-                            class="uppercase text-[10px]">
-                            {{ row.status }}
-                        </UBadge>
-                    </template>
-
-                    <template #actions-data="{ row }">
-                        <UButton v-if="row.status === 'new'" size="xs" color="black" variant="ghost"
-                            @click="markAsRead(row.id)">
-                            標記為已讀
-                        </UButton>
-                        <UButton icon="i-heroicons-trash" color="red" variant="ghost" size="xs"
-                            @click="deleteInquiry(row.id)" />
-                    </template>
-                </UTable>
-            </div>
+    <div class="space-y-8">
+        <div>
+            <h2 class="text-3xl font-bold tracking-tight">詢盤管理 Inquiries</h2>
+            <p class="text-gray-500 mt-2">來自客戶的聯繫表單提交。</p>
         </div>
-    </NuxtLayout>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <UTable :rows="inquiries" :columns="columns" :loading="loading">
+                <template #email-data="{ row }">
+                    <div>
+                        <div class="font-medium">{{ row.email }}</div>
+                        <div class="text-xs text-gray-400 capitalize">{{ row.company || '個人' }}</div>
+                    </div>
+                </template>
+
+                <template #message-data="{ row }">
+                    <div class="truncate max-w-sm" :title="row.message">{{ row.message }}</div>
+                </template>
+
+                <template #created_at-data="{ row }">
+                    <span class="text-xs text-gray-500">{{ formatDate(row.created_at) }}</span>
+                </template>
+
+                <template #status-data="{ row }">
+                    <UBadge :color="row.status === 'new' ? 'blue' : 'gray'" variant="soft"
+                        class="uppercase text-[10px]">
+                        {{ row.status }}
+                    </UBadge>
+                </template>
+
+                <template #actions-data="{ row }">
+                    <UButton v-if="row.status === 'new'" size="xs" color="black" variant="ghost"
+                        @click="markAsRead(row.id)">
+                        標記為已讀
+                    </UButton>
+                    <UButton icon="i-heroicons-trash" color="red" variant="ghost" size="xs"
+                        @click="deleteInquiry(row.id)" />
+                </template>
+            </UTable>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-    layout: false
+    layout: 'admin'
 })
 
 const client = useSupabaseClient()

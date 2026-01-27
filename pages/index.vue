@@ -23,11 +23,19 @@
 
         <div
           class="col-span-12 lg:col-span-12 xl:col-span-4 min-h-[400px] lg:min-h-[500px] relative mt-12 lg:mt-0 flex items-center justify-center">
-          <!-- 桌面端：3D 場景 -->
-          <ServerScene v-if="canUseAdvanced3D()" ref="serverSceneRef" background-color="#FFFFFF" :auto-rotate="false"
-            :mouse-parallax="true" :initial-rotation="{ x: 0, y: (70 * Math.PI) / 180, z: 0 }" />
-          <!-- 移動端：降級版本 -->
-          <MobileFallback v-else :show-scroll-indicator="true" />
+          <!-- 桌面端：3D 場景 - 使用 ClientOnly 避免 hydration mismatch -->
+          <ClientOnly>
+            <ServerScene v-if="canUseAdvanced3D()" ref="serverSceneRef" background-color="#FFFFFF" :auto-rotate="false"
+              :mouse-parallax="true" :initial-rotation="{ x: 0, y: (70 * Math.PI) / 180, z: 0 }" />
+            <!-- 移動端：降級版本 -->
+            <MobileFallback v-else :show-scroll-indicator="true" />
+            <!-- 加載中的佔位符 -->
+            <template #fallback>
+              <div class="w-full h-full flex items-center justify-center">
+                <div class="text-swiss-text/30 text-sm">Loading 3D Scene...</div>
+              </div>
+            </template>
+          </ClientOnly>
         </div>
       </GridContainer>
     </section>
@@ -136,10 +144,12 @@
         </div>
 
         <div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-l border-gray-100">
-          <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100">
-            <NewsCard :post="post" class="!border-none" />
-          </div>
-          <div v-if="!latestPosts?.length && !pendingNews"
+          <template v-if="latestPosts && latestPosts.length > 0">
+            <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100">
+              <NewsCard :post="post" class="!border-none" />
+            </div>
+          </template>
+          <div v-else-if="!pendingNews"
             class="col-span-3 py-24 text-center border-r border-b border-gray-100">
             <p class="text-swiss-secondary uppercase tracking-widest text-sm opacity-50">{{ $t('news.noNews') }}</p>
           </div>
@@ -232,9 +242,36 @@ import type { Post } from '~/types'
 const { t } = useI18n()
 const localePath = useLocalePath()
 
-const { data: latestPosts, pending: pendingNews } = await useFetch<Post[]>('/api/news', {
-  query: { limit: 3 }
-})
+// 使用 $fetch 以避免 SSR/CSR 不一致
+const latestPosts = ref<Post[]>([])
+const pendingNews = ref(true)
+
+// 在服务端和客户端分别获取数据
+const fetchNews = async () => {
+  try {
+    pendingNews.value = true
+    const data = await $fetch<Post[]>('/api/news/public', {
+      query: { limit: 3 }
+    })
+    latestPosts.value = data || []
+  } catch (error) {
+    console.error('[Homepage] Failed to fetch news:', error)
+    latestPosts.value = []
+  } finally {
+    pendingNews.value = false
+  }
+}
+
+// 在服务端渲染时获取数据
+if (process.server) {
+  await fetchNews()
+}
+
+// 调试日志
+if (process.client) {
+  console.log('[Homepage] Latest posts:', latestPosts.value)
+  console.log('[Homepage] Pending:', pendingNews.value)
+}
 
 useHead({
   title: '首页 - 超核技術有限公司',
@@ -249,14 +286,23 @@ const serverSceneRef = ref()
 const animationPhase = ref(0)
 
 onMounted(() => {
+  // 如果客户端没有数据,重新获取
+  if (latestPosts.value.length === 0) {
+    fetchNews()
+  }
+
   // 檢測設備並決定是否啟用 3D
   canUse3D.value = canUseAdvanced3D()
 
   // 確保在客戶端執行且可以使用 3D
+  // 等待 ClientOnly 組件渲染完成
   if (process.client && canUse3D.value) {
     // 等待下一個 tick，確保組件已掛載
     nextTick(() => {
-      initScrollAnimation()
+      // 再等待一個 tick 以確保 ClientOnly 內的組件已經渲染
+      nextTick(() => {
+        initScrollAnimation()
+      })
     })
   }
 })

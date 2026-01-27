@@ -45,7 +45,7 @@ const navItems = [
     { name: 'Products', path: '/admin/products' },
     { name: 'News', path: '/admin/news' },
     { name: 'Inquiries', path: '/admin/inquiries' },
-    { name: 'Settings', path: '/admin/settings' },
+    // { name: 'Settings', path: '/admin/settings' }, // TODO: Create settings page
 ]
 
 async function handleLogout() {

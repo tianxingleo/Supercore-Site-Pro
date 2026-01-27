@@ -1,44 +1,41 @@
 <template>
-    <NuxtLayout name="admin">
-        <div class="space-y-8">
-            <div class="flex justify-between items-end">
-                <div>
-                    <h2 class="text-3xl font-bold tracking-tight">資訊管理 News</h2>
-                    <p class="text-gray-500 mt-2">發佈行業動態及公司新聞。</p>
-                </div>
-                <UButton to="/admin/news/new" icon="i-heroicons-plus" color="black" size="lg" class="rounded-xl">
-                    發佈諮訊
-                </UButton>
+    <div class="space-y-8">
+        <div class="flex justify-between items-end">
+            <div>
+                <h2 class="text-3xl font-bold tracking-tight">資訊管理 News</h2>
+                <p class="text-gray-500 mt-2">發佈行業動態及公司新聞。</p>
             </div>
-
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <UTable :rows="posts" :columns="columns" :loading="loading">
-                    <template #title-data="{ row }">
-                        <div class="font-medium text-gray-900">{{ row.title?.['zh-HK'] || row.title?.['hk'] }}</div>
-                    </template>
-
-                    <template #published_at-data="{ row }">
-                        <span class="text-xs text-gray-500">{{ row.published_at ? formatDate(row.published_at) : '未發佈'
-                            }}</span>
-                    </template>
-
-                    <template #actions-data="{ row }">
-                        <UButton icon="i-heroicons-pencil-square" variant="ghost" color="gray"
-                            :to="`/admin/news/${row.id}`" />
-                        <UButton icon="i-heroicons-trash" variant="ghost" color="red" @click="deletePost(row.id)" />
-                    </template>
-                </UTable>
-            </div>
+            <UButton to="/admin/news/new" icon="i-heroicons-plus" color="black" size="lg" class="rounded-xl">
+                發佈諮訊
+            </UButton>
         </div>
-    </NuxtLayout>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <UTable :rows="posts" :columns="columns" :loading="loading">
+                <template #title-data="{ row }">
+                    <div class="font-medium text-gray-900">{{ row.title?.['zh-HK'] || row.title?.['hk'] }}</div>
+                </template>
+
+                <template #published_at-data="{ row }">
+                    <span class="text-xs text-gray-500">{{ row.published_at ? formatDate(row.published_at) : '未發佈'
+                    }}</span>
+                </template>
+
+                <template #actions-data="{ row }">
+                    <UButton icon="i-heroicons-pencil-square" variant="ghost" color="gray"
+                        :to="`/admin/news/${row.id}`" />
+                    <UButton icon="i-heroicons-trash" variant="ghost" color="red" @click="deletePost(row.id)" />
+                </template>
+            </UTable>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-    layout: false
+    layout: 'admin'
 })
 
-const client = useSupabaseClient()
 const loading = ref(true)
 const posts = ref([])
 
@@ -54,9 +51,16 @@ onMounted(async () => {
 
 async function fetchPosts() {
     loading.value = true
-    const { data } = await client.from('posts').select('*').order('created_at', { ascending: false })
-    if (data) posts.value = data
-    loading.value = false
+    try {
+        const response = await $fetch('/api/news') as any
+        if (response.success) {
+            posts.value = response.data
+        }
+    } catch (error) {
+        console.error('获取文章列表失败:', error)
+    } finally {
+        loading.value = false
+    }
 }
 
 async function deletePost(id: number) {

@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
 
-const { data: posts, pending } = await useFetch<Post[]>('/api/news')
+const { data: posts, pending } = await useFetch<Post[]>('/api/news/public')
 
 useHead({
     title: '行业咨询 - SUPERCORE',

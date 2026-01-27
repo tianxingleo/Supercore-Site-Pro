@@ -1,67 +1,64 @@
 <template>
-    <NuxtLayout name="admin">
-        <div class="space-y-8">
-            <div class="flex justify-between items-end">
-                <div>
-                    <h2 class="text-3xl font-bold tracking-tight">產品管理 Products</h2>
-                    <p class="text-gray-500 mt-2">管理您的產品目錄及 3D 模型配置。</p>
-                </div>
-                <UButton to="/admin/products/new" icon="i-heroicons-plus" color="black" size="lg" class="rounded-xl">
-                    新增產品
-                </UButton>
+    <div class="space-y-8">
+        <div class="flex justify-between items-end">
+            <div>
+                <h2 class="text-3xl font-bold tracking-tight">產品管理 Products</h2>
+                <p class="text-gray-500 mt-2">管理您的產品目錄及 3D 模型配置。</p>
             </div>
-
-            <!-- Filters -->
-            <div class="flex space-x-4">
-                <UInput v-model="search" icon="i-heroicons-magnifying-glass" placeholder="搜索產品..."
-                    class="w-full max-w-xs" />
-                <USelectMenu v-model="selectedCategory" :options="categories" placeholder="分類" class="w-40" />
-            </div>
-
-            <!-- Products Table -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <UTable :rows="filteredProducts" :columns="columns" :loading="loading">
-                    <template #name-data="{ row }">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                                <img v-if="row.images?.[0]" :src="row.images[0]" class="w-full h-full object-cover">
-                            </div>
-                            <div>
-                                <div class="font-medium text-gray-900">{{ row.name?.['zh-HK'] || row.name?.['hk'] }}
-                                </div>
-                                <div class="text-xs text-gray-500">{{ row.slug }}</div>
-                            </div>
-                        </div>
-                    </template>
-
-                    <template #category-data="{ row }">
-                        <span class="text-xs font-medium text-gray-600 uppercase">{{ row.category }}</span>
-                    </template>
-
-                    <template #status-data="{ row }">
-                        <UBadge :color="row.status === 'published' ? 'green' : 'gray'" variant="soft" size="xs"
-                            class="capitalize">
-                            {{ row.status }}
-                        </UBadge>
-                    </template>
-
-                    <template #actions-data="{ row }">
-                        <UDropdown :items="getActionItems(row)">
-                            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
-                        </UDropdown>
-                    </template>
-                </UTable>
-            </div>
+            <UButton to="/admin/products/new" icon="i-heroicons-plus" color="black" size="lg" class="rounded-xl">
+                新增產品
+            </UButton>
         </div>
-    </NuxtLayout>
+
+        <!-- Filters -->
+        <div class="flex space-x-4">
+            <UInput v-model="search" icon="i-heroicons-magnifying-glass" placeholder="搜索產品..."
+                class="w-full max-w-xs" />
+            <USelectMenu v-model="selectedCategory" :options="categories" placeholder="分類" class="w-40" />
+        </div>
+
+        <!-- Products Table -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <UTable :rows="filteredProducts" :columns="columns" :loading="loading">
+                <template #name-data="{ row }">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img v-if="row.images?.[0]" :src="row.images[0]" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <div class="font-medium text-gray-900">{{ row.name?.['zh-HK'] || row.name?.['hk'] }}
+                            </div>
+                            <div class="text-xs text-gray-500">{{ row.slug }}</div>
+                        </div>
+                    </div>
+                </template>
+
+                <template #category-data="{ row }">
+                    <span class="text-xs font-medium text-gray-600 uppercase">{{ row.category }}</span>
+                </template>
+
+                <template #status-data="{ row }">
+                    <UBadge :color="row.status === 'published' ? 'green' : 'gray'" variant="soft" size="xs"
+                        class="capitalize">
+                        {{ row.status }}
+                    </UBadge>
+                </template>
+
+                <template #actions-data="{ row }">
+                    <UDropdown :items="getActionItems(row)">
+                        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+                    </UDropdown>
+                </template>
+            </UTable>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-    layout: false
+    layout: 'admin'
 })
 
-const client = useSupabaseClient()
 const loading = ref(true)
 const products = ref([])
 const search = ref('')
@@ -114,17 +111,30 @@ onMounted(async () => {
 
 async function fetchProducts() {
     loading.value = true
-    const { data, error } = await client.from('products').select('*').order('created_at', { ascending: false })
-    if (data) products.value = data
-    loading.value = false
+    try {
+        const response = await $fetch('/api/products') as any
+        if (response.success) {
+            products.value = response.data
+        }
+    } catch (error) {
+        console.error('获取产品列表失败:', error)
+    } finally {
+        loading.value = false
+    }
 }
 
 async function deleteProduct(id: number) {
     if (!confirm('確定要刪除此產品嗎？')) return
 
-    const { error } = await client.from('products').delete().eq('id', id)
-    if (!error) {
+    try {
+        await $fetch(`/api/products/${id}`, {
+            method: 'DELETE'
+        })
         products.value = products.value.filter((p: any) => p.id !== id)
+    } catch (error: any) {
+        console.error('刪除失敗:', error)
+        const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
+        alert(errorMessage)
     }
 }
 </script>

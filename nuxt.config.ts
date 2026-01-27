@@ -6,6 +6,11 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
+  // Experimental features
+  experimental: {
+    appManifest: false, // Disable app manifest to resolve #app-manifest import errors
+  },
+
   // Components Configuration
   components: [
     {

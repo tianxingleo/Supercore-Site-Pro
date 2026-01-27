@@ -65,8 +65,6 @@ definePageMeta({
     layout: 'admin'
 })
 
-const client = useSupabaseClient()
-
 const stats = ref([
     { name: '總產品數', value: '0', trend: '' },
     { name: '待處理詢盤', value: '0', trend: '' },
@@ -82,23 +80,27 @@ onMounted(async () => {
 })
 
 async function fetchStats() {
-    const { count: productCount } = await client.from('products').select('*', { count: 'exact', head: true })
-    const { count: inquiryCount } = await client.from('inquiries').select('*', { count: 'exact', head: true }).eq('status', 'new')
-    const { count: postCount } = await client.from('posts').select('*', { count: 'exact', head: true })
-
-    stats.value[0].value = String(productCount || 0)
-    stats.value[1].value = String(inquiryCount || 0)
-    stats.value[2].value = String(postCount || 0)
+    try {
+        const response = await $fetch('/api/stats') as any
+        if (response.success) {
+            stats.value[0].value = String(response.data.products)
+            stats.value[1].value = String(response.data.inquiries)
+            stats.value[2].value = String(response.data.posts)
+        }
+    } catch (error) {
+        console.error('获取统计数据失败:', error)
+    }
 }
 
 async function fetchInquiries() {
-    const { data } = await client
-        .from('inquiries')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(5)
-
-    if (data) inquiries.value = data
+    try {
+        const response = await $fetch('/api/inquiries') as any
+        if (response.success) {
+            inquiries.value = response.data.slice(0, 5)
+        }
+    } catch (error) {
+        console.error('获取询盘失败:', error)
+    }
 }
 
 function formatDate(dateStr: string) {
