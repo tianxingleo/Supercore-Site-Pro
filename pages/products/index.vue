@@ -7,7 +7,13 @@
           <TypographyHeader :level="1" size="display" class="mb-8">
             {{ $t('products.title') }}
           </TypographyHeader>
-          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-2xl opacity-80">
+          <TypographyHeader
+            :level="2"
+            size="h3"
+            color="secondary"
+            weight="normal"
+            class="max-w-2xl opacity-80"
+          >
             {{ $t('products.subtitle') }}
           </TypographyHeader>
         </div>
@@ -43,6 +49,6 @@ const { data: products } = await useFetch<Product[]>('/api/products', {
 import { mockProducts } from '~/utils/mockData'
 
 useHead({
-  title: '产品 - 广东博迩科技有限公司',
+  title: '产品 - 超核技術有限公司',
 })
 </script>

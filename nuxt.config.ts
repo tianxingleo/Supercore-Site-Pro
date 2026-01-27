@@ -74,6 +74,7 @@ export default defineNuxtConfig({
         '/supercore',
         '/news',
         '/news/**',
+        '/404', // 排除 404 页面
         // 多语言版本 - 使用通配符排除所有语言前缀的公开路由
         '/zh-HK',
         '/zh-HK/**',

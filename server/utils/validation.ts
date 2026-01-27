@@ -175,3 +175,186 @@ export function validateUpdatePost(data: any): UpdatePostData {
 
   return data as UpdatePostData
 }
+
+/**
+ * 创建产品的数据结构
+ */
+export interface CreateProductData {
+  slug: string
+  name: Record<string, string>
+  description: Record<string, string>
+  category: 'server' | 'storage' | 'network' | 'software' | 'hpc' | 'storage-hp'
+  specs?: Record<string, string | number | boolean>
+  images?: string[]
+  model_3d_url?: string
+  is_featured?: boolean
+  status?: 'draft' | 'published' | 'archived'
+}
+
+/**
+ * 更新产品的数据结构
+ */
+export interface UpdateProductData extends Partial<CreateProductData> {}
+
+/**
+ * 验证创建产品的数据
+ */
+export function validateCreateProduct(data: any): CreateProductData {
+  const errors: string[] = []
+
+  // 验证 slug
+  if (!data.slug || typeof data.slug !== 'string') {
+    errors.push('slug 是必需的且必须是字符串')
+  } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug)) {
+    errors.push('slug 只能包含小写字母、数字和连字符')
+  }
+
+  // 验证 name（多语言）
+  if (!data.name || typeof data.name !== 'object') {
+    errors.push('name 是必需的且必须是对象')
+  } else {
+    for (const lang of REQUIRED_LANGUAGES) {
+      if (!data.name[lang] || data.name[lang].trim() === '') {
+        errors.push(`name 必须包含 ${lang.toUpperCase()} 语言版本`)
+      }
+    }
+  }
+
+  // 验证 description（多语言）
+  if (!data.description || typeof data.description !== 'object') {
+    errors.push('description 是必需的且必须是对象')
+  } else {
+    for (const lang of REQUIRED_LANGUAGES) {
+      if (!data.description[lang] || data.description[lang].trim() === '') {
+        errors.push(`description 必须包含 ${lang.toUpperCase()} 语言版本`)
+      }
+    }
+  }
+
+  // 验证 category
+  if (!data.category || typeof data.category !== 'string') {
+    errors.push('category 是必需的')
+  } else if (!['server', 'storage', 'network', 'software', 'hpc', 'storage-hp'].includes(data.category)) {
+    errors.push('category 必须是有效值: server, storage, network, software, hpc, storage-hp')
+  }
+
+  // 验证 specs（可选）
+  if (data.specs !== undefined && typeof data.specs !== 'object') {
+    errors.push('specs 必须是对象')
+  }
+
+  // 验证 images（可选）
+  if (data.images !== undefined && !Array.isArray(data.images)) {
+    errors.push('images 必须是数组')
+  }
+
+  // 验证 model_3d_url（可选）
+  if (data.model_3d_url !== undefined && typeof data.model_3d_url !== 'string') {
+    errors.push('model_3d_url 必须是字符串')
+  }
+
+  // 验证 is_featured（可选）
+  if (data.is_featured !== undefined && typeof data.is_featured !== 'boolean') {
+    errors.push('is_featured 必须是布尔值')
+  }
+
+  // 验证 status（可选）
+  if (data.status !== undefined && typeof data.status !== 'string') {
+    errors.push('status 必须是字符串')
+  } else if (data.status && !['draft', 'published', 'archived'].includes(data.status)) {
+    errors.push('status 必须是有效值: draft, published, archived')
+  }
+
+  if (errors.length > 0) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `验证错误：${errors.join('；')}`
+    })
+  }
+
+  return data as CreateProductData
+}
+
+/**
+ * 验证更新产品的数据
+ */
+export function validateUpdateProduct(data: any): UpdateProductData {
+  if (!data || Object.keys(data).length === 0) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: '验证错误：没有提供要更新的数据'
+    })
+  }
+
+  const errors: string[] = []
+
+  // 如果提供 slug，验证其格式
+  if (data.slug !== undefined) {
+    if (typeof data.slug !== 'string') {
+      errors.push('slug 必须是字符串')
+    } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug)) {
+      errors.push('slug 只能包含小写字母、数字和连字符')
+    }
+  }
+
+  // 如果提供 name，验证所有语言
+  if (data.name !== undefined) {
+    if (typeof data.name !== 'object') {
+      errors.push('name 必须是对象')
+    } else {
+      for (const lang of REQUIRED_LANGUAGES) {
+        if (data.name[lang] !== undefined && data.name[lang].trim() === '') {
+          errors.push(`name.${lang} 不能为空`)
+        }
+      }
+    }
+  }
+
+  // 如果提供 description，验证所有语言
+  if (data.description !== undefined) {
+    if (typeof data.description !== 'object') {
+      errors.push('description 必须是对象')
+    } else {
+      for (const lang of REQUIRED_LANGUAGES) {
+        if (data.description[lang] !== undefined && data.description[lang].trim() === '') {
+          errors.push(`description.${lang} 不能为空`)
+        }
+      }
+    }
+  }
+
+  // 验证 category
+  if (data.category !== undefined) {
+    if (typeof data.category !== 'string') {
+      errors.push('category 必须是字符串')
+    } else if (!['server', 'storage', 'network', 'software', 'hpc', 'storage-hp'].includes(data.category)) {
+      errors.push('category 必须是有效值: server, storage, network, software, hpc, storage-hp')
+    }
+  }
+
+  // 验证其他字段
+  if (data.specs !== undefined && typeof data.specs !== 'object') {
+    errors.push('specs 必须是对象')
+  }
+  if (data.images !== undefined && !Array.isArray(data.images)) {
+    errors.push('images 必须是数组')
+  }
+  if (data.model_3d_url !== undefined && typeof data.model_3d_url !== 'string') {
+    errors.push('model_3d_url 必须是字符串')
+  }
+  if (data.is_featured !== undefined && typeof data.is_featured !== 'boolean') {
+    errors.push('is_featured 必须是布尔值')
+  }
+  if (data.status !== undefined && !['draft', 'published', 'archived'].includes(data.status)) {
+    errors.push('status 必须是有效值: draft, published, archived')
+  }
+
+  if (errors.length > 0) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `验证错误：${errors.join('；')}`
+    })
+  }
+
+  return data as UpdateProductData
+}

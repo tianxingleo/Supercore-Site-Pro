@@ -7,7 +7,13 @@
           <TypographyHeader :level="1" size="display" class="mb-8">
             {{ $t('solutions.title') }}
           </TypographyHeader>
-          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-2xl opacity-80">
+          <TypographyHeader
+            :level="2"
+            size="h3"
+            color="secondary"
+            weight="normal"
+            class="max-w-2xl opacity-80"
+          >
             {{ $t('solutions.subtitle') }}
           </TypographyHeader>
         </div>
@@ -18,7 +24,10 @@
     <section class="mb-24">
       <GridContainer :grid="true">
         <div class="col-span-12 flex flex-col md:flex-row items-center gap-8">
-          <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono">Filter / Category</span>
+          <span
+            class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono"
+            >Filter / Category</span
+          >
           <div class="flex flex-wrap gap-4">
             <button
               v-for="category in categories"
@@ -77,6 +86,6 @@ const filteredSolutions = computed(() => {
 })
 
 useHead({
-  title: '解决方案 - 广东博迩科技有限公司',
+  title: '解决方案 - 超核技術有限公司',
 })
 </script>

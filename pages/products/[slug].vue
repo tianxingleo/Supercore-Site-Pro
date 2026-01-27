@@ -32,7 +32,7 @@
           <div class="aspect-square w-full p-24 flex items-center justify-center relative">
             <!-- Product Image -->
             <img v-if="product.images && product.images.length > 0" :src="product.images[0]"
-              :alt="product.name[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.name['zh-HK']"
+              :alt="product.name[locale === 'zh-HK' ? 'hk' : locale === 'zh-CN' ? 'cn' : 'en'] || product.name['hk']"
               class="max-w-full max-h-full object-contain" />
             <!-- Fallback placeholder -->
             <div v-else
@@ -48,7 +48,7 @@
                 getCategoryLabel(product.category) }}</span>
             </div>
 
-            <div v-if="product.featured" class="absolute bottom-12 right-12">
+            <div v-if="product.is_featured" class="absolute bottom-12 right-12">
               <span class="text-[10px] font-black tracking-widest uppercase border border-swiss-text px-4 py-1">Limited
                 Edition Range</span>
             </div>
@@ -64,10 +64,10 @@
               Technical Specification / 01
             </div>
             <TypographyHeader :level="1" size="h1" class="mb-8">
-              {{ product.name[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.name['zh-HK'] }}
+              {{ product.name[locale === 'zh-HK' ? 'hk' : locale === 'zh-CN' ? 'cn' : 'en'] || product.name['hk'] }}
             </TypographyHeader>
             <p class="text-swiss-text-muted text-lg leading-relaxed font-medium mb-16">
-              {{ product.description[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.description['zh-HK'] }}
+              {{ product.description[locale === 'zh-HK' ? 'hk' : locale === 'zh-CN' ? 'cn' : 'en'] || product.description['hk'] }}
             </p>
 
             <!-- Actions -->
@@ -109,15 +109,13 @@ const route = useRoute()
 const localePath = useLocalePath()
 const { locale } = useI18n()
 
-// Fetch product data
-const { data: product } = await useFetch<Product>(`/api/products/${route.params.slug}`, {
-  transform: () => {
-    return mockProducts.find(p => p.slug === route.params.slug) || null
-  },
-})
+// Fetch product data from API
+const { data: product, error } = await useFetch<Product>(`/api/products/${route.params.slug}`)
 
-// Import mock data
-import { mockProducts } from '~/utils/mockData'
+// Handle error state
+if (error.value) {
+  console.error('Failed to fetch product:', error.value)
+}
 
 const categoryLabels: Record<string, string> = {
   server: '伺服器',
@@ -132,8 +130,9 @@ const getCategoryLabel = (category: string): string => {
 
 // Set page title
 if (product.value) {
+  const langKey = locale.value === 'zh-HK' ? 'hk' : locale.value === 'zh-CN' ? 'cn' : 'en'
   useHead({
-    title: `${product.value.name[locale.value] || product.value.name.zhHK} - Project NEXUS (HK)`,
+    title: `${product.value.name[langKey] || product.value.name['hk']} - Project NEXUS (HK)`,
   })
 }
 </script>

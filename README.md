@@ -12,8 +12,8 @@
 Company Name:SUPERCORE TECHNOLOGY LIMITED
 Company Address:ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL
 
-香港公司 Supercore
-国内公司 BOER
+香港公司 SUPERCORE TECHNOLOGY LIMITED
+
 ### 核心特性
 
 - 🎨 **Swiss International Style** - 極簡主義設計，40%+ 負空間
@@ -26,21 +26,25 @@ Company Address:ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSE
 ## 技術棧
 
 ### 前端框架
+
 - **Nuxt 3** - Vue 3 SSR 框架
 - **TypeScript** - 嚴格類型檢查
 - **Vue 3 Composition API** - 響應式開發
 
 ### 樣式與設計
+
 - **Tailwind CSS** - 實用工具 CSS 框架
 - **Swiss Design System** - 自定義設計系統
 - **自定義字體** - Inter + Noto Sans HK
 
 ### 動畫與 3D
+
 - **Three.js** - 3D 渲染引擎
 - **GSAP + ScrollTrigger** - 滾動動畫
 - **Lenis** - 平滑滾動體驗
 
 ### 數據與內容
+
 - **模擬數據層** - 獨立前端開發
 - **多語言 i18n** - 完整翻譯支持
 
@@ -149,6 +153,7 @@ vercel
 ### 其他平台
 
 此項目可以部署到任何支持 Node.js 的平台：
+
 - Netlify
 - AWS Amplify
 - Railway
@@ -221,18 +226,18 @@ MIT License
 
 这是最复杂的表，利用 `JSONB` 存储多语言和不定的规格参数。
 
-| **字段名**     | **类型**  | **说明**          | **示例数据 (JSON 结构)**                                     |
-| -------------- | --------- | ----------------- | ------------------------------------------------------------ |
-| `id`           | int8      | 主键              | 1001                                                         |
-| `slug`         | text      | URL 标识 (Unique) | `nexus-g2-server`                                            |
+| **字段名**     | **类型**  | **说明**          | **示例数据 (JSON 结构)**                                                      |
+| -------------- | --------- | ----------------- | ----------------------------------------------------------------------------- |
+| `id`           | int8      | 主键              | 1001                                                                          |
+| `slug`         | text      | URL 标识 (Unique) | `nexus-g2-server`                                                             |
 | `name`         | **jsonb** | **多语言名称**    | `{"hk": "NEXUS G2 伺服器", "cn": "NEXUS G2 服务器", "en": "NEXUS G2 Server"}` |
-| `description`  | **jsonb** | **多语言简介**    | `{"hk": "专为 AI 训练设计...", "en": "Designed for AI..."}`  |
-| `category`     | text      | 分类              | `server`, `storage`, `network`                               |
-| `specs`        | **jsonb** | **规格参数**      | `{"cpu": "2x AMD EPYC", "ram": "2TB", "gpu": "8x H100"}`     |
-| `images`       | text[]    | 图片数组          | `["/p/server-front.png", "/p/server-open.png"]`              |
-| `model_3d_url` | text      | Spline/GLB 链接   | `https://prod.spline.design/...`                             |
-| `is_featured`  | bool      | 首页推荐          | `true`                                                       |
-| `status`       | text      | 状态              | `published`, `draft`, `archived`                             |
+| `description`  | **jsonb** | **多语言简介**    | `{"hk": "专为 AI 训练设计...", "en": "Designed for AI..."}`                   |
+| `category`     | text      | 分类              | `server`, `storage`, `network`                                                |
+| `specs`        | **jsonb** | **规格参数**      | `{"cpu": "2x AMD EPYC", "ram": "2TB", "gpu": "8x H100"}`                      |
+| `images`       | text[]    | 图片数组          | `["/p/server-front.png", "/p/server-open.png"]`                               |
+| `model_3d_url` | text      | Spline/GLB 链接   | `https://prod.spline.design/...`                                              |
+| `is_featured`  | bool      | 首页推荐          | `true`                                                                        |
+| `status`       | text      | 状态              | `published`, `draft`, `archived`                                              |
 
 #### B. `posts` (资讯/博客表)
 
@@ -283,7 +288,7 @@ MIT License
 
 Supabase Auth 的扩展表，用于通过 RLS 控制后台访问权限。
 
-------
+---
 
 ### 2. 存储设计 (Storage Buckets)
 
@@ -294,7 +299,7 @@ Supabase Auth 的扩展表，用于通过 RLS 控制后台访问权限。
 
 **关键策略：** 开启 Supabase 的 Image Transformation 功能。前端请求图片时，可以加上 `?width=800&format=webp`，自动优化性能。
 
-------
+---
 
 ### 3. 安全策略 (RLS - Row Level Security)
 
@@ -303,7 +308,7 @@ Supabase Auth 的扩展表，用于通过 RLS 控制后台访问权限。
 - **Public (匿名用户):** 仅拥有 `products`, `posts`, `solutions` 的 `SELECT` 权限 (且 `status = 'published'`)。
 - **Admin (管理员):** 拥有所有表的 `ALL` 权限 (CRUD)。
 
-------
+---
 
 # 第二部分：管理后台设计 (Admin Panel)
 
@@ -324,14 +329,14 @@ Supabase Auth 的扩展表，用于通过 RLS 控制后台访问权限。
 - **`/admin/products`**:
   - **列表页:** 表格展示，带缩略图。
   - **编辑页 (重点):**
-    - *基本信息:* 输入框。
-    - *多语言切换器:* 一个 Tab 栏 `[ 繁体 | 简体 | English ]`，切换 Tab 时输入框绑定的 JSON 字段不同。
-    - *规格生成器:* "Add Spec" 按钮，点击添加一行 `Key - Value` 键值对。
-    - *图片上传:* 拖拽上传区，上传后自动显示预览，**并强制提示：“请确保图片为透明背景 PNG”**。
+    - _基本信息:_ 输入框。
+    - _多语言切换器:_ 一个 Tab 栏 `[ 繁体 | 简体 | English ]`，切换 Tab 时输入框绑定的 JSON 字段不同。
+    - _规格生成器:_ "Add Spec" 按钮，点击添加一行 `Key - Value` 键值对。
+    - _图片上传:_ 拖拽上传区，上传后自动显示预览，**并强制提示：“请确保图片为透明背景 PNG”**。
 - **`/admin/news`**: Markdown 编辑器。
 - **`/admin/inquiries`**: 查看客户留言。
 
-------
+---
 
 # 第三部分：防呆设计与工作流 (The Workflow)
 
@@ -350,7 +355,7 @@ Supabase Auth 的扩展表，用于通过 RLS 控制后台访问权限。
 在编辑产品时，增加一个 **"✨ AI Translate"** 按钮。
 
 - **逻辑:** 同事只输入“繁体中文”的内容，点击按钮，调用 OpenAI/Gemini API，自动填好“简体中文”和“英文”的输入框。
-- **Prompt:** *"Translate this technical server description into Hong Kong Traditional Chinese (professional IT terminology) and English."*
+- **Prompt:** _"Translate this technical server description into Hong Kong Traditional Chinese (professional IT terminology) and English."_
 
 ### 3. 内容预览 (Preview Mode)
 

@@ -5,7 +5,7 @@
     "solutions": "解决方案",
     "support": "技术支持",
     "news": "行业资讯",
-    "about": "关于博迩",
+    "about": "关于超核",
     "contact": "联系我们",
     "supercore": "SUPERCORE"
   },
@@ -322,6 +322,12 @@
     "partners": {
       "title": "合作伙伴"
     }
+  },
+  "error": {
+    "title": "页面未找到",
+    "message": "抱歉，您访问的页面不存在或已被移除。",
+    "backHome": "返回首页",
+    "goBack": "返回上一页"
   },
   "common": {
     "loading": "加载中...",
