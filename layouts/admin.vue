@@ -53,11 +53,15 @@ async function handleLogout() {
     router.push('/admin/login')
 }
 
-// Protection
+// Protection - 简化的认证检查
 const user = useSupabaseUser()
-watchEffect(() => {
-    if (!user.value && route.path !== '/admin/login') {
-        router.push('/admin/login')
+
+// 只在用户已登录或已确认未登录时才进行检查
+// 避免 Supabase 初始化期间的误判
+watch(() => user.value, (newValue) => {
+    // 当 user 值确定后（不再是 undefined）才检查
+    if (newValue !== undefined && !newValue && route.path !== '/admin/login') {
+        navigateTo('/admin/login')
     }
 })
 </script>

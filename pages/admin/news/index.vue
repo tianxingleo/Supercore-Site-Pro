@@ -61,9 +61,16 @@ async function fetchPosts() {
 
 async function deletePost(id: number) {
     if (!confirm('確定刪除此文章？')) return
-    const { error } = await client.from('posts').delete().eq('id', id)
-    if (!error) {
+
+    try {
+        await $fetch(`/api/news/${id}`, {
+            method: 'DELETE'
+        })
         posts.value = posts.value.filter((p: any) => p.id !== id)
+    } catch (error: any) {
+        console.error('刪除失敗:', error)
+        const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
+        alert(errorMessage)
     }
 }
 
