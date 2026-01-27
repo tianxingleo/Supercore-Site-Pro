@@ -6,6 +6,19 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
+  // Runtime Config
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
+    },
+    // 服务端私有配置（使用 service_role key）
+    supabaseService: {
+      url: process.env.SUPABASE_URL,
+      key: process.env.SUPABASE_SECRET_KEY,
+    }
+  },
+
   // Experimental features
   experimental: {
     appManifest: false, // Disable app manifest to resolve #app-manifest import errors

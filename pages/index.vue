@@ -242,36 +242,11 @@ import type { Post } from '~/types'
 const { t } = useI18n()
 const localePath = useLocalePath()
 
-// 使用 $fetch 以避免 SSR/CSR 不一致
-const latestPosts = ref<Post[]>([])
-const pendingNews = ref(true)
-
-// 在服务端和客户端分别获取数据
-const fetchNews = async () => {
-  try {
-    pendingNews.value = true
-    const data = await $fetch<Post[]>('/api/news/public', {
-      query: { limit: 3 }
-    })
-    latestPosts.value = data || []
-  } catch (error) {
-    console.error('[Homepage] Failed to fetch news:', error)
-    latestPosts.value = []
-  } finally {
-    pendingNews.value = false
-  }
-}
-
-// 在服务端渲染时获取数据
-if (process.server) {
-  await fetchNews()
-}
-
-// 调试日志
-if (process.client) {
-  console.log('[Homepage] Latest posts:', latestPosts.value)
-  console.log('[Homepage] Pending:', pendingNews.value)
-}
+// 使用 useLazyFetch 获取新闻数据（懒加载，不阻塞导航）
+const { data: latestPosts, pending: pendingNews } = useLazyFetch<Post[]>('/api/news/public', {
+  query: { limit: 3 },
+  default: () => []
+})
 
 useHead({
   title: '首页 - 超核技術有限公司',
@@ -286,11 +261,6 @@ const serverSceneRef = ref()
 const animationPhase = ref(0)
 
 onMounted(() => {
-  // 如果客户端没有数据,重新获取
-  if (latestPosts.value.length === 0) {
-    fetchNews()
-  }
-
   // 檢測設備並決定是否啟用 3D
   canUse3D.value = canUseAdvanced3D()
 
