@@ -176,7 +176,7 @@ function formatDate(dateStr: string) {
 // Set page title, structured data, and canonical
 watchEffect(() => {
   if (post.value) {
-    const baseUrl = 'https://projectnexus.hk'
+    const baseUrl = 'https://www.supercore.hk'
     const currentPath = route.path
     const canonicalUrl = locale.value === 'en'
       ? `${baseUrl}${currentPath}`

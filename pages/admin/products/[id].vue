@@ -2,7 +2,10 @@
   <NuxtLayout name="admin">
     <div class="max-w-4xl mx-auto space-y-12">
       <div class="flex items-center space-x-4">
-        <UButton icon="i-heroicons-arrow-left" variant="ghost" color="gray" to="/admin/products" />
+        <NuxtLink to="/admin/products"
+          class="text-[10px] font-bold uppercase tracking-widest px-3 py-2 text-swiss-text hover:text-swiss-text-muted hover:-translate-y-0.5 active:scale-[0.98] transition-all rounded-none">
+          ←
+        </NuxtLink>
         <TypographyHeader :level="2" size="h3" class="!mb-0">
           {{ isNew ? '新增產品' : '編輯產品' }}
         </TypographyHeader>
@@ -20,10 +23,10 @@
                 <label class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2">
                   URL 標識 (Slug) *
                 </label>
-                <input v-model="form.slug" placeholder="nexus-g2-server"
+                <input v-model="form.slug" placeholder="supercore-g2-server"
                   class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
                 <p class="text-[10px] text-swiss-text-muted mt-1">
-                  用於網址鏈接，如 nexus-g2-server
+                  用於網址鏈接，如 supercore-g2-server
                 </p>
               </div>
 
@@ -82,7 +85,7 @@
               <label class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2">
                 產品圖片
               </label>
-              <AdminProductGallery v-model="form.images" />
+              <ProductGallery v-model="form.images" />
             </div>
 
             <div>
@@ -141,10 +144,16 @@
         <div
           class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur border-t border-swiss-text/10 p-4 md:pl-72 z-40">
           <div class="max-w-4xl mx-auto flex justify-end space-x-4">
-            <UButton variant="ghost" color="gray" to="/admin/products"
-              class="text-[10px] font-bold uppercase tracking-widest">取消</UButton>
-            <UButton type="submit" color="black" :loading="saving"
-              class="text-[10px] font-bold uppercase tracking-widest">保存更改</UButton>
+            <NuxtLink to="/admin/products"
+              class="text-[10px] font-bold uppercase tracking-widest px-6 py-3 bg-swiss-bg-soft text-swiss-text border border-swiss-text/10 hover:bg-gray-200 hover:-translate-y-0.5 active:scale-[0.98] transition-all rounded-none">
+              取消
+            </NuxtLink>
+            <button type="submit" :disabled="saving"
+              :class="saving ? 'opacity-50 cursor-not-allowed' : 'hover:bg-swiss-text/90 hover:-translate-y-0.5 hover:shadow-lg'"
+              class="text-[10px] font-bold uppercase tracking-widest px-6 py-3 bg-swiss-text text-white transition-all rounded-none">
+              <span v-if="saving">保存中...</span>
+              <span v-else>保存更改</span>
+            </button>
           </div>
         </div>
       </form>

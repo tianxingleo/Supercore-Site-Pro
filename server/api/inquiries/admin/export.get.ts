@@ -1,4 +1,14 @@
+import { serverSupabaseClient } from '#supabase/server'
+import { requireAdminAuth } from '~/server/utils/auth'
+import { logAdminAction } from '~/server/utils/adminLogger'
+
 export default defineEventHandler(async (event) => {
+    // 强制管理员认证
+    const { user } = await requireAdminAuth(event)
+
+    // 设置 event.context.user 供 logAdminAction 使用
+    event.context.user = user
+
     try {
         const supabase = await serverSupabaseClient(event)
         const query = getQuery(event)
@@ -33,7 +43,7 @@ export default defineEventHandler(async (event) => {
             // 转换为 CSV
             const csv = convertToCSV(inquiries || [])
             setHeaders(event, {
-                'Content-Type': 'text/csv',
+                'Content-Type': 'text/csv; charset=utf-8',
                 'Content-Disposition': `attachment; filename="inquiries_${new Date().toISOString().split('T')[0]}.csv"`,
             })
             return csv

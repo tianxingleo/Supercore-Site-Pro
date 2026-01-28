@@ -35,14 +35,10 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // 5. 插入新产品
+  // 5. 插入新产品（让 Supabase 自动处理 created_at 和 updated_at）
   const { data: newProduct, error: insertError } = await client
     .from('products')
-    .insert({
-      ...productData,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    })
+    .insert(productData)
     .select()
     .single()
 

@@ -49,17 +49,21 @@ export default defineEventHandler(async (event) => {
     if (slugCheck) {
       throw createError({
         statusCode: 409,
-        statusMessage: `slug "${updateData.slug}" 已被其他产品使用`
+        message: `slug "${updateData.slug}" 已被其他产品使用`
       })
     }
   }
 
   // 7. 执行更新
+  // 移除不应该被更新的字段
+  const { id: _id, created_at: _created, ...safeUpdateData } = updateData as any
+
   const { data: updatedProduct, error: updateError } = await client
     .from('products')
     .update({
-      ...updateData,
-      updated_at: new Date().toISOString()
+      ...safeUpdateData,
+      // 如果你已经运行了 scripts/fix_missing_columns.sql，可以取消下面这一行的注释
+      // updated_at: new Date().toISOString()
     })
     .eq('id', Number(id))
     .select()

@@ -64,17 +64,19 @@
                 <!-- Pagination -->
                 <div v-if="pagination.totalPages > 1"
                     class="p-4 border-t border-swiss-text/10 flex justify-center gap-2">
-                    <UButton size="sm" color="gray" variant="outline" :disabled="pagination.page <= 1"
-                        @click="changePage(pagination.page - 1)">
+                    <button :disabled="pagination.page <= 1" @click="changePage(pagination.page - 1)"
+                        :class="pagination.page <= 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200 hover:-translate-y-0.5'"
+                        class="text-[10px] font-bold uppercase tracking-widest px-6 py-3 bg-swiss-bg-soft text-swiss-text border border-swiss-text/10 transition-all rounded-none">
                         上一頁
-                    </UButton>
-                    <span class="px-4 py-2 text-sm text-swiss-text-muted">
+                    </button>
+                    <span class="px-4 py-2 text-sm text-swiss-text-muted flex items-center">
                         第 {{ pagination.page }} / {{ pagination.totalPages }} 頁
                     </span>
-                    <UButton size="sm" color="gray" variant="outline"
-                        :disabled="pagination.page >= pagination.totalPages" @click="changePage(pagination.page + 1)">
+                    <button :disabled="pagination.page >= pagination.totalPages" @click="changePage(pagination.page + 1)"
+                        :class="pagination.page >= pagination.totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200 hover:-translate-y-0.5'"
+                        class="text-[10px] font-bold uppercase tracking-widest px-6 py-3 bg-swiss-bg-soft text-swiss-text border border-swiss-text/10 transition-all rounded-none">
                         下一頁
-                    </UButton>
+                    </button>
                 </div>
             </div>
         </div>
@@ -111,7 +113,7 @@ const queryParams = computed(() => {
 })
 
 // 使用 useLazyFetch 实现动态数据加载
-const { data: response, pending: loading, refresh } = await useLazyFetch(
+const { data: response, pending: loading, refresh } = useLazyFetch(
     () => `/api/admin/logs?${queryParams.value}`,
     {
         key: () => `admin-logs-${currentPage.value}-${filterType.value}`,

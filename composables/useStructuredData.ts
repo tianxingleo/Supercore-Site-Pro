@@ -9,7 +9,7 @@ import type { Product, Post } from '~/types'
  * 生成產品的 JSON-LD 結構化數據
  */
 export function useProductStructuredData(product: Product, locale: string) {
-  const baseUrl = 'https://projectnexus.hk'
+  const baseUrl = 'https://www.supercore.hk'
   const langKey = locale === 'zh-HK' ? 'hk' : locale === 'zh-CN' ? 'cn' : 'en'
 
   const structuredData = {
@@ -57,7 +57,7 @@ export function useProductStructuredData(product: Product, locale: string) {
  * 生成新聞文章的 JSON-LD 結構化數據
  */
 export function useArticleStructuredData(post: Post, locale: string) {
-  const baseUrl = 'https://projectnexus.hk'
+  const baseUrl = 'https://www.supercore.hk'
   const langKey = locale === 'zh-HK' ? 'hk' : locale === 'zh-CN' ? 'cn' : 'en'
 
   const structuredData = {
@@ -99,7 +99,7 @@ export function useArticleStructuredData(post: Post, locale: string) {
  * 生成組織的 JSON-LD 結構化數據
  */
 export function useOrganizationStructuredData() {
-  const baseUrl = 'https://projectnexus.hk'
+  const baseUrl = 'https://www.supercore.hk'
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -117,7 +117,7 @@ export function useOrganizationStructuredData() {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      email: 'info@projectnexus.hk',
+      email: 'info@supercore.hk',
     },
     sameAs: [
       // 社交媒體鏈接（如有）
@@ -131,7 +131,7 @@ export function useOrganizationStructuredData() {
  * 生成網站的 JSON-LD 結構化數據
  */
 export function useWebsiteStructuredData() {
-  const baseUrl = 'https://projectnexus.hk'
+  const baseUrl = 'https://www.supercore.hk'
 
   const structuredData = {
     '@context': 'https://schema.org',
@@ -149,7 +149,7 @@ export function useWebsiteStructuredData() {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      email: 'info@projectnexus.hk',
+      email: 'info@supercore.hk',
     },
     sameAs: [
       // 社交媒體鏈接（如有）
@@ -163,7 +163,7 @@ export function useWebsiteStructuredData() {
  * 生成麵包屑的 JSON-LD 結構化數據
  */
 export function useBreadcrumbStructuredData(items: Array<{ name: string; url: string }>) {
-  const baseUrl = 'https://projectnexus.hk'
+  const baseUrl = 'https://www.supercore.hk'
 
   const structuredData = {
     '@context': 'https://schema.org',

@@ -15,13 +15,15 @@
       <div class="flex-1"></div>
       <div class="flex gap-2">
         <UDropdown v-if="selectedItems.length > 0" :items="bulkActionItems" :ui="{ item: { size: 'text-sm' } }">
-          <UButton color="gray" variant="outline" icon="i-heroicons-bars-3-bottom-left" size="sm">
+          <UButton color="gray" variant="outline" icon="i-heroicons-bars-3-bottom-left" size="sm"
+            class="text-[10px] font-bold uppercase tracking-widest rounded-none hover:-translate-y-0.5 transition-all">
             批量操作 ({{ selectedItems.length }})
           </UButton>
         </UDropdown>
 
         <UDropdown :items="exportItems" :ui="{ item: { size: 'text-sm' } }">
-          <UButton color="gray" variant="outline" icon="i-heroicons-arrow-down-tray" size="sm">
+          <UButton color="gray" variant="outline" icon="i-heroicons-arrow-down-tray" size="sm"
+            class="text-[10px] font-bold uppercase tracking-widest rounded-none hover:-translate-y-0.5 transition-all">
             導出數據
           </UButton>
         </UDropdown>
@@ -60,9 +62,14 @@
         </template>
 
         <template #actions-data="{ row }">
-          <UButton icon="i-heroicons-pencil-square" variant="ghost" color="gray" :to="`/admin/news/${row.id}`"
-            size="sm" />
-          <UButton icon="i-heroicons-trash" variant="ghost" color="red" @click="deletePost(row.id)" size="sm" />
+          <NuxtLink :to="`/admin/news/${row.id}`"
+            class="text-[10px] font-bold uppercase tracking-widest px-3 py-2 text-swiss-text hover:text-swiss-text-muted hover:-translate-y-0.5 active:scale-[0.98] transition-all rounded-none">
+            ✎
+          </NuxtLink>
+          <button @click="deletePost(row.id)"
+            class="text-[10px] font-bold uppercase tracking-widest px-3 py-2 text-red-500 hover:text-red-600 hover:-translate-y-0.5 active:scale-[0.98] transition-all rounded-none">
+            ✕
+          </button>
         </template>
       </UTable>
     </div>
@@ -85,7 +92,7 @@ const columns = [
 ]
 
 // 使用 useLazyFetch 实现动态数据加载和自动刷新
-const { data: response, pending, refresh, error } = await useLazyFetch('/api/news', {
+const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
   key: () => `news-${refreshKey.value}`,
   transform: (data: any) => data,
   default: () => ({ success: false, data: [] })
@@ -183,15 +190,25 @@ async function bulkDelete() {
 // 导出数据
 async function exportData(format: 'json' | 'csv') {
   try {
-    const url = `/api/news/admin/export?format=${format}`
+    // 使用 $fetch 获取数据，这样可以包含认证信息并更好地处理错误
+    const blob = await $fetch(`/api/news/admin/export?format=${format}`, {
+      method: 'GET',
+      responseType: 'blob'
+    })
 
-    // 创建一个隐藏的 a 标签来触发下载
+    // 创建一个 URL 并触发下载
+    const url = window.URL.createObjectURL(blob as Blob)
     const link = document.createElement('a')
     link.href = url
     link.download = `news_${new Date().toISOString().split('T')[0]}.${format}`
     document.body.appendChild(link)
     link.click()
-    document.body.removeChild(link)
+    
+    // 清理
+    setTimeout(() => {
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    }, 100)
   } catch (error: any) {
     console.error('導出失敗:', error)
     alert('導出失敗，請重試')

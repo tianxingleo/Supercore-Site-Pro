@@ -10,7 +10,7 @@
 const { locale } = useI18n()
 
 // 直接定義全局結構化數據
-const baseUrl = 'https://projectnexus.hk'
+const baseUrl = 'https://www.supercore.hk'
 
 const organizationData = {
   '@context': 'https://schema.org',
@@ -28,7 +28,7 @@ const organizationData = {
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer service',
-    email: 'info@projectnexus.hk',
+    email: 'info@supercore.hk',
   },
   sameAs: [] as string[],
 }

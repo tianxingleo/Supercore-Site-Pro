@@ -2,7 +2,7 @@
   <div class="min-h-screen flex items-center justify-center bg-swiss-bg p-4 text-swiss-text">
     <div class="w-full max-w-md bg-white p-8 md:p-12 border border-swiss-text/10">
       <div class="mb-12 text-center">
-        <TypographyHeader :level="1" size="h2" class="!mb-4 !text-center"> NEXUS </TypographyHeader>
+        <TypographyHeader :level="1" size="h2" class="!mb-4 !text-center"> SUPERCORE </TypographyHeader>
         <p class="text-swiss-text-muted text-[10px] uppercase tracking-widest">管理系統登錄</p>
       </div>
 
@@ -18,7 +18,7 @@
             type="email"
             required
             class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text transition-colors"
-            placeholder="admin@nexus.hk"
+            placeholder="admin@supercore.hk"
           />
         </div>
 

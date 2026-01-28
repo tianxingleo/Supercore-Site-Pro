@@ -48,7 +48,7 @@ An iframe which has both allow-scripts and allow-same-origin for its sandbox att
 export default defineNuxtPlugin((nuxtApp) => {
   const route = useRoute() // ❌ 错误：不能在插件顶层调用
   const { locale } = useI18n() // ❌ 错误：不能在插件顶层调用
-  const baseUrl = 'https://projectnexus.hk'
+  const baseUrl = 'https://www.supercore.hk'
 
   const getCanonicalUrl = (path?: string, currentLocale?: string) => {
     const currentPath = path || route.path
@@ -75,7 +75,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 ```typescript
 export default defineNuxtPlugin((nuxtApp) => {
-  const baseUrl = 'https://projectnexus.hk'
+  const baseUrl = 'https://www.supercore.hk'
   const i18n = nuxtApp.$i18n
 
   // 生成 canonical URL

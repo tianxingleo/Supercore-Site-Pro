@@ -6,7 +6,7 @@
 import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async (event) => {
-  const baseUrl = 'https://projectnexus.hk' // 替換為實際域名
+  const baseUrl = 'https://www.supercore.hk' // 替換為實際域名
 
   const routes: Array<{
     url: string

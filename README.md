@@ -1,4 +1,4 @@
-# Project NEXUS (HK)
+# SUPERCORE TECHNOLOGY LIMITED
 
 > 瑞士國際主義風格的企業級基礎設施解決方案官網
 
@@ -165,7 +165,7 @@ vercel
 
 ```env
 # API 端點（未來使用）
-NUXT_PUBLIC_API_URL=https://api.projectnexus.hk
+NUXT_PUBLIC_API_URL=https://api.supercore.com.hk
 ```
 
 ## Git 工作流
@@ -214,7 +214,7 @@ MIT License
 
 ---
 
-**Project NEXUS (HK)** - 為香港及海外市場提供專業基礎設施解決方案
+**SUPERCORE TECHNOLOGY LIMITED** - 為香港及海外市場提供專業基礎設施解決方案
 
 # 第一部分：数据库架构设计 (Supabase PostgreSQL)
 
@@ -229,8 +229,8 @@ MIT License
 | **字段名**     | **类型**  | **说明**          | **示例数据 (JSON 结构)**                                                      |
 | -------------- | --------- | ----------------- | ----------------------------------------------------------------------------- |
 | `id`           | int8      | 主键              | 1001                                                                          |
-| `slug`         | text      | URL 标识 (Unique) | `nexus-g2-server`                                                             |
-| `name`         | **jsonb** | **多语言名称**    | `{"hk": "NEXUS G2 伺服器", "cn": "NEXUS G2 服务器", "en": "NEXUS G2 Server"}` |
+| `slug`         | text      | URL 标识 (Unique) | `supercore-g2-server`                                                             |
+| `name`         | **jsonb** | **多语言名称**    | `{"hk": "SUPERCORE G2 伺服器", "cn": "SUPERCORE G2 服务器", "en": "SUPERCORE G2 Server"}` |
 | `description`  | **jsonb** | **多语言简介**    | `{"hk": "专为 AI 训练设计...", "en": "Designed for AI..."}`                   |
 | `category`     | text      | 分类              | `server`, `storage`, `network`                                                |
 | `specs`        | **jsonb** | **规格参数**      | `{"cpu": "2x AMD EPYC", "ram": "2TB", "gpu": "8x H100"}`                      |

@@ -199,7 +199,7 @@ const getCategoryLabel = (category: string): string => {
 watchEffect(() => {
   if (product.value) {
     const langKey = locale.value === 'zh-HK' ? 'hk' : locale.value === 'zh-CN' ? 'cn' : 'en'
-    const baseUrl = 'https://projectnexus.hk'
+    const baseUrl = 'https://www.supercore.hk'
     const currentPath = route.path
     const canonicalUrl =
       locale.value === 'en'

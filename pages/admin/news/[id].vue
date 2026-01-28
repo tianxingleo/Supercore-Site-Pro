@@ -2,7 +2,10 @@
   <NuxtLayout name="admin">
     <div class="max-w-4xl mx-auto space-y-12">
       <div class="flex items-center space-x-4">
-        <UButton icon="i-heroicons-arrow-left" variant="ghost" color="gray" to="/admin/news" />
+        <NuxtLink to="/admin/news"
+          class="text-[10px] font-bold uppercase tracking-widest px-3 py-2 text-swiss-text hover:text-swiss-text-muted hover:-translate-y-0.5 active:scale-[0.98] transition-all rounded-none">
+          ←
+        </NuxtLink>
         <TypographyHeader :level="2" size="h3" class="!mb-0">
           {{ isNew ? '發佈資訊' : '編輯資訊' }}
         </TypographyHeader>
@@ -104,10 +107,16 @@
         <div
           class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur border-t border-swiss-text/10 p-4 md:pl-72 z-40">
           <div class="max-w-4xl mx-auto flex justify-end space-x-4">
-            <UButton variant="ghost" color="gray" to="/admin/news"
-              class="text-[10px] font-bold uppercase tracking-widest">取消</UButton>
-            <UButton type="submit" color="black" :loading="saving"
-              class="text-[10px] font-bold uppercase tracking-widest">保存資訊</UButton>
+            <NuxtLink to="/admin/news"
+              class="text-[10px] font-bold uppercase tracking-widest px-6 py-3 bg-swiss-bg-soft text-swiss-text border border-swiss-text/10 hover:bg-gray-200 hover:-translate-y-0.5 active:scale-[0.98] transition-all rounded-none">
+              取消
+            </NuxtLink>
+            <button type="submit" :disabled="saving"
+              :class="saving ? 'opacity-50 cursor-not-allowed' : 'hover:bg-swiss-text/90 hover:-translate-y-0.5 hover:shadow-lg'"
+              class="text-[10px] font-bold uppercase tracking-widest px-6 py-3 bg-swiss-text text-white transition-all rounded-none">
+              <span v-if="saving">保存中...</span>
+              <span v-else>保存資訊</span>
+            </button>
           </div>
         </div>
       </form>
@@ -119,6 +128,8 @@
 const route = useRoute()
 const isNew = computed(() => route.params.id === 'new')
 const saving = ref(false)
+
+import AdminImageUpload from '~/components/admin/AdminImageUpload.vue'
 
 // 调试日志
 console.log('[News Edit] Page mounting:', {

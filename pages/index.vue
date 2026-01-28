@@ -288,7 +288,7 @@ const { data: latestPosts, pending: pendingNews } = useLazyFetch<Post[]>('/api/n
 })
 
 // 添加 canonical 標籤
-const baseUrl = 'https://projectnexus.hk'
+const baseUrl = 'https://www.supercore.hk'
 const canonicalUrl = computed(() => {
   return locale.value === 'en'
     ? `${baseUrl}${route.path}`

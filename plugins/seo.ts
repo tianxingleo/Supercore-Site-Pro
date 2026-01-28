@@ -4,7 +4,7 @@
  */
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const baseUrl = 'https://projectnexus.hk'
+  const baseUrl = 'https://www.supercore.hk'
   const i18n = nuxtApp.$i18n
 
   // 生成 canonical URL

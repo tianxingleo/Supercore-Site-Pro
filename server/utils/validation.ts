@@ -6,15 +6,15 @@ export interface CreatePostData {
   title: Record<string, string>
   summary: Record<string, string>
   content: Record<string, string>
-  cover_image?: string
-  tags?: string[]
+  cover_image?: string | null
+  tags?: string[] | null
   published_at?: string | null
 }
 
 /**
  * 更新文章的数据结构
  */
-export interface UpdatePostData extends Partial<CreatePostData> {}
+export interface UpdatePostData extends Partial<CreatePostData> { }
 
 /**
  * 必需的语言代码
@@ -31,8 +31,8 @@ export function validateCreatePost(data: any): CreatePostData {
   // 验证 slug
   if (!data.slug || typeof data.slug !== 'string') {
     errors.push('slug 是必需的且必须是字符串')
-  } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug)) {
-    errors.push('slug 只能包含小写字母、数字和连字符')
+  } else if (!/^[a-z0-9A-Z._-]+$/.test(data.slug)) {
+    errors.push('slug 只能包含字母、数字、连字符、下划线或点')
   }
 
   // 验证 title
@@ -72,12 +72,12 @@ export function validateCreatePost(data: any): CreatePostData {
   }
 
   // 验证 tags（可选）
-  if (data.tags !== undefined && !Array.isArray(data.tags)) {
+  if (data.tags !== undefined && data.tags !== null && !Array.isArray(data.tags)) {
     errors.push('tags 必须是数组')
   }
 
   // 验证 cover_image（可选）
-  if (data.cover_image !== undefined && typeof data.cover_image !== 'string') {
+  if (data.cover_image !== undefined && data.cover_image !== null && typeof data.cover_image !== 'string') {
     errors.push('cover_image 必须是字符串')
   }
 
@@ -85,7 +85,7 @@ export function validateCreatePost(data: any): CreatePostData {
   if (errors.length > 0) {
     throw createError({
       statusCode: 400,
-      statusMessage: `验证错误：${errors.join('；')}`
+      message: `验证错误：${errors.join('；')}`
     })
   }
 
@@ -101,7 +101,7 @@ export function validateUpdatePost(data: any): UpdatePostData {
   if (!data || Object.keys(data).length === 0) {
     throw createError({
       statusCode: 400,
-      statusMessage: '验证错误：没有提供要更新的数据'
+      message: '验证错误：没有提供要更新的数据'
     })
   }
 
@@ -111,8 +111,8 @@ export function validateUpdatePost(data: any): UpdatePostData {
   if (data.slug !== undefined) {
     if (typeof data.slug !== 'string') {
       errors.push('slug 必须是字符串')
-    } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug)) {
-      errors.push('slug 只能包含小写字母、数字和连字符')
+    } else if (!/^[a-z0-9A-Z._-]+$/.test(data.slug)) {
+      errors.push('slug 只能包含字母、数字、连字符、下划线或点')
     }
   }
 
@@ -156,12 +156,12 @@ export function validateUpdatePost(data: any): UpdatePostData {
   }
 
   // 验证 tags
-  if (data.tags !== undefined && !Array.isArray(data.tags)) {
+  if (data.tags !== undefined && data.tags !== null && !Array.isArray(data.tags)) {
     errors.push('tags 必须是数组')
   }
 
   // 验证 cover_image
-  if (data.cover_image !== undefined && typeof data.cover_image !== 'string') {
+  if (data.cover_image !== undefined && data.cover_image !== null && typeof data.cover_image !== 'string') {
     errors.push('cover_image 必须是字符串')
   }
 
@@ -184,9 +184,9 @@ export interface CreateProductData {
   name: Record<string, string>
   description: Record<string, string>
   category: 'server' | 'storage' | 'network' | 'software' | 'hpc' | 'storage-hp'
-  specs?: Record<string, string | number | boolean>
-  images?: string[]
-  model_3d_url?: string
+  specs?: Record<string, string | number | boolean> | null
+  images?: string[] | null
+  model_3d_url?: string | null
   is_featured?: boolean
   status?: 'draft' | 'published' | 'archived'
 }
@@ -194,7 +194,7 @@ export interface CreateProductData {
 /**
  * 更新产品的数据结构
  */
-export interface UpdateProductData extends Partial<CreateProductData> {}
+export interface UpdateProductData extends Partial<CreateProductData> { }
 
 /**
  * 验证创建产品的数据
@@ -205,8 +205,8 @@ export function validateCreateProduct(data: any): CreateProductData {
   // 验证 slug
   if (!data.slug || typeof data.slug !== 'string') {
     errors.push('slug 是必需的且必须是字符串')
-  } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug)) {
-    errors.push('slug 只能包含小写字母、数字和连字符')
+  } else if (!/^[a-z0-9A-Z._-]+$/.test(data.slug)) {
+    errors.push('slug 只能包含字母、数字、连字符、下划线或点')
   }
 
   // 验证 name（多语言）
@@ -239,17 +239,17 @@ export function validateCreateProduct(data: any): CreateProductData {
   }
 
   // 验证 specs（可选）
-  if (data.specs !== undefined && typeof data.specs !== 'object') {
+  if (data.specs !== undefined && data.specs !== null && typeof data.specs !== 'object') {
     errors.push('specs 必须是对象')
   }
 
   // 验证 images（可选）
-  if (data.images !== undefined && !Array.isArray(data.images)) {
+  if (data.images !== undefined && data.images !== null && !Array.isArray(data.images)) {
     errors.push('images 必须是数组')
   }
 
   // 验证 model_3d_url（可选）
-  if (data.model_3d_url !== undefined && typeof data.model_3d_url !== 'string') {
+  if (data.model_3d_url !== undefined && data.model_3d_url !== null && typeof data.model_3d_url !== 'string') {
     errors.push('model_3d_url 必须是字符串')
   }
 
@@ -268,7 +268,7 @@ export function validateCreateProduct(data: any): CreateProductData {
   if (errors.length > 0) {
     throw createError({
       statusCode: 400,
-      statusMessage: `验证错误：${errors.join('；')}`
+      message: `验证错误：${errors.join('；')}`
     })
   }
 
@@ -282,7 +282,7 @@ export function validateUpdateProduct(data: any): UpdateProductData {
   if (!data || Object.keys(data).length === 0) {
     throw createError({
       statusCode: 400,
-      statusMessage: '验证错误：没有提供要更新的数据'
+      message: '验证错误：没有提供要更新的数据'
     })
   }
 
@@ -292,8 +292,8 @@ export function validateUpdateProduct(data: any): UpdateProductData {
   if (data.slug !== undefined) {
     if (typeof data.slug !== 'string') {
       errors.push('slug 必须是字符串')
-    } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug)) {
-      errors.push('slug 只能包含小写字母、数字和连字符')
+    } else if (!/^[a-z0-9A-Z._-]+$/.test(data.slug)) {
+      errors.push('slug 只能包含字母、数字、连字符、下划线或点')
     }
   }
 
@@ -333,13 +333,13 @@ export function validateUpdateProduct(data: any): UpdateProductData {
   }
 
   // 验证其他字段
-  if (data.specs !== undefined && typeof data.specs !== 'object') {
+  if (data.specs !== undefined && data.specs !== null && typeof data.specs !== 'object') {
     errors.push('specs 必须是对象')
   }
-  if (data.images !== undefined && !Array.isArray(data.images)) {
+  if (data.images !== undefined && data.images !== null && !Array.isArray(data.images)) {
     errors.push('images 必须是数组')
   }
-  if (data.model_3d_url !== undefined && typeof data.model_3d_url !== 'string') {
+  if (data.model_3d_url !== undefined && data.model_3d_url !== null && typeof data.model_3d_url !== 'string') {
     errors.push('model_3d_url 必须是字符串')
   }
   if (data.is_featured !== undefined && typeof data.is_featured !== 'boolean') {
@@ -352,7 +352,7 @@ export function validateUpdateProduct(data: any): UpdateProductData {
   if (errors.length > 0) {
     throw createError({
       statusCode: 400,
-      statusMessage: `验证错误：${errors.join('；')}`
+      message: `验证错误：${errors.join('；')}`
     })
   }
 

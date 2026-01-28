@@ -1,4 +1,4 @@
-# robots.txt for Project NEXUS (HK)
+# robots.txt for SUPERCORE TECHNOLOGY LIMITED
 
 User-agent: *
 Allow: /
@@ -7,4 +7,4 @@ Allow: /
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://projectnexus.hk/sitemap.xml
+Sitemap: https://www.supercore.hk/sitemap.xml
