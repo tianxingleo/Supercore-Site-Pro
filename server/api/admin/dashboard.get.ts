@@ -33,11 +33,20 @@ export default withApiHandler(async (event) => {
       client.from('posts').select('id', { count: 'exact', head: true }),
     ])
 
+    // 调试日志
+    console.log('[Dashboard API] Query results:', {
+      products: productsResult,
+      inquiries: inquiriesResult,
+      posts: postsResult,
+    })
+
     const stats = {
       products: productsResult.count || 0,
       inquiries: inquiriesResult.count || 0,
       posts: postsResult.count || 0,
     }
+
+    console.log('[Dashboard API] Stats:', stats)
 
     // 获取最近的询盘
     const { data: recentInquiries } = await client
@@ -47,19 +56,32 @@ export default withApiHandler(async (event) => {
       .limit(5)
 
     // 检查服务器状态
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000'
+    // 从请求头获取实际的前端 URL
+    const protocol = event.headers.get('x-forwarded-proto') || 'http'
+    const host = event.headers.get('host') || 'localhost:3000'
+    const frontendUrl = `${protocol}://${host}`
     const backendUrl = process.env.SUPABASE_URL || 'Unknown'
 
-    let frontendStatus = 'unknown'
+    // 测量前端响应时间
+    let frontendStatus = 'online'
     let frontendResponseTime: number | null = null
 
     try {
       const start = Date.now()
-      await $fetch(frontendUrl, { timeout: 5000 })
+      // 发送一个简单的请求到前端首页来测量响应时间
+      await $fetch(frontendUrl, {
+        method: 'HEAD',
+        timeout: 5000,
+      })
       frontendResponseTime = Date.now() - start
       frontendStatus = 'online'
+      console.log('[Dashboard API] Frontend ping successful:', {
+        url: frontendUrl,
+        responseTime: frontendResponseTime + 'ms'
+      })
     } catch (error) {
       frontendStatus = 'offline'
+      console.error('[Dashboard API] Frontend ping failed:', error)
     }
 
     const serverStatus = {

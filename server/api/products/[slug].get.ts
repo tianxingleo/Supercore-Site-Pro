@@ -71,8 +71,16 @@ export default defineEventHandler(async (event) => {
     const mappedProduct: Product = {
       id: String(anyProduct.id),
       slug: anyProduct.slug,
-      name: anyProduct.name,
-      description: anyProduct.description,
+      name: {
+        'zh-CN': anyProduct.name.cn || anyProduct.name['zh-CN'] || '',
+        'zh-HK': anyProduct.name.hk || anyProduct.name['zh-HK'] || '',
+        en: anyProduct.name.en || '',
+      },
+      description: {
+        'zh-CN': anyProduct.description.cn || anyProduct.description['zh-CN'] || '',
+        'zh-HK': anyProduct.description.hk || anyProduct.description['zh-HK'] || '',
+        en: anyProduct.description.en || '',
+      },
       specs: anyProduct.specs || {},
       images: anyProduct.images || [],
       category: anyProduct.category,
@@ -95,8 +103,16 @@ export default defineEventHandler(async (event) => {
   const mappedProduct: Product = {
     id: String(data.id),
     slug: data.slug,
-    name: data.name,
-    description: data.description,
+    name: {
+      'zh-CN': data.name.cn || data.name['zh-CN'] || '',
+      'zh-HK': data.name.hk || data.name['zh-HK'] || '',
+      en: data.name.en || '',
+    },
+    description: {
+      'zh-CN': data.description.cn || data.description['zh-CN'] || '',
+      'zh-HK': data.description.hk || data.description['zh-HK'] || '',
+      en: data.description.en || '',
+    },
     specs: data.specs || {},
     images: data.images || [],
     category: data.category,

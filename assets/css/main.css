@@ -29,16 +29,22 @@ body {
 
 /* Selection color - Swiss Design Style */
 ::selection {
-  background-color: rgba(0, 0, 0, 0.2);
-  /* 更明显的黑色背景 */
-  color: #1D1D1F;
+  background-color: #e5e5ea !important;
+  /* 浅灰色背景，符合 Swiss 风格 */
+  color: #1D1D1F !important;
   /* 保持深色文字 */
 }
 
 ::-moz-selection {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #e5e5ea !important;
   /* Firefox 支持 */
-  color: #1D1D1F;
+  color: #1D1D1F !important;
+}
+
+/* Webkit browsers */
+::-webkit-selection {
+  background-color: #e5e5ea !important;
+  color: #1D1D1F !important;
 }
 
 /* Focus styles for accessibility */

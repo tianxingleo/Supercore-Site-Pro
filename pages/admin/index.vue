@@ -1,6 +1,6 @@
 <template>
   <!-- Loading State -->
-  <DashboardSkeleton v-if="pending || loading" />
+  <DashboardSkeleton v-if="pending || loading || !dataLoaded" />
 
   <!-- Error State -->
   <div v-else-if="error" class="min-h-screen bg-white p-8">
@@ -247,6 +247,7 @@ const serverStatus = ref({
 })
 const lastUpdated = ref('')
 const loading = ref(false)
+const dataLoaded = ref(false)
 
 // 使用 useLazyFetch 统一管理面板加载状态
 const {
@@ -265,20 +266,39 @@ const {
   }),
   onRequest: () => {
     loading.value = true
+    dataLoaded.value = false
   },
-  onResponse: () => {
+  onResponse: ({ response }) => {
     loading.value = false
+    dataLoaded.value = true
+    console.log('[Admin Dashboard] Response received:', response)
+    console.log('[Admin Dashboard] Response data:', response._data)
   },
   onResponseError: ({ error }) => {
     loading.value = false
+    dataLoaded.value = false
     console.error('[Admin Dashboard] Fetch error:', error)
+    console.error('[Admin Dashboard] Error details:', {
+      message: error.message,
+      statusCode: error.statusCode,
+      statusMessage: error.statusMessage,
+    })
   },
 })
 
 // 监听数据变化并更新界面
 watchEffect(() => {
+  console.log('[Admin Dashboard] watchEffect triggered:', {
+    pending: pending.value,
+    loading: loading.value,
+    dataLoaded: dataLoaded.value,
+    error: error.value,
+    hasDashboardData: !!dashboardData.value,
+  })
+
   // 如果正在加载，不更新数据
-  if (pending.value || loading.value) {
+  if (pending.value || loading.value || !dataLoaded.value) {
+    console.log('[Admin Dashboard] Still loading, skipping update')
     return
   }
 
@@ -289,12 +309,21 @@ watchEffect(() => {
   }
 
   // 更新数据
-  if (dashboardData.value) {
-    const data = dashboardData.value as any
+  if (dashboardData.value && dataLoaded.value) {
+    const response = dashboardData.value as any
+
+    // 检查响应结构并提取数据
+    const data = response.success ? response.data : response
+
+    console.log('[Admin Dashboard] Extracted data:', data)
+    console.log('[Admin Dashboard] Stats from data:', data?.stats)
+
     // 更新统计
-    stats.value[0].value = String(data.stats?.products || 0)
-    stats.value[1].value = String(data.stats?.inquiries || 0)
-    stats.value[2].value = String(data.stats?.posts || 0)
+    if (data?.stats) {
+      stats.value[0].value = String(data.stats.products || 0)
+      stats.value[1].value = String(data.stats.inquiries || 0)
+      stats.value[2].value = String(data.stats.posts || 0)
+    }
 
     // 更新询盘
     if (data.recentInquiries) {

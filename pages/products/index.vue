@@ -63,31 +63,7 @@ import { mockProducts } from '~/utils/mockData'
 console.log('[Products] Page mounting...')
 
 // 使用 useLazyFetch 确保加载动画可见
-const {
-  data: apiProducts,
-  pending,
-  error,
-} = useLazyFetch('/api/products/public', {
-  transform: (response) => {
-    console.log('[Products] useLazyFetch transform:', {
-      isNull: response === null,
-      isUndefined: response === undefined,
-      isSuccess: response?.success,
-      hasData: response?.data,
-      isArray: Array.isArray(response?.data),
-      type: typeof response,
-      dataLength: response?.data?.length,
-    })
-
-    // Extract the actual products array from the API response structure
-    if (!response || !response.success || !response.data || response.data.length === 0) {
-      console.log('[Products] Transform returning empty array')
-      return []
-    }
-    return response.data
-  },
-  default: () => [],
-})
+const { data: apiProducts, pending, error } = useLazyFetch('/api/products/public')
 
 // 监听数据变化
 watch(apiProducts, (newData) => {
@@ -104,45 +80,45 @@ watch(apiProducts, (newData) => {
 const products = computed(() => {
   console.log('[Products] Computed called')
 
-  const currentData = apiProducts.value
+  const apiResponse = apiProducts.value
   const isError = error.value
   const isLoading = pending.value
 
-  console.log('[Products] Computed values:', {
+  console.log('[Products] API response structure:', {
     isLoading,
     isError,
-    currentData,
-    isArray: Array.isArray(currentData),
-    length: currentData?.length,
-    data: currentData,
-    hasData: currentData && currentData.length > 0,
+    apiResponse,
+    hasSuccess: apiResponse?.success,
+    hasData: apiResponse?.data,
+    dataArray: apiResponse?.data,
+    isArray: Array.isArray(apiResponse?.data),
+    length: apiResponse?.data?.length,
   })
 
   // 如果还在加载中，返回空数组（让 pending 状态显示骨架屏）
-  if (isLoading || !currentData) {
+  if (isLoading || !apiResponse) {
     console.log('[Products] Still loading, returning empty array')
     return []
   }
 
-  // 如果有错误，使用 mock 数据
+  // 如果有错误
   if (isError) {
     console.error('[Products] API Error:', isError)
-    console.log('[Products] Using mock data due to API error')
-    return mockProducts
+    return []
   }
 
   // API 正常返回数据
-  if (Array.isArray(currentData) && currentData.length > 0) {
+  if (apiResponse.success && Array.isArray(apiResponse.data) && apiResponse.data.length > 0) {
     console.log('[Products] Using API data', {
-      count: currentData.length,
-      data: currentData,
+      count: apiResponse.data.length,
+      data: apiResponse.data,
     })
-    return currentData
+    return apiResponse.data
   }
 
-  // 如果数据为空，使用 mock 数据
-  console.log('[Products] API returned empty array, using mock data')
-  return mockProducts
+  // 如果数据为空
+  console.log('[Products] API returned no data')
+  return []
 })
 
 // 监听产品变化

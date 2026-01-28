@@ -169,17 +169,10 @@ const {
   default: () => null as any,
 })
 
-// 导入 mock 数据
-const { mockProducts } = await import('~/utils/mockData')
-
-// 如果 API 失败或返回 null，从 mock 数据中查找产品
+// 直接使用 API 返回的产品数据
 const product = computed(() => {
-  if (error.value || !apiProduct.value) {
-    console.log('[Product Detail] Using mock data due to API failure', {
-      error: error.value,
-      slug: route.params.slug,
-    })
-    return mockProducts.find((p) => p.slug === route.params.slug) || null
+  if (error.value) {
+    console.error('[Product Detail] API Error:', error.value)
   }
   return apiProduct.value
 })
