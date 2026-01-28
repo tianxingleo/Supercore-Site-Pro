@@ -15,8 +15,8 @@ export function useProductStructuredData(product: Product, locale: string) {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.name[langKey] || product.name['hk'],
-    description: product.description[langKey] || product.description['hk'],
+    name: product.name[locale as keyof typeof product.name] || product.name['zh-HK'] || product.name.en,
+    description: product.description[locale as keyof typeof product.description] || product.description['zh-HK'] || product.description.en,
     image: product.images,
     brand: {
       '@type': 'Brand',
@@ -36,21 +36,22 @@ export function useProductStructuredData(product: Product, locale: string) {
     },
     aggregateRating: product.rating
       ? {
-          '@type': 'AggregateRating',
-          ratingValue: product.rating,
-          reviewCount: product.reviewCount || 1,
-        }
+        '@type': 'AggregateRating',
+        ratingValue: product.rating,
+        reviewCount: product.reviewCount || 1,
+      }
       : undefined,
   }
 
   // 移除 undefined 值
-  Object.keys(structuredData).forEach((key) => {
-    if (structuredData[key] === undefined) {
-      delete structuredData[key]
+  const finalData = structuredData as any
+  Object.keys(finalData).forEach((key) => {
+    if (finalData[key] === undefined) {
+      delete finalData[key]
     }
   })
 
-  return structuredData
+  return finalData
 }
 
 /**

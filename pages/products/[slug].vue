@@ -49,7 +49,7 @@
               <!-- Main Image -->
               <NuxtImg
                 :src="currentImage"
-                :alt="`${product.name[currentLocale] || product.name.hk} - Image ${currentImageIndex + 1}`"
+                :alt="`${product.name[locale] || product.name['zh-HK'] || product.name.en} - Image ${currentImageIndex + 1}`"
                 width="1200"
                 height="1200"
                 format="webp"
@@ -109,17 +109,6 @@
             >
               <div class="w-1/2 h-1/2 bg-swiss-text opacity-5"></div>
             </div>
-
-            <!-- Meta Labels -->
-            <div class="absolute top-12 left-12 flex flex-col gap-2">
-              <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-swiss-text"
-                >Model: {{ product.slug }}</span
-              >
-              <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-swiss-text/40"
-                >Cat: {{ getCategoryLabel(product.category) }}</span
-              >
-            </div>
-
             <div v-if="product.featured" class="absolute bottom-12 right-12">
               <span
                 class="text-[10px] font-black tracking-widest uppercase border border-swiss-text px-4 py-1"
@@ -140,33 +129,34 @@
               Technical Specification / 01
             </div>
             <TypographyHeader :level="1" size="h1" class="mb-8">
-              {{ product.name[currentLocale] || product.name.hk }}
+              {{ product.name[locale] || product.name['zh-HK'] || product.name.en }}
             </TypographyHeader>
             <p class="text-swiss-text-muted text-lg leading-relaxed font-medium mb-16">
               {{
-                product.description[currentLocale] ||
-                product.description.hk
+                product.description[locale] ||
+                product.description['zh-HK'] ||
+                product.description.en
               }}
             </p>
 
-            <!-- Actions -->
-            <div class="flex flex-col gap-4">
-              <SwissButton
-                variant="primary"
-                size="lg"
-                class="!py-6"
-                aria-label="Request a technical consultation for this product"
-              >
-                REQUEST_CONSULTATION
-              </SwissButton>
-              <SwissButton
-                variant="ghost"
-                size="lg"
-                class="!py-6"
-                aria-label="Download technical datasheet PDF"
-              >
-                DOWNLOAD_DATASHEET
-              </SwissButton>
+            <!-- Product Metadata -->
+            <div class="space-y-10 py-10 border-t border-swiss-text/5">
+              <div class="grid grid-cols-12 items-baseline">
+                <div class="col-span-4 text-[11px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono">
+                  Model
+                </div>
+                <div class="col-span-8 text-2xl md:text-3xl font-bold tracking-tighter text-swiss-text uppercase leading-none">
+                  {{ product.slug }}
+                </div>
+              </div>
+              <div class="grid grid-cols-12 items-baseline border-t border-swiss-text/5 pt-10">
+                <div class="col-span-4 text-[11px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono">
+                  CAT
+                </div>
+                <div class="col-span-8 text-2xl md:text-3xl font-bold tracking-tighter text-swiss-text uppercase leading-none">
+                  {{ getCategoryLabel(product.category) }}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -201,11 +191,7 @@ const localePath = useLocalePath()
 const { locale } = useI18n()
 const imageLoaded = ref(false)
 
-const currentLocale = computed(() => {
-  if (locale.value === 'zh-HK') return 'hk'
-  if (locale.value === 'zh-CN') return 'cn'
-  return 'en'
-})
+const currentLocale = computed(() => locale.value)
 
 // 图片画廊状态
 const currentImageIndex = ref(0)
@@ -305,7 +291,7 @@ const getCategoryLabel = (category: string): string => {
 // Set page title, structured data, and canonical
 watchEffect(() => {
   if (product.value) {
-    const langKey = locale.value === 'zh-HK' ? 'hk' : locale.value === 'zh-CN' ? 'cn' : 'en'
+    const langKey = locale.value
     const baseUrl = 'https://www.supercore.hk'
     const currentPath = route.path
     const canonicalUrl =
@@ -320,11 +306,11 @@ watchEffect(() => {
     const breadcrumbStructuredData = useBreadcrumbStructuredData([
       { name: 'Home', url: '/' },
       { name: 'Products', url: '/products' },
-      { name: product.value.name[langKey] || product.value.name['hk'], url: currentPath },
+      { name: product.value.name[langKey] || product.value.name['zh-HK'], url: currentPath },
     ])
 
     useHead({
-      title: `${product.value.name[langKey] || product.value.name['hk']} - 超核技術有限公司`,
+      title: `${product.value.name[langKey as keyof typeof product.value.name] || product.value.name['zh-HK']} - 超核技術有限公司`,
       link: [
         {
           rel: 'canonical',

@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="admin">
+  <div class="admin-page-container">
     <div class="max-w-4xl mx-auto space-y-12">
       <div class="flex items-center space-x-4">
         <NuxtLink to="/admin/news"
@@ -11,7 +11,11 @@
         </TypographyHeader>
       </div>
 
-      <form @submit.prevent="savePost" class="space-y-8 pb-24">
+      <div v-if="loading" class="space-y-12">
+        <FormSkeleton />
+      </div>
+
+      <form v-else @submit.prevent="savePost" class="space-y-8 pb-24">
         <div class="bg-white border border-swiss-text/10">
           <div class="p-6 md:p-8 space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -121,15 +125,21 @@
         </div>
       </form>
     </div>
-  </NuxtLayout>
+  </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin',
+})
+
 const route = useRoute()
 const isNew = computed(() => route.params.id === 'new')
 const saving = ref(false)
+const loading = ref(false)
 
 import AdminImageUpload from '~/components/admin/AdminImageUpload.vue'
+import FormSkeleton from '~/components/admin/FormSkeleton.vue'
 
 // 调试日志
 console.log('[News Edit] Page mounting:', {
@@ -174,6 +184,7 @@ const publishedAtLocal = computed({
 
 onMounted(async () => {
   if (!isNew.value) {
+    loading.value = true
     try {
       const response = (await $fetch(`/api/news/${route.params.id}`)) as any
       if (response.success) {
@@ -190,6 +201,8 @@ onMounted(async () => {
       console.error('获取文章失败:', error)
       const errorMessage = error.data?.statusMessage || error.message || '获取文章失敗'
       alert(errorMessage)
+    } finally {
+      loading.value = false
     }
   }
 })

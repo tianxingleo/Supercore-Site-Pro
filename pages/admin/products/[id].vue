@@ -1,6 +1,7 @@
 <template>
-  <NuxtLayout name="admin">
+  <div class="admin-page-container">
     <div class="max-w-4xl mx-auto space-y-12">
+
       <div class="flex items-center space-x-4">
         <NuxtLink to="/admin/products"
           class="text-[10px] font-bold uppercase tracking-widest px-3 py-2 text-swiss-text hover:text-swiss-text-muted hover:-translate-y-0.5 active:scale-[0.98] transition-all rounded-none">
@@ -11,7 +12,11 @@
         </TypographyHeader>
       </div>
 
-      <form @submit.prevent="saveProduct" class="space-y-8 pb-24">
+      <div v-if="loading" class="space-y-12">
+        <FormSkeleton />
+      </div>
+
+      <form v-else @submit.prevent="saveProduct" class="space-y-8 pb-24">
         <!-- Basic Info Card -->
         <div class="bg-white border border-swiss-text/10">
           <div class="p-6 md:p-8 border-b border-swiss-text/10">
@@ -121,19 +126,21 @@
             </button>
           </div>
           <div class="p-6 md:p-8 space-y-3">
-            <div v-for="(val, key, index) in form.specs" :key="index" class="flex items-center space-x-2">
-              <input :model-value="key" @input="updateSpecKey(key, ($event.target as HTMLInputElement).value)"
+            <div v-for="(item, index) in specsItems" :key="item.id" class="flex items-center space-x-2">
+              <input v-model="item.key"
+                @blur="syncSpecs"
                 placeholder="Key (如 CPU)"
                 class="flex-1 px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
-              <input :model-value="val" @input="form.specs[key] = ($event.target as HTMLInputElement).value"
+              <input v-model="item.value"
+                @blur="syncSpecs"
                 placeholder="Value (如 2x AMD)"
                 class="flex-1 px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
-              <button type="button" @click="removeSpec(key)"
+              <button type="button" @click="removeSpec(index)"
                 class="px-3 py-3 text-swiss-text hover:text-red-500 transition-colors">
                 ✕
               </button>
             </div>
-            <div v-if="Object.keys(form.specs).length === 0"
+            <div v-if="specsItems.length === 0"
               class="text-center text-swiss-text-muted text-[10px] uppercase tracking-widest py-4">
               點擊右上角添加規格
             </div>
@@ -158,17 +165,20 @@
         </div>
       </form>
     </div>
-  </NuxtLayout>
+  </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-  layout: false,
+  layout: 'admin',
 })
 
 const route = useRoute()
 const isNew = computed(() => route.params.id === 'new')
 const saving = ref(false)
+const loading = ref(false)
+
+import FormSkeleton from '~/components/admin/FormSkeleton.vue'
 
 const langTabs = [
   { key: 'hk', label: '繁體 (HK)' },
@@ -188,46 +198,97 @@ const form = ref({
   status: 'draft',
 })
 
+// 用于编辑的规格参数数组
+const specsItems = ref<Array<{ id: string; key: string; value: string }>>([])
+
+// 初始化 specsItems
+const initSpecsItems = () => {
+  specsItems.value = Object.keys(form.value.specs).map((key, index) => ({
+    id: `spec_${index}_${Date.now()}`,
+    key,
+    value: form.value.specs[key]
+  }))
+}
+
+// 同步 specsItems 到 form.specs
+const syncSpecs = () => {
+  const newSpecs: Record<string, string> = {}
+  specsItems.value.forEach(item => {
+    if (item.key) {
+      newSpecs[item.key] = item.value
+    }
+  })
+  form.value.specs = newSpecs
+}
+
 
 onMounted(async () => {
   if (!isNew.value) {
+    loading.value = true
     try {
-      const data = await $fetch(`/api/products/admin/${route.params.id}`)
+      const data = await $fetch(`/api/products/admin/${route.params.id}`) as any
+      console.log('[Product Edit] Loaded product data:', JSON.stringify(data, null, 2))
+
       if (data) {
+        // 确保 specs 字段存在，如果为 null 或 undefined 则设置为空对象
+        const specs = data.specs || {}
+
         // Merge with default ensuring all keys exist
         form.value = {
-          ...form.value,
-          ...data,
-          name: { ...form.value.name, ...data.name },
-          description: { ...form.value.description, ...data.description },
-          specs: data.specs || {},
+          slug: data.slug || '',
+          category: data.category || 'server',
+          name: {
+            hk: data.name?.hk || '',
+            cn: data.name?.cn || '',
+            en: data.name?.en || '',
+          },
+          description: {
+            hk: data.description?.hk || '',
+            cn: data.description?.cn || '',
+            en: data.description?.en || '',
+          },
+          specs: specs,
+          images: data.images || [],
+          model_3d_url: data.model_3d_url || '',
+          is_featured: data.featured || false,
+          status: data.status || 'draft',
         }
+
+        console.log('[Product Edit] Form initialized:', JSON.stringify(form.value, null, 2))
+        console.log('[Product Edit] Specs keys:', Object.keys(form.value.specs))
+
+        // 初始化 specsItems
+        initSpecsItems()
       }
     } catch (e: any) {
+      console.error('[Product Edit] Failed to load product:', e)
       alert('加載產品失敗: ' + e.message)
       navigateTo('/admin/products')
+    } finally {
+      loading.value = false
     }
   }
 })
 
 function addSpec() {
-  form.value.specs['new_key_' + Object.keys(form.value.specs).length] = ''
+  specsItems.value.push({
+    id: `spec_new_${Date.now()}`,
+    key: '',
+    value: ''
+  })
 }
 
-function updateSpecKey(oldKey: string, newKey: string) {
-  if (oldKey === newKey) return
-  const value = form.value.specs[oldKey]
-  delete form.value.specs[oldKey]
-  form.value.specs[newKey] = value
-}
-
-function removeSpec(key: string) {
-  delete form.value.specs[key]
+function removeSpec(index: number) {
+  specsItems.value.splice(index, 1)
+  syncSpecs()
 }
 
 async function saveProduct() {
   saving.value = true
   try {
+    // 在保存前同步 specs
+    syncSpecs()
+
     const payload = { ...form.value }
 
     if (isNew.value) {

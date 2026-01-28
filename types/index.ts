@@ -5,19 +5,21 @@ export interface Product {
   id: string
   slug: string
   name: {
-    hk: string
-    cn: string
+    'zh-HK': string
+    'zh-CN': string
     en: string
   }
   description: {
-    hk: string
-    cn: string
+    'zh-HK': string
+    'zh-CN': string
     en: string
   }
   specs: Record<string, string | number | boolean>
   images: string[]
   category: 'server' | 'storage' | 'network' | 'software' | 'hpc' | 'storage-hp'
   featured: boolean
+  rating?: number
+  reviewCount?: number
   createdAt: string
 }
 
