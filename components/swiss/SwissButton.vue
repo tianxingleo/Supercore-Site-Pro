@@ -1,23 +1,23 @@
 <template>
   <NuxtLink v-if="tag === 'a' && to" :to="to" custom v-slot="{ navigate }">
-    <a
-      @click="navigate"
-      :class="buttonClasses"
-      :href="to"
-      @click.exact="handleClick($event, navigate)"
-    >
+    <a v-bind="$attrs" @click="navigate" :class="buttonClasses" :href="to" @click.exact="handleClick($event, navigate)"
+      @keydown.enter.prevent="handleClick($event, navigate)" @keydown.space.prevent="handleClick($event, navigate)">
       <slot />
     </a>
   </NuxtLink>
-  <a v-else-if="tag === 'a'" :href="to" :class="buttonClasses" @click="handleClick">
+  <a v-else-if="tag === 'a'" v-bind="$attrs" :href="to" :class="buttonClasses" @click="handleClick"
+    @keydown.enter.prevent="handleClick($event)">
     <slot />
   </a>
-  <button v-else :type="type" :class="buttonClasses" :disabled="disabled" @click="handleClick">
+  <button v-else v-bind="$attrs" :type="type" :class="buttonClasses" :disabled="disabled" @click="handleClick">
     <slot />
   </button>
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  inheritAttrs: false
+})
 interface Props {
   variant?: 'primary' | 'secondary' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
@@ -72,7 +72,9 @@ const buttonClasses = computed(() => {
     primary: [
       'bg-swiss-text',
       'text-white',
-      'hover:bg-black',
+      'hover:bg-swiss-text/90',
+      'hover:-translate-y-0.5',
+      'hover:shadow-lg',
       'active:scale-[0.98]',
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',
@@ -81,6 +83,8 @@ const buttonClasses = computed(() => {
       'bg-swiss-bg-soft',
       'text-swiss-text',
       'hover:bg-gray-200',
+      'hover:-translate-y-0.5',
+      'hover:shadow-md',
       'active:scale-[0.98]',
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',
@@ -89,9 +93,11 @@ const buttonClasses = computed(() => {
       'bg-transparent',
       'text-swiss-text',
       'border',
-      'border-gray-200',
+      'border-swiss-text/20',
+      'hover:border-swiss-text',
       'hover:bg-swiss-text',
       'hover:text-white',
+      'hover:-translate-y-0.5',
       'active:scale-[0.98]',
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',

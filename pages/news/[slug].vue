@@ -7,8 +7,9 @@
                     <div class="col-span-12 lg:col-span-10 lg:offset-1">
                         <div class="mb-8 flex items-center space-x-4">
                             <NuxtLink :to="localePath('/news')"
-                                class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center">
-                                <span class="mr-2">←</span> {{ $t('news.backToList') }}
+                                class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center"
+                                :aria-label="$t('news.backToList')">
+                                <span class="mr-2" aria-hidden="true">←</span> {{ $t('news.backToList') }}
                             </NuxtLink>
                         </div>
 
@@ -39,14 +40,28 @@
                     <div class="col-span-12 lg:col-span-8 lg:offset-2">
                         <!-- Cover Image -->
                         <div v-if="post.cover_image"
-                            class="mb-16 aspect-video bg-gray-50 overflow-hidden border border-gray-100">
-                            <img :src="post.cover_image" :alt="post.title[lang]" class="w-full h-full object-cover" />
+                            class="mb-16 aspect-video bg-gray-50 overflow-hidden border border-gray-100 relative">
+                            <div v-if="!imageLoaded" class="shimmer absolute inset-0 z-10"></div>
+                            <NuxtImg
+                              :src="post.cover_image"
+                              :alt="post.title[lang]"
+                              width="1200"
+                              height="675"
+                              format="webp"
+                              quality="90"
+                              loading="eager"
+                              preload
+                              sizes="xs:100vw sm:100vw md:83vw"
+                              @load="imageLoaded = true"
+                              class="w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+                              :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
+                              placeholder
+                            />
                         </div>
 
                         <!-- Content Area -->
-                        <div class="prose prose-lg prose-gray max-w-none 
-                        prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase
-                        prose-a:text-swiss-accent prose-img:rounded-none prose-img:border prose-img:border-gray-100">
+                        <div
+                            class="prose prose-lg prose-gray max-w-none prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase prose-a:text-swiss-accent prose-img:rounded-none prose-img:border prose-img:border-gray-100">
                             <div v-html="renderedContent" class="news-content"></div>
                         </div>
 
@@ -60,7 +75,7 @@
                                     Article</span>
                                 <span
                                     class="text-sm font-bold group-hover:text-swiss-accent transition-colors line-clamp-1">{{
-                                        prevPost.title[lang] }}</span>
+                                    prevPost.title[lang] }}</span>
                             </NuxtLink>
                             <div v-else></div>
 
@@ -70,7 +85,7 @@
                                     Article</span>
                                 <span
                                     class="text-sm font-bold group-hover:text-swiss-accent transition-colors line-clamp-1">{{
-                                        nextPost.title[lang] }}</span>
+                                    nextPost.title[lang] }}</span>
                             </NuxtLink>
                             <div v-else></div>
                         </div>
@@ -103,10 +118,15 @@ const route = useRoute()
 const localePath = useLocalePath()
 const { locale } = useI18n()
 const slug = route.params.slug as string
+const imageLoaded = ref(false)
 
 // 使用 useLazyFetch 避免阻塞渲染，防止路由切换时白屏
-const { data: newsData, pending, error } = useLazyFetch<{ post: Post, prevPost?: Post, nextPost?: Post }>(`/api/news/${slug}`, {
-    default: () => ({ post: null as any })
+const {
+    data: newsData,
+    pending,
+    error,
+} = useLazyFetch<{ post: Post; prevPost?: Post; nextPost?: Post }>(`/api/news/${slug}`, {
+    default: () => ({ post: null as any }),
 })
 
 const post = computed(() => newsData.value?.post)
@@ -130,7 +150,17 @@ const lang = computed(() => {
 const renderedContent = computed(() => {
     const content = post.value?.content?.[lang.value]
     if (!content) return ''
-    return marked(String(content))
+
+    // 检查内容是否为 HTML（富文本）
+    const trimmedContent = String(content).trim()
+    const isHtml = trimmedContent.startsWith('<') && trimmedContent.endsWith('>')
+
+    // 如果是 HTML，直接渲染；如果是 Markdown，使用 marked 转换
+    if (isHtml) {
+        return trimmedContent
+    } else {
+        return marked(trimmedContent)
+    }
 })
 
 function formatDate(dateStr: string) {
@@ -139,12 +169,67 @@ function formatDate(dateStr: string) {
     return date.toLocaleDateString(locale.value === 'en' ? 'en-US' : 'zh-HK', {
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
     })
 }
 
-useHead({
-    title: computed(() => (post.value?.title[lang.value] || 'News') + ' - SUPERCORE'),
+// Set page title, structured data, and canonical
+watchEffect(() => {
+  if (post.value) {
+    const baseUrl = 'https://projectnexus.hk'
+    const currentPath = route.path
+    const canonicalUrl = locale.value === 'en'
+      ? `${baseUrl}${currentPath}`
+      : `${baseUrl}/${locale.value}${currentPath}`
+
+    // 生成文章結構化數據
+    const structuredData = useArticleStructuredData(post.value, locale.value)
+
+    // 生成麵包屑結構化數據
+    const breadcrumbStructuredData = useBreadcrumbStructuredData([
+      { name: 'Home', url: '/' },
+      { name: 'News', url: '/news' },
+      { name: post.value.title[lang.value] || 'News', url: currentPath },
+    ])
+
+    useHead({
+      title: (post.value?.title[lang.value] || 'News') + ' - 超核技術有限公司',
+      link: [
+        {
+          rel: 'canonical',
+          href: canonicalUrl,
+        },
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(structuredData),
+        },
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(breadcrumbStructuredData),
+        },
+      ],
+      meta: [
+        {
+          property: 'article:published_time',
+          content: post.value.created_at,
+        },
+        {
+          property: 'article:modified_time',
+          content: post.value.updated_at || post.value.created_at,
+        },
+        {
+          property: 'article:section',
+          content: post.value.category || 'Technology',
+        },
+        ...(post.value.tags?.map(tag => ({
+          property: 'article:tag',
+          content: tag,
+        })) || []),
+      ],
+    })
+  }
 })
 </script>
 

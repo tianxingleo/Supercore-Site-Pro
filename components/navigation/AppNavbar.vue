@@ -1,21 +1,26 @@
 <template>
   <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" :class="[
     scrolled ? 'bg-white/90 backdrop-blur-md border-b border-gray-100' : 'bg-transparent'
-  ]">
+  ]" aria-label="Main Navigation">
     <GridContainer>
       <div class="col-span-12 flex items-center justify-between py-5 md:py-8 transition-all duration-500"
         :class="{ 'py-3 md:py-4': scrolled }">
         <!-- Logo -->
-        <NuxtLink :to="localePath('/')" class="flex items-center group">
-          <img src="/supercore.png" alt="SUPERCORE Logo"
+        <NuxtLink :to="localePath('/')" class="flex items-center group" aria-label="SUPERCORE Home">
+          <NuxtImg src="/supercore.png" alt="SUPERCORE Logo" width="128" height="128" format="webp" quality="90"
+            loading="eager" preload @load="imageLoaded = true"
             class="object-contain drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)] transition-all duration-500 w-20 h-20 md:w-32 md:h-32"
-            :class="{ '!w-12 !h-12 md:!w-20 md:!h-20': scrolled }" />
+            :class="[
+              scrolled ? '!w-12 !h-12 md:!w-20 md:!h-20' : '',
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            ]" />
         </NuxtLink>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center space-x-12">
+        <div class="hidden md:flex items-center space-x-12" role="menubar">
           <NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.to)"
-            class="nav-link group relative py-1 px-1">
+            class="nav-link group relative py-1 px-1" role="menuitem"
+            :aria-current="route.path === localePath(item.to) ? 'page' : undefined" :aria-label="$t(item.label)">
             <TypographyHeader :level="4" size="h6"
               class="text-swiss-text-muted group-hover:text-swiss-text transition-colors duration-500 !mb-0 font-bold uppercase tracking-widest text-[10px]">
               {{ $t(item.label) }}
@@ -29,9 +34,10 @@
           <LocaleSwitcher />
 
           <!-- Mobile Menu Button -->
-          <button class="md:hidden p-2 text-swiss-text hover:text-swiss-accent transition-colors"
-            @click="toggleMobileMenu" aria-label="Toggle menu">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button type="button" class="md:hidden p-2 text-swiss-text hover:text-swiss-accent transition-colors"
+            @click="toggleMobileMenu" :aria-label="mobileMenuOpen ? 'Close menu' : 'Open menu'"
+            :aria-expanded="mobileMenuOpen" aria-controls="mobile-menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4 6h16M4 12h16M4 18h16"></path>
               <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
@@ -44,11 +50,13 @@
 
     <!-- Mobile Menu -->
     <Transition name="slide-down">
-      <div v-if="mobileMenuOpen" class="md:hidden bg-swiss-bg/95 backdrop-blur-md border-t border-swiss-secondary/10">
+      <div v-if="mobileMenuOpen" id="mobile-menu"
+        class="md:hidden bg-swiss-bg/95 backdrop-blur-md border-t border-swiss-secondary/10">
         <GridContainer>
-          <div class="col-span-12 py-4 space-y-4">
+          <div class="col-span-12 py-4 space-y-4" role="menu">
             <NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.to)" class="block py-2"
-              @click="mobileMenuOpen = false">
+              @click="mobileMenuOpen = false" role="menuitem"
+              :aria-current="route.path === localePath(item.to) ? 'page' : undefined">
               <TypographyHeader :level="4" size="h5">
                 {{ $t(item.label) }}
               </TypographyHeader>
@@ -62,8 +70,10 @@
 
 <script setup lang="ts">
 const localePath = useLocalePath()
+const route = useRoute()
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
+const imageLoaded = ref(false)
 
 const navItems = [
   { key: 'home', label: 'nav.home', to: '/' },
@@ -105,7 +115,18 @@ onUnmounted(() => {
   transform: translateY(-10px);
 }
 
-.nav-link {
-  position: relative;
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #1D1D1F;
+  transition: width 0.3s ease-out;
+}
+
+.nav-link:hover::after {
+  width: 100%;
 }
 </style>

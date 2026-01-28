@@ -1,13 +1,23 @@
 <template>
-  <div ref="containerRef" class="overflow-hidden" :class="containerClass">
-    <img
+  <div ref="containerRef" class="overflow-hidden relative" :class="containerClass">
+    <NuxtImg
       v-if="!lazyLoad || isIntersecting"
-      :src="optimizedSrc"
+      :src="src"
       :alt="alt"
-      :class="imageClass"
+      :width="width"
+      :height="height"
       :loading="lazyLoad ? 'lazy' : 'eager'"
+      :preload="!lazyLoad && preload"
+      :format="format"
+      :quality="quality"
+      :sizes="sizes"
+      :srcset="srcset"
+      :modulators="modulators"
+      class="transition-opacity duration-700 ease-in-out"
+      :class="[imageClass, isLoading ? 'opacity-0' : 'opacity-100']"
       @load="handleLoad"
       @error="handleError"
+      placeholder
     />
     <div
       v-if="isLoading"
@@ -17,36 +27,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-
 interface Props {
   src: string
   alt?: string
   width?: number
   height?: number
   lazyLoad?: boolean
+  preload?: boolean
   containerClass?: string
   imageClass?: string
+  format?: 'webp' | 'avif' | 'jpg' | 'png' | null
+  quality?: number
+  sizes?: string
+  srcset?: string | string[]
+  modulators?: Record<string, string>
 }
 
 const props = withDefaults(defineProps<Props>(), {
   alt: '',
   lazyLoad: true,
+  preload: false,
   containerClass: '',
   imageClass: '',
+  format: 'webp',
+  quality: 80,
+  sizes: 'xs:100vw sm:100vw md:100vw lg:100vw xl:100vw',
 })
 
 const containerRef = ref<HTMLDivElement>()
 const isIntersecting = ref(!props.lazyLoad)
 const isLoading = ref(true)
 const hasError = ref(false)
-
-// 優化圖片 URL（可以根據需要添加 CDN 或圖片處理服務）
-const optimizedSrc = computed(() => {
-  // 如果使用 Vercel 或其他 CDN，可以在這裡添加圖片優化參數
-  // 例如: `?format=webp&w=${props.width}&q=80`
-  return props.src
-})
 
 const handleLoad = () => {
   isLoading.value = false

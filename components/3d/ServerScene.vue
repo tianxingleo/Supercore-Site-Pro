@@ -1,6 +1,10 @@
 <template>
   <div ref="containerRef" class="w-full h-full relative">
-    <canvas ref="canvasRef" class="w-full h-full block" />
+    <canvas ref="canvasRef" class="w-full h-full block" v-show="!isLoading" />
+    <!-- 內部加載狀態，與 ClientOnly 的 fallback 保持一致的視覺 -->
+    <div v-if="isLoading" class="absolute inset-0 z-10">
+      <PlaceholderCanvas />
+    </div>
   </div>
 </template>
 
@@ -26,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const containerRef = ref<HTMLDivElement>()
 const canvasRef = ref<HTMLCanvasElement>()
+const isLoading = ref(true)
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
@@ -142,13 +147,18 @@ const initScene = () => {
         group.add(object)
         cube = group as any
         scene.add(group)
+        
+        // 加載完成
+        isLoading.value = false
       }, (xhr) => {
         console.log((xhr.loaded / xhr.total * 100) + '% loaded')
       }, (error) => {
         console.error('An error happened while loading OBJ', error)
+        isLoading.value = false
       })
     }, (error) => {
       console.error('An error happened while loading MTL', error)
+      isLoading.value = false
     })
 
     // Lights

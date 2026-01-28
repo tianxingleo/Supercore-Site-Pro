@@ -4,23 +4,33 @@
     <div class="pt-32 border-b border-gray-100">
       <GridContainer>
         <div class="col-span-12 py-6">
-          <NuxtLink :to="localePath('/products')"
-            class="inline-flex items-center text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text/40 hover:text-swiss-text transition-colors">
-            <span class="mr-4">←</span>
+          <NuxtLink
+            :to="localePath('/products')"
+            class="inline-flex items-center text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text/40 hover:text-swiss-text transition-colors"
+            aria-label="Back to products collection"
+          >
+            <span class="mr-4" aria-hidden="true">←</span>
             Back to Collection
           </NuxtLink>
         </div>
       </GridContainer>
     </div>
 
-    <GridContainer :grid="true" gap="none" class="border-l border-gray-100 min-h-[calc(100vh-140px)]">
+    <GridContainer
+      :grid="true"
+      gap="none"
+      class="border-l border-gray-100 min-h-[calc(100vh-140px)]"
+    >
       <!-- Loading State -->
       <div v-if="pending" class="col-span-12 border-r border-b border-gray-100">
         <ProductDetailSkeleton />
       </div>
 
       <!-- Product Not Found -->
-      <div v-else-if="!product" class="col-span-12 text-center py-48 border-r border-b border-gray-100">
+      <div
+        v-else-if="!product"
+        class="col-span-12 text-center py-48 border-r border-b border-gray-100"
+      >
         <TypographyHeader :level="2" size="h2" class="mb-8"> 404_NOT_FOUND </TypographyHeader>
         <SwissButton variant="primary" @click="navigateTo(localePath('/products'))">
           RETURN_TO_COLLECTION
@@ -31,39 +41,61 @@
       <template v-else>
         <!-- Product Image (Left) -->
         <div
-          class="col-span-12 lg:col-span-7 border-r border-b border-gray-100 flex items-center justify-center bg-swiss-bg-soft">
+          class="col-span-12 lg:col-span-7 border-r border-b border-gray-100 flex items-center justify-center bg-swiss-bg-soft"
+        >
           <div class="aspect-square w-full p-24 flex items-center justify-center relative">
             <!-- Product Image -->
-            <img v-if="product.images && product.images.length > 0" :src="product.images[0]"
+            <NuxtImg
+              v-if="product.images && product.images.length > 0"
+              :src="product.images[0]"
               :alt="product.name[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.name['zh-HK']"
-              class="max-w-full max-h-full object-contain" />
+              width="1200"
+              height="1200"
+              format="webp"
+              quality="90"
+              loading="eager"
+              preload
+              sizes="xs:100vw sm:100vw md:70vw lg:70vw"
+              @load="imageLoaded = true"
+              class="max-w-full max-h-full object-contain transition-opacity duration-700 ease-in-out"
+              :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
+              placeholder
+            />
             <!-- Fallback placeholder -->
-            <div v-else
-              class="w-2/3 h-2/3 border border-swiss-text/5 bg-swiss-bg flex items-center justify-center shadow-2xl">
+            <div
+              v-else
+              class="w-2/3 h-2/3 border border-swiss-text/5 bg-swiss-bg flex items-center justify-center shadow-2xl"
+            >
               <div class="w-1/2 h-1/2 bg-swiss-text opacity-5"></div>
             </div>
 
             <!-- Meta Labels -->
             <div class="absolute top-12 left-12 flex flex-col gap-2">
-              <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-swiss-text">Model: {{ product.slug
-              }}</span>
-              <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-swiss-text/40">Cat: {{
-                getCategoryLabel(product.category) }}</span>
+              <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-swiss-text"
+                >Model: {{ product.slug }}</span
+              >
+              <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-swiss-text/40"
+                >Cat: {{ getCategoryLabel(product.category) }}</span
+              >
             </div>
 
             <div v-if="product.featured" class="absolute bottom-12 right-12">
-              <span class="text-[10px] font-black tracking-widest uppercase border border-swiss-text px-4 py-1">Limited
-                Edition Range</span>
+              <span
+                class="text-[10px] font-black tracking-widest uppercase border border-swiss-text px-4 py-1"
+                >Limited Edition Range</span
+              >
             </div>
           </div>
         </div>
 
         <!-- Product Info (Right) -->
         <div
-          class="col-span-12 lg:col-span-5 border-r border-b border-gray-100 p-12 md:p-20 flex flex-col justify-between">
+          class="col-span-12 lg:col-span-5 border-r border-b border-gray-100 p-12 md:p-20 flex flex-col justify-between"
+        >
           <div>
             <div
-              class="inline-block mb-12 text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono">
+              class="inline-block mb-12 text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono"
+            >
               Technical Specification / 01
             </div>
             <TypographyHeader :level="1" size="h1" class="mb-8">
@@ -78,10 +110,20 @@
 
             <!-- Actions -->
             <div class="flex flex-col gap-4">
-              <SwissButton variant="primary" size="lg" class="!py-6">
+              <SwissButton
+                variant="primary"
+                size="lg"
+                class="!py-6"
+                aria-label="Request a technical consultation for this product"
+              >
                 REQUEST_CONSULTATION
               </SwissButton>
-              <SwissButton variant="ghost" size="lg" class="!py-6">
+              <SwissButton
+                variant="ghost"
+                size="lg"
+                class="!py-6"
+                aria-label="Download technical datasheet PDF"
+              >
                 DOWNLOAD_DATASHEET
               </SwissButton>
             </div>
@@ -89,7 +131,9 @@
 
           <!-- Bottom Summary -->
           <div class="mt-20 pt-10 border-t border-gray-100 flex justify-between items-center">
-            <span class="text-[10px] font-bold tracking-widest uppercase text-swiss-text/40">Status: Available</span>
+            <span class="text-[10px] font-bold tracking-widest uppercase text-swiss-text/40"
+              >Status: Available</span
+            >
             <span class="text-[10px] font-mono opacity-20">BUILD_UUID: {{ product.id }}</span>
           </div>
         </div>
@@ -114,10 +158,30 @@ import type { Product } from '~/types'
 const route = useRoute()
 const localePath = useLocalePath()
 const { locale } = useI18n()
+const imageLoaded = ref(false)
 
 // 使用 useLazyFetch 确保加载动画可见
-const { data: product, pending, error } = useLazyFetch<Product>(`/api/products/${route.params.slug}`, {
-  default: () => null as any
+const {
+  data: apiProduct,
+  pending,
+  error,
+} = useLazyFetch<Product>(`/api/products/${route.params.slug}`, {
+  default: () => null as any,
+})
+
+// 导入 mock 数据
+const { mockProducts } = await import('~/utils/mockData')
+
+// 如果 API 失败或返回 null，从 mock 数据中查找产品
+const product = computed(() => {
+  if (error.value || !apiProduct.value) {
+    console.log('[Product Detail] Using mock data due to API failure', {
+      error: error.value,
+      slug: route.params.slug,
+    })
+    return mockProducts.find((p) => p.slug === route.params.slug) || null
+  }
+  return apiProduct.value
 })
 
 // Handle error state
@@ -138,12 +202,45 @@ const getCategoryLabel = (category: string): string => {
   return categoryLabels[category] || category
 }
 
-// Set page title
+// Set page title, structured data, and canonical
 watchEffect(() => {
   if (product.value) {
     const langKey = locale.value === 'zh-HK' ? 'hk' : locale.value === 'zh-CN' ? 'cn' : 'en'
+    const baseUrl = 'https://projectnexus.hk'
+    const currentPath = route.path
+    const canonicalUrl =
+      locale.value === 'en'
+        ? `${baseUrl}${currentPath}`
+        : `${baseUrl}/${locale.value}${currentPath}`
+
+    // 生成產品結構化數據
+    const structuredData = useProductStructuredData(product.value, locale.value)
+
+    // 生成麵包屑結構化數據
+    const breadcrumbStructuredData = useBreadcrumbStructuredData([
+      { name: 'Home', url: '/' },
+      { name: 'Products', url: '/products' },
+      { name: product.value.name[langKey] || product.value.name['hk'], url: currentPath },
+    ])
+
     useHead({
-      title: `${product.value.name[langKey] || product.value.name['hk']} - Project NEXUS (HK)`,
+      title: `${product.value.name[langKey] || product.value.name['hk']} - 超核技術有限公司`,
+      link: [
+        {
+          rel: 'canonical',
+          href: canonicalUrl,
+        },
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(structuredData),
+        },
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(breadcrumbStructuredData),
+        },
+      ],
     })
   }
 })

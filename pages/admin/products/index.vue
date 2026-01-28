@@ -10,20 +10,37 @@
       </SwissButton>
     </div>
 
-    <!-- Filters -->
-    <div class="flex flex-wrap gap-4">
-      <input v-model="search" placeholder="搜索產品..."
-        class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-64 focus:outline-none focus:border-swiss-text placeholder-swiss-text-muted/40" />
-      <select v-model="selectedCategory"
-        class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-40 focus:outline-none focus:border-swiss-text">
-        <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
-      </select>
+    <!-- Filters and Actions -->
+    <div class="flex flex-col md:flex-row md:justify-between gap-4">
+      <div class="flex flex-wrap gap-4">
+        <input v-model="search" placeholder="搜索產品..."
+          class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-64 focus:outline-none focus:border-swiss-text placeholder-swiss-text-muted/40" />
+        <select v-model="selectedCategory"
+          class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-40 focus:outline-none focus:border-swiss-text">
+          <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <!-- Bulk Actions and Export -->
+      <div class="flex gap-2">
+        <UDropdown v-if="selectedItems.length > 0" :items="bulkActionItems" :ui="{ item: { size: 'text-sm' } }">
+          <UButton color="gray" variant="outline" icon="i-heroicons-bars-3-bottom-left" size="sm">
+            批量操作 ({{ selectedItems.length }})
+          </UButton>
+        </UDropdown>
+
+        <UDropdown :items="exportItems" :ui="{ item: { size: 'text-sm' } }">
+          <UButton color="gray" variant="outline" icon="i-heroicons-arrow-down-tray" size="sm">
+            導出數據
+          </UButton>
+        </UDropdown>
+      </div>
     </div>
 
     <!-- Products Table -->
     <div class="bg-white border border-swiss-text/10">
       <TableSkeleton v-if="pending" />
-      <UTable v-else :rows="filteredProducts" :columns="columns" :loading="false" :ui="{
+      <UTable v-else :rows="filteredProducts" :columns="columns" :loading="false" v-model="selectedItems" :ui="{
         wrapper: 'overflow-x-auto',
         thead: 'bg-swiss-bg-soft',
         th: {
@@ -38,6 +55,8 @@
       }">
         <template #name-data="{ row }">
           <div class="flex items-center space-x-3">
+            <input type="checkbox" :checked="selectedItems.includes(row)" @change="toggleSelection(row)"
+              class="w-4 h-4 border-swiss-text/20" />
             <div class="w-10 h-10 bg-swiss-bg-soft overflow-hidden flex-shrink-0">
               <img v-if="row.images?.[0]" :src="row.images[0]" :alt="row.name?.['zh-HK'] || row.name?.['hk']"
                 loading="lazy" class="w-full h-full object-cover" />
@@ -90,6 +109,7 @@ definePageMeta({
 const search = ref('')
 const selectedCategory = ref('All')
 const refreshKey = ref(0)
+const selectedItems = ref<any[]>([])
 
 const categories = ['All', 'server', 'storage', 'network', 'hpc', 'storage-hp']
 
@@ -115,6 +135,44 @@ watchEffect(() => {
     console.error('获取产品列表失败:', error.value)
   }
 })
+
+// 批量操作菜单项
+const bulkActionItems = computed(() => [
+  [
+    {
+      label: '批量刪除',
+      icon: 'i-heroicons-trash-20-solid',
+      class: 'text-red-500',
+      click: bulkDelete,
+    },
+    {
+      label: '批量發布',
+      icon: 'i-heroicons-check-circle-20-solid',
+      click: () => bulkUpdate({ status: 'published' }),
+    },
+    {
+      label: '批量草稿',
+      icon: 'i-heroicons-document-text-20-solid',
+      click: () => bulkUpdate({ status: 'draft' }),
+    },
+  ],
+])
+
+// 导出菜单项
+const exportItems = [
+  [
+    {
+      label: '導出為 JSON',
+      icon: 'i-heroicons-code-bracket-20-solid',
+      click: () => exportData('json'),
+    },
+    {
+      label: '導出為 CSV',
+      icon: 'i-heroicons-table-cells-20-solid',
+      click: () => exportData('csv'),
+    },
+  ],
+]
 
 const getActionItems = (row: any) => [
   [
@@ -150,6 +208,16 @@ const filteredProducts = computed(() => {
   })
 })
 
+// 切换选择
+function toggleSelection(row: any) {
+  const index = selectedItems.value.findIndex((item) => item.id === row.id)
+  if (index > -1) {
+    selectedItems.value.splice(index, 1)
+  } else {
+    selectedItems.value.push(row)
+  }
+}
+
 async function deleteProduct(id: number) {
   if (!confirm('確定要刪除此產品嗎？')) return
 
@@ -164,6 +232,64 @@ async function deleteProduct(id: number) {
     console.error('刪除失敗:', error)
     const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
     alert(errorMessage)
+  }
+}
+
+// 批量删除
+async function bulkDelete() {
+  if (!confirm(`確定要刪除選中的 ${selectedItems.value.length} 個產品嗎？`)) return
+
+  try {
+    const ids = selectedItems.value.map((item) => item.id)
+    await $fetch('/api/products/admin/bulk', {
+      method: 'POST',
+      body: { ids, action: 'delete' },
+    })
+
+    selectedItems.value = []
+    refreshKey.value++
+    await refresh()
+    alert('批量刪除成功')
+  } catch (error: any) {
+    console.error('批量刪除失敗:', error)
+    alert(error.data?.message || '批量刪除失敗')
+  }
+}
+
+// 批量更新
+async function bulkUpdate(data: any) {
+  try {
+    const ids = selectedItems.value.map((item) => item.id)
+    await $fetch('/api/products/admin/bulk', {
+      method: 'POST',
+      body: { ids, action: 'update', data },
+    })
+
+    selectedItems.value = []
+    refreshKey.value++
+    await refresh()
+    alert('批量更新成功')
+  } catch (error: any) {
+    console.error('批量更新失敗:', error)
+    alert(error.data?.message || '批量更新失敗')
+  }
+}
+
+// 导出数据
+async function exportData(format: 'json' | 'csv') {
+  try {
+    const url = `/api/products/admin/export?format=${format}`
+
+    // 创建一个隐藏的 a 标签来触发下载
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `products_${new Date().toISOString().split('T')[0]}.${format}`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch (error: any) {
+    console.error('導出失敗:', error)
+    alert('導出失敗，請重試')
   }
 }
 

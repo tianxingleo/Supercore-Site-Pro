@@ -27,10 +27,18 @@ body {
   }
 }
 
-/* Selection color */
+/* Selection color - Swiss Design Style */
 ::selection {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.2);
+  /* 更明显的黑色背景 */
+  color: #1D1D1F;
+  /* 保持深色文字 */
+}
+
+::-moz-selection {
+  background-color: rgba(0, 0, 0, 0.2);
+  /* Firefox 支持 */
+  color: #1D1D1F;
 }
 
 /* Focus styles for accessibility */
@@ -43,3 +51,28 @@ body {
   writing-mode: vertical-rl;
 }
 
+/* Global Button & Link Interactions */
+button,
+a.button,
+.nav-link {
+  @apply transition-all duration-300 ease-out;
+}
+
+button:active,
+a:active {
+  @apply scale-[0.98];
+}
+
+/* Custom Utilities for Swiss Design */
+.hover-lift {
+  @apply transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-xl;
+}
+
+.hover-glow {
+  @apply transition-all duration-300 ease-out;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}

@@ -45,10 +45,21 @@ export default defineNuxtConfig({
 
   // 圖片優化配置
   image: {
-    // 格式優化
-    format: ['webp', 'avif'],
+    // 格式優化 - 按優先級排序
+    format: ['webp', 'avif', 'jpg'],
     // 質量設置
     quality: 80,
+    // 預設圖片尺寸
+    screens: {
+      'xs': 320,
+      'sm': 640,
+      'md': 768,
+      'lg': 1024,
+      'xl': 1280,
+      'xxl': 1536,
+    },
+    // 預設 densities
+    densities: [1, 2],
   },
 
   // Supabase Configuration
@@ -111,7 +122,7 @@ export default defineNuxtConfig({
     bundle: {
       optimizeTranslationDirective: false,
     },
-    vueI18n: './i18n/i18n.config.ts',
+    vueI18n: 'i18n.config.ts',
   },
 
   // CSS
@@ -194,4 +205,5 @@ export default defineNuxtConfig({
   // Build
   build: {
     transpile: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js'],
-  },})
+  },
+})

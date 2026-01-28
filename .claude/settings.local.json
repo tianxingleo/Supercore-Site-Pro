@@ -30,7 +30,8 @@
       "mcp__playwright__browser_close",
       "Bash(curl:*)",
       "Bash(ping:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(grep:*)"
     ]
   }
 }

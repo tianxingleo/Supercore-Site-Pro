@@ -2,13 +2,11 @@
   <div class="spec-table overflow-hidden">
     <table class="w-full border-collapse">
       <tbody>
-        <tr
-          v-for="(value, key) in specs"
-          :key="key"
-          class="border-b border-gray-100 last:border-0 group hover:bg-swiss-bg-soft transition-colors"
-        >
-          <th class="py-6 px-0 text-left w-1/3">
-            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-swiss-text/40 group-hover:text-swiss-text/60 transition-colors">
+        <tr v-for="(value, key) in specs" :key="key"
+          class="border-b border-gray-100 last:border-0 group hover:bg-swiss-bg-soft transition-colors">
+          <th class="py-6 px-0 text-left w-1/3" scope="row">
+            <span
+              class="text-[10px] font-bold tracking-[0.2em] uppercase text-swiss-text/40 group-hover:text-swiss-text/60 transition-colors">
               {{ key }} <span class="text-swiss-text/10">/</span> {{ getSpecLabel(key) }}
             </span>
           </th>
@@ -66,6 +64,7 @@ const formatSpecValue = (value: string | number | boolean): string => {
 
 <style scoped>
 @media (max-width: 768px) {
+
   th,
   td {
     @apply py-4;

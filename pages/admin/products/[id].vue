@@ -17,31 +17,22 @@
           <div class="p-6 md:p-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label
-                  class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2"
-                >
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2">
                   URL 標識 (Slug) *
                 </label>
-                <input
-                  v-model="form.slug"
-                  placeholder="nexus-g2-server"
-                  class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text"
-                />
+                <input v-model="form.slug" placeholder="nexus-g2-server"
+                  class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
                 <p class="text-[10px] text-swiss-text-muted mt-1">
                   用於網址鏈接，如 nexus-g2-server
                 </p>
               </div>
 
               <div>
-                <label
-                  class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2"
-                >
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2">
                   分類 *
                 </label>
-                <select
-                  v-model="form.category"
-                  class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text"
-                >
+                <select v-model="form.category"
+                  class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text">
                   <option value="server">Server</option>
                   <option value="storage">Storage</option>
                   <option value="network">Network</option>
@@ -49,9 +40,7 @@
               </div>
 
               <div class="md:col-span-2">
-                <label
-                  class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2"
-                >
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2">
                   多語言名稱 *
                 </label>
                 <div class="space-y-2">
@@ -59,19 +48,14 @@
                     <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
                       lang.label
                     }}</label>
-                    <input
-                      v-model="form.name[lang.key]"
-                      :placeholder="`輸入 ${lang.label} 名稱`"
-                      class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text mt-1"
-                    />
+                    <input v-model="form.name[lang.key]" :placeholder="`輸入 ${lang.label} 名稱`"
+                      class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text mt-1" />
                   </div>
                 </div>
               </div>
 
               <div class="md:col-span-2">
-                <label
-                  class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2"
-                >
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2">
                   多語言描述 *
                 </label>
                 <div class="space-y-2">
@@ -79,12 +63,8 @@
                     <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
                       lang.label
                     }}</label>
-                    <textarea
-                      v-model="form.description[lang.key]"
-                      :placeholder="`輸入 ${lang.label} 描述`"
-                      rows="4"
-                      class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text mt-1"
-                    />
+                    <textarea v-model="form.description[lang.key]" :placeholder="`輸入 ${lang.label} 描述`" rows="4"
+                      class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text mt-1" />
                   </div>
                 </div>
               </div>
@@ -99,45 +79,27 @@
           </div>
           <div class="p-6 md:p-8 space-y-6">
             <div>
-              <label
-                class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2"
-              >
-                圖片路徑 (JSON 數組)
+              <label class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2">
+                產品圖片
               </label>
-              <input
-                v-model="imagesInput"
-                placeholder='["/images/server.png"]'
-                class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text"
-              />
-              <p class="text-[10px] text-swiss-text-muted mt-1">
-                暫時使用公共路徑，未來可用 Storage 上傳
-              </p>
+              <AdminProductGallery v-model="form.images" />
             </div>
 
             <div>
-              <label
-                class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2"
-              >
+              <label class="block text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-2">
                 3D 模型 URL (Spline/GLB)
               </label>
-              <input
-                v-model="form.model_3d_url"
-                placeholder="https://prod.spline.design/..."
-                class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text"
-              />
+              <input v-model="form.model_3d_url" placeholder="https://prod.spline.design/..."
+                class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
             </div>
 
             <div class="flex items-center space-x-4">
               <label class="flex items-center space-x-2">
                 <input type="checkbox" v-model="form.is_featured" class="w-4 h-4" />
-                <span class="text-[10px] font-bold uppercase tracking-widest text-swiss-text"
-                  >首頁推薦</span
-                >
+                <span class="text-[10px] font-bold uppercase tracking-widest text-swiss-text">首頁推薦</span>
               </label>
-              <select
-                v-model="form.status"
-                class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text"
-              >
+              <select v-model="form.status"
+                class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text">
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
                 <option value="archived">Archived</option>
@@ -150,44 +112,26 @@
         <div class="bg-white border border-swiss-text/10">
           <div class="p-6 md:p-8 border-b border-swiss-text/10 flex justify-between items-center">
             <div class="font-bold text-swiss-text">規格參數 (Specs)</div>
-            <button
-              type="button"
-              @click="addSpec"
-              class="text-[10px] font-bold uppercase tracking-widest text-swiss-text hover:text-swiss-text-muted"
-            >
+            <button type="button" @click="addSpec"
+              class="text-[10px] font-bold uppercase tracking-widest text-swiss-text hover:text-swiss-text-muted">
               + 添加
             </button>
           </div>
           <div class="p-6 md:p-8 space-y-3">
-            <div
-              v-for="(val, key, index) in form.specs"
-              :key="index"
-              class="flex items-center space-x-2"
-            >
-              <input
-                :model-value="key"
-                @input="updateSpecKey(key, ($event.target as HTMLInputElement).value)"
+            <div v-for="(val, key, index) in form.specs" :key="index" class="flex items-center space-x-2">
+              <input :model-value="key" @input="updateSpecKey(key, ($event.target as HTMLInputElement).value)"
                 placeholder="Key (如 CPU)"
-                class="flex-1 px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text"
-              />
-              <input
-                :model-value="val"
-                @input="form.specs[key] = ($event.target as HTMLInputElement).value"
+                class="flex-1 px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
+              <input :model-value="val" @input="form.specs[key] = ($event.target as HTMLInputElement).value"
                 placeholder="Value (如 2x AMD)"
-                class="flex-1 px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text"
-              />
-              <button
-                type="button"
-                @click="removeSpec(key)"
-                class="px-3 py-3 text-swiss-text hover:text-red-500 transition-colors"
-              >
+                class="flex-1 px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
+              <button type="button" @click="removeSpec(key)"
+                class="px-3 py-3 text-swiss-text hover:text-red-500 transition-colors">
                 ✕
               </button>
             </div>
-            <div
-              v-if="Object.keys(form.specs).length === 0"
-              class="text-center text-swiss-text-muted text-[10px] uppercase tracking-widest py-4"
-            >
+            <div v-if="Object.keys(form.specs).length === 0"
+              class="text-center text-swiss-text-muted text-[10px] uppercase tracking-widest py-4">
               點擊右上角添加規格
             </div>
           </div>
@@ -195,23 +139,12 @@
 
         <!-- Sticky Footer -->
         <div
-          class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur border-t border-swiss-text/10 p-4 md:pl-72 z-40"
-        >
+          class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur border-t border-swiss-text/10 p-4 md:pl-72 z-40">
           <div class="max-w-4xl mx-auto flex justify-end space-x-4">
-            <UButton
-              variant="ghost"
-              color="gray"
-              to="/admin/products"
-              class="text-[10px] font-bold uppercase tracking-widest"
-              >取消</UButton
-            >
-            <UButton
-              type="submit"
-              color="black"
-              :loading="saving"
-              class="text-[10px] font-bold uppercase tracking-widest"
-              >保存更改</UButton
-            >
+            <UButton variant="ghost" color="gray" to="/admin/products"
+              class="text-[10px] font-bold uppercase tracking-widest">取消</UButton>
+            <UButton type="submit" color="black" :loading="saving"
+              class="text-[10px] font-bold uppercase tracking-widest">保存更改</UButton>
           </div>
         </div>
       </form>
@@ -246,14 +179,6 @@ const form = ref({
   status: 'draft',
 })
 
-const imagesInput = computed({
-  get: () => JSON.stringify(form.value.images),
-  set: (val: string) => {
-    try {
-      form.value.images = JSON.parse(val)
-    } catch (e) {}
-  },
-})
 
 onMounted(async () => {
   if (!isNew.value) {

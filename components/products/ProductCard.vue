@@ -1,16 +1,17 @@
 <template>
   <NuxtLink :to="localePath(`/products/${product.slug}`)"
-    class="group block bg-white border border-gray-100 hover:border-swiss-text transition-all duration-500">
+    class="group block bg-white border border-gray-100 hover:border-swiss-text hover:-translate-y-2 hover:shadow-2xl transition-all duration-500">
     <!-- Product Image -->
     <div class="aspect-square bg-swiss-bg-soft relative overflow-hidden">
       <!-- Shimmer Placeholder -->
       <div v-if="product.images && product.images.length > 0 && !imageLoaded" class="shimmer absolute inset-0 z-10">
       </div>
 
-      <img v-if="product.images && product.images.length > 0" :src="product.images[0]"
-        :alt="product.name[currentLocale]" width="400" height="400" @load="imageLoaded = true"
-        class="w-full h-full object-contain group-hover:scale-105 transition-all duration-500"
-        :class="[imageLoaded ? 'opacity-100' : 'opacity-0']" />
+      <NuxtImg v-if="product.images && product.images.length > 0" :src="product.images[0]"
+        :alt="product.name[currentLocale]" width="400" height="400" format="webp" quality="80" loading="lazy"
+        sizes="xs:100vw sm:50vw md:33vw lg:25vw" @load="imageLoaded = true"
+        class="w-full h-full object-contain group-hover:scale-105 transition-all duration-700 ease-in-out"
+        :class="[imageLoaded ? 'opacity-100' : 'opacity-0']" placeholder />
       <div v-else class="absolute inset-0 flex items-center justify-center p-12">
         <!-- Fallback placeholder -->
         <div class="w-full h-full bg-swiss-text opacity-[0.03] group-hover:opacity-[0.05] transition-all duration-500">

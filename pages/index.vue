@@ -11,11 +11,12 @@
             {{ $t('home.hero.subtitle') }}
           </TypographyHeader>
           <div class="flex flex-col sm:flex-row gap-6">
-            <SwissButton variant="primary" size="lg" class="!px-10" @click="navigateTo(localePath('/solutions'))">
+            <SwissButton variant="primary" size="lg" class="!px-10" @click="navigateTo(localePath('/solutions'))"
+              aria-label="Explore our infrastructure solutions">
               {{ $t('home.hero.cta') }}
             </SwissButton>
             <SwissButton variant="ghost" size="lg" class="!px-10 border-swiss-text"
-              @click="navigateTo(localePath('/contact'))">
+              @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
               {{ $t('home.hero.ctaSecondary') }}
             </SwissButton>
           </div>
@@ -31,9 +32,7 @@
             <MobileFallback v-else :show-scroll-indicator="true" />
             <!-- 加載中的佔位符 -->
             <template #fallback>
-              <div class="w-full h-full flex items-center justify-center">
-                <div class="text-swiss-text/30 text-sm">Loading 3D Scene...</div>
-              </div>
+              <PlaceholderCanvas />
             </template>
           </ClientOnly>
         </div>
@@ -248,8 +247,9 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
 
 // 使用 useLazyFetch 获取新闻数据（懒加载，不阻塞导航）
 const { data: latestPosts, pending: pendingNews } = useLazyFetch<Post[]>('/api/news/public', {
@@ -257,8 +257,33 @@ const { data: latestPosts, pending: pendingNews } = useLazyFetch<Post[]>('/api/n
   default: () => []
 })
 
+// 添加 canonical 標籤
+const baseUrl = 'https://projectnexus.hk'
+const canonicalUrl = computed(() => {
+  return locale.value === 'en'
+    ? `${baseUrl}${route.path}`
+    : `${baseUrl}/${locale.value}${route.path}`
+})
+
+// 生成首頁麵包屑結構化數據
+const breadcrumbStructuredData = useBreadcrumbStructuredData([
+  { name: 'Home', url: '/' },
+])
+
 useHead({
   title: '首页 - 超核技術有限公司',
+  link: [
+    {
+      rel: 'canonical',
+      href: canonicalUrl,
+    },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(breadcrumbStructuredData),
+    },
+  ],
 })
 
 // 設備檢測

@@ -7,13 +7,7 @@
           <TypographyHeader :level="1" size="display" class="mb-8">
             {{ $t('about.pageTitle') }}
           </TypographyHeader>
-          <TypographyHeader
-            :level="2"
-            size="h3"
-            color="secondary"
-            weight="normal"
-            class="max-w-3xl mx-auto opacity-80"
-          >
+          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-3xl mx-auto opacity-80">
             {{ $t('about.pageSubtitle') }}
           </TypographyHeader>
         </div>
@@ -25,8 +19,7 @@
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-6 mb-16 lg:mb-0 pr-0 lg:pr-24">
           <div
-            class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1"
-          >
+            class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
             Company Overview
           </div>
           <TypographyHeader :level="2" size="h1" class="mb-12">
@@ -46,7 +39,7 @@
                 <span class="text-[10px] font-bold text-swiss-text opacity-30">0{{ i }}</span>
                 <span class="font-bold text-swiss-text tracking-tight">{{
                   $t(`about.companyOverview.philosophy.point${i}`)
-                }}</span>
+                  }}</span>
               </li>
             </ul>
           </div>
@@ -108,8 +101,7 @@
       <GridContainer :grid="true">
         <div class="col-span-12 mb-20">
           <div
-            class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1"
-          >
+            class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
             Our Edge
           </div>
           <TypographyHeader :level="2" size="h1" class="mb-4">
@@ -117,19 +109,12 @@
           </TypographyHeader>
         </div>
 
-        <div
-          v-for="(feature, key) in solutionFeatures"
-          :key="key"
-          class="col-span-12 md:col-span-4 border-t border-gray-100 pt-12 mt-12 first:mt-0 md:first:mt-12 md:mt-12"
-        >
+        <div v-for="(feature, key) in solutionFeatures" :key="key"
+          class="col-span-12 md:col-span-4 border-t border-gray-100 pt-12 mt-12 first:mt-0 md:first:mt-12 md:mt-12">
           <div class="h-full group">
             <div
-              class="w-12 h-12 border border-gray-200 flex items-center justify-center mb-10 group-hover:bg-swiss-text group-hover:border-swiss-text transition-all duration-500"
-            >
-              <component
-                :is="feature.icon"
-                class="w-6 h-6 text-swiss-text group-hover:text-white transition-colors"
-              />
+              class="w-12 h-12 border border-gray-200 flex items-center justify-center mb-10 group-hover:bg-swiss-text group-hover:border-swiss-text transition-all duration-500">
+              <component :is="feature.icon" class="w-6 h-6 text-swiss-text group-hover:text-white transition-colors" />
             </div>
             <TypographyHeader :level="3" size="h3" class="mb-6 !tracking-tighter">
               {{ $t(`about.solutionFeatures.${key}.title`) }}
@@ -147,19 +132,22 @@
       <GridContainer>
         <div class="col-span-12">
           <div class="bg-swiss-text p-16 md:p-32 text-center relative overflow-hidden">
-             <div class="relative z-10">
-               <TypographyHeader :level="2" size="display" color="white" class="mb-16">
-                 Ready to optimize<br>your infrastructure?
-               </TypographyHeader>
-               <div class="flex flex-col sm:flex-row justify-center gap-8">
-                 <SwissButton tag="a" :to="localePath('/contact')" variant="primary" size="lg" class="!bg-white !text-swiss-text hover:!bg-gray-100 !px-12 w-full">
-                   {{ $t('home.hero.ctaSecondary') }}
-                 </SwissButton>
-                 <SwissButton tag="a" :to="localePath('/products')" variant="ghost" size="lg" class="!text-white !border-white/20 hover:!bg-white/10 !px-12 w-full">
-                   {{ $t('nav.products') }}
-                 </SwissButton>
-               </div>
-             </div>
+            <div class="relative z-10">
+              <TypographyHeader :level="2" size="display" color="white" class="mb-16">
+                Ready to optimize<br>your infrastructure?
+              </TypographyHeader>
+              <div class="flex flex-col sm:flex-row justify-center gap-8">
+                <SwissButton tag="a" :to="localePath('/contact')" variant="primary" size="lg"
+                  class="!bg-white !text-swiss-text hover:!bg-gray-100 !px-12 w-full"
+                  aria-label="Contact us to optimize your infrastructure">
+                  {{ $t('home.hero.ctaSecondary') }}
+                </SwissButton>
+                <SwissButton tag="a" :to="localePath('/products')" variant="ghost" size="lg"
+                  class="!text-white !border-white/20 hover:!bg-white/10 !px-12 w-full">
+                  {{ $t('nav.products') }}
+                </SwissButton>
+              </div>
+            </div>
           </div>
         </div>
       </GridContainer>

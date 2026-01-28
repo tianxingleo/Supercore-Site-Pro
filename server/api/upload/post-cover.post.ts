@@ -77,7 +77,8 @@ export default defineEventHandler(async (event) => {
     }
 
     // 4. 上传
-    const bucketName = 'news-covers'
+    const bucketField = formData.find(f => f.name === 'bucket')
+    const bucketName = bucketField?.data.toString() || 'news-covers'
     const timestamp = Date.now()
     const extension = file.filename?.split('.').pop() || 'jpg'
     const fileName = `${timestamp}-${Math.random().toString(36).substring(2, 7)}.${extension}`
