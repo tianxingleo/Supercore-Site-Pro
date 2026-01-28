@@ -61,6 +61,29 @@ export default {
         '46': '11.5rem',
         '50': '12.5rem',
       },
+      keyframes: {
+        'slide-right': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(4px)' },
+        },
+        'scale-sm': {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(1.02)' },
+        },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'underline-expand': {
+          '0%': { width: '0%', left: '0' },
+          '100%': { width: '100%', left: '0' },
+        }
+      },
+      animation: {
+        'slide-right': 'slide-right 0.3s ease-out forwards',
+        'scale-sm': 'scale-sm 0.3s ease-out forwards',
+        'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+      },
     },
   },
   plugins: [],

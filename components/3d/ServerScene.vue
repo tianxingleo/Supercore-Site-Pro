@@ -52,21 +52,19 @@ const setAnimationPhase = (phase: number, progress: number) => {
   switch (phase) {
     case 0: // 淡入階段
       cube.position.set(0, 0, 0)
-      cube.rotation.set(0, 0, 0)
-      cube.scale.setScalar(1 + progress * 0.2)
+      cube.scale.setScalar(1 + progress * 0.05) // 非常輕微的縮放
       break
-    case 1: // 機櫃打開階段
-      cube.rotation.y = progress * Math.PI * 0.5
-      cube.position.x = progress * 1
+    case 1: // 穩定展示階段
+      cube.position.set(0, 0, 0)
+      cube.scale.setScalar(1.05 + progress * 0.05)
       break
-    case 2: // 組件爆炸階段
-      const explodeDistance = progress * 2
-      cube.position.set(explodeDistance, explodeDistance * 0.5, 0)
-      cube.rotation.set(progress * Math.PI, progress * Math.PI * 0.5, 0)
+    case 2: // 細節聚焦階段
+      cube.position.set(0, 0, 0) 
+      cube.scale.setScalar(1.1 + progress * 0.05)
       break
-    case 3: // 重新組裝階段
-      cube.position.set(2 * (1 - progress), 1 * (1 - progress), 0)
-      cube.rotation.set(Math.PI * (1 - progress), Math.PI * 0.5 * (1 - progress), 0)
+    case 3: // 恢復階段
+      cube.position.set(0, 0, 0)
+      cube.scale.setScalar(1.15 - progress * 0.15)
       break
   }
 }

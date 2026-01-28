@@ -4,6 +4,7 @@ import { logger, createRequestContext } from '~/utils/logger'
 
 export default withApiHandler(async (event) => {
   const requestContext = createRequestContext(event)
+  const startTime = Date.now()
 
   // 验证配置
   const supabaseUrl = process.env.SUPABASE_URL
@@ -26,12 +27,17 @@ export default withApiHandler(async (event) => {
   })
 
   try {
+    // 测试后端连接时间并获取数据
+    const backendStartTime = Date.now()
+
     // 并行获取所有数据
     const [productsResult, inquiriesResult, postsResult] = await Promise.all([
       client.from('products').select('id', { count: 'exact', head: true }),
       client.from('inquiries').select('id', { count: 'exact', head: true }),
       client.from('posts').select('id', { count: 'exact', head: true }),
     ])
+
+    const backendPing = Date.now() - backendStartTime
 
     // 调试日志
     console.log('[Dashboard API] Query results:', {
@@ -62,38 +68,19 @@ export default withApiHandler(async (event) => {
     const frontendUrl = `${protocol}://${host}`
     const backendUrl = process.env.SUPABASE_URL || 'Unknown'
 
-    // 测量前端响应时间
-    let frontendStatus = 'online'
-    let frontendResponseTime: number | null = null
-
-    try {
-      const start = Date.now()
-      // 发送一个简单的请求到前端首页来测量响应时间
-      await $fetch(frontendUrl, {
-        method: 'HEAD',
-        timeout: 5000,
-      })
-      frontendResponseTime = Date.now() - start
-      frontendStatus = 'online'
-      console.log('[Dashboard API] Frontend ping successful:', {
-        url: frontendUrl,
-        responseTime: frontendResponseTime + 'ms'
-      })
-    } catch (error) {
-      frontendStatus = 'offline'
-      console.error('[Dashboard API] Frontend ping failed:', error)
-    }
+    // 计算总处理时间作为前端响应时间的近似值
+    const frontendPing = Date.now() - startTime
 
     const serverStatus = {
       frontend: {
         url: frontendUrl,
-        status: frontendStatus,
-        responseTime: frontendResponseTime,
+        status: 'online',
+        responseTime: frontendPing, // API 处理时间
       },
       backend: {
         url: backendUrl,
-        status: 'online', // 如果能连接到 Supabase，就是 online
-        responseTime: null,
+        status: 'online',
+        responseTime: backendPing, // Supabase 查询时间
       },
     }
 

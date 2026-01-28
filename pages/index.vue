@@ -11,11 +11,11 @@
             {{ $t('home.hero.subtitle') }}
           </TypographyHeader>
           <div class="flex flex-col sm:flex-row gap-6">
-            <SwissButton variant="primary" size="lg" class="!px-10" @click="navigateTo(localePath('/solutions'))"
+            <SwissButton variant="primary" size="lg" class="!px-10 hover-lift" @click="navigateTo(localePath('/solutions'))"
               aria-label="Explore our infrastructure solutions">
               {{ $t('home.hero.cta') }}
             </SwissButton>
-            <SwissButton variant="ghost" size="lg" class="!px-10 border-swiss-text"
+            <SwissButton variant="ghost" size="lg" class="!px-10 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300"
               @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
               {{ $t('home.hero.ctaSecondary') }}
             </SwissButton>
@@ -57,7 +57,7 @@
             'generalStorage'
           ]" :key="cat" class="group">
             <div
-              class="border-t border-gray-100 pt-8 transition-colors duration-500 group-hover:border-swiss-text h-full">
+              class="border-t border-gray-100 pt-8 transition-all duration-500 group-hover:border-swiss-text h-full hover-scale-subtle cursor-pointer">
               <div class="text-[8px] font-mono text-swiss-text/30 mb-4 uppercase">CAT_0{{ index + 1 }}</div>
               <TypographyHeader :level="3" size="h5" class="!mb-2 !tracking-tight">
                 {{ $t(`products.categories.${cat}.title`) }}
@@ -86,45 +86,75 @@
         </div>
 
         <!-- Feature 1 -->
-        <div class="col-span-12 md:col-span-4 mb-8 md:mb-0">
-          <div class="text-center p-8">
-            <TypographyHeader :level="3" size="h4" class="mb-4">
-              {{ $t('home.features.feature1.title') }}
-            </TypographyHeader>
-            <p class="text-swiss-secondary">
-              {{ $t('home.features.feature1.description') }}
-            </p>
+        <div class="col-span-12 md:col-span-4 mb-8 md:mb-0 group cursor-default relative feature-item">
+          <div class="swiss-feature-number">01</div>
+          <div class="swiss-separator mb-8"></div>
+          <div class="px-4">
+            <div class="reveal-text-mask mb-4">
+              <span>
+                <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors">
+                  {{ $t('home.features.feature1.title') }}
+                </TypographyHeader>
+              </span>
+            </div>
+            <div class="reveal-text-mask">
+              <span class="delay-100">
+                <p class="text-swiss-secondary text-sm leading-relaxed">
+                  {{ $t('home.features.feature1.description') }}
+                </p>
+              </span>
+            </div>
           </div>
         </div>
 
         <!-- Feature 2 -->
-        <div class="col-span-12 md:col-span-4 mb-8 md:mb-0">
-          <div class="text-center p-8">
-            <TypographyHeader :level="3" size="h4" class="mb-4">
-              {{ $t('home.features.feature2.title') }}
-            </TypographyHeader>
-            <p class="text-swiss-secondary">
-              {{ $t('home.features.feature2.description') }}
-            </p>
+        <div class="col-span-12 md:col-span-4 mb-8 md:mb-0 group cursor-default relative feature-item">
+          <div class="swiss-feature-number">02</div>
+          <div class="swiss-separator mb-8"></div>
+          <div class="px-4">
+             <div class="reveal-text-mask mb-4">
+              <span>
+                <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors">
+                  {{ $t('home.features.feature2.title') }}
+                </TypographyHeader>
+              </span>
+            </div>
+             <div class="reveal-text-mask">
+              <span class="delay-100">
+                <p class="text-swiss-secondary text-sm leading-relaxed">
+                  {{ $t('home.features.feature2.description') }}
+                </p>
+              </span>
+            </div>
           </div>
         </div>
 
         <!-- Feature 3 -->
-        <div class="col-span-12 md:col-span-4">
-          <div class="text-center p-8">
-            <TypographyHeader :level="3" size="h4" class="mb-4">
-              {{ $t('home.features.feature3.title') }}
-            </TypographyHeader>
-            <p class="text-swiss-secondary">
-              {{ $t('home.features.feature3.description') }}
-            </p>
+        <div class="col-span-12 md:col-span-4 group cursor-default relative feature-item">
+          <div class="swiss-feature-number">03</div>
+          <div class="swiss-separator mb-8"></div>
+          <div class="px-4">
+             <div class="reveal-text-mask mb-4">
+              <span>
+                <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors">
+                  {{ $t('home.features.feature3.title') }}
+                </TypographyHeader>
+              </span>
+            </div>
+             <div class="reveal-text-mask">
+              <span class="delay-100">
+                <p class="text-swiss-secondary text-sm leading-relaxed">
+                  {{ $t('home.features.feature3.description') }}
+                </p>
+              </span>
+            </div>
           </div>
         </div>
       </GridContainer>
     </section>
 
     <!-- Latest News Section -->
-    <section class="py-24 bg-white border-b border-gray-100">
+    <section class="py-24 bg-white border-b border-gray-100 reveal-section">
       <GridContainer>
         <div class="col-span-12 flex justify-between items-end mb-16">
           <div>
@@ -137,8 +167,8 @@
             </TypographyHeader>
           </div>
           <NuxtLink :to="localePath('/news')"
-            class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center mb-1">
-            {{ $t('news.viewMore') }} <span class="ml-2">→</span>
+            class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center mb-1 hover-arrow-slide link-underline">
+            {{ $t('news.viewMore') }} <span class="ml-2 arrow-icon">→</span>
           </NuxtLink>
         </div>
 
@@ -152,7 +182,7 @@
 
           <!-- Data Loaded State -->
           <template v-else-if="latestPosts && latestPosts.length > 0">
-            <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100">
+            <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100 transition-all duration-300 hover:shadow-lg hover:z-10 hover:border-gray-200 bg-white news-card-item opacity-0 translate-y-8">
               <NewsCard :post="post" class="!border-none" />
             </div>
           </template>
@@ -166,7 +196,7 @@
     </section>
 
     <!-- About Section -->
-    <section class="py-32 bg-white relative overflow-hidden">
+    <section class="py-32 bg-white relative overflow-hidden reveal-section">
       <div
         class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-swiss-secondary/20 to-transparent">
       </div>
@@ -300,16 +330,86 @@ onMounted(() => {
 
   // 確保在客戶端執行且可以使用 3D
   // 等待 ClientOnly 組件渲染完成
-  if (process.client && canUse3D.value) {
-    // 等待下一個 tick，確保組件已掛載
-    nextTick(() => {
-      // 再等待一個 tick 以確保 ClientOnly 內的組件已經渲染
-      nextTick(() => {
-        initScrollAnimation()
+  if (process.client) {
+    if (canUse3D.value) {
+       // 等待下一個 tick，確保組件已掛載
+       nextTick(() => {
+        // 再等待一個 tick 以確保 ClientOnly 內的組件已經渲染
+        nextTick(() => {
+          initScrollAnimation()
+        })
       })
+    }
+    
+    // 初始化其他 GSAP 動畫 (不需要 3D 也可以運行)
+    nextTick(() => {
+      initGsapAnimations()
     })
   }
 })
+
+const initGsapAnimations = () => {
+  const { $gsap, $ScrollTrigger } = useNuxtApp() as any
+  if (!$gsap || !$ScrollTrigger) return
+
+  // 1. Feature Items Staggered Reveal
+  const featureItems = document.querySelectorAll('.feature-item')
+  if (featureItems.length) {
+    featureItems.forEach((item, index) => {
+      const tl = $gsap.timeline({
+         scrollTrigger: {
+          trigger: item,
+          start: 'top 85%',
+        }
+      })
+      
+      // Separator expands
+      tl.to(item.querySelectorAll('.swiss-separator'), { 
+        duration: 0.8, 
+        scaleX: 1, 
+        ease: 'power3.out' 
+      })
+      
+      // Text reveals up
+      tl.to(item.querySelectorAll('.reveal-text-mask span'), { 
+        y: 0, 
+        duration: 0.6, 
+        stagger: 0.1, 
+        ease: 'power2.out' 
+      }, '-=0.4') // overlap slightly
+      
+      // Number fades in
+      $gsap.from(item.querySelector('.swiss-feature-number'), { 
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 90%',
+        },
+        opacity: 0, 
+        x: -20, 
+        duration: 1, 
+        ease: 'power2.out' 
+      })
+    })
+  }
+
+  // 2. News Cards Stagger
+  // Wait for news to load effectively or use a specialized trigger if lazy loaded
+  // Simple check for now
+  $ScrollTrigger.batch('.news-card-item', {
+    onEnter: (batch: any) => {
+      $gsap.to(batch, { opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: 'power2.out' })
+    },
+    start: 'top 85%'
+  })
+
+  // 3. General Reveal Sections
+  $ScrollTrigger.batch('.reveal-section', {
+    onEnter: (batch: any) => {
+      $gsap.from(batch, { opacity: 0, y: 30, duration: 1, ease: 'power2.out' })
+    },
+     start: 'top 85%'
+  })
+}
 
 const initScrollAnimation = () => {
   // 获取 GSAP 和 ScrollTrigger 实例

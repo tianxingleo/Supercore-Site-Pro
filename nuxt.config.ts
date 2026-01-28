@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     supabaseService: {
       url: process.env.SUPABASE_URL,
       key: process.env.SUPABASE_SECRET_KEY,
-    }
+    },
   },
 
   // Experimental features - removed to avoid #app-manifest errors
@@ -36,12 +36,7 @@ export default defineNuxtConfig({
   },
 
   // Modules
-  modules: [
-    '@nuxt/image',
-    '@nuxtjs/i18n',
-    '@nuxtjs/supabase',
-    '@nuxt/ui',
-  ],
+  modules: ['@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/supabase', '@nuxt/ui'],
 
   // 圖片優化配置
   image: {
@@ -51,12 +46,12 @@ export default defineNuxtConfig({
     quality: 80,
     // 預設圖片尺寸
     screens: {
-      'xs': 320,
-      'sm': 640,
-      'md': 768,
-      'lg': 1024,
-      'xl': 1280,
-      'xxl': 1536,
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
     },
     // 預設 densities
     densities: [1, 2],
@@ -151,14 +146,16 @@ export default defineNuxtConfig({
         { property: 'og:title', content: '超核技術有限公司 - AI算力基礎設施服務商' },
         {
           property: 'og:description',
-          content: '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
+          content:
+            '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
         },
         { property: 'og:image', content: '/og-image.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: '超核技術有限公司 - AI算力基礎設施服務商' },
         {
           name: 'twitter:description',
-          content: '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
+          content:
+            '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
         },
         { name: 'twitter:image', content: '/og-image.png' },
       ],
@@ -166,8 +163,8 @@ export default defineNuxtConfig({
         lang: 'zh-HK',
       },
       link: [
-        { rel: 'icon', type: 'image/png', href: '/supercore.png' },
-        { rel: 'apple-touch-icon', href: '/supercore.png' },
+        { rel: 'icon', type: 'image/png', href: '/icon.png' },
+        { rel: 'apple-touch-icon', href: '/icon.png' },
         { rel: 'preconnect', href: 'https://lf3-static.bytednsdoc.com' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
@@ -193,13 +190,15 @@ export default defineNuxtConfig({
     '/solutions/**': { isr: 86400 },
     '/about': { isr: 604800 }, // 1 week
     '/contact': { isr: 604800 },
+    '/icon.png': { isr: false }, // 静态资源，不缓存
+    '/supercore.png': { isr: false }, // 静态资源，不缓存
   },
 
   // Vite
   vite: {
     optimizeDeps: {
       include: ['gsap', 'lenis'],
-      exclude: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js']
+      exclude: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js'],
     },
   },
   // Build

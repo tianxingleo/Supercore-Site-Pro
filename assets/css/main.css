@@ -82,3 +82,87 @@ a:active {
 .hover-glow:hover {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
+
+/* Swiss Hover Animations */
+
+/* 1. Arrow Slide - Apply to parent, child needs class 'arrow-icon' */
+.hover-arrow-slide .arrow-icon {
+  @apply transition-transform duration-300 ease-out;
+}
+
+.hover-arrow-slide:hover .arrow-icon {
+  @apply translate-x-1;
+}
+
+/* 2. Link Underline Expansion */
+.link-underline {
+  @apply relative inline-block text-swiss-text no-underline;
+}
+
+.link-underline::after {
+  content: '';
+  @apply absolute bottom-0 left-0 w-full h-[1px] bg-swiss-text scale-x-0 origin-right transition-transform duration-300 ease-out;
+}
+
+.link-underline:hover::after {
+  @apply scale-x-100 origin-left;
+}
+
+/* 3. Subtle Scale */
+.hover-scale-subtle {
+  @apply transition-transform duration-500 ease-out will-change-transform;
+}
+
+.hover-scale-subtle:hover {
+  transform: scale(1.02);
+}
+
+/* 4. Card Interaction - Apply to product/news cards */
+.card-interaction {
+  @apply transition-all duration-500 ease-out border-transparent hover:border-gray-200 hover:shadow-lg hover:-translate-y-1 bg-white;
+}
+
+/* 5. Image Zoom wrapper */
+.img-zoom-container {
+  @apply overflow-hidden;
+}
+
+.img-zoom-container img {
+  @apply transition-transform duration-700 ease-out;
+}
+
+.img-zoom-container:hover img {
+  @apply scale-105;
+}
+
+/* 6. Advanced Reveal Animations (GSAP companion classes) */
+.reveal-text-mask {
+  @apply overflow-hidden relative block;
+}
+
+.reveal-text-mask span {
+  @apply block transform translate-y-full transition-transform duration-700 ease-out;
+}
+
+.is-visible .reveal-text-mask span {
+  @apply translate-y-0;
+}
+
+/* Feature Number - Big, Bold, Swiss */
+.swiss-feature-number {
+  @apply text-6xl font-display font-bold text-gray-100 absolute -top-8 -left-4 -z-10 transition-colors duration-500;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.05);
+}
+
+.group:hover .swiss-feature-number {
+  @apply text-swiss-accent/5;
+}
+
+/* Staggered Line Separator */
+.swiss-separator {
+  @apply w-full h-[1px] bg-gray-100 transform scale-x-0 origin-left transition-transform duration-700;
+}
+
+.is-visible .swiss-separator {
+  @apply scale-x-100;
+}

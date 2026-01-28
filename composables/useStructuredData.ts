@@ -34,15 +34,17 @@ export function useProductStructuredData(product: Product, locale: string) {
       price: '0', // 如有價格可動態設置
       url: `${baseUrl}/products/${product.slug}`,
     },
-    aggregateRating: product.rating ? {
-      '@type': 'AggregateRating',
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount || 1,
-    } : undefined,
+    aggregateRating: product.rating
+      ? {
+          '@type': 'AggregateRating',
+          ratingValue: product.rating,
+          reviewCount: product.reviewCount || 1,
+        }
+      : undefined,
   }
 
   // 移除 undefined 值
-  Object.keys(structuredData).forEach(key => {
+  Object.keys(structuredData).forEach((key) => {
     if (structuredData[key] === undefined) {
       delete structuredData[key]
     }
@@ -70,7 +72,7 @@ export function useArticleStructuredData(post: Post, locale: string) {
       name: '超核技術有限公司',
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/supercore.png`,
+        url: `${baseUrl}/icon.png`,
       },
     },
     publisher: {
@@ -78,7 +80,7 @@ export function useArticleStructuredData(post: Post, locale: string) {
       name: '超核技術有限公司',
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/supercore.png`,
+        url: `${baseUrl}/icon.png`,
       },
     },
     description: post.summary?.[langKey] || extractTextFromContent(post.content?.[langKey] || ''),
@@ -104,8 +106,9 @@ export function useOrganizationStructuredData() {
     '@type': 'Organization',
     name: '超核技術有限公司',
     url: baseUrl,
-    logo: `${baseUrl}/supercore.png`,
-    description: '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
+    logo: `${baseUrl}/icon.png`,
+    description:
+      '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'HK',
@@ -132,15 +135,25 @@ export function useWebsiteStructuredData() {
 
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'WebSite',
+    '@type': 'Organization',
     name: '超核技術有限公司',
     url: baseUrl,
-    description: '全球領先的AI算力基礎設施服務商',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${baseUrl}/search?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
+    logo: `${baseUrl}/icon.png`,
+    description:
+      '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'HK',
+      addressLocality: 'Hong Kong',
     },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'info@projectnexus.hk',
+    },
+    sameAs: [
+      // 社交媒體鏈接（如有）
+    ] as string[],
   }
 
   return structuredData

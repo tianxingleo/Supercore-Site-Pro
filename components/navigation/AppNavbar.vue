@@ -4,29 +4,25 @@
     :class="[scrolled ? 'bg-white/90 backdrop-blur-md border-b border-gray-100' : 'bg-transparent']"
     aria-label="Main Navigation"
   >
-    <GridContainer>
-      <div
-        class="col-span-12 flex items-center justify-between py-5 md:py-8 transition-all duration-500"
-        :class="{ 'py-3 md:py-4': scrolled }"
-      >
+    <div
+      class="w-full px-6 sm:px-8 lg:px-12 py-5 md:py-8 transition-all duration-500"
+      :class="{ 'py-3 md:py-4': scrolled }"
+    >
+      <div class="flex items-center justify-between max-w-[1400px] mx-auto">
         <!-- Logo -->
-        <NuxtLink
-          :to="localePath('/')"
-          class="flex items-center group relative z-10"
-          aria-label="SUPERCORE Home"
-        >
+        <NuxtLink :to="localePath('/')" class="flex items-center group" aria-label="SUPERCORE Home">
           <NuxtImg
-            src="/supercore.png"
+            src="/icon.png"
             alt="SUPERCORE Logo"
-            width="128"
-            height="128"
+            width="256"
+            height="256"
             format="webp"
             quality="90"
             loading="eager"
             preload
             @load="imageLoaded = true"
-            class="object-contain drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)] transition-all duration-500 w-auto h-16 md:h-24"
-            :class="[scrolled ? '!h-10 md:!h-16' : '', imageLoaded ? 'opacity-100' : 'opacity-0']"
+            class="object-contain drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)] transition-all duration-500 h-24 md:h-32 w-auto"
+            :class="[scrolled ? '!h-16 md:!h-24' : '', imageLoaded ? 'opacity-100' : 'opacity-0']"
           />
         </NuxtLink>
 
@@ -90,7 +86,7 @@
           </button>
         </div>
       </div>
-    </GridContainer>
+    </div>
 
     <!-- Mobile Menu -->
     <Transition name="slide-down">
@@ -99,23 +95,21 @@
         id="mobile-menu"
         class="md:hidden bg-swiss-bg/95 backdrop-blur-md border-t border-swiss-secondary/10"
       >
-        <GridContainer>
-          <div class="col-span-12 py-4 space-y-4" role="menu">
-            <NuxtLink
-              v-for="item in navItems"
-              :key="item.key"
-              :to="localePath(item.to)"
-              class="block py-2"
-              @click="mobileMenuOpen = false"
-              role="menuitem"
-              :aria-current="route.path === localePath(item.to) ? 'page' : undefined"
-            >
-              <TypographyHeader :level="4" size="h5">
-                {{ $t(item.label) }}
-              </TypographyHeader>
-            </NuxtLink>
-          </div>
-        </GridContainer>
+        <div class="px-6 sm:px-8 lg:px-12 py-4 max-w-[1400px] mx-auto space-y-4" role="menu">
+          <NuxtLink
+            v-for="item in navItems"
+            :key="item.key"
+            :to="localePath(item.to)"
+            class="block py-2"
+            @click="mobileMenuOpen = false"
+            role="menuitem"
+            :aria-current="route.path === localePath(item.to) ? 'page' : undefined"
+          >
+            <TypographyHeader :level="4" size="h5">
+              {{ $t(item.label) }}
+            </TypographyHeader>
+          </NuxtLink>
+        </div>
       </div>
     </Transition>
   </nav>
