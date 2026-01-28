@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
   if (insertError) {
     throw createError({
       statusCode: 500,
-      statusMessage: `提交詢盤失敗：${insertError.message}`,
+      message: `提交詢盤失敗：${insertError.message}`,
     })
   }
 

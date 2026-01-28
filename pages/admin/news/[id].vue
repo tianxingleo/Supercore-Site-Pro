@@ -51,7 +51,7 @@
                   <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
                     lang.label
                   }}</label>
-                  <textarea v-model="form.summary[lang.key]" :placeholder="`輸入 ${lang.label} 摘要`" :rows="3"
+                  <textarea v-model="(form.summary as any)[lang.key]" :placeholder="`輸入 ${lang.label} 摘要`" :rows="3"
                     class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text mt-1" />
                 </div>
               </div>
@@ -66,7 +66,7 @@
                   <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
                     lang.label
                   }}</label>
-                  <RichTextEditor v-model="form.content[lang.key]" />
+                  <RichTextEditor v-model="(form.content as any)[lang.key]" />
                 </div>
               </div>
             </div>
@@ -213,10 +213,10 @@ async function savePost() {
       })
     } else {
       // 更新现有文章
-      response = await $fetch(`/api/news/${route.params.id}`, {
-        method: 'PUT',
+      response = (await $fetch(`/api/news/${route.params.id}`, {
+        method: 'PUT' as any,
         body: payload,
-      })
+      })) as any
     }
 
     if (response.success) {

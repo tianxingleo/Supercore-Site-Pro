@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   if (process.env.NODE_ENV === 'production' && !query.force) {
     throw createError({
       statusCode: 403,
-      statusMessage: '此操作仅允许在开发环境中执行',
+      message: '此操作仅允许在开发环境中执行',
     })
   }
 
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   if (!supabaseUrl || !supabaseKey) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Supabase configuration is missing',
+      message: 'Supabase configuration is missing',
     })
   }
 
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
   if (updateError) {
     throw createError({
       statusCode: 500,
-      statusMessage: `更新产品状态失败：${updateError.message}`,
+      message: `更新产品状态失败：${updateError.message}`,
     })
   }
 
@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
   if (fetchError) {
     throw createError({
       statusCode: 500,
-      statusMessage: `获取产品列表失败：${fetchError.message}`,
+      message: `获取产品列表失败：${fetchError.message}`,
     })
   }
 

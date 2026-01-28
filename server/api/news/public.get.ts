@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     if (!supabaseUrl || !supabaseKey) {
         throw createError({
             statusCode: 500,
-            statusMessage: 'Supabase configuration is missing',
+            message: 'Supabase configuration is missing',
         })
     }
 
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
     if (error) {
         throw createError({
             statusCode: 500,
-            statusMessage: error.message,
+            message: error.message,
         })
     }
 

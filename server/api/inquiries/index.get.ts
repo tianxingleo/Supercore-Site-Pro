@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: `获取询盘列表失败：${error.message}`
+      message: `获取询盘列表失败：${error.message}`
     })
   }
 

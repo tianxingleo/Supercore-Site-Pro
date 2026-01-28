@@ -14,7 +14,7 @@ export async function requireAdminAuth(event: any) {
   if (!user) {
     throw createError({
       statusCode: 401,
-      statusMessage: '未授权：请先登录'
+      message: '未授权：请先登录'
     })
   }
 
@@ -33,7 +33,7 @@ export async function requireAdminAuth(event: any) {
   if (error || !profile || profile.role !== 'admin') {
     throw createError({
       statusCode: 403,
-      statusMessage: '禁止访问：需要管理员权限'
+      message: '禁止访问：需要管理员权限'
     })
   }
 

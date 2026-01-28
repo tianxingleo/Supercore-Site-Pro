@@ -10,19 +10,19 @@
       </SwissButton>
     </div>
 
-    <!-- Filters and Actions -->
+    <!-- Filters and Actions (已隐藏搜索栏和分类筛选) -->
     <div class="flex flex-col md:flex-row md:justify-between gap-4">
-      <div class="flex flex-wrap gap-4">
+      <!-- <div class="flex flex-wrap gap-4">
         <input v-model="search" placeholder="搜索產品..."
           class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-64 focus:outline-none focus:border-swiss-text placeholder-swiss-text-muted/40" />
         <select v-model="selectedCategory"
           class="px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-[10px] font-bold uppercase tracking-widest w-full md:w-40 focus:outline-none focus:border-swiss-text">
           <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
         </select>
-      </div>
+      </div> -->
 
-      <!-- Bulk Actions and Export -->
-      <div class="flex gap-2">
+      <!-- Bulk Actions and Export (已隐藏) -->
+      <!-- <div class="flex gap-2">
         <UDropdown v-if="selectedItems.length > 0" :items="bulkActionItems" :ui="{ item: { size: 'text-sm' } }">
           <UButton color="gray" variant="outline" icon="i-heroicons-bars-3-bottom-left" size="sm"
             class="text-[10px] font-bold uppercase tracking-widest rounded-none hover:-translate-y-0.5 transition-all">
@@ -36,7 +36,7 @@
             導出數據
           </UButton>
         </UDropdown>
-      </div>
+      </div> -->
     </div>
 
     <!-- Products Table -->
@@ -57,8 +57,8 @@
       }">
         <template #name-data="{ row }">
           <div class="flex items-center space-x-3">
-            <input type="checkbox" :checked="selectedItems.includes(row)" @change="toggleSelection(row)"
-              class="w-4 h-4 border-swiss-text/20" />
+            <!-- <input type="checkbox" :checked="selectedItems.includes(row)" @change="toggleSelection(row)"
+              class="w-4 h-4 border-swiss-text/20" /> -->
             <div class="w-10 h-10 bg-swiss-bg-soft overflow-hidden flex-shrink-0">
               <img v-if="row.images?.[0]" :src="row.images[0]" :alt="row.name?.['zh-HK'] || row.name?.['hk']"
                 loading="lazy" class="w-full h-full object-cover" />

@@ -126,7 +126,7 @@ watch(products, (newProducts) => {
   console.log('[Products] Display products changed:', {
     length: newProducts.length,
     isUsingMock: newProducts === mockProducts,
-    apiProductsLength: currentData?.length || 0,
+    apiProductsLength: apiProducts.value?.data?.length || 0,
     mockProductsLength: mockProducts.length,
   })
 })

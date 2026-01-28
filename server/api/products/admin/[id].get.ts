@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   if (!id || isNaN(Number(id))) {
     throw createError({
       statusCode: 400,
-      statusMessage: '无效的产品 ID'
+      message: '无效的产品 ID'
     })
   }
 
@@ -24,11 +24,27 @@ export default defineEventHandler(async (event) => {
     .single()
 
   if (error) {
+    console.error('[Product Get] Database error:', error)
     throw createError({
       statusCode: error.code === 'PGRST116' ? 404 : 500,
-      statusMessage: error.code === 'PGRST116' ? '产品不存在' : `查询失败：${error.message}`
+      message: error.code === 'PGRST116' ? '产品不存在' : `查询失败：${error.message}`
     })
   }
 
-  return data as Product
+  // 4. 转换字段名（数据库格式 -> 前端格式）
+  const transformedProduct: Product = {
+    ...data,
+    featured: data.is_featured,  // is_featured -> featured
+    createdAt: data.created_at,  // created_at -> createdAt
+    updatedAt: data.updated_at,  // updated_at -> updatedAt
+  } as Product
+
+  // 移除数据库字段名
+  delete (transformedProduct as any).is_featured
+  delete (transformedProduct as any).created_at
+  delete (transformedProduct as any).updated_at
+
+  console.log('[Product Get] Transformed data:', JSON.stringify(transformedProduct, null, 2))
+
+  return transformedProduct
 })

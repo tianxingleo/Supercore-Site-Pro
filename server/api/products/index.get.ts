@@ -20,12 +20,29 @@ export default defineEventHandler(async (event) => {
     if (error) {
         throw createError({
             statusCode: 500,
-            statusMessage: `获取产品列表失败：${error.message}`
+            message: `获取产品列表失败：${error.message}`
         })
     }
 
+    // 3. 转换字段名（数据库格式 -> 前端格式）
+    const transformedProducts = (data || []).map((product: any) => ({
+        ...product,
+        featured: product.is_featured,  // is_featured -> featured
+        createdAt: product.created_at,  // created_at -> createdAt
+        updatedAt: product.updated_at,  // updated_at -> updatedAt
+    }))
+
+    // 移除数据库字段名
+    transformedProducts.forEach((product: any) => {
+        delete product.is_featured
+        delete product.created_at
+        delete product.updated_at
+    })
+
+    console.log('[Products List] Transformed', transformedProducts.length, 'products')
+
     return {
         success: true,
-        data: data || []
+        data: transformedProducts
     }
 })

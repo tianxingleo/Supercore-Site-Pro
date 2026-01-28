@@ -31,8 +31,8 @@ export function validateCreatePost(data: any): CreatePostData {
   // 验证 slug
   if (!data.slug || typeof data.slug !== 'string') {
     errors.push('slug 是必需的且必须是字符串')
-  } else if (!/^[a-z0-9A-Z._-]+$/.test(data.slug)) {
-    errors.push('slug 只能包含字母、数字、连字符、下划线或点')
+  } else if (!/^[a-zA-Z0-9_\-\.]+$/.test(data.slug)) {
+    errors.push('slug 格式不正确：只能包含英文字母、数字、连字符(-)、下划线(_)或点(.)')
   }
 
   // 验证 title
@@ -111,8 +111,8 @@ export function validateUpdatePost(data: any): UpdatePostData {
   if (data.slug !== undefined) {
     if (typeof data.slug !== 'string') {
       errors.push('slug 必须是字符串')
-    } else if (!/^[a-z0-9A-Z._-]+$/.test(data.slug)) {
-      errors.push('slug 只能包含字母、数字、连字符、下划线或点')
+    } else if (!/^[a-zA-Z0-9_\-\.]+$/.test(data.slug)) {
+      errors.push('slug 格式不正确：只能包含英文字母、数字、连字符(-)、下划线(_)或点(.)')
     }
   }
 
@@ -169,7 +169,7 @@ export function validateUpdatePost(data: any): UpdatePostData {
   if (errors.length > 0) {
     throw createError({
       statusCode: 400,
-      statusMessage: `验证错误：${errors.join('；')}`
+      message: `验证错误：${errors.join('；')}`
     })
   }
 
@@ -205,8 +205,8 @@ export function validateCreateProduct(data: any): CreateProductData {
   // 验证 slug
   if (!data.slug || typeof data.slug !== 'string') {
     errors.push('slug 是必需的且必须是字符串')
-  } else if (!/^[a-z0-9A-Z._-]+$/.test(data.slug)) {
-    errors.push('slug 只能包含字母、数字、连字符、下划线或点')
+  } else if (!/^[a-zA-Z0-9_\-\.]+$/.test(data.slug)) {
+    errors.push('slug 格式不正确：只能包含英文字母、数字、连字符(-)、下划线(_)或点(.)')
   }
 
   // 验证 name（多语言）
@@ -292,8 +292,8 @@ export function validateUpdateProduct(data: any): UpdateProductData {
   if (data.slug !== undefined) {
     if (typeof data.slug !== 'string') {
       errors.push('slug 必须是字符串')
-    } else if (!/^[a-z0-9A-Z._-]+$/.test(data.slug)) {
-      errors.push('slug 只能包含字母、数字、连字符、下划线或点')
+    } else if (!/^[a-zA-Z0-9_\-\.]+$/.test(data.slug)) {
+      errors.push('slug 格式不正确：只能包含英文字母、数字、连字符(-)、下划线(_)或点(.)')
     }
   }
 

@@ -8,7 +8,7 @@
       </div>
 
       <NuxtImg v-if="product.images && product.images.length > 0" :src="product.images[0]"
-        :alt="product.name[currentLocale]" width="400" height="400" format="webp" quality="80" loading="lazy"
+        :alt="product.name[currentLocale] || product.name.hk" width="400" height="400" format="webp" quality="80" loading="lazy"
         sizes="xs:100vw sm:50vw md:33vw lg:25vw" @load="imageLoaded = true"
         class="w-full h-full object-contain group-hover:scale-105 transition-all duration-700 ease-in-out"
         :class="[imageLoaded ? 'opacity-100' : 'opacity-0']" placeholder />
@@ -36,10 +36,10 @@
     <!-- Product Info -->
     <div class="p-6">
       <TypographyHeader :level="3" size="h4" class="mb-2 group-hover:text-swiss-accent transition-colors">
-        {{ product.name[currentLocale] }}
+        {{ product.name[currentLocale] || product.name.hk }}
       </TypographyHeader>
       <p class="text-swiss-secondary text-sm line-clamp-2 mb-4">
-        {{ product.description[currentLocale] }}
+        {{ product.description[currentLocale] || product.description.hk }}
       </p>
 
       <!-- Key Specs Preview -->
@@ -66,7 +66,11 @@ const localePath = useLocalePath()
 const { locale } = useI18n()
 const imageLoaded = ref(false)
 
-const currentLocale = computed(() => locale.value as 'zh-HK' | 'zh-CN' | 'en')
+const currentLocale = computed(() => {
+  if (locale.value === 'zh-HK') return 'hk'
+  if (locale.value === 'zh-CN') return 'cn'
+  return 'en'
+})
 
 const categoryLabels: Record<string, string> = {
   server: '伺服器',

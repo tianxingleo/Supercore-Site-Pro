@@ -10,10 +10,10 @@
       </SwissButton>
     </div>
 
-    <!-- Actions Bar -->
+    <!-- Actions Bar (已隐藏批量操作和导出) -->
     <div class="flex flex-col md:flex-row md:justify-between gap-4">
       <div class="flex-1"></div>
-      <div class="flex gap-2">
+      <!-- <div class="flex gap-2">
         <UDropdown v-if="selectedItems.length > 0" :items="bulkActionItems" :ui="{ item: { size: 'text-sm' } }">
           <UButton color="gray" variant="outline" icon="i-heroicons-bars-3-bottom-left" size="sm"
             class="text-[10px] font-bold uppercase tracking-widest rounded-none hover:-translate-y-0.5 transition-all">
@@ -27,7 +27,7 @@
             導出數據
           </UButton>
         </UDropdown>
-      </div>
+      </div> -->
     </div>
 
     <div class="bg-white border border-swiss-text/10">
@@ -47,8 +47,8 @@
       }">
         <template #title-data="{ row }">
           <div class="flex items-center gap-3">
-            <input type="checkbox" :checked="selectedItems.includes(row)" @change="toggleSelection(row)"
-              class="w-4 h-4 border-swiss-text/20" />
+            <!-- <input type="checkbox" :checked="selectedItems.includes(row)" @change="toggleSelection(row)"
+              class="w-4 h-4 border-swiss-text/20" /> -->
             <div class="font-medium text-swiss-text">
               {{ row.title?.['zh-HK'] || row.title?.['hk'] }}
             </div>

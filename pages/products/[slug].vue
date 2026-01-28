@@ -44,23 +44,64 @@
           class="col-span-12 lg:col-span-7 border-r border-b border-gray-100 flex items-center justify-center bg-swiss-bg-soft"
         >
           <div class="aspect-square w-full p-24 flex items-center justify-center relative">
-            <!-- Product Image -->
-            <NuxtImg
-              v-if="product.images && product.images.length > 0"
-              :src="product.images[0]"
-              :alt="product.name[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.name['zh-HK']"
-              width="1200"
-              height="1200"
-              format="webp"
-              quality="90"
-              loading="eager"
-              preload
-              sizes="xs:100vw sm:100vw md:70vw lg:70vw"
-              @load="imageLoaded = true"
-              class="max-w-full max-h-full object-contain transition-opacity duration-700 ease-in-out"
-              :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
-              placeholder
-            />
+            <!-- Product Image Gallery -->
+            <div v-if="product.images && product.images.length > 0" class="w-full h-full flex items-center justify-center">
+              <!-- Main Image -->
+              <NuxtImg
+                :src="currentImage"
+                :alt="`${product.name[currentLocale] || product.name.hk} - Image ${currentImageIndex + 1}`"
+                width="1200"
+                height="1200"
+                format="webp"
+                quality="90"
+                loading="eager"
+                :key="currentImage"
+                :preload="currentImageIndex === 0"
+                sizes="xs:100vw sm:100vw md:70vw lg:70vw"
+                @load="imageLoaded = true"
+                class="max-w-full max-h-full object-contain transition-opacity duration-500 ease-in-out"
+                :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
+                placeholder
+              />
+
+              <!-- Navigation Arrows (only show if multiple images) -->
+              <template v-if="product.images.length > 1">
+                <button
+                  @click="previousImage"
+                  class="absolute left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/90 hover:bg-white border border-swiss-text/10 hover:border-swiss-text transition-all duration-200 group"
+                  aria-label="Previous image"
+                >
+                  <span class="text-swiss-text/40 group-hover:text-swiss-text transition-colors text-xl">←</span>
+                </button>
+                <button
+                  @click="nextImage"
+                  class="absolute right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/90 hover:bg-white border border-swiss-text/10 hover:border-swiss-text transition-all duration-200 group"
+                  aria-label="Next image"
+                >
+                  <span class="text-swiss-text/40 group-hover:text-swiss-text transition-colors text-xl">→</span>
+                </button>
+              </template>
+
+              <!-- Image Counter -->
+              <div v-if="product.images.length > 1" class="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 border border-swiss-text/10">
+                <span class="text-[10px] font-bold tracking-widest uppercase text-swiss-text">
+                  {{ currentImageIndex + 1 }} / {{ product.images.length }}
+                </span>
+              </div>
+
+              <!-- Thumbnail Dots -->
+              <div v-if="product.images.length > 1" class="absolute bottom-12 left-12 flex items-center gap-2">
+                <button
+                  v-for="(img, index) in product.images"
+                  :key="index"
+                  @click="setCurrentImage(index)"
+                  class="w-2 h-2 rounded-full transition-all duration-200"
+                  :class="currentImageIndex === index ? 'bg-swiss-text scale-125' : 'bg-swiss-text/20 hover:bg-swiss-text/40'"
+                  :aria-label="`View image ${index + 1}`"
+                />
+              </div>
+            </div>
+
             <!-- Fallback placeholder -->
             <div
               v-else
@@ -99,12 +140,12 @@
               Technical Specification / 01
             </div>
             <TypographyHeader :level="1" size="h1" class="mb-8">
-              {{ product.name[locale as 'zh-HK' | 'zh-CN' | 'en'] || product.name['zh-HK'] }}
+              {{ product.name[currentLocale] || product.name.hk }}
             </TypographyHeader>
             <p class="text-swiss-text-muted text-lg leading-relaxed font-medium mb-16">
               {{
-                product.description[locale as 'zh-HK' | 'zh-CN' | 'en'] ||
-                product.description['zh-HK']
+                product.description[currentLocale] ||
+                product.description.hk
               }}
             </p>
 
@@ -160,6 +201,65 @@ const localePath = useLocalePath()
 const { locale } = useI18n()
 const imageLoaded = ref(false)
 
+const currentLocale = computed(() => {
+  if (locale.value === 'zh-HK') return 'hk'
+  if (locale.value === 'zh-CN') return 'cn'
+  return 'en'
+})
+
+// 图片画廊状态
+const currentImageIndex = ref(0)
+
+// 当前显示的图片
+const currentImage = computed(() => {
+  if (!product.value || !product.value.images || product.value.images.length === 0) {
+    return ''
+  }
+  return product.value.images[currentImageIndex.value]
+})
+
+// 切换到下一张图片
+function nextImage() {
+  if (!product.value?.images) return
+  currentImageIndex.value = (currentImageIndex.value + 1) % product.value.images.length
+  imageLoaded.value = false
+}
+
+// 切换到上一张图片
+function previousImage() {
+  if (!product.value?.images) return
+  currentImageIndex.value = currentImageIndex.value === 0
+    ? product.value.images.length - 1
+    : currentImageIndex.value - 1
+  imageLoaded.value = false
+}
+
+// 设置当前图片
+function setCurrentImage(index: number) {
+  if (!product.value?.images || index < 0 || index >= product.value.images.length) return
+  currentImageIndex.value = index
+  imageLoaded.value = false
+}
+
+// 键盘导航
+onMounted(() => {
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (!product.value?.images || product.value.images.length <= 1) return
+
+    if (e.key === 'ArrowLeft') {
+      previousImage()
+    } else if (e.key === 'ArrowRight') {
+      nextImage()
+    }
+  }
+
+  window.addEventListener('keydown', handleKeydown)
+
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown)
+  })
+})
+
 // 使用 useLazyFetch 确保加载动画可见
 const {
   data: apiProduct,
@@ -175,6 +275,13 @@ const product = computed(() => {
     console.error('[Product Detail] API Error:', error.value)
   }
   return apiProduct.value
+})
+
+// 当产品数据加载完成时，重置图片索引
+watch(product, (newProduct) => {
+  if (newProduct) {
+    currentImageIndex.value = 0
+  }
 })
 
 // Handle error state

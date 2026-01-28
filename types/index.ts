@@ -5,13 +5,13 @@ export interface Product {
   id: string
   slug: string
   name: {
-    'zh-HK': string
-    'zh-CN': string
+    hk: string
+    cn: string
     en: string
   }
   description: {
-    'zh-HK': string
-    'zh-CN': string
+    hk: string
+    cn: string
     en: string
   }
   specs: Record<string, string | number | boolean>
@@ -41,18 +41,18 @@ export interface News {
   id: string
   slug: string
   title: {
-    'zh-HK': string
-    'zh-CN': string
+    hk: string
+    cn: string
     en: string
   }
   content: {
-    'zh-HK': string
-    'zh-CN': string
+    hk: string
+    cn: string
     en: string
   }
   excerpt: {
-    'zh-HK': string
-    'zh-CN': string
+    hk: string
+    cn: string
     en: string
   }
   locale: 'zh-HK' | 'zh-CN' | 'en'
@@ -70,13 +70,13 @@ export interface Solution {
   id: string
   slug: string
   title: {
-    'zh-HK': string
-    'zh-CN': string
+    hk: string
+    cn: string
     en: string
   }
   description: {
-    'zh-HK': string
-    'zh-CN': string
+    hk: string
+    cn: string
     en: string
   }
   icon: string

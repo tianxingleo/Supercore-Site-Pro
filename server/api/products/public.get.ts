@@ -24,7 +24,7 @@ export default withApiHandler(async (event) => {
 
     throw createError({
       statusCode: 500,
-      statusMessage: 'Supabase configuration is missing',
+      message: 'Supabase configuration is missing',
     })
   }
 
@@ -63,7 +63,7 @@ export default withApiHandler(async (event) => {
 
     throw createError({
       statusCode: 500,
-      statusMessage: error.message,
+      message: error.message,
     })
   }
 

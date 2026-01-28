@@ -13,7 +13,7 @@ export default defineEventHandler((event) => {
   if (!solution) {
     throw createError({
       statusCode: 404,
-      statusMessage: 'Solution not found'
+      message: 'Solution not found'
     })
   }
 

@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   if (!id || isNaN(Number(id))) {
     throw createError({
       statusCode: 400,
-      statusMessage: '無效的詢盤 ID',
+      message: '無效的詢盤 ID',
     })
   }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: `刪除詢盤失敗：${error.message}`,
+      message: `刪除詢盤失敗：${error.message}`,
     })
   }
 

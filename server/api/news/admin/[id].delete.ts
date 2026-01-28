@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   if (!id || isNaN(Number(id))) {
     throw createError({
       statusCode: 400,
-      statusMessage: '无效的文章 ID'
+      message: '无效的文章 ID'
     })
   }
 
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   if (checkError || !existing) {
     throw createError({
       statusCode: 404,
-      statusMessage: '文章不存在'
+      message: '文章不存在'
     })
   }
 
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
   if (deleteError) {
     throw createError({
       statusCode: 500,
-      statusMessage: `删除文章失败：${deleteError.message}`
+      message: `删除文章失败：${deleteError.message}`
     })
   }
 

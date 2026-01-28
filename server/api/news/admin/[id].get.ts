@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   if (!id || isNaN(Number(id))) {
     throw createError({
       statusCode: 400,
-      statusMessage: '无效的文章 ID'
+      message: '无效的文章 ID'
     })
   }
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
   if (error || !post) {
     throw createError({
       statusCode: 404,
-      statusMessage: '文章不存在'
+      message: '文章不存在'
     })
   }
 

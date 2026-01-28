@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   if (event.node.req.method !== 'POST') {
     throw createError({
       statusCode: 405,
-      statusMessage: 'Method Not Allowed',
+      message: 'Method Not Allowed',
     })
   }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     if (!body || typeof body !== 'object') {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Invalid request body',
+        message: 'Invalid request body',
       })
     }
 
@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
 
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to process error report',
+      message: 'Failed to process error report',
     })
   }
 })

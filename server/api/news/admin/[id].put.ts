@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   if (!id || isNaN(Number(id))) {
     throw createError({
       statusCode: 400,
-      statusMessage: '无效的文章 ID'
+      message: '无效的文章 ID'
     })
   }
 
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
   if (checkError || !existing) {
     throw createError({
       statusCode: 404,
-      statusMessage: '文章不存在'
+      message: '文章不存在'
     })
   }
 
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
     if (slugCheck) {
       throw createError({
         statusCode: 409,
-        statusMessage: `slug "${updateData.slug}" 已存在，请使用其他 slug`
+        message: `slug "${updateData.slug}" 已存在，请使用其他 slug`
       })
     }
   }
@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
   if (updateError) {
     throw createError({
       statusCode: 500,
-      statusMessage: `更新文章失败：${updateError.message}`
+      message: `更新文章失败：${updateError.message}`
     })
   }
 

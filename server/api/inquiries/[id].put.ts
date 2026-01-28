@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   if (!id || isNaN(Number(id))) {
     throw createError({
       statusCode: 400,
-      statusMessage: '無效的詢盤 ID',
+      message: '無效的詢盤 ID',
     })
   }
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   if (!status || typeof status !== 'string') {
     throw createError({
       statusCode: 400,
-      statusMessage: '狀態值無效',
+      message: '狀態值無效',
     })
   }
 
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   if (!validStatuses.includes(status)) {
     throw createError({
       statusCode: 400,
-      statusMessage: `無效的狀態值，必須是 ${validStatuses.join(', ')} 之一`,
+      message: `無效的狀態值，必須是 ${validStatuses.join(', ')} 之一`,
     })
   }
 
@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: `更新詢盤狀態失敗：${error.message}`,
+      message: `更新詢盤狀態失敗：${error.message}`,
     })
   }
 

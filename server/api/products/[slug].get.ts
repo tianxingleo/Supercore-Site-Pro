@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   if (!slug) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'slug 参数缺失',
+      message: 'slug 参数缺失',
     })
   }
 
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
   if (!supabaseUrl || !supabaseKey) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Supabase configuration is missing',
+      message: 'Supabase configuration is missing',
     })
   }
 
@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
       console.log('[Product API] Any product not found:', anyError)
       throw createError({
         statusCode: 404,
-        statusMessage: '产品不存在',
+        message: '产品不存在',
       })
     }
 
@@ -95,7 +95,7 @@ export default defineEventHandler(async (event) => {
     console.log('[Product API] Database error:', error)
     throw createError({
       statusCode: error.code === 'PGRST116' ? 404 : 500,
-      statusMessage: error.code === 'PGRST116' ? '产品不存在' : error.message,
+      message: error.code === 'PGRST116' ? '产品不存在' : error.message,
     })
   }
 

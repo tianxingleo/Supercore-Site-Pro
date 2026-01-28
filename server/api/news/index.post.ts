@@ -24,14 +24,14 @@ export default defineEventHandler(async (event) => {
   if (checkError) {
     throw createError({
       statusCode: 500,
-      statusMessage: `数据库查询失败：${checkError.message}`
+      message: `数据库查询失败：${checkError.message}`
     })
   }
 
   if (existing) {
     throw createError({
       statusCode: 409,
-      statusMessage: `slug "${postData.slug}" 已存在，请使用其他 slug`
+      message: `slug "${postData.slug}" 已存在，请使用其他 slug`
     })
   }
 
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
   if (insertError) {
     throw createError({
       statusCode: 500,
-      statusMessage: `创建文章失败：${insertError.message}`
+      message: `创建文章失败：${insertError.message}`
     })
   }
 

@@ -2,8 +2,9 @@ import type { H3Error, H3Event } from 'h3'
 
 export default defineNitroPlugin((nitroApp) => {
   nitroApp.hooks.hook('error', async (error, { event }) => {
-    // 忽略 _nuxt 目录的 404 错误（Vite 开发时请求）
-    if (event?.path?.startsWith('/_nuxt/') && (error as H3Error).statusCode === 404) {
+    // 忽略 _nuxt 和 _payload.json 目录的 404 错误（Vite 开发时请求）
+    const path = event?.path || ''
+    if ((path.startsWith('/_nuxt/') || path.includes('_payload.json')) && (error as H3Error).statusCode === 404) {
       return
     }
     

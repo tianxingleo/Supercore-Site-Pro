@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         console.log('[News API] Params:', event.context.params)
         throw createError({
             statusCode: 400,
-            statusMessage: 'Slug is required',
+            message: 'Slug is required',
         })
     }
 
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     if (!supabaseUrl || !supabaseKey) {
         throw createError({
             statusCode: 500,
-            statusMessage: 'Supabase configuration is missing',
+            message: 'Supabase configuration is missing',
         })
     }
 
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
     if (postError || !post) {
         throw createError({
             statusCode: 404,
-            statusMessage: 'Post not found',
+            message: 'Post not found',
         })
     }
 

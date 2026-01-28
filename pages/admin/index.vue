@@ -1,33 +1,32 @@
 <template>
-  <div>
-    <!-- Error State -->
-    <div v-if="error" class="min-h-screen bg-white p-8">
-      <div class="max-w-2xl mx-auto">
-        <div class="bg-red-50 border border-red-200 rounded-lg p-8">
-          <h2 class="text-xl font-bold text-red-800 mb-4">加载数据失败</h2>
-          <p class="text-red-700 mb-4">{{ error }}</p>
-          <div class="space-y-2">
-            <p class="text-sm text-red-600">可能的原因：</p>
-            <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
-              <li>Supabase 数据库连接失败</li>
-              <li>网络连接问题</li>
-              <li>环境变量配置错误</li>
-            </ul>
-          </div>
-          <button @click="retryLoad"
-            class="mt-6 text-[10px] font-bold uppercase tracking-widest px-6 py-3 bg-swiss-text text-white hover:bg-swiss-text/90 hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98] transition-all rounded-none">
-            重新加载
-          </button>
+  <!-- Error State -->
+  <div v-if="error" class="min-h-screen bg-white p-8">
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-red-50 border border-red-200 rounded-lg p-8">
+        <h2 class="text-xl font-bold text-red-800 mb-4">加载数据失败</h2>
+        <p class="text-red-700 mb-4">{{ error }}</p>
+        <div class="space-y-2">
+          <p class="text-sm text-red-600">可能的原因：</p>
+          <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
+            <li>Supabase 数据库连接失败</li>
+            <li>网络连接问题</li>
+            <li>环境变量配置错误</li>
+          </ul>
         </div>
+        <button @click="retryLoad"
+          class="mt-6 text-[10px] font-bold uppercase tracking-widest px-6 py-3 bg-swiss-text text-white hover:bg-swiss-text/90 hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98] transition-all rounded-none">
+          重新加载
+        </button>
       </div>
     </div>
+  </div>
 
-    <!-- Main Dashboard Content -->
-    <div v-else class="space-y-12">
-      <div>
-        <TypographyHeader :level="2" size="h2" class="mb-4"> 儀錶盤 Dashboard </TypographyHeader>
-        <p class="text-swiss-text-muted mt-4">歡迎回來，系統概覽如下。</p>
-      </div>
+  <!-- Main Dashboard Content -->
+  <div v-else class="space-y-12">
+    <div>
+      <TypographyHeader :level="2" size="h2" class="mb-4"> 儀錶盤 Dashboard </TypographyHeader>
+      <p class="text-swiss-text-muted mt-4">歡迎回來，系統概覽如下。</p>
+    </div>
     <!-- Stats Grid -->
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-t border-l border-swiss-text/10"
@@ -75,62 +74,55 @@
             <p class="text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-1">
               Frontend Server
             </p>
-             <!-- Shimmer Skeleton for URL -->
-             <div v-if="serverStatus.frontend.loading" class="h-4 w-48 bg-gray-50 relative overflow-hidden">
-               <div class="shimmer absolute inset-0"></div>
-             </div>
+            <!-- Shimmer Skeleton for URL -->
+            <div v-if="serverStatus.frontend.loading" class="h-4 w-48 bg-gray-50 relative overflow-hidden">
+              <div class="shimmer absolute inset-0"></div>
+            </div>
 
-             <p v-else class="text-sm text-swiss-text/60">{{ serverStatus.frontend.url }}</p>
-           </div>
-           <div class="text-right">
-             <!-- Shimmer Skeleton for Status Indicator -->
-             <div v-if="serverStatus.frontend.loading" class="w-3 h-3 rounded-full bg-gray-100 relative overflow-hidden mb-1">
-               <div class="shimmer absolute inset-0"></div>
-             </div>
+            <p v-else class="text-sm text-swiss-text/60">{{ serverStatus.frontend.url }}</p>
+          </div>
+          <div class="text-right">
+            <!-- Shimmer Skeleton for Status Indicator -->
+            <div v-if="serverStatus.frontend.loading"
+              class="w-3 h-3 rounded-full bg-gray-100 relative overflow-hidden mb-1">
+              <div class="shimmer absolute inset-0"></div>
+            </div>
 
-             <!-- Actual Status Indicator -->
-             <span
-               v-else
-               class="w-3 h-3 rounded-full"
-               :class="{
-                 'bg-green-500': serverStatus.frontend.status === 'online',
-                 'bg-red-500': serverStatus.frontend.status === 'offline',
-                 'bg-yellow-500':
-                   serverStatus.frontend.status === 'error' ||
-                   serverStatus.frontend.status === 'unknown',
-               }"
-             ></span>
-             <div class="flex flex-col items-end">
-               <!-- Shimmer Skeleton for Status Text -->
-               <div v-if="serverStatus.frontend.loading" class="h-3 w-16 bg-gray-100 relative overflow-hidden">
-                 <div class="shimmer absolute inset-0"></div>
-               </div>
+            <!-- Actual Status Indicator -->
+            <span v-else class="w-3 h-3 rounded-full" :class="{
+              'bg-green-500': serverStatus.frontend.status === 'online',
+              'bg-red-500': serverStatus.frontend.status === 'offline',
+              'bg-yellow-500':
+                serverStatus.frontend.status === 'error' ||
+                serverStatus.frontend.status === 'unknown',
+            }"></span>
+            <div class="flex flex-col items-end">
+              <!-- Shimmer Skeleton for Status Text -->
+              <div v-if="serverStatus.frontend.loading" class="h-3 w-16 bg-gray-100 relative overflow-hidden">
+                <div class="shimmer absolute inset-0"></div>
+              </div>
 
-               <!-- Actual Status Text -->
-               <span
-                 v-else
-                 class="text-xs font-bold uppercase tracking-wider"
-                 :class="{
-                   'text-green-600': serverStatus.frontend.status === 'online',
-                   'text-red-600': serverStatus.frontend.status === 'offline',
-                   'text-yellow-600':
-                     serverStatus.frontend.status === 'error' ||
-                     serverStatus.frontend.status === 'unknown',
-                 }"
-               >
-                 {{ serverStatus.frontend.status }}
-               </span>
-             </div>
+              <!-- Actual Status Text -->
+              <span v-else class="text-xs font-bold uppercase tracking-wider" :class="{
+                'text-green-600': serverStatus.frontend.status === 'online',
+                'text-red-600': serverStatus.frontend.status === 'offline',
+                'text-yellow-600':
+                  serverStatus.frontend.status === 'error' ||
+                  serverStatus.frontend.status === 'unknown',
+              }">
+                {{ serverStatus.frontend.status }}
+              </span>
+            </div>
 
-             <!-- Shimmer Skeleton for Response Time -->
-             <div v-if="serverStatus.frontend.loading" class="h-3 w-12 bg-gray-50 relative overflow-hidden">
-               <div class="shimmer absolute inset-0"></div>
-             </div>
+            <!-- Shimmer Skeleton for Response Time -->
+            <div v-if="serverStatus.frontend.loading" class="h-3 w-12 bg-gray-50 relative overflow-hidden">
+              <div class="shimmer absolute inset-0"></div>
+            </div>
 
-             <p v-else-if="serverStatus.frontend.responseTime" class="text-[10px] font-mono text-swiss-text-muted">
-               {{ serverStatus.frontend.responseTime }}ms
-             </p>
-             <p v-else class="text-[10px] font-mono text-swiss-text-muted">--</p>
+            <p v-else-if="serverStatus.frontend.responseTime" class="text-[10px] font-mono text-swiss-text-muted">
+              {{ serverStatus.frontend.responseTime }}ms
+            </p>
+            <p v-else class="text-[10px] font-mono text-swiss-text-muted">--</p>
           </div>
         </div>
 
@@ -140,68 +132,61 @@
             <p class="text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted mb-1">
               Backend Server (Supabase)
             </p>
-             <!-- Shimmer Skeleton for URL -->
-             <div v-if="serverStatus.backend.loading" class="h-4 w-48 bg-gray-50 relative overflow-hidden">
-               <div class="shimmer absolute inset-0"></div>
-             </div>
+            <!-- Shimmer Skeleton for URL -->
+            <div v-if="serverStatus.backend.loading" class="h-4 w-48 bg-gray-50 relative overflow-hidden">
+              <div class="shimmer absolute inset-0"></div>
+            </div>
 
-             <p v-else class="text-sm text-swiss-text/60">{{ serverStatus.backend.url }}</p>
-           </div>
-           <div class="text-right">
-             <!-- Shimmer Skeleton for Status Indicator -->
-             <div v-if="serverStatus.backend.loading" class="w-3 h-3 rounded-full bg-gray-100 relative overflow-hidden mb-1">
-               <div class="shimmer absolute inset-0"></div>
-             </div>
+            <p v-else class="text-sm text-swiss-text/60">{{ serverStatus.backend.url }}</p>
+          </div>
+          <div class="text-right">
+            <!-- Shimmer Skeleton for Status Indicator -->
+            <div v-if="serverStatus.backend.loading"
+              class="w-3 h-3 rounded-full bg-gray-100 relative overflow-hidden mb-1">
+              <div class="shimmer absolute inset-0"></div>
+            </div>
 
-             <!-- Actual Status Indicator -->
-             <span
-               v-else
-               class="w-3 h-3 rounded-full"
-               :class="{
-                 'bg-green-500': serverStatus.backend.status === 'online',
-                 'bg-red-500': serverStatus.backend.status === 'offline',
-                 'bg-yellow-500':
-                   serverStatus.backend.status === 'error' ||
-                   serverStatus.backend.status === 'unknown',
-               }"
-             ></span>
+            <!-- Actual Status Indicator -->
+            <span v-else class="w-3 h-3 rounded-full" :class="{
+              'bg-green-500': serverStatus.backend.status === 'online',
+              'bg-red-500': serverStatus.backend.status === 'offline',
+              'bg-yellow-500':
+                serverStatus.backend.status === 'error' ||
+                serverStatus.backend.status === 'unknown',
+            }"></span>
 
-             <!-- Shimmer Skeleton for Status Text -->
-             <div v-if="serverStatus.backend.loading" class="h-3 w-16 bg-gray-100 relative overflow-hidden">
-               <div class="shimmer absolute inset-0"></div>
-             </div>
+            <div class="flex flex-col items-end">
+              <!-- Shimmer Skeleton for Status Text -->
+              <div v-if="serverStatus.backend.loading" class="h-3 w-16 bg-gray-100 relative overflow-hidden">
+                <div class="shimmer absolute inset-0"></div>
+              </div>
 
-             <!-- Actual Status Text -->
-             <span
-               v-else
-               class="text-xs font-bold uppercase tracking-wider"
-               :class="{
-                 'text-green-600': serverStatus.backend.status === 'online',
-                 'text-red-600': serverStatus.backend.status === 'offline',
-                 'text-yellow-600':
-                   serverStatus.backend.status === 'error' ||
-                   serverStatus.backend.status === 'unknown',
-               }"
-             >
-               {{ serverStatus.backend.status }}
-             </span>
+              <!-- Actual Status Text -->
+              <span v-else class="text-xs font-bold uppercase tracking-wider" :class="{
+                'text-green-600': serverStatus.backend.status === 'online',
+                'text-red-600': serverStatus.backend.status === 'offline',
+                'text-yellow-600':
+                  serverStatus.backend.status === 'error' ||
+                  serverStatus.backend.status === 'unknown',
+              }">
+                {{ serverStatus.backend.status }}
+              </span>
+            </div>
 
-             <!-- Shimmer Skeleton for Response Time -->
-             <div v-if="serverStatus.backend.loading" class="h-3 w-12 bg-gray-50 relative overflow-hidden">
-               <div class="shimmer absolute inset-0"></div>
-             </div>
+            <!-- Shimmer Skeleton for Response Time -->
+            <div v-if="serverStatus.backend.loading" class="h-3 w-12 bg-gray-50 relative overflow-hidden">
+              <div class="shimmer absolute inset-0"></div>
+            </div>
 
-             <p v-else-if="serverStatus.backend.responseTime" class="text-[10px] font-mono text-swiss-text-muted">
-               {{ serverStatus.backend.responseTime }}ms
-             </p>
-             <p v-else class="text-[10px] font-mono text-swiss-text-muted">--</p>
-           </div>
+            <p v-else-if="serverStatus.backend.responseTime" class="text-[10px] font-mono text-swiss-text-muted">
+              {{ serverStatus.backend.responseTime }}ms
+            </p>
+            <p v-else class="text-[10px] font-mono text-swiss-text-muted">--</p>
+          </div>
         </div>
 
         <!-- Last Updated -->
-        <div
-          class="flex items-center justify-between text-[10px] text-swiss-text-muted uppercase tracking-widest pt-2"
-        >
+        <div class="flex items-center justify-between text-[10px] text-swiss-text-muted uppercase tracking-widest pt-2">
           <span>Last Updated</span>
           <span v-if="serverStatus.loading" class="animate-pulse">更新中...</span>
           <span v-else>{{ lastUpdated }}</span>
@@ -213,50 +198,41 @@
     <div class="bg-white border border-swiss-text/10">
       <div class="p-6 md:p-8 border-b border-swiss-text/10 flex justify-between items-center">
         <TypographyHeader :level="3" size="h4" class="!mb-0"> 近期詢盤 </TypographyHeader>
-        <NuxtLink
-          to="/admin/inquiries"
-          class="text-[10px] font-bold uppercase tracking-widest text-swiss-text hover:text-swiss-text-muted transition-colors"
-        >
+        <NuxtLink to="/admin/inquiries"
+          class="text-[10px] font-bold uppercase tracking-widest text-swiss-text hover:text-swiss-text-muted transition-colors">
           查看全部 <span class="ml-2">→</span>
         </NuxtLink>
       </div>
-       <div class="overflow-x-auto">
-         <!-- Shimmer Skeleton for Table -->
-         <div v-if="inquiriesLoading" class="space-y-4 p-6 md:p-8">
-           <!-- Table Header Skeleton -->
-           <div class="flex border-b border-swiss-text/10 pb-4 mb-4">
-             <div v-for="i in 4" :key="i" class="flex-1 px-4">
-               <div class="h-3 w-16 bg-gray-50 relative overflow-hidden">
-                 <div class="shimmer absolute inset-0"></div>
-               </div>
-             </div>
-           </div>
-           <!-- Table Rows Skeleton -->
-           <div v-for="j in 5" :key="j" class="flex border-b border-swiss-text/5 py-4">
-             <div v-for="i in 4" :key="i" class="flex-1 px-4">
-               <div
-                 class="h-4 bg-gray-50 relative overflow-hidden"
-                 :style="{ width: (Math.random() * 40 + 40) + '%' }"
-               >
-                 <div class="shimmer absolute inset-0"></div>
-               </div>
-             </div>
-           </div>
-         </div>
- 
-         <!-- Empty State for Inquiries -->
-         <div
-           v-else-if="inquiries.length === 0"
-           class="p-12 text-center text-swiss-text-muted uppercase tracking-widest text-[10px]"
-         >
-           暂無記錄
-         </div>
+      <div class="overflow-x-auto">
+        <!-- Shimmer Skeleton for Table -->
+        <div v-if="inquiriesLoading" class="space-y-4 p-6 md:p-8">
+          <!-- Table Header Skeleton -->
+          <div class="flex border-b border-swiss-text/10 pb-4 mb-4">
+            <div v-for="i in 4" :key="i" class="flex-1 px-4">
+              <div class="h-3 w-16 bg-gray-50 relative overflow-hidden">
+                <div class="shimmer absolute inset-0"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Table Rows Skeleton -->
+          <div v-for="j in 5" :key="j" class="flex border-b border-swiss-text/5 py-4">
+            <div v-for="i in 4" :key="i" class="flex-1 px-4">
+              <div class="h-4 bg-gray-50 relative overflow-hidden" :style="{ width: (Math.random() * 40 + 40) + '%' }">
+                <div class="shimmer absolute inset-0"></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-         <!-- Inquiries Table -->
-         <table v-else class="w-full text-left text-sm">
-          <thead
-            class="bg-swiss-bg-soft text-swiss-text-muted uppercase text-[10px] tracking-widest font-bold"
-          >
+        <!-- Empty State for Inquiries -->
+        <div v-else-if="inquiries.length === 0"
+          class="p-12 text-center text-swiss-text-muted uppercase tracking-widest text-[10px]">
+          暂無記錄
+        </div>
+
+        <!-- Inquiries Table -->
+        <table v-else class="w-full text-left text-sm">
+          <thead class="bg-swiss-bg-soft text-swiss-text-muted uppercase text-[10px] tracking-widest font-bold">
             <tr>
               <th class="px-6 md:px-8 py-4">客戶 / 公司</th>
               <th class="px-6 md:px-8 py-4">信息摘要</th>
@@ -265,11 +241,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-swiss-text/10">
-            <tr
-              v-for="inquiry in inquiries"
-              :key="inquiry.id"
-              class="hover:bg-swiss-bg-soft transition-colors"
-            >
+            <tr v-for="inquiry in inquiries" :key="inquiry.id" class="hover:bg-swiss-bg-soft transition-colors">
               <td class="px-6 md:px-8 py-4">
                 <div class="font-medium text-swiss-text">{{ inquiry.email }}</div>
                 <div class="text-[10px] text-swiss-text-muted uppercase tracking-wider">
@@ -279,20 +251,15 @@
               <td class="px-6 md:px-8 py-4 text-swiss-text-muted truncate max-w-xs">
                 {{ inquiry.message }}
               </td>
-              <td
-                class="px-6 md:px-8 py-4 text-swiss-text-muted text-[10px] uppercase tracking-wider"
-              >
+              <td class="px-6 md:px-8 py-4 text-swiss-text-muted text-[10px] uppercase tracking-wider">
                 {{ formatDate(inquiry.created_at) }}
               </td>
               <td class="px-6 md:px-8 py-4">
-                <span
-                  class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest"
-                  :class="[
-                    inquiry.status === 'new'
-                      ? 'bg-swiss-text text-white'
-                      : 'bg-swiss-bg-soft text-swiss-text',
-                  ]"
-                >
+                <span class="px-3 py-1 text-[10px] font-bold uppercase tracking-widest" :class="[
+                  inquiry.status === 'new'
+                    ? 'bg-swiss-text text-white'
+                    : 'bg-swiss-bg-soft text-swiss-text',
+                ]">
                   {{ inquiry.status }}
                 </span>
               </td>
@@ -301,7 +268,6 @@
         </table>
       </div>
     </div>
-  </div>
   </div>
 </template>
 

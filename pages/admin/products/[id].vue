@@ -51,7 +51,7 @@
                     <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
                       lang.label
                     }}</label>
-                    <input v-model="form.name[lang.key]" :placeholder="`輸入 ${lang.label} 名稱`"
+                    <input v-model="(form.name as any)[lang.key]" :placeholder="`輸入 ${lang.label} 名稱`"
                       class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text mt-1" />
                   </div>
                 </div>
@@ -66,7 +66,7 @@
                     <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
                       lang.label
                     }}</label>
-                    <textarea v-model="form.description[lang.key]" :placeholder="`輸入 ${lang.label} 描述`" rows="4"
+                    <textarea v-model="(form.description as any)[lang.key]" :placeholder="`輸入 ${lang.label} 描述`" rows="4"
                       class="w-full px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text mt-1" />
                   </div>
                 </div>

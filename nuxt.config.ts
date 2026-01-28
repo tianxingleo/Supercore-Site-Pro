@@ -85,6 +85,8 @@ export default defineNuxtConfig({
         '/zh-CN/**',
         '/en',
         '/en/**',
+        '/_nuxt',
+        '/_nuxt/',
         '/_nuxt/**',
       ],
     },

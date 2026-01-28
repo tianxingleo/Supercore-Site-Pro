@@ -5,14 +5,14 @@ export function validateCreateInquiry(body: any) {
   if (!email || typeof email !== 'string' || email.trim() === '') {
     throw createError({
       statusCode: 400,
-      statusMessage: '電郵地址為必填項',
+      message: '電郵地址為必填項',
     })
   }
 
   if (!message || typeof message !== 'string' || message.trim() === '') {
     throw createError({
       statusCode: 400,
-      statusMessage: '訊息內容為必填項',
+      message: '訊息內容為必填項',
     })
   }
 
@@ -21,7 +21,7 @@ export function validateCreateInquiry(body: any) {
   if (!emailRegex.test(email)) {
     throw createError({
       statusCode: 400,
-      statusMessage: '電郵地址格式不正確',
+      message: '電郵地址格式不正確',
     })
   }
 
@@ -29,21 +29,21 @@ export function validateCreateInquiry(body: any) {
   if (email.length > 255) {
     throw createError({
       statusCode: 400,
-      statusMessage: '電郵地址過長',
+      message: '電郵地址過長',
     })
   }
 
   if (company && company.length > 255) {
     throw createError({
       statusCode: 400,
-      statusMessage: '公司名稱過長',
+      message: '公司名稱過長',
     })
   }
 
   if (message.length > 5000) {
     throw createError({
       statusCode: 400,
-      statusMessage: '訊息內容過長（最多 5000 字）',
+      message: '訊息內容過長（最多 5000 字）',
     })
   }
 
