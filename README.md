@@ -6,75 +6,173 @@
 
 這是一個為香港及海外市場提供高端基礎設施解決方案的企業官網，採用現代化的技術棧和設計理念。
 
-公司名稱：超核技術有限公司
-公司地址：九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位
+**公司名稱**：超核技術有限公司
+**公司地址**：九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位
 
-Company Name:SUPERCORE TECHNOLOGY LIMITED
-Company Address:ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL
+**Company Name**: SUPERCORE TECHNOLOGY LIMITED
+**Company Address**: ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL
 
-香港公司 SUPERCORE TECHNOLOGY LIMITED
+---
 
-### 核心特性
+## 核心特性
 
 - 🎨 **Swiss International Style** - 極簡主義設計，40%+ 負空間
 - 🌐 **多語言支持** - 繁體中文（香港）、简体中文、English
-- 🎭 **3D 滾動敘事** - 使用 Three.js 實現伺服器爆炸動畫
+- 🎭 **3D 交互場景** - Three.js 3D 伺服器模型展示
 - 📱 **響應式設計** - 桌面端 3D + 移動端優化降級
-- ⚡ **性能優化** - ISR 緩存策略，優化首屏加載
-- 🔍 **SEO 友好** - 完整的 SEO 配置和 sitemap
+- 🎬 **GSAP 動畫** - 流暢的滾動觸發動畫效果
+- ⚡ **性能優化** - WebP 圖片、懶加載、ISR 緩存策略
+- 🔍 **SEO 友好** - 結構化數據、動態 Sitemap、完整 Meta 標籤
+- ♿ **可訪問性** - 完整 ARIA 標籤、鍵盤導航支援
+- 🛠️ **完整 CMS 後台** - 產品/新聞/詢盤管理、批量操作、全局搜索
+
+---
 
 ## 技術棧
 
 ### 前端框架
-
 - **Nuxt 3** - Vue 3 SSR 框架
 - **TypeScript** - 嚴格類型檢查
 - **Vue 3 Composition API** - 響應式開發
 
 ### 樣式與設計
-
 - **Tailwind CSS** - 實用工具 CSS 框架
+- **Nuxt UI** - 基於 Tailwind 的 UI 組件庫
 - **Swiss Design System** - 自定義設計系統
-- **自定義字體** - Inter + Noto Sans HK
+- **字體**: Inter + Noto Sans HK
 
 ### 動畫與 3D
-
-- **Three.js** - 3D 渲染引擎
-- **GSAP + ScrollTrigger** - 滾動動畫
+- **Three.js** - 3D 渲染引擎（桌面端）
+- **GSAP + ScrollTrigger** - 滾動動畫系統
 - **Lenis** - 平滑滾動體驗
 
 ### 數據與內容
-
-- **模擬數據層** - 獨立前端開發
+- **Supabase** - PostgreSQL 資料庫 + 認證 + 儲存
 - **多語言 i18n** - 完整翻譯支持
+- **Tiptap** - 富文本編輯器
+
+---
 
 ## 項目結構
 
 ```
 Web-For-HK/
-├── assets/              # 靜態資源
-├── components/          # Vue 組件
-│   ├── 3d/             # 3D 場景組件
-│   ├── navigation/     # 導航組件
-│   ├── products/       # 產品組件
-│   ├── solutions/      # 解決方案組件
-│   ├── contact/        # 聯絡表單組件
-│   └── swiss/          # Swiss 設計組件
-├── composables/        # Vue composables
-├── layouts/            # 頁面佈局
-├── pages/              # 頁面路由
-├── public/             # 公共資源
-├── server/             # 服務器端 API
-├── types/              # TypeScript 類型
-└── utils/              # 工具函數
+├── .env                    # 环境变量配置
+├── .env.example           # 环境变量模板
+├── app.config.ts          # 应用配置（UI主题、按钮样式等）
+├── app.vue                # 根组件
+├── nuxt.config.ts         # Nuxt配置（模块、路由规则、i18n等）
+├── package.json           # 依赖和脚本
+│
+├── assets/                # 静态资源
+│   └── css/               # 全局样式
+│
+├── components/            # Vue组件（核心！）
+│   ├── 3d/               # 3D场景组件
+│   ├── admin/            # 后台管理组件
+│   ├── contact/          # 联系表单
+│   ├── home/             # 首页组件
+│   ├── navigation/       # 导航组件
+│   ├── news/             # 新闻组件
+│   ├── products/         # 产品组件
+│   ├── solutions/        # 解决方案组件
+│   ├── swiss/            # Swiss设计系统组件
+│   └── ui/               # 通用UI组件
+│
+├── composables/           # Vue组合式函数
+│   ├── useDeviceDetection.ts    # 设备检测
+│   ├── usePerformanceMonitor.ts # 性能监控
+│   ├── useServerAnimation.ts    # 服务端动画
+│   ├── useStructuredData.ts     # 结构化数据
+│   └── useSwissGrid.ts          # Swiss网格布局
+│
+├── layouts/               # 页面布局
+│   ├── default.vue        # 默认布局（前台）
+│   └── admin.vue          # 后台布局
+│
+├── pages/                 # 页面路由（文件路由）
+│   ├── index.vue          # 首页
+│   ├── products/          # 产品页面
+│   ├── news/              # 新闻页面
+│   ├── solutions/         # 解决方案页面
+│   ├── about.vue          # 关于页面
+│   ├── contact.vue        # 联系页面
+│   └── admin/             # 后台管理页面
+│
+├── server/                # 服务端
+│   ├── api/               # API端点
+│   │   ├── products/      # 产品API
+│   │   ├── news/          # 新闻API
+│   │   ├── inquiries/     # 询盘API
+│   │   ├── admin/         # 后台API
+│   │   └── stats/         # 统计API
+│   ├── middleware/        # 中间件
+│   └── utils/             # 服务端工具
+│
+├── public/                # 公共静态文件
+│   ├── models/            # 3D模型文件
+│   │   └── server/        # 服务器模型（4.8MB）
+│   ├── robots.txt         # 搜索引擎爬虫配置
+│   └── icon.png           # 网站图标
+│
+├── plugins/               # Nuxt插件
+│   ├── gsap.client.ts     # GSAP动画库（客户端）
+│   ├── seo.ts             # SEO插件
+│   └── supabase-*.ts      # Supabase相关插件
+│
+├── middleware/            # Nuxt中间件
+│   └── errorHandler.ts    # 错误处理中间件
+│
+├── types/                 # TypeScript类型定义
+│   └── index.ts           # 主要类型
+│
+├── utils/                 # 前端工具函数
+│   ├── apiHandler.ts      # API处理
+│   ├── imagePlaceholder.ts # 图片占位符
+│   └── logger.ts          # 日志工具
+│
+├── database/              # 数据库相关
+│   └── migrations/        # 数据库迁移文件
+│
+├── docs/                  # 文档
+│   ├── ADMIN_ENHANCEMENTS.md
+│   ├── QUICK_START_ADMIN.md
+│   └── IMPLEMENTATION_SUMMARY.md
+│
+├── i18n/                  # 国际化配置
+│   └── locales/           # 语言文件
+│       ├── zh-HK.json     # 繁体中文（香港）
+│       ├── zh-CN.json     # 简体中文
+│       └── en.json        # 英文
+│
+└── migration-assets/      # 迁移辅助资源
+    └── scripts/           # 数据迁移脚本
 ```
 
+---
+
 ## 快速開始
+
+### 環境要求
+
+- Node.js 18+
+- npm 或 yarn 或 pnpm
 
 ### 安裝依賴
 
 ```bash
 npm install
+```
+
+### 配置環境變量
+
+創建 `.env` 文件：
+
+```env
+# Supabase 配置
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_anon_key
+SUPABASE_SECRET_KEY=your_supabase_service_role_key
 ```
 
 ### 開發服務器
@@ -97,50 +195,231 @@ npm run build
 npm run preview
 ```
 
+---
+
 ## 核心頁面
 
-- **首頁** (`/`) - 3D 動畫 Hero 區塊 + 特性展示
-- **產品** (`/products`) - 產品列表和詳情
-- **解決方案** (`/solutions`) - 分類解決方案展示
-- **關於我們** (`/about`) - 公司介紹和發展歷程
-- **聯絡我們** (`/contact`) - 聯絡表單和資訊
+### 前台頁面
+
+- **首頁** (`/`) - 3D 場景 Hero 區塊 + 產品分類展示
+- **產品** (`/products`) - 產品列表和詳情頁
+- **解決方案** (`/solutions`) - 解決方案展示
+- **新聞** (`/news`) - 新聞列表和詳情頁
+- **關於我們** (`/about`) - 公司介紹
+- **聯絡我們** (`/contact`) - 聯絡表單
+
+### 後台管理 (`/admin`)
+
+- **儀表板** (`/admin`) - 系統概覽、統計數據
+- **產品管理** (`/admin/products`) - 產品 CRUD、批量操作
+- **新聞管理** (`/admin/news`) - 新聞 CRUD、富文本編輯
+- **詢盤管理** (`/admin/inquiries`) - 客戶詢盤查看
+- **全局搜索** - 跨資源實時搜索
+- **活動日誌** (`/admin/logs`) - 操作歷史記錄
+- **登錄** (`/admin/login`) - 管理員認證
+
+---
+
+## 3D 場景說明
+
+### 已實現功能 ✅
+
+1. **完整的 Three.js 場景框架**
+   - 場景、相機、渲染器配置
+   - 環境光、平行光、輪廓光照明系統
+   - 鼠標視差效果（3D 模型跟隨鼠標移動）
+
+2. **真實的 3D 伺服器模型**
+   - 模型文件：`public/models/server/model.obj` (4.8MB, 38,006 面)
+   - 材質文件：`public/models/server/model.mtl` (9 種材質)
+   - 自動縮放和居中對齊
+
+3. **設備檢測與降級**
+   - 桌面端：完整 3D 場景
+   - 移動端：靜態圖片降級方案
+   - `useDeviceDetection` composable 自動判斷
+
+4. **加載狀態管理**
+   - PlaceholderCanvas 加載占位符
+   - 加載進度顯示
+   - 優雅的錯誤處理
+
+### 待完善功能 📋
+
+- 機櫃門開啟動畫
+- 組件爆炸拆解效果
+- 重新組裝動畫
+- 更複雜的滾動敘事效果
+
+---
 
 ## 動畫系統
 
-### 4 階段滾動動畫
+### 已實現的 GSAP 動畫
 
-1. **淡入** (0-20%) - 立方體從小到大放大
-2. **機櫃打開** (20-50%) - 旋轉並移動展示內部
-3. **組件爆炸** (50-80%) - 組件向外散開
-4. **重新組裝** (80-100%) - 組件重新組合
+1. **Feature Items 特性展示**
+   - 分隔線擴展動畫
+   - 文字上滑淡入
+   - 數字淡入效果
+   - 交錯顯示（stagger）
 
-### 設備檢測
+2. **News Cards 新聞卡片**
+   - 批量觸發動畫（ScrollTrigger.batch）
+   - 上滑淡入效果
+   - 交錯延遲顯示
 
-- 桌面端：完整 3D 動畫體驗
-- 移動端：優化的降級方案（靜態圖片 + 動畫）
+3. **Reveal Sections 區域淡入**
+   - 通用淡入效果
+   - 觸發點：元素頂部到達視口 85%
+
+---
 
 ## 設計系統
 
-### Swiss 顏色
+### Swiss 配色方案
 
-- Background: `#F5F5F7` (mica gray)
-- Text: `#1D1D1F` (deep charcoal)
-- Secondary: `#86868b` (metal gray)
-- Accent: `#0071e3` (international blue)
+```css
+Background: #F5F5F7 (mica gray)
+Text: #1D1D1F (deep charcoal)
+Secondary: #86868b (metal gray)
+Accent: #0071e3 (international blue)
+```
 
-### 排版
+### 排版系統
 
-- Display: 48px / 4rem
-- H1: 36px / 3rem
-- H2: 30px / 2.5rem
-- H3: 24px / 2rem
-- H4: 20px / 1.25rem
-- H5: 16px / 1rem
-- H6: 14px / 0.875rem
+```css
+Display: 48px / 4rem
+H1: 36px / 3rem
+H2: 30px / 2.5rem
+H3: 24px / 2rem
+H4: 20px / 1.25rem
+H5: 16px / 1rem
+H6: 14px / 0.875rem
+```
+
+### Swiss 設計原則
+
+1. **極簡主義** - 去除一切非必要元素
+2. **網格系統** - 數學化精確佈局
+3. **無襯線字體** - Inter + Noto Sans HK
+4. **負空間** - 40% 以上留白
+5. **克制的色彩** - 黑、白、灰為主，國際藍點綴
+
+---
+
+## 性能優化
+
+### 已實現的優化 ✅
+
+- **WebP 圖片格式** - 體積減少 25-35%
+- **響應式圖片** - 根據屏幕尺寸加載合適尺寸
+- **圖片懶加載** - 列表頁延遲加載
+- **圖片預加載** - 關鍵圖片優先加載
+- **Blur 占位符** - 改善感知體驗
+- **高 DPI 支持** - 視網膜屏幕優化
+- **ISR 緩存策略** - 增量靜態再生
+- **代碼分割** - Nuxt 自動優化
+- **性能監控** - Core Web Vitals 追蹤（LCP、FID、CLS）
+
+---
+
+## SEO 配置
+
+### 已實現 ✅
+
+- **Meta 標籤** - 完整的頁面元信息
+- **Open Graph** - 社交媒體分享優化
+- **Twitter Cards** - Twitter 分享卡片
+- **Canonical URL** - 避免重複內容
+- **動態 Sitemap** - 從數據庫自動生成
+- **Robots.txt** - 搜索引擎爬蟲配置
+- **結構化數據** - JSON-LD 格式
+  - 產品結構化數據
+  - 文章結構化數據
+  - 組織結構化數據
+  - 麵包屑結構化數據
+
+---
+
+## 可訪問性（A11y）
+
+### 已實現 ✅
+
+- **完整 ARIA 標籤**
+  - 導航：aria-label、aria-current、role
+  - 語言切換器：aria-haspopup、aria-expanded、aria-selected
+  - 表單：aria-required、autocomplete
+  - 按鈕：aria-label 描述
+- **鍵盤導航** - 全功能支持
+- **焦點管理** - 清晰的焦點指示
+- **屏幕閱讀器優化** - 語義化 HTML 標籤
+
+---
+
+## CMS 後台功能
+
+### 產品管理
+
+- 列表視圖（表格 + 縮略圖）
+- 多語言編輯器（Tab 切換）
+- 規格參數生成器（Key-Value）
+- 圖片上傳（拖拽、預覽）
+- 批量操作（刪除、發布、草稿）
+- 數據導出（JSON/CSV）
+
+### 新聞管理
+
+- 富文本編輯器（Tiptap）
+- Markdown 支持
+- 封面圖管理
+- 標籤系統
+- 發布時間控制
+- 批量刪除
+- 數據導出
+
+### 詢盤管理
+
+- 客戶留言查看
+- 狀態追蹤（new, contacted, closed）
+- 批量操作
+- 數據導出
+
+### 其他功能
+
+- **全局搜索** - 跨產品/新聞/詢盤實時搜索
+- **活動日誌** - 完整操作歷史追蹤
+- **數據統計** - 產品/新聞/詢盤數量統計
+- **圖片上傳組件** - 支持拖拽、預覽、壓縮
+
+---
+
+## 數據庫架構
+
+### 核心表結構
+
+1. **products** - 產品表（多語言名稱、JSONB 規格）
+2. **posts** - 資訊/博客表（多語言內容）
+3. **solutions** - 解決方案表
+4. **inquiries** - 客戶詢盤表
+5. **admin_logs** - 管理員操作日誌
+6. **profiles** - 管理員權限表（Supabase Auth 擴展）
+
+### 存儲桶（Storage Buckets）
+
+- **product-assets** - 產品圖片和 3D 模型
+- **site-media** - 網站媒體資源
+
+### 安全策略
+
+- **RLS（Row Level Security）** - 行級安全控制
+- **Public** - 僅 SELECT 權限（已發布內容）
+- **Admin** - 完整 CRUD 權限
+
+---
 
 ## 部署
 
-### Vercel (推薦)
+### Vercel（推薦）
 
 ```bash
 # 安裝 Vercel CLI
@@ -159,14 +438,17 @@ vercel
 - Railway
 - 自建伺服器
 
-## 環境變量
+### 環境變量配置
 
-創建 `.env` 文件：
+在部署平台設置以下環境變量：
 
 ```env
-# API 端點（未來使用）
-NUXT_PUBLIC_API_URL=https://api.supercore.com.hk
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_anon_key
+SUPABASE_SECRET_KEY=your_supabase_service_role_key
 ```
+
+---
 
 ## Git 工作流
 
@@ -182,23 +464,20 @@ git commit -m "feat: add new feature"
 git push origin feat/new-feature
 ```
 
-## 性能優化
+### 提交信息規範
 
-- ✅ ISR 緩存策略
-- ✅ 圖片懶加載（待實現）
-- ✅ 代碼分割
-- ✅ Tree shaking
-- ✅ Gzip 壓縮
-- ✅ CDN 邊緣節點
+使用 Conventional Commits：
 
-## SEO 配置
+- `feat:` - 新功能
+- `fix:` - Bug 修復
+- `docs:` - 文檔更新
+- `style:` - 代碼格式調整
+- `refactor:` - 重構
+- `perf:` - 性能優化
+- `test:` - 測試
+- `chore:` - 構建過程或輔助工具變動
 
-- ✅ Meta tags
-- ✅ Open Graph
-- ✅ Twitter Cards
-- ✅ Sitemap.xml
-- ✅ Robots.txt
-- ✅ 結構化數據（待實現）
+---
 
 ## 瀏覽器支持
 
@@ -208,6 +487,32 @@ git push origin feat/new-feature
 - Mobile Safari iOS 14+
 - Chrome Android 10+
 
+---
+
+## 待完善功能
+
+### 短期優化
+
+- [ ] AI 輔助翻譯（多語言內容生成）
+- [ ] 圖片自動化處理（背景檢測、智能壓縮）
+- [ ] A/B 測試支持
+
+### 長期規劃
+
+- [ ] 3D 動畫增強（機櫃開啟、組件爆炸效果）
+- [ ] 更多結構化數據類型
+- [ ] 產品預覽模式
+
+---
+
+## 文檔
+
+- [管理後台快速開始](./docs/QUICK_START_ADMIN.md)
+- [後台功能增強說明](./docs/ADMIN_ENHANCEMENTS.md)
+- [實現總結](./docs/IMPLEMENTATION_SUMMARY.md)
+
+---
+
 ## 許可證
 
 MIT License
@@ -216,150 +521,5 @@ MIT License
 
 **SUPERCORE TECHNOLOGY LIMITED** - 為香港及海外市場提供專業基礎設施解決方案
 
-# 第一部分：数据库架构设计 (Supabase PostgreSQL)
-
-我们不需要复杂的几十张表，只需 **6 张核心表** 即可支撑整个业务。
-
-### 1. 核心表结构 (Schema Design)
-
-#### A. `products` (产品表 - 核心资产)
-
-这是最复杂的表，利用 `JSONB` 存储多语言和不定的规格参数。
-
-| **字段名**     | **类型**  | **说明**          | **示例数据 (JSON 结构)**                                                      |
-| -------------- | --------- | ----------------- | ----------------------------------------------------------------------------- |
-| `id`           | int8      | 主键              | 1001                                                                          |
-| `slug`         | text      | URL 标识 (Unique) | `supercore-g2-server`                                                             |
-| `name`         | **jsonb** | **多语言名称**    | `{"hk": "SUPERCORE G2 伺服器", "cn": "SUPERCORE G2 服务器", "en": "SUPERCORE G2 Server"}` |
-| `description`  | **jsonb** | **多语言简介**    | `{"hk": "专为 AI 训练设计...", "en": "Designed for AI..."}`                   |
-| `category`     | text      | 分类              | `server`, `storage`, `network`                                                |
-| `specs`        | **jsonb** | **规格参数**      | `{"cpu": "2x AMD EPYC", "ram": "2TB", "gpu": "8x H100"}`                      |
-| `images`       | text[]    | 图片数组          | `["/p/server-front.png", "/p/server-open.png"]`                               |
-| `model_3d_url` | text      | Spline/GLB 链接   | `https://prod.spline.design/...`                                              |
-| `is_featured`  | bool      | 首页推荐          | `true`                                                                        |
-| `status`       | text      | 状态              | `published`, `draft`, `archived`                                              |
-
-#### B. `posts` (资讯/博客表)
-
-用于发布行业动态和公司新闻。
-
-| **字段名**     | **类型**    | **说明**             | **示例数据**                                    |
-| -------------- | ----------- | -------------------- | ----------------------------------------------- |
-| `id`           | int8        | 主键                 |                                                 |
-| `title`        | **jsonb**   | 多语言标题           | `{"hk": "本公司获得...", "en": "We won..."}`    |
-| `content`      | **jsonb**   | 多语言正文(Markdown) | `{"hk": "# 大事记...", "en": "# Milestone..."}` |
-| `cover_image`  | text        | 封面图               | 必须是黑白或去底风格                            |
-| `published_at` | timestamptz | 发布时间             |                                                 |
-| `tags`         | text[]      | 标签                 | `["AI", "Infrastructure"]`                      |
-
-#### C. `solutions` (解决方案表)
-
-用于展示“IDC建设”、“运维咨询”等非实体产品。
-
-| **字段名** | **类型** | **说明**                           |
-| ---------- | -------- | ---------------------------------- |
-| `id`       | int8     | 主键                               |
-| `title`    | jsonb    | 多语言标题                         |
-| `icon`     | text     | Lucide 图标代号 (如 `ServerCrash`) |
-| `features` | jsonb    | 核心卖点列表                       |
-
-#### D. `inquiries` (客户询盘表)
-
-存储联系表单提交的数据。
-
-| **字段名** | **类型** | **说明**                     |
-| ---------- | -------- | ---------------------------- |
-| `id`       | int8     | 主键                         |
-| `email`    | text     | 客户邮箱                     |
-| `company`  | text     | 公司名称                     |
-| `message`  | text     | 留言内容                     |
-| `status`   | text     | `new`, `contacted`, `closed` |
-
-#### E. `site_config` (全站配置 - 这里的“开关”很重要)
-
-用于控制网站的全局状态，无需重新部署代码。
-
-| **字段名** | **类型** | **说明** | **示例**                                   |
-| ---------- | -------- | -------- | ------------------------------------------ |
-| `key`      | text     | 配置键   | `promo_banner`                             |
-| `value`    | jsonb    | 配置值   | `{"enabled": true, "text_hk": "双11优惠"}` |
-
-#### F. `profiles` (管理员表)
-
-Supabase Auth 的扩展表，用于通过 RLS 控制后台访问权限。
-
----
-
-### 2. 存储设计 (Storage Buckets)
-
-在 Supabase Storage 创建两个公开的 Bucket：
-
-1. **`product-assets`**: 存放去底的产品 PNG、3D 模型文件。
-2. **`site-media`**: 存放博客封面、Banner 图。
-
-**关键策略：** 开启 Supabase 的 Image Transformation 功能。前端请求图片时，可以加上 `?width=800&format=webp`，自动优化性能。
-
----
-
-### 3. 安全策略 (RLS - Row Level Security)
-
-这是最重要的一步，防止数据库裸奔。
-
-- **Public (匿名用户):** 仅拥有 `products`, `posts`, `solutions` 的 `SELECT` 权限 (且 `status = 'published'`)。
-- **Admin (管理员):** 拥有所有表的 `ALL` 权限 (CRUD)。
-
----
-
-# 第二部分：管理后台设计 (Admin Panel)
-
-**设计原则：** 后台也要“瑞士风”。简洁、克制、无废话。不要用花哨的 Admin 模板，直接用 Nuxt UI 手写布局。
-
-### 1. 技术栈
-
-- **框架:** Nuxt 3 (与前台在同一个项目中，路由为 `/admin/...`)
-- **UI 组件:** **Nuxt UI** (基于 Tailwind，自带 Dark Mode，极简风格)。
-- **编辑器:** **Tiptap** (Headless 富文本编辑器) 或 **Vue-Markdown-Editor**。
-
-### 2. 功能模块规划 (Sitemap)
-
-- **`/admin/login`**: 极简登录页 (Email + Password)。
-- **`/admin/dashboard`**:
-  - 显示今日询盘数量。
-  - 显示网站当前的“系统状态” (3D 地球是否开启，促销条是否开启)。
-- **`/admin/products`**:
-  - **列表页:** 表格展示，带缩略图。
-  - **编辑页 (重点):**
-    - _基本信息:_ 输入框。
-    - _多语言切换器:_ 一个 Tab 栏 `[ 繁体 | 简体 | English ]`，切换 Tab 时输入框绑定的 JSON 字段不同。
-    - _规格生成器:_ "Add Spec" 按钮，点击添加一行 `Key - Value` 键值对。
-    - _图片上传:_ 拖拽上传区，上传后自动显示预览，**并强制提示：“请确保图片为透明背景 PNG”**。
-- **`/admin/news`**: Markdown 编辑器。
-- **`/admin/inquiries`**: 查看客户留言。
-
----
-
-# 第三部分：防呆设计与工作流 (The Workflow)
-
-为了确保同事（非技术人员）不会破坏网站美感，后台必须加入“硬限制”。
-
-### 1. 自动化的图片处理
-
-在后台上传图片时，触发 Supabase Edge Function 或前端 JS：
-
-- **限制:** 仅允许 PNG/JPG/WEBP。
-- **压缩:** 上传前自动调用 `browser-image-compression` 库进行压缩。
-- **校验:** 如果图片长宽比太离谱（比如超长条），弹出警告。
-
-### 2. 多语言自动补全 (AI 辅助)
-
-在编辑产品时，增加一个 **"✨ AI Translate"** 按钮。
-
-- **逻辑:** 同事只输入“繁体中文”的内容，点击按钮，调用 OpenAI/Gemini API，自动填好“简体中文”和“英文”的输入框。
-- **Prompt:** _"Translate this technical server description into Hong Kong Traditional Chinese (professional IT terminology) and English."_
-
-### 3. 内容预览 (Preview Mode)
-
-在发布前，必须提供一个 **"Preview"** 按钮。
-
-- 点击后，弹出一个新窗口，渲染真实的前端页面（传入 `preview=true` 参数，让 RLS 允许读取 draft 状态的数据）。
-- 让同事看到：“哦，原来我这段字太长了，把排版撑破了”，然后回去改。
+**Website**: https://www.supercore.hk
+**Email**: info@supercore.hk

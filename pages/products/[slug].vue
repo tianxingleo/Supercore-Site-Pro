@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen bg-white">
     <!-- Back Navigation -->
-    <div class="pt-32 border-b border-gray-100">
+    <div class="pt-24 border-b border-gray-100">
       <GridContainer>
-        <div class="col-span-12 py-6">
+        <div class="col-span-12 py-4">
           <NuxtLink
             :to="localePath('/products')"
             class="inline-flex items-center text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text/40 hover:text-swiss-text transition-colors"
@@ -19,7 +19,7 @@
     <GridContainer
       :grid="true"
       gap="none"
-      class="border-l border-gray-100 min-h-[calc(100vh-140px)]"
+      class="border-l border-gray-100"
     >
       <!-- Loading State -->
       <div v-if="pending" class="col-span-12 border-r border-b border-gray-100">
@@ -41,17 +41,28 @@
       <template v-else>
         <!-- Product Image (Left) -->
         <div
-          class="col-span-12 lg:col-span-7 border-r border-b border-gray-100 flex items-center justify-center bg-swiss-bg-soft"
+          class="col-span-12 lg:col-span-7 border-r border-b border-gray-100 bg-swiss-bg-soft relative flex flex-col items-stretch overflow-visible"
         >
-          <div class="aspect-square w-full p-24 flex items-center justify-center relative">
-            <!-- Product Image Gallery -->
-            <div v-if="product.images && product.images.length > 0" class="w-full h-full flex items-center justify-center">
-              <!-- Main Image -->
+          <!-- Technical Grid Background -->
+          <div class="absolute inset-0 opacity-[0.03] pointer-events-none"
+               style="background-image: radial-gradient(circle, #000 1px, transparent 1px); background-size: 32px 32px;"></div>
+
+          <!-- Technical Watermark / Fill Empty Space -->
+          <div class="absolute bottom-16 left-16 select-none pointer-events-none opacity-[0.02]">
+            <span class="text-[8vw] font-black tracking-tighter uppercase leading-none text-swiss-text">
+              Blueprint / {{ product.slug }}
+            </span>
+          </div>
+
+          <div class="relative flex-1 min-h-[400px] lg:min-h-[600px] p-8 md:p-16 lg:p-20 flex items-center justify-center">
+            <!-- Product Image -->
+            <div v-if="product && product.images && product.images.length > 0" class="relative">
               <NuxtImg
+                v-if="currentImage"
                 :src="currentImage"
-                :alt="`${product.name[locale] || product.name['zh-HK'] || product.name.en} - Image ${currentImageIndex + 1}`"
-                width="1200"
-                height="1200"
+                :alt="product.name[locale] || product.name['zh-HK'] || product.name.en"
+                width="1600"
+                height="900"
                 format="webp"
                 quality="90"
                 loading="eager"
@@ -59,79 +70,77 @@
                 :preload="currentImageIndex === 0"
                 sizes="xs:100vw sm:100vw md:70vw lg:70vw"
                 @load="imageLoaded = true"
-                class="max-w-full max-h-full object-contain transition-opacity duration-500 ease-in-out"
+                class="max-w-full max-h-full object-contain transition-all duration-700 ease-in-out"
                 :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
-                placeholder
               />
-
-              <!-- Navigation Arrows (only show if multiple images) -->
-              <template v-if="product.images.length > 1">
-                <button
-                  @click="previousImage"
-                  class="absolute left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/90 hover:bg-white border border-swiss-text/10 hover:border-swiss-text transition-all duration-200 group"
-                  aria-label="Previous image"
-                >
-                  <span class="text-swiss-text/40 group-hover:text-swiss-text transition-colors text-xl">←</span>
-                </button>
-                <button
-                  @click="nextImage"
-                  class="absolute right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/90 hover:bg-white border border-swiss-text/10 hover:border-swiss-text transition-all duration-200 group"
-                  aria-label="Next image"
-                >
-                  <span class="text-swiss-text/40 group-hover:text-swiss-text transition-colors text-xl">→</span>
-                </button>
-              </template>
-
-              <!-- Image Counter -->
-              <div v-if="product.images.length > 1" class="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 border border-swiss-text/10">
-                <span class="text-[10px] font-bold tracking-widest uppercase text-swiss-text">
-                  {{ currentImageIndex + 1 }} / {{ product.images.length }}
-                </span>
-              </div>
-
-              <!-- Thumbnail Dots -->
-              <div v-if="product.images.length > 1" class="absolute bottom-12 left-12 flex items-center gap-2">
-                <button
-                  v-for="(img, index) in product.images"
-                  :key="index"
-                  @click="setCurrentImage(index)"
-                  class="w-2 h-2 rounded-full transition-all duration-200"
-                  :class="currentImageIndex === index ? 'bg-swiss-text scale-125' : 'bg-swiss-text/20 hover:bg-swiss-text/40'"
-                  :aria-label="`View image ${index + 1}`"
-                />
-              </div>
             </div>
 
-            <!-- Fallback placeholder -->
-            <div
-              v-else
-              class="w-2/3 h-2/3 border border-swiss-text/5 bg-swiss-bg flex items-center justify-center shadow-2xl"
-            >
-              <div class="w-1/2 h-1/2 bg-swiss-text opacity-5"></div>
+            <div v-else class="absolute inset-0 flex items-center justify-center opacity-10">
+              <svg viewBox="0 0 24 24" class="w-24 h-24" fill="none" stroke="currentColor" stroke-width="0.5">
+                <rect x="2" y="2" width="20" height="20" />
+                <path d="M2 2l20 20M22 2L2 22" />
+              </svg>
             </div>
-            <div v-if="product.featured" class="absolute bottom-12 right-12">
-              <span
-                class="text-[10px] font-black tracking-widest uppercase border border-swiss-text px-4 py-1"
-                >Limited Edition Range</span
+
+            <!-- Navigation Controls -->
+            <template v-if="product && product.images && product.images.length > 1">
+              <button
+                @click="previousImage"
+                class="absolute left-0 top-0 bottom-0 w-16 md:w-20 lg:w-24 flex items-center justify-center bg-transparent group/btn z-10"
+                aria-label="Previous image"
               >
+                <div class="w-11 h-11 flex items-center justify-center bg-white/80 backdrop-blur-sm border border-swiss-text/5 group-hover/btn:border-swiss-text transition-all duration-300 shadow-sm">
+                  <svg viewBox="0 0 24 24" class="w-5 h-5 text-swiss-text/40 group-hover/btn:text-swiss-text transition-colors" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+              <button
+                @click="nextImage"
+                class="absolute right-0 top-0 bottom-0 w-16 md:w-20 lg:w-24 flex items-center justify-center bg-transparent group/btn z-10"
+                aria-label="Next image"
+              >
+                <div class="w-11 h-11 flex items-center justify-center bg-white/80 backdrop-blur-sm border border-swiss-text/5 group-hover/btn:border-swiss-text transition-all duration-300 shadow-sm">
+                  <svg viewBox="0 0 24 24" class="w-5 h-5 text-swiss-text/40 group-hover/btn:text-swiss-text transition-colors" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+            </template>
+          </div>
+
+          <!-- Bottom Gallery Info Bar -->
+          <div v-if="product.images && product.images.length > 1" class="border-t border-swiss-text/5 p-6 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <button
+                v-for="(img, index) in product.images"
+                :key="index"
+                @click="setCurrentImage(index)"
+                class="h-1 transition-all duration-500 ease-out"
+                :class="currentImageIndex === index ? 'w-12 bg-swiss-text' : 'w-4 bg-swiss-text/10 hover:bg-swiss-text/30'"
+                :aria-label="`View image ${index + 1}`"
+              />
+            </div>
+            <div class="font-mono text-[10px] uppercase tracking-widest text-swiss-text/40">
+              FRAME_{{ String(currentImageIndex + 1).padStart(2, '0') }} / {{ String(product.images.length).padStart(2, '0') }}
             </div>
           </div>
         </div>
 
         <!-- Product Info (Right) -->
         <div
-          class="col-span-12 lg:col-span-5 border-r border-b border-gray-100 p-12 md:p-20 flex flex-col justify-between"
+          class="col-span-12 lg:col-span-5 border-r border-b border-gray-100 p-8 md:p-12 lg:p-16 flex flex-col justify-between h-full bg-white"
         >
-          <div>
+          <div class="space-y-8">
             <div
-              class="inline-block mb-12 text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono"
+              class="inline-block text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono"
             >
-              Technical Specification / 01
+              TECHNICAL_SPEC // 01
             </div>
-            <TypographyHeader :level="1" size="h1" class="mb-8">
+            <TypographyHeader :level="1" size="h1" class="!mb-4 !tracking-tighter">
               {{ product.name[locale] || product.name['zh-HK'] || product.name.en }}
             </TypographyHeader>
-            <p class="text-swiss-text-muted text-lg leading-relaxed font-medium mb-16">
+            <p class="text-swiss-text-muted text-lg leading-relaxed font-medium">
               {{
                 product.description[locale] ||
                 product.description['zh-HK'] ||
@@ -139,25 +148,27 @@
               }}
             </p>
 
-            <!-- Product Metadata -->
-            <div class="space-y-10 py-10 border-t border-swiss-text/5">
-              <div class="grid grid-cols-12 items-baseline">
-                <div class="col-span-4 text-[11px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono">
-                  Model
-                </div>
-                <div class="col-span-8 text-2xl md:text-3xl font-bold tracking-tighter text-swiss-text uppercase leading-none">
-                  {{ product.slug }}
-                </div>
+            <!-- Product Metadata List -->
+            <div class="border-t border-swiss-text/5 pt-10 space-y-8">
+              <div class="flex flex-col gap-1">
+                <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/20 font-mono">Model_Ref</span>
+                <span class="text-2xl md:text-3xl font-black tracking-tighter text-swiss-text uppercase leading-none">{{ product.slug }}</span>
               </div>
-              <div class="grid grid-cols-12 items-baseline border-t border-swiss-text/5 pt-10">
-                <div class="col-span-4 text-[11px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono">
-                  CAT
-                </div>
-                <div class="col-span-8 text-2xl md:text-3xl font-bold tracking-tighter text-swiss-text uppercase leading-none">
-                  {{ getCategoryLabel(product.category) }}
-                </div>
+              <div class="flex flex-col gap-1">
+                <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/20 font-mono">Category_Id</span>
+                <span class="text-2xl md:text-3xl font-black tracking-tighter text-swiss-text uppercase leading-none">{{ getCategoryLabel(product.category) }}</span>
               </div>
             </div>
+          </div>
+
+          <div class="pt-12 border-t border-gray-100 flex justify-between items-end">
+            <div class="flex flex-col gap-2">
+              <span class="text-[10px] font-bold tracking-widest uppercase text-swiss-text/40">Build_Status: Online</span>
+              <span class="text-[10px] font-mono opacity-20 uppercase tracking-tighter px-2 py-0.5 bg-gray-50 border border-gray-200">UUID: {{ product.id }}</span>
+            </div>
+            <SwissButton variant="primary" size="lg" @click="navigateTo(localePath('/contact'))">
+              GET_QUOTE
+            </SwissButton>
           </div>
 
           <!-- Bottom Summary -->
