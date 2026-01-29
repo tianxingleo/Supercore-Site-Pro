@@ -1,13 +1,13 @@
 # SUPERCORE TECHNOLOGY LIMITED
 
-> 瑞士國際主義風格的企業級基礎設施解決方案官網
+> 瑞士国际主义风格的企业级基础设施解决方案官网
 
-## 專案概述
+## 项目概述
 
-這是一個為香港及海外市場提供高端基礎設施解決方案的企業官網，採用現代化的技術棧和設計理念。
+这是一个为香港及海外市场提供高端基础设施解决方案的企业官网，采用现代化的技术栈和设计理念。
 
-**公司名稱**：超核技術有限公司
-**公司地址**：九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位
+**公司名称**：超核技术有限公司
+**公司地址**：九龙尖沙咀科学馆道14号新文华中心B座7楼701室108单位
 
 **Company Name**: SUPERCORE TECHNOLOGY LIMITED
 **Company Address**: ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL
@@ -16,44 +16,44 @@
 
 ## 核心特性
 
-- 🎨 **Swiss International Style** - 極簡主義設計，40%+ 負空間
-- 🌐 **多語言支持** - 繁體中文（香港）、简体中文、English
-- 🎭 **3D 交互場景** - Three.js 3D 伺服器模型展示
-- 📱 **響應式設計** - 桌面端 3D + 移動端優化降級
-- 🎬 **GSAP 動畫** - 流暢的滾動觸發動畫效果
-- ⚡ **性能優化** - WebP 圖片、懶加載、ISR 緩存策略
-- 🔍 **SEO 友好** - 結構化數據、動態 Sitemap、完整 Meta 標籤
-- ♿ **可訪問性** - 完整 ARIA 標籤、鍵盤導航支援
-- 🛠️ **完整 CMS 後台** - 產品/新聞/詢盤管理、批量操作、全局搜索
+- 🎨 **Swiss International Style** - 极简主义设计，40%+ 负空间
+- 🌐 **多语言支持** - 繁体中文（香港）、简体中文、English
+- 🎭 **3D 交互场景** - Three.js 3D 服务器模型展示
+- 📱 **响应式设计** - 桌面端 3D + 移动端优化降级
+- 🎬 **GSAP 动画** - 流畅的滚动触发动画效果
+- ⚡ **性能优化** - WebP 图片、懒加载、ISR 缓存策略
+- 🔍 **SEO 友好** - 结构化数据、动态 Sitemap、完整 Meta 标签
+- ♿ **可访问性** - 完整 ARIA 标签、键盘导航支持
+- 🛠️ **完整 CMS 后台** - 产品/新闻/询盘管理、批量操作、全局搜索
 
 ---
 
-## 技術棧
+## 技术栈
 
 ### 前端框架
 - **Nuxt 3** - Vue 3 SSR 框架
-- **TypeScript** - 嚴格類型檢查
-- **Vue 3 Composition API** - 響應式開發
+- **TypeScript** - 严格类型检查
+- **Vue 3 Composition API** - 响应式开发
 
-### 樣式與設計
-- **Tailwind CSS** - 實用工具 CSS 框架
-- **Nuxt UI** - 基於 Tailwind 的 UI 組件庫
-- **Swiss Design System** - 自定義設計系統
-- **字體**: Inter + Noto Sans HK
+### 样式与设计
+- **Tailwind CSS** - 实用工具 CSS 框架
+- **Nuxt UI** - 基于 Tailwind 的 UI 组件库
+- **Swiss Design System** - 自定义设计系统
+- **字体**: Inter + Noto Sans HK
 
-### 動畫與 3D
+### 动画与 3D
 - **Three.js** - 3D 渲染引擎（桌面端）
-- **GSAP + ScrollTrigger** - 滾動動畫系統
-- **Lenis** - 平滑滾動體驗
+- **GSAP + ScrollTrigger** - 滚动动画系统
+- **Lenis** - 平滑滚动体验
 
-### 數據與內容
-- **Supabase** - PostgreSQL 資料庫 + 認證 + 儲存
-- **多語言 i18n** - 完整翻譯支持
-- **Tiptap** - 富文本編輯器
+### 数据与内容
+- **Supabase** - PostgreSQL 数据库 + 认证 + 存储
+- **多语言 i18n** - 完整翻译支持
+- **Tiptap** - 富文本编辑器
 
 ---
 
-## 項目結構
+## 项目结构
 
 ```
 Web-For-HK/
@@ -151,22 +151,22 @@ Web-For-HK/
 
 ---
 
-## 快速開始
+## 快速开始
 
-### 環境要求
+### 环境要求
 
 - Node.js 18+
 - npm 或 yarn 或 pnpm
 
-### 安裝依賴
+### 安装依赖
 
 ```bash
 npm install
 ```
 
-### 配置環境變量
+### 配置环境变量
 
-創建 `.env` 文件：
+创建 `.env` 文件：
 
 ```env
 # Supabase 配置
@@ -175,21 +175,21 @@ SUPABASE_KEY=your_supabase_anon_key
 SUPABASE_SECRET_KEY=your_supabase_service_role_key
 ```
 
-### 開發服務器
+### 开发服务器
 
 ```bash
 npm run dev
 ```
 
-訪問 http://localhost:3000
+访问 http://localhost:3000
 
-### 構建生產版本
+### 构建生产版本
 
 ```bash
 npm run build
 ```
 
-### 預覽生產版本
+### 预览生产版本
 
 ```bash
 npm run preview
@@ -197,84 +197,86 @@ npm run preview
 
 ---
 
-## 核心頁面
+## 核心页面
 
-### 前台頁面
+### 前台页面
 
-- **首頁** (`/`) - 3D 場景 Hero 區塊 + 產品分類展示
-- **產品** (`/products`) - 產品列表和詳情頁
-- **解決方案** (`/solutions`) - 解決方案展示
-- **新聞** (`/news`) - 新聞列表和詳情頁
-- **關於我們** (`/about`) - 公司介紹
-- **聯絡我們** (`/contact`) - 聯絡表單
+- **首页** (`/`) - 3D 场景 Hero 区块 + 产品分类展示
+- **产品** (`/products`) - 产品列表和详情页
+- **解决方案** (`/solutions`) - 解决方案展示
+- **新闻** (`/news`) - 新闻列表和详情页
+- **关于我们** (`/about`) - 公司介绍
+- **联系我们** (`/contact`) - 联系表单
 
-### 後台管理 (`/admin`)
+### 后台管理 (`/admin`)
 
-- **儀表板** (`/admin`) - 系統概覽、統計數據
-- **產品管理** (`/admin/products`) - 產品 CRUD、批量操作
-- **新聞管理** (`/admin/news`) - 新聞 CRUD、富文本編輯
-- **詢盤管理** (`/admin/inquiries`) - 客戶詢盤查看
-- **全局搜索** - 跨資源實時搜索
-- **活動日誌** (`/admin/logs`) - 操作歷史記錄
-- **登錄** (`/admin/login`) - 管理員認證
+- **仪表板** (`/admin`) - 系统概览、统计数据
+- **产品管理** (`/admin/products`) - 产品 CRUD、批量操作
+- **新闻管理** (`/admin/news`) - 新闻 CRUD、富文本编辑
+- **询盘管理** (`/admin/inquiries`) - 客户询盘查看
+- **全局搜索** - 跨资源实时搜索
+- **活动日志** (`/admin/logs`) - 操作历史记录
+- **登录** (`/admin/login`) - 管理员认证
 
 ---
 
-## 3D 場景說明
+## 3D 场景说明
 
-### 已實現功能 ✅
+### 已实现功能 ✅
 
-1. **完整的 Three.js 場景框架**
-   - 場景、相機、渲染器配置
-   - 環境光、平行光、輪廓光照明系統
-   - 鼠標視差效果（3D 模型跟隨鼠標移動）
+1. **完整的 Three.js 场景框架**
+   - 场景、相机、渲染器配置
+   - 环境光、平行光、轮廓光照明系统
+   - 鼠标视差效果（3D 模型跟随鼠标移动）
 
-2. **真實的 3D 伺服器模型**
+2. **真实的 3D 服务器模型**
+   - 模型来源：[Sketchfab](https://sketchfab.com) - [@Shalmon](https://sketchfab.com/Shalmon) 的 [Server Rack](https://sketchfab.com/3d-models/server-rack-c144d837358d446998c7b63cd1bdf825) 免费模型
    - 模型文件：`public/models/server/model.obj` (4.8MB, 38,006 面)
-   - 材質文件：`public/models/server/model.mtl` (9 種材質)
-   - 自動縮放和居中對齊
+   - 材质文件：`public/models/server/model.mtl` (9 种材质)
+   - 自动缩放和居中对齐
+   - 许可：CC Attribution（知识共享署名许可）
 
-3. **設備檢測與降級**
-   - 桌面端：完整 3D 場景
-   - 移動端：靜態圖片降級方案
-   - `useDeviceDetection` composable 自動判斷
+3. **设备检测与降级**
+   - 桌面端：完整 3D 场景
+   - 移动端：静态图片降级方案
+   - `useDeviceDetection` composable 自动判断
 
-4. **加載狀態管理**
-   - PlaceholderCanvas 加載占位符
-   - 加載進度顯示
-   - 優雅的錯誤處理
+4. **加载状态管理**
+   - PlaceholderCanvas 加载占位符
+   - 加载进度显示
+   - 优雅的错误处理
 
 ### 待完善功能 📋
 
-- 機櫃門開啟動畫
-- 組件爆炸拆解效果
-- 重新組裝動畫
-- 更複雜的滾動敘事效果
+- 机柜门开启动画
+- 组件爆炸拆解效果
+- 重新组装动画
+- 更复杂的滚动叙事效果
 
 ---
 
-## 動畫系統
+## 动画系统
 
-### 已實現的 GSAP 動畫
+### 已实现的 GSAP 动画
 
 1. **Feature Items 特性展示**
-   - 分隔線擴展動畫
+   - 分隔线扩展动画
    - 文字上滑淡入
-   - 數字淡入效果
-   - 交錯顯示（stagger）
+   - 数字淡入效果
+   - 交错显示（stagger）
 
-2. **News Cards 新聞卡片**
-   - 批量觸發動畫（ScrollTrigger.batch）
+2. **News Cards 新闻卡片**
+   - 批量触发动画（ScrollTrigger.batch）
    - 上滑淡入效果
-   - 交錯延遲顯示
+   - 交错延迟显示
 
-3. **Reveal Sections 區域淡入**
+3. **Reveal Sections 区域淡入**
    - 通用淡入效果
-   - 觸發點：元素頂部到達視口 85%
+   - 触发点：元素顶部到达视口 85%
 
 ---
 
-## 設計系統
+## 设计系统
 
 ### Swiss 配色方案
 
@@ -285,7 +287,7 @@ Secondary: #86868b (metal gray)
 Accent: #0071e3 (international blue)
 ```
 
-### 排版系統
+### 排版系统
 
 ```css
 Display: 48px / 4rem
@@ -297,132 +299,132 @@ H5: 16px / 1rem
 H6: 14px / 0.875rem
 ```
 
-### Swiss 設計原則
+### Swiss 设计原则
 
-1. **極簡主義** - 去除一切非必要元素
-2. **網格系統** - 數學化精確佈局
-3. **無襯線字體** - Inter + Noto Sans HK
-4. **負空間** - 40% 以上留白
-5. **克制的色彩** - 黑、白、灰為主，國際藍點綴
+1. **极简主义** - 去除一切非必要元素
+2. **网格系统** - 数学化精确布局
+3. **无衬线字体** - Inter + Noto Sans HK
+4. **负空间** - 40% 以上留白
+5. **克制的色彩** - 黑、白、灰为主，国际蓝点缀
 
 ---
 
-## 性能優化
+## 性能优化
 
-### 已實現的優化 ✅
+### 已实现的优化 ✅
 
-- **WebP 圖片格式** - 體積減少 25-35%
-- **響應式圖片** - 根據屏幕尺寸加載合適尺寸
-- **圖片懶加載** - 列表頁延遲加載
-- **圖片預加載** - 關鍵圖片優先加載
-- **Blur 占位符** - 改善感知體驗
-- **高 DPI 支持** - 視網膜屏幕優化
-- **ISR 緩存策略** - 增量靜態再生
-- **代碼分割** - Nuxt 自動優化
-- **性能監控** - Core Web Vitals 追蹤（LCP、FID、CLS）
+- **WebP 图片格式** - 体积减少 25-35%
+- **响应式图片** - 根据屏幕尺寸加载合适尺寸
+- **图片懒加载** - 列表页延迟加载
+- **图片预加载** - 关键图片优先加载
+- **Blur 占位符** - 改善感知体验
+- **高 DPI 支持** - 视网膜屏幕优化
+- **ISR 缓存策略** - 增量静态再生
+- **代码分割** - Nuxt 自动优化
+- **性能监控** - Core Web Vitals 追踪（LCP、FID、CLS）
 
 ---
 
 ## SEO 配置
 
-### 已實現 ✅
+### 已实现 ✅
 
-- **Meta 標籤** - 完整的頁面元信息
-- **Open Graph** - 社交媒體分享優化
+- **Meta 标签** - 完整的页面元信息
+- **Open Graph** - 社交媒体分享优化
 - **Twitter Cards** - Twitter 分享卡片
-- **Canonical URL** - 避免重複內容
-- **動態 Sitemap** - 從數據庫自動生成
-- **Robots.txt** - 搜索引擎爬蟲配置
-- **結構化數據** - JSON-LD 格式
-  - 產品結構化數據
-  - 文章結構化數據
-  - 組織結構化數據
-  - 麵包屑結構化數據
+- **Canonical URL** - 避免重复内容
+- **动态 Sitemap** - 从数据库自动生成
+- **Robots.txt** - 搜索引擎爬虫配置
+- **结构化数据** - JSON-LD 格式
+  - 产品结构化数据
+  - 文章结构化数据
+  - 组织结构化数据
+  - 面包屑结构化数据
 
 ---
 
-## 可訪問性（A11y）
+## 可访问性（A11y）
 
-### 已實現 ✅
+### 已实现 ✅
 
-- **完整 ARIA 標籤**
-  - 導航：aria-label、aria-current、role
-  - 語言切換器：aria-haspopup、aria-expanded、aria-selected
-  - 表單：aria-required、autocomplete
-  - 按鈕：aria-label 描述
-- **鍵盤導航** - 全功能支持
-- **焦點管理** - 清晰的焦點指示
-- **屏幕閱讀器優化** - 語義化 HTML 標籤
+- **完整 ARIA 标签**
+  - 导航：aria-label、aria-current、role
+  - 语言切换器：aria-haspopup、aria-expanded、aria-selected
+  - 表单：aria-required、autocomplete
+  - 按钮：aria-label 描述
+- **键盘导航** - 全功能支持
+- **焦点管理** - 清晰的焦点指示
+- **屏幕阅读器优化** - 语义化 HTML 标签
 
 ---
 
-## CMS 後台功能
+## CMS 后台功能
 
-### 產品管理
+### 产品管理
 
-- 列表視圖（表格 + 縮略圖）
-- 多語言編輯器（Tab 切換）
-- 規格參數生成器（Key-Value）
-- 圖片上傳（拖拽、預覽）
-- 批量操作（刪除、發布、草稿）
-- 數據導出（JSON/CSV）
+- 列表视图（表格 + 缩略图）
+- 多语言编辑器（Tab 切换）
+- 规格参数生成器（Key-Value）
+- 图片上传（拖拽、预览）
+- 批量操作（删除、发布、草稿）
+- 数据导出（JSON/CSV）
 
-### 新聞管理
+### 新闻管理
 
-- 富文本編輯器（Tiptap）
+- 富文本编辑器（Tiptap）
 - Markdown 支持
-- 封面圖管理
-- 標籤系統
-- 發布時間控制
-- 批量刪除
-- 數據導出
+- 封面图管理
+- 标签系统
+- 发布时间控制
+- 批量删除
+- 数据导出
 
-### 詢盤管理
+### 询盘管理
 
-- 客戶留言查看
-- 狀態追蹤（new, contacted, closed）
+- 客户留言查看
+- 状态追踪（new, contacted, closed）
 - 批量操作
-- 數據導出
+- 数据导出
 
 ### 其他功能
 
-- **全局搜索** - 跨產品/新聞/詢盤實時搜索
-- **活動日誌** - 完整操作歷史追蹤
-- **數據統計** - 產品/新聞/詢盤數量統計
-- **圖片上傳組件** - 支持拖拽、預覽、壓縮
+- **全局搜索** - 跨产品/新闻/询盘实时搜索
+- **活动日志** - 完整操作历史追踪
+- **数据统计** - 产品/新闻/询盘数量统计
+- **图片上传组件** - 支持拖拽、预览、压缩
 
 ---
 
-## 數據庫架構
+## 数据库架构
 
-### 核心表結構
+### 核心表结构
 
-1. **products** - 產品表（多語言名稱、JSONB 規格）
-2. **posts** - 資訊/博客表（多語言內容）
-3. **solutions** - 解決方案表
-4. **inquiries** - 客戶詢盤表
-5. **admin_logs** - 管理員操作日誌
-6. **profiles** - 管理員權限表（Supabase Auth 擴展）
+1. **products** - 产品表（多语言名称、JSONB 规格）
+2. **posts** - 资讯/博客表（多语言内容）
+3. **solutions** - 解决方案表
+4. **inquiries** - 客户询盘表
+5. **admin_logs** - 管理员操作日志
+6. **profiles** - 管理员权限表（Supabase Auth 扩展）
 
-### 存儲桶（Storage Buckets）
+### 存储桶（Storage Buckets）
 
-- **product-assets** - 產品圖片和 3D 模型
-- **site-media** - 網站媒體資源
+- **product-assets** - 产品图片和 3D 模型
+- **site-media** - 网站媒体资源
 
 ### 安全策略
 
-- **RLS（Row Level Security）** - 行級安全控制
-- **Public** - 僅 SELECT 權限（已發布內容）
-- **Admin** - 完整 CRUD 權限
+- **RLS（Row Level Security）** - 行级安全控制
+- **Public** - 仅 SELECT 权限（已发布内容）
+- **Admin** - 完整 CRUD 权限
 
 ---
 
 ## 部署
 
-### Vercel（推薦）
+### Vercel（推荐）
 
 ```bash
-# 安裝 Vercel CLI
+# 安装 Vercel CLI
 npm i -g vercel
 
 # 部署
@@ -431,16 +433,16 @@ vercel
 
 ### 其他平台
 
-此項目可以部署到任何支持 Node.js 的平台：
+此项目可以部署到任何支持 Node.js 的平台：
 
 - Netlify
 - AWS Amplify
 - Railway
-- 自建伺服器
+- 自建服务器
 
-### 環境變量配置
+### 环境变量配置
 
-在部署平台設置以下環境變量：
+在部署平台设置以下环境变量：
 
 ```env
 SUPABASE_URL=your_supabase_url
@@ -453,33 +455,33 @@ SUPABASE_SECRET_KEY=your_supabase_service_role_key
 ## Git 工作流
 
 ```bash
-# 創建功能分支
+# 创建功能分支
 git checkout -b feat/new-feature
 
-# 提交變更
+# 提交变更
 git add .
 git commit -m "feat: add new feature"
 
-# 推送到遠端
+# 推送到远程
 git push origin feat/new-feature
 ```
 
-### 提交信息規範
+### 提交信息规范
 
 使用 Conventional Commits：
 
 - `feat:` - 新功能
-- `fix:` - Bug 修復
-- `docs:` - 文檔更新
-- `style:` - 代碼格式調整
-- `refactor:` - 重構
-- `perf:` - 性能優化
-- `test:` - 測試
-- `chore:` - 構建過程或輔助工具變動
+- `fix:` - Bug 修复
+- `docs:` - 文档更新
+- `style:` - 代码格式调整
+- `refactor:` - 重构
+- `perf:` - 性能优化
+- `test:` - 测试
+- `chore:` - 构建过程或辅助工具变动
 
 ---
 
-## 瀏覽器支持
+## 浏览器支持
 
 - Chrome/Edge (最新版)
 - Safari (最新版)
@@ -491,35 +493,35 @@ git push origin feat/new-feature
 
 ## 待完善功能
 
-### 短期優化
+### 短期优化
 
-- [ ] AI 輔助翻譯（多語言內容生成）
-- [ ] 圖片自動化處理（背景檢測、智能壓縮）
-- [ ] A/B 測試支持
+- [ ] AI 辅助翻译（多语言内容生成）
+- [ ] 图片自动化处理（背景检测、智能压缩）
+- [ ] A/B 测试支持
 
-### 長期規劃
+### 长期规划
 
-- [ ] 3D 動畫增強（機櫃開啟、組件爆炸效果）
-- [ ] 更多結構化數據類型
-- [ ] 產品預覽模式
-
----
-
-## 文檔
-
-- [管理後台快速開始](./docs/QUICK_START_ADMIN.md)
-- [後台功能增強說明](./docs/ADMIN_ENHANCEMENTS.md)
-- [實現總結](./docs/IMPLEMENTATION_SUMMARY.md)
+- [ ] 3D 动画增强（机柜开启、组件爆炸效果）
+- [ ] 更多结构化数据类型
+- [ ] 产品预览模式
 
 ---
 
-## 許可證
+## 文档
+
+- [管理后台快速开始](./docs/QUICK_START_ADMIN.md)
+- [后台功能增强说明](./docs/ADMIN_ENHANCEMENTS.md)
+- [实现总结](./docs/IMPLEMENTATION_SUMMARY.md)
+
+---
+
+## 许可证
 
 MIT License
 
 ---
 
-**SUPERCORE TECHNOLOGY LIMITED** - 為香港及海外市場提供專業基礎設施解決方案
+**SUPERCORE TECHNOLOGY LIMITED** - 为香港及海外市场提供专业基础设施解决方案
 
 **Website**: https://www.supercore.hk
 **Email**: info@supercore.hk

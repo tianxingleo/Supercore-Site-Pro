@@ -59,6 +59,7 @@
             <div v-if="product && product.images && product.images.length > 0" class="relative">
               <NuxtImg
                 v-if="currentImage"
+                ref="mainImageRef"
                 :src="currentImage"
                 :alt="product.name[locale] || product.name['zh-HK'] || product.name.en"
                 width="1600"
@@ -66,10 +67,11 @@
                 format="webp"
                 quality="90"
                 loading="eager"
-                :key="currentImage"
+                :key="currentImageIndex"
                 :preload="currentImageIndex === 0"
                 sizes="xs:100vw sm:100vw md:70vw lg:70vw"
-                @load="imageLoaded = true"
+                @load="handleImageLoad"
+                @error="handleImageLoad"
                 class="max-w-full max-h-full object-contain transition-all duration-700 ease-in-out"
                 :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
               />
@@ -207,56 +209,6 @@ const currentLocale = computed(() => locale.value)
 // 图片画廊状态
 const currentImageIndex = ref(0)
 
-// 当前显示的图片
-const currentImage = computed(() => {
-  if (!product.value || !product.value.images || product.value.images.length === 0) {
-    return ''
-  }
-  return product.value.images[currentImageIndex.value]
-})
-
-// 切换到下一张图片
-function nextImage() {
-  if (!product.value?.images) return
-  currentImageIndex.value = (currentImageIndex.value + 1) % product.value.images.length
-  imageLoaded.value = false
-}
-
-// 切换到上一张图片
-function previousImage() {
-  if (!product.value?.images) return
-  currentImageIndex.value = currentImageIndex.value === 0
-    ? product.value.images.length - 1
-    : currentImageIndex.value - 1
-  imageLoaded.value = false
-}
-
-// 设置当前图片
-function setCurrentImage(index: number) {
-  if (!product.value?.images || index < 0 || index >= product.value.images.length) return
-  currentImageIndex.value = index
-  imageLoaded.value = false
-}
-
-// 键盘导航
-onMounted(() => {
-  const handleKeydown = (e: KeyboardEvent) => {
-    if (!product.value?.images || product.value.images.length <= 1) return
-
-    if (e.key === 'ArrowLeft') {
-      previousImage()
-    } else if (e.key === 'ArrowRight') {
-      nextImage()
-    }
-  }
-
-  window.addEventListener('keydown', handleKeydown)
-
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeydown)
-  })
-})
-
 // 使用 useLazyFetch 确保加载动画可见
 const {
   data: apiProduct,
@@ -274,12 +226,89 @@ const product = computed(() => {
   return apiProduct.value
 })
 
-// 当产品数据加载完成时，重置图片索引
+// 当前显示的图片
+const currentImage = computed(() => {
+  if (!product.value || !product.value.images || product.value.images.length === 0) {
+    return ''
+  }
+  return product.value.images[currentImageIndex.value]
+})
+
+// 图片加载处理
+const mainImageRef = ref()
+const handleImageLoad = () => {
+  console.log('[Product Detail] Image load event triggered')
+  imageLoaded.value = true
+}
+
+// 检查图片是否已经加载完成（处理缓存情况）
+const checkImageComplete = () => {
+  nextTick(() => {
+    // NuxtImg 可能需要通过 $el 访问原生 img
+    const imgElement = mainImageRef.value?.$el || mainImageRef.value
+    if (imgElement && imgElement instanceof HTMLImageElement && imgElement.complete) {
+      handleImageLoad()
+    }
+  })
+}
+
+// 切换到下一张图片
+function nextImage() {
+  if (!product.value?.images) return
+  imageLoaded.value = false
+  currentImageIndex.value = (currentImageIndex.value + 1) % product.value.images.length
+  checkImageComplete()
+}
+
+// 切换到上一张图片
+function previousImage() {
+  if (!product.value?.images) return
+  imageLoaded.value = false
+  currentImageIndex.value = currentImageIndex.value === 0
+    ? product.value.images.length - 1
+    : currentImageIndex.value - 1
+  checkImageComplete()
+}
+
+// 设置当前图片
+function setCurrentImage(index: number) {
+  if (!product.value?.images || index < 0 || index >= product.value.images.length) return
+  if (currentImageIndex.value === index) return
+  imageLoaded.value = false
+  currentImageIndex.value = index
+  checkImageComplete()
+}
+
+// 键盘导航
+onMounted(() => {
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (!product.value?.images || product.value.images.length <= 1) return
+
+    if (e.key === 'ArrowLeft') {
+      previousImage()
+    } else if (e.key === 'ArrowRight') {
+      nextImage()
+    }
+  }
+
+  window.addEventListener('keydown', handleKeydown)
+  
+  // 初始挂载后检查第一张图是否已加载
+  checkImageComplete()
+
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown)
+  })
+})
+
+// 当产品数据加载完成时
 watch(product, (newProduct) => {
   if (newProduct) {
     currentImageIndex.value = 0
+    imageLoaded.value = false
+    checkImageComplete()
   }
-})
+}, { immediate: true })
 
 // Handle error state
 watchEffect(() => {
