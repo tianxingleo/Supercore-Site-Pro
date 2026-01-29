@@ -4,13 +4,19 @@
     <section class="min-h-screen flex items-center relative overflow-hidden bg-white" id="hero-section">
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-12 xl:col-span-8 flex flex-col justify-center py-24 lg:py-0 relative z-10">
-          <TypographyHeader :level="1" size="display" class="mb-8">
-            {{ $t('home.hero.title') }}
-          </TypographyHeader>
-          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="mb-12 max-w-2xl opacity-90">
-            {{ $t('home.hero.subtitle') }}
-          </TypographyHeader>
-          <div class="flex flex-col sm:flex-row gap-6">
+          <SwissTextReveal tag="div" :delay="200" :duration="1.2">
+            <TypographyHeader :level="1" size="display" class="mb-4 lg:mb-8">
+              {{ $t('home.hero.title') }}
+            </TypographyHeader>
+          </SwissTextReveal>
+          
+          <SwissTextReveal tag="div" :delay="400" :duration="1">
+            <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="mb-8 lg:mb-12 max-w-2xl opacity-90">
+              {{ $t('home.hero.subtitle') }}
+            </TypographyHeader>
+          </SwissTextReveal>
+
+          <SwissTextReveal tag="div" :delay="600" :duration="0.8" class="flex flex-col sm:flex-row gap-6">
             <SwissButton variant="primary" size="lg" class="!px-10 hover-lift" @click="navigateTo(localePath('/solutions'))"
               aria-label="Explore our infrastructure solutions">
               {{ $t('home.hero.cta') }}
@@ -19,7 +25,7 @@
               @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
               {{ $t('home.hero.ctaSecondary') }}
             </SwissButton>
-          </div>
+          </SwissTextReveal>
         </div>
 
         <div

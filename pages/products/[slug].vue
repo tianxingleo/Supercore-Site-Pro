@@ -134,32 +134,45 @@
           class="col-span-12 lg:col-span-5 border-r border-b border-gray-100 p-8 md:p-12 lg:p-16 flex flex-col justify-between h-full bg-white"
         >
           <div class="space-y-8">
-            <div
-              class="inline-block text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono"
-            >
-              TECHNICAL_SPEC // 01
-            </div>
-            <TypographyHeader :level="1" size="h1" class="!mb-4 !tracking-tighter">
-              {{ product.name[locale] || product.name['zh-HK'] || product.name.en }}
-            </TypographyHeader>
-            <p class="text-swiss-text-muted text-lg leading-relaxed font-medium">
-              {{
-                product.description[locale] ||
-                product.description['zh-HK'] ||
-                product.description.en
-              }}
-            </p>
+            <SwissTextReveal tag="div" :delay="100">
+              <div
+                class="inline-block text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/30 font-mono"
+              >
+                TECHNICAL_SPEC // 01
+              </div>
+            </SwissTextReveal>
+            
+            <SwissTextReveal tag="div" :delay="200">
+              <TypographyHeader :level="1" size="h1" class="!mb-4 !tracking-tighter">
+                {{ product.name[locale] || product.name['zh-HK'] || product.name.en }}
+              </TypographyHeader>
+            </SwissTextReveal>
+
+            <SwissTextReveal tag="div" :delay="300">
+              <p class="text-swiss-text-muted text-lg leading-relaxed font-medium">
+                {{
+                  product.description[locale] ||
+                  product.description['zh-HK'] ||
+                  product.description.en
+                }}
+              </p>
+            </SwissTextReveal>
 
             <!-- Product Metadata List -->
             <div class="border-t border-swiss-text/5 pt-10 space-y-8">
-              <div class="flex flex-col gap-1">
-                <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/20 font-mono">Model_Ref</span>
-                <span class="text-2xl md:text-3xl font-black tracking-tighter text-swiss-text uppercase leading-none">{{ product.slug }}</span>
-              </div>
-              <div class="flex flex-col gap-1">
-                <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/20 font-mono">Category_Id</span>
-                <span class="text-2xl md:text-3xl font-black tracking-tighter text-swiss-text uppercase leading-none">{{ getCategoryLabel(product.category) }}</span>
-              </div>
+              <SwissTextReveal tag="div" :delay="400">
+                <div class="flex flex-col gap-1">
+                  <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/20 font-mono">Model_Ref</span>
+                  <span class="text-2xl md:text-3xl font-black tracking-tighter text-swiss-text uppercase leading-none">{{ product.slug }}</span>
+                </div>
+              </SwissTextReveal>
+              
+              <SwissTextReveal tag="div" :delay="500">
+                <div class="flex flex-col gap-1">
+                  <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/20 font-mono">Category_Id</span>
+                  <span class="text-2xl md:text-3xl font-black tracking-tighter text-swiss-text uppercase leading-none">{{ getCategoryLabel(product.category) }}</span>
+                </div>
+              </SwissTextReveal>
             </div>
           </div>
 
