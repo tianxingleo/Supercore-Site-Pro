@@ -4,12 +4,17 @@
     <section class="relative pt-48 pb-32 border-b border-gray-100">
       <GridContainer :grid="true">
         <div class="col-span-12 text-center relative z-10">
-          <TypographyHeader :level="1" size="display" class="mb-8">
-            {{ $t('about.pageTitle') }}
-          </TypographyHeader>
-          <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-3xl mx-auto opacity-80">
-            {{ $t('about.pageSubtitle') }}
-          </TypographyHeader>
+          <SwissTextReveal tag="div" :duration="1.2">
+            <TypographyHeader :level="1" size="display" class="mb-8">
+              {{ $t('about.pageTitle') }}
+            </TypographyHeader>
+          </SwissTextReveal>
+          
+          <SwissTextReveal tag="div" :delay="200" :duration="1">
+            <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-3xl mx-auto opacity-80">
+              {{ $t('about.pageSubtitle') }}
+            </TypographyHeader>
+          </SwissTextReveal>
         </div>
       </GridContainer>
     </section>
@@ -18,28 +23,38 @@
     <section class="py-32 border-b border-gray-100">
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-6 mb-16 lg:mb-0 pr-0 lg:pr-24">
-          <div
-            class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
-            Company Overview
-          </div>
-          <TypographyHeader :level="2" size="h1" class="mb-12">
-            {{ $t('about.companyOverview.title') }}
-          </TypographyHeader>
+          <SwissTextReveal tag="div">
+            <div
+              class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
+              Company Overview
+            </div>
+          </SwissTextReveal>
+          
+          <SwissTextReveal tag="div" :delay="100">
+            <TypographyHeader :level="2" size="h1" class="mb-12">
+              {{ $t('about.companyOverview.title') }}
+            </TypographyHeader>
+          </SwissTextReveal>
+          
           <div class="space-y-8 text-swiss-text-muted text-lg leading-relaxed font-medium">
-            <p>{{ $t('about.companyOverview.description1') }}</p>
-            <p>{{ $t('about.companyOverview.description2') }}</p>
+            <SwissTextReveal tag="p" :delay="200">{{ $t('about.companyOverview.description1') }}</SwissTextReveal>
+            <SwissTextReveal tag="p" :delay="300">{{ $t('about.companyOverview.description2') }}</SwissTextReveal>
           </div>
 
           <div class="mt-20 p-12 border border-gray-100 relative overflow-hidden bg-swiss-bg-soft">
-            <TypographyHeader :level="3" size="h4" class="mb-10 font-black tracking-tighter">
-              {{ $t('about.companyOverview.philosophy.title') }}
-            </TypographyHeader>
+            <SwissTextReveal tag="div">
+              <TypographyHeader :level="3" size="h4" class="mb-10 font-black tracking-tighter">
+                {{ $t('about.companyOverview.philosophy.title') }}
+              </TypographyHeader>
+            </SwissTextReveal>
             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-swiss-text-muted">
               <li v-for="i in 4" :key="i" class="flex flex-col space-y-2">
-                <span class="text-[10px] font-bold text-swiss-text opacity-30">0{{ i }}</span>
-                <span class="font-bold text-swiss-text tracking-tight">{{
-                  $t(`about.companyOverview.philosophy.point${i}`)
-                  }}</span>
+                <SwissTextReveal tag="div" :delay="i * 100">
+                  <span class="text-[10px] font-bold text-swiss-text opacity-30 block">0{{ i }}</span>
+                  <span class="font-bold text-swiss-text tracking-tight">{{
+                    $t(`about.companyOverview.philosophy.point${i}`)
+                    }}</span>
+                </SwissTextReveal>
               </li>
             </ul>
           </div>
@@ -48,7 +63,7 @@
         <div class="col-span-12 lg:col-span-6">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-px bg-gray-100">
             <!-- Stats Card 1 -->
-            <div class="bg-swiss-text p-12 flex flex-col justify-between min-h-[300px]">
+            <SwissTextReveal tag="div" :delay="100" class="bg-swiss-text p-12 flex flex-col justify-between min-h-[300px]">
               <div class="text-white/40 font-bold tracking-[0.2em] uppercase text-[10px]">
                 Performance
               </div>
@@ -60,10 +75,10 @@
                   {{ $t('about.coreAdvantages.support24.label') }}
                 </div>
               </div>
-            </div>
+            </SwissTextReveal>
 
             <!-- Stats Card 2 -->
-            <div class="bg-white p-12 flex flex-col justify-between min-h-[300px]">
+            <SwissTextReveal tag="div" :delay="250" class="bg-white p-12 flex flex-col justify-between min-h-[300px]">
               <div class="text-swiss-text/40 font-bold tracking-[0.2em] uppercase text-[10px]">
                 Availability
               </div>
@@ -75,10 +90,10 @@
                   {{ $t('about.coreAdvantages.availability.label') }}
                 </div>
               </div>
-            </div>
+            </SwissTextReveal>
 
             <!-- Stats Card 3 -->
-            <div class="bg-white p-12 flex flex-col justify-between min-h-[300px] sm:col-span-2">
+            <SwissTextReveal tag="div" :delay="400" class="bg-white p-12 flex flex-col justify-between min-h-[300px] sm:col-span-2">
               <div class="text-swiss-text/40 font-bold tracking-[0.2em] uppercase text-[10px]">
                 Response Accuracy
               </div>
@@ -90,7 +105,7 @@
                   {{ $t('about.coreAdvantages.response.label') }}
                 </div>
               </div>
-            </div>
+            </SwissTextReveal>
           </div>
         </div>
       </GridContainer>
@@ -100,29 +115,35 @@
     <section class="py-32 bg-white">
       <GridContainer :grid="true">
         <div class="col-span-12 mb-20">
-          <div
-            class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
-            Our Edge
-          </div>
-          <TypographyHeader :level="2" size="h1" class="mb-4">
-            {{ $t('about.solutionFeatures.title') }}
-          </TypographyHeader>
+          <SwissTextReveal tag="div">
+            <div
+              class="inline-block mb-10 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
+              Our Edge
+            </div>
+          </SwissTextReveal>
+          <SwissTextReveal tag="div" :delay="100">
+            <TypographyHeader :level="2" size="h1" class="mb-4">
+              {{ $t('about.solutionFeatures.title') }}
+            </TypographyHeader>
+          </SwissTextReveal>
         </div>
 
-        <div v-for="(feature, key) in solutionFeatures" :key="key"
+        <div v-for="(feature, key, index) in solutionFeatures" :key="key"
           class="col-span-12 md:col-span-4 border-t border-gray-100 pt-12 mt-12 first:mt-0 md:first:mt-12 md:mt-12">
-          <div class="h-full group">
-            <div
-              class="w-12 h-12 border border-gray-200 flex items-center justify-center mb-10 group-hover:bg-swiss-text group-hover:border-swiss-text transition-all duration-500">
-              <component :is="feature.icon" class="w-6 h-6 text-swiss-text group-hover:text-white transition-colors" />
+          <SwissTextReveal tag="div" :delay="index * 100">
+            <div class="h-full group">
+              <div
+                class="w-12 h-12 border border-gray-200 flex items-center justify-center mb-10 group-hover:bg-swiss-text group-hover:border-swiss-text transition-all duration-500">
+                <component :is="feature.icon" class="w-6 h-6 text-swiss-text group-hover:text-white transition-colors" />
+              </div>
+              <TypographyHeader :level="3" size="h3" class="mb-6 !tracking-tighter">
+                {{ $t(`about.solutionFeatures.${key}.title`) }}
+              </TypographyHeader>
+              <p class="text-swiss-text-muted leading-relaxed font-medium">
+                {{ $t(`about.solutionFeatures.${key}.description`) }}
+              </p>
             </div>
-            <TypographyHeader :level="3" size="h3" class="mb-6 !tracking-tighter">
-              {{ $t(`about.solutionFeatures.${key}.title`) }}
-            </TypographyHeader>
-            <p class="text-swiss-text-muted leading-relaxed font-medium">
-              {{ $t(`about.solutionFeatures.${key}.description`) }}
-            </p>
-          </div>
+          </SwissTextReveal>
         </div>
       </GridContainer>
     </section>

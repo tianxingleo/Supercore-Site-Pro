@@ -37,9 +37,9 @@
         <!-- Data Loaded State -->
         <template v-else-if="products && products.length">
           <div
-            v-for="product in products"
+            v-for="(product, index) in products"
             :key="product.id"
-            class="col-span-12 md:col-span-6 lg:col-span-4 border-r border-b border-gray-100"
+            class="col-span-12 md:col-span-6 lg:col-span-4 border-r border-b border-gray-100 product-card-item opacity-0 translate-y-8"
           >
             <ProductCard :product="product" class="!border-none" />
           </div>
@@ -143,4 +143,33 @@ watch([error, apiProducts, pending], ([newError, newData, isPending]) => {
 useHead({
   title: '产品 - 超核技術有限公司',
 })
+
+// 添加动画逻辑
+const nuxtApp = useNuxtApp()
+const { $gsap, $ScrollTrigger } = nuxtApp as any
+
+watch(pending, (isPending) => {
+  if (!isPending && process.client) {
+    // 数据加载完成，等 DOM 更新后触发动画
+    nextTick(() => {
+      if ($gsap && $ScrollTrigger) {
+        $ScrollTrigger.batch('.product-card-item', {
+          onEnter: (batch: any) => {
+            $gsap.to(batch, {
+              opacity: 1,
+              y: 0,
+              stagger: 0.1,
+              duration: 0.8,
+              ease: 'power3.out',
+              overwrite: true
+            })
+          },
+          start: 'top 90%',
+          once: true
+        })
+        $ScrollTrigger.refresh()
+      }
+    })
+  }
+}, { immediate: true })
 </script>

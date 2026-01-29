@@ -7,7 +7,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import type { gsapType, ScrollTriggerType } from '#app'
 
 export const useServerAnimation = () => {
-  const { $gsap, $ScrollTrigger } = useNuxtApp() as {
+  const nuxtApp = useNuxtApp()
+  const { $gsap, $ScrollTrigger } = nuxtApp as {
     $gsap: { gsap: gsapType }
     $ScrollTrigger: { ScrollTrigger: ScrollTriggerType }
   }

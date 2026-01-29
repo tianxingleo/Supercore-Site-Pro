@@ -1,7 +1,7 @@
 <template>
   <NuxtLink
     :to="localePath(`/news/${post.slug || post.id}`)"
-    class="group block bg-white border border-gray-100 hover:border-swiss-text transition-all duration-500 overflow-hidden"
+    class="group block bg-white border border-gray-100 hover:border-swiss-text hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 overflow-hidden"
   >
     <!-- Cover Image -->
     <div class="aspect-video bg-gray-50 relative overflow-hidden">

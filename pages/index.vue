@@ -4,28 +4,58 @@
     <section class="min-h-screen flex items-center relative overflow-hidden bg-white" id="hero-section">
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-12 xl:col-span-8 flex flex-col justify-center py-24 lg:py-0 relative z-10">
-          <SwissTextReveal tag="div" :delay="200" :duration="1.2">
-            <TypographyHeader :level="1" size="display" class="mb-4 lg:mb-8">
+          <!-- Eyebrow Text: Technical / Branding -->
+          <SwissTextReveal tag="div" :delay="100" class="mb-4 lg:mb-6" immediate>
+            <div class="flex items-center gap-4">
+              <span class="text-[10px] font-black tracking-[0.4em] uppercase text-swiss-text/40 font-mono">
+                Est. 2024 // Network Infrastructure
+              </span>
+              <div class="h-px w-12 bg-swiss-text/10"></div>
+            </div>
+          </SwissTextReveal>
+
+          <SwissTextReveal tag="div" :delay="250" :duration="1.2" immediate>
+            <TypographyHeader :level="1" size="display" class="mb-4 lg:mb-6">
               {{ $t('home.hero.title') }}
             </TypographyHeader>
           </SwissTextReveal>
           
-          <SwissTextReveal tag="div" :delay="400" :duration="1">
-            <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="mb-8 lg:mb-12 max-w-2xl opacity-90">
-              {{ $t('home.hero.subtitle') }}
-            </TypographyHeader>
+          <SwissTextReveal tag="div" :delay="450" :duration="1" immediate>
+            <div class="max-w-2xl border-l-2 border-swiss-text/5 pl-8 lg:pl-12 mt-6 lg:mt-8 mb-4 lg:mb-6">
+              <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="!mb-0 opacity-90 leading-tight">
+                {{ $t('home.hero.subtitle') }}
+              </TypographyHeader>
+              <div class="mt-4 flex items-center gap-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-swiss-accent animate-pulse"></span>
+                <span class="text-[9px] font-bold tracking-widest uppercase text-swiss-text/30 font-mono">Systems_Online: Hypercore_v4.0</span>
+              </div>
+            </div>
           </SwissTextReveal>
 
-          <SwissTextReveal tag="div" :delay="600" :duration="0.8" class="flex flex-col sm:flex-row gap-6">
-            <SwissButton variant="primary" size="lg" class="!px-10 hover-lift" @click="navigateTo(localePath('/solutions'))"
-              aria-label="Explore our infrastructure solutions">
-              {{ $t('home.hero.cta') }}
-            </SwissButton>
-            <SwissButton variant="ghost" size="lg" class="!px-10 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300"
-              @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
-              {{ $t('home.hero.ctaSecondary') }}
-            </SwissButton>
-          </SwissTextReveal>
+          <div class="flex flex-row flex-wrap items-center gap-6 lg:gap-10 mt-2 overflow-visible">
+            <SwissTextReveal tag="div" :delay="600" :duration="0.8" immediate width-class="w-auto">
+              <SwissButton variant="primary" size="lg" class="!px-12 !py-5 hover-lift text-[11px] font-black tracking-[0.2em] whitespace-nowrap" @click="navigateTo(localePath('/solutions'))"
+                aria-label="Explore our infrastructure solutions">
+                {{ $t('home.hero.cta') }}
+              </SwissButton>
+            </SwissTextReveal>
+            
+            <SwissTextReveal tag="div" :delay="750" :duration="0.8" immediate width-class="w-auto">
+              <SwissButton variant="ghost" size="lg" class="!px-12 !py-5 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300 text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
+                @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
+                {{ $t('home.hero.ctaSecondary') }}
+              </SwissButton>
+            </SwissTextReveal>
+
+            <SwissTextReveal tag="div" :delay="900" :duration="0.8" immediate width-class="w-auto" class="hidden lg:block">
+              <div class="flex items-center gap-6 ml-4 opacity-10 group cursor-help transition-opacity hover:opacity-40">
+                <div class="h-10 w-px bg-swiss-text"></div>
+                <span class="text-[9px] font-mono uppercase tracking-tighter leading-none translate-y-1">
+                  Ref_Code: HK_712<br>Axis_X: 114.167
+                </span>
+              </div>
+            </SwissTextReveal>
+          </div>
         </div>
 
         <div
@@ -49,10 +79,12 @@
     <section class="py-24 bg-white border-y border-gray-100">
       <GridContainer>
         <div class="col-span-12 mb-16">
-          <div
-            class="inline-block mb-6 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
-            {{ $t('products.title') }}
-          </div>
+          <SwissTextReveal tag="div" :delay="100">
+            <div
+              class="inline-block mb-6 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
+              {{ $t('products.title') }}
+            </div>
+          </SwissTextReveal>
         </div>
 
         <div class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -62,20 +94,22 @@
             'highPerformanceStorage',
             'generalStorage'
           ]" :key="cat" class="group">
-            <div
-              class="border-t border-gray-100 pt-8 transition-all duration-500 group-hover:border-swiss-text h-full hover-scale-subtle cursor-pointer">
-              <div class="text-[8px] font-mono text-swiss-text/30 mb-4 uppercase">CAT_0{{ index + 1 }}</div>
-              <TypographyHeader :level="3" size="h5" class="!mb-2 !tracking-tight">
-                {{ $t(`products.categories.${cat}.title`) }}
-              </TypographyHeader>
-              <div class="text-[9px] text-swiss-text/40 font-bold uppercase tracking-widest mb-6">
-                {{ $t(`products.categories.${cat}.subtitle`) }}
+            <SwissTextReveal tag="div" :delay="index * 150" :duration="1">
+              <div
+                class="border-t border-gray-100 pt-8 transition-all duration-500 group-hover:border-swiss-text h-full hover-scale-subtle cursor-pointer">
+                <div class="text-[8px] font-mono text-swiss-text/30 mb-4 uppercase">CAT_0{{ index + 1 }}</div>
+                <TypographyHeader :level="3" size="h5" class="!mb-2 !tracking-tight">
+                  {{ $t(`products.categories.${cat}.title`) }}
+                </TypographyHeader>
+                <div class="text-[9px] text-swiss-text/40 font-bold uppercase tracking-widest mb-6">
+                  {{ $t(`products.categories.${cat}.subtitle`) }}
+                </div>
+                <p v-if="cat !== 'serverProducts'"
+                  class="text-[11px] text-swiss-text-muted leading-relaxed line-clamp-4 group-hover:text-swiss-text transition-colors duration-500">
+                  {{ $t(`products.categories.${cat}.description`) }}
+                </p>
               </div>
-              <p v-if="cat !== 'serverProducts'"
-                class="text-[11px] text-swiss-text-muted leading-relaxed line-clamp-4 group-hover:text-swiss-text transition-colors duration-500">
-                {{ $t(`products.categories.${cat}.description`) }}
-              </p>
-            </div>
+            </SwissTextReveal>
           </div>
         </div>
       </GridContainer>
@@ -86,9 +120,11 @@
       <GridContainer :grid="true">
         <!-- Section Header -->
         <div class="col-span-12 text-center mb-16">
-          <TypographyHeader :level="2" size="h2" align="center" class="mb-4">
-            {{ $t('home.features.title') }}
-          </TypographyHeader>
+          <SwissTextReveal tag="div">
+            <TypographyHeader :level="2" size="h2" align="center" class="mb-4">
+              {{ $t('home.features.title') }}
+            </TypographyHeader>
+          </SwissTextReveal>
         </div>
 
         <!-- Feature 1 -->
@@ -96,20 +132,16 @@
           <div class="swiss-feature-number">01</div>
           <div class="swiss-separator mb-8"></div>
           <div class="px-4">
-            <div class="reveal-text-mask mb-4">
-              <span>
-                <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors">
+            <SwissTextReveal tag="div" :delay="100">
+               <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors mb-4">
                   {{ $t('home.features.feature1.title') }}
-                </TypographyHeader>
-              </span>
-            </div>
-            <div class="reveal-text-mask">
-              <span class="delay-100">
-                <p class="text-swiss-secondary text-sm leading-relaxed">
-                  {{ $t('home.features.feature1.description') }}
-                </p>
-              </span>
-            </div>
+               </TypographyHeader>
+            </SwissTextReveal>
+            <SwissTextReveal tag="div" :delay="200">
+              <p class="text-swiss-secondary text-sm leading-relaxed">
+                {{ $t('home.features.feature1.description') }}
+              </p>
+            </SwissTextReveal>
           </div>
         </div>
 
@@ -118,20 +150,16 @@
           <div class="swiss-feature-number">02</div>
           <div class="swiss-separator mb-8"></div>
           <div class="px-4">
-             <div class="reveal-text-mask mb-4">
-              <span>
-                <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors">
-                  {{ $t('home.features.feature2.title') }}
-                </TypographyHeader>
-              </span>
-            </div>
-             <div class="reveal-text-mask">
-              <span class="delay-100">
-                <p class="text-swiss-secondary text-sm leading-relaxed">
-                  {{ $t('home.features.feature2.description') }}
-                </p>
-              </span>
-            </div>
+            <SwissTextReveal tag="div" :delay="300">
+              <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors mb-4">
+                {{ $t('home.features.feature2.title') }}
+              </TypographyHeader>
+            </SwissTextReveal>
+            <SwissTextReveal tag="div" :delay="400">
+              <p class="text-swiss-secondary text-sm leading-relaxed">
+                {{ $t('home.features.feature2.description') }}
+              </p>
+            </SwissTextReveal>
           </div>
         </div>
 
@@ -140,42 +168,44 @@
           <div class="swiss-feature-number">03</div>
           <div class="swiss-separator mb-8"></div>
           <div class="px-4">
-             <div class="reveal-text-mask mb-4">
-              <span>
-                <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors">
-                  {{ $t('home.features.feature3.title') }}
-                </TypographyHeader>
-              </span>
-            </div>
-             <div class="reveal-text-mask">
-              <span class="delay-100">
-                <p class="text-swiss-secondary text-sm leading-relaxed">
-                  {{ $t('home.features.feature3.description') }}
-                </p>
-              </span>
-            </div>
+            <SwissTextReveal tag="div" :delay="500">
+              <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors mb-4">
+                {{ $t('home.features.feature3.title') }}
+              </TypographyHeader>
+            </SwissTextReveal>
+            <SwissTextReveal tag="div" :delay="600">
+              <p class="text-swiss-secondary text-sm leading-relaxed">
+                {{ $t('home.features.feature3.description') }}
+              </p>
+            </SwissTextReveal>
           </div>
         </div>
       </GridContainer>
     </section>
 
     <!-- Latest News Section -->
-    <section class="py-24 bg-white border-b border-gray-100 reveal-section">
+    <section class="py-24 bg-white border-b border-gray-100">
       <GridContainer>
-        <div class="col-span-12 flex justify-between items-end mb-16">
-          <div>
-            <div
-              class="inline-block mb-6 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
-              {{ $t('news.title') }}
-            </div>
-            <TypographyHeader :level="2" size="h2" class="!tracking-tighter">
-              {{ $t('news.latest') }}
-            </TypographyHeader>
+        <div class="col-span-12 flex flex-row justify-between items-end mb-16 gap-6">
+          <div class="flex flex-row items-baseline gap-4 lg:gap-8">
+            <SwissTextReveal tag="div" width-class="w-auto">
+              <TypographyHeader :level="2" size="h2" class="!tracking-tighter !mb-0 uppercase">
+                {{ $t('news.latest') }}
+              </TypographyHeader>
+            </SwissTextReveal>
+            <SwissTextReveal tag="div" :delay="150" width-class="w-auto">
+              <div
+                class="hidden md:inline-block text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text/30 border-b border-swiss-text/10 pb-1 whitespace-nowrap">
+                / {{ $t('news.title') }}
+              </div>
+            </SwissTextReveal>
           </div>
-          <NuxtLink :to="localePath('/news')"
-            class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center mb-1 hover-arrow-slide link-underline">
-            {{ $t('news.viewMore') }} <span class="ml-2 arrow-icon">→</span>
-          </NuxtLink>
+          <SwissTextReveal tag="div" :delay="300" width-class="w-auto">
+            <NuxtLink :to="localePath('/news')"
+              class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center mb-1 hover-arrow-slide link-underline whitespace-nowrap">
+              {{ $t('news.viewMore') }} <span class="ml-2 arrow-icon">→</span>
+            </NuxtLink>
+          </SwissTextReveal>
         </div>
 
         <div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-l border-gray-100">
@@ -188,7 +218,7 @@
 
           <!-- Data Loaded State -->
           <template v-else-if="latestPosts && latestPosts.length > 0">
-            <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100 transition-all duration-300 hover:shadow-lg hover:z-10 hover:border-gray-200 bg-white news-card-item opacity-0 translate-y-8">
+            <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100 bg-white news-card-item opacity-0 translate-y-8">
               <NewsCard :post="post" class="!border-none" />
             </div>
           </template>
@@ -208,20 +238,28 @@
       </div>
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-5 mb-12 lg:mb-0">
-          <TypographyHeader :level="2" size="h2" class="mb-6">
-            {{ $t('about.pageTitle') }}
-          </TypographyHeader>
-          <TypographyHeader :level="2" size="h4" color="secondary" weight="normal" class="mb-8 leading-relaxed">
-            {{ $t('company.slogan') }}
-          </TypographyHeader>
-          <SwissButton variant="secondary" @click="navigateTo(localePath('/about'))">
-            {{ $t('products.viewDetails') }}
-          </SwissButton>
+          <SwissTextReveal tag="div">
+            <TypographyHeader :level="2" size="h2" class="mb-6">
+              {{ $t('about.pageTitle') }}
+            </TypographyHeader>
+          </SwissTextReveal>
+          <SwissTextReveal tag="div" :delay="200">
+            <TypographyHeader :level="2" size="h4" color="secondary" weight="normal" class="mb-8 leading-relaxed">
+              {{ $t('company.slogan') }}
+            </TypographyHeader>
+          </SwissTextReveal>
+          <SwissTextReveal tag="div" :delay="400">
+            <SwissButton variant="secondary" @click="navigateTo(localePath('/about'))">
+              {{ $t('products.viewDetails') }}
+            </SwissButton>
+          </SwissTextReveal>
         </div>
         <div class="col-span-12 lg:col-span-6 lg:col-start-7 flex items-center">
-          <p class="text-swiss-text text-xl sm:text-2xl leading-relaxed font-light italic">
-            "{{ $t('company.mission') }}"
-          </p>
+          <SwissTextReveal tag="div" :delay="600">
+            <p class="text-swiss-text text-xl sm:text-2xl leading-relaxed font-light italic">
+              "{{ $t('company.mission') }}"
+            </p>
+          </SwissTextReveal>
         </div>
       </GridContainer>
     </section>
@@ -286,12 +324,44 @@ import type { Post } from '~/types'
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const route = useRoute()
+const nuxtApp = useNuxtApp()
+const { $gsap, $ScrollTrigger } = nuxtApp as any
 
 // 使用 useLazyFetch 获取新闻数据（懒加载，不阻塞导航）
 const { data: latestPosts, pending: pendingNews } = useLazyFetch<Post[]>('/api/news/public', {
   query: { limit: 3 },
-  default: () => []
+  default: () => [],
+  server: false // 首页资讯改为仅客户端加载，以展示加载动画并提升初次加载速度
 })
+
+// 監聽新聞數據加載并播放進場動畫
+watch([latestPosts, pendingNews], ([newPosts, isPending]) => {
+  if (!isPending && newPosts && newPosts.length > 0 && process.client) {
+    nextTick(() => {
+      if (!$gsap || !$ScrollTrigger) return
+      
+      const cards = document.querySelectorAll('.news-card-item')
+      if (cards.length > 0) {
+        $ScrollTrigger.batch(cards, {
+          onEnter: (batch: any) => {
+            $gsap.to(batch, {
+              opacity: 1,
+              y: 0,
+              stagger: 0.15,
+              duration: 0.8,
+              ease: 'power3.out',
+              overwrite: 'auto'
+            })
+          },
+          start: 'top 85%',
+          once: true
+        })
+        // 重新刷新 ScrollTrigger 以確保其他動畫位置正確
+        $ScrollTrigger.refresh()
+      }
+    })
+  }
+}, { immediate: true })
 
 // 添加 canonical 標籤
 const baseUrl = 'https://www.supercore.hk'
@@ -355,7 +425,6 @@ onMounted(() => {
 })
 
 const initGsapAnimations = () => {
-  const { $gsap, $ScrollTrigger } = useNuxtApp() as any
   if (!$gsap || !$ScrollTrigger) return
 
   // 1. Feature Items Staggered Reveal
@@ -376,14 +445,6 @@ const initGsapAnimations = () => {
         ease: 'power3.out' 
       })
       
-      // Text reveals up
-      tl.to(item.querySelectorAll('.reveal-text-mask span'), { 
-        y: 0, 
-        duration: 0.6, 
-        stagger: 0.1, 
-        ease: 'power2.out' 
-      }, '-=0.4') // overlap slightly
-      
       // Number fades in
       $gsap.from(item.querySelector('.swiss-feature-number'), { 
         scrollTrigger: {
@@ -398,16 +459,6 @@ const initGsapAnimations = () => {
     })
   }
 
-  // 2. News Cards Stagger
-  // Wait for news to load effectively or use a specialized trigger if lazy loaded
-  // Simple check for now
-  $ScrollTrigger.batch('.news-card-item', {
-    onEnter: (batch: any) => {
-      $gsap.to(batch, { opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: 'power2.out' })
-    },
-    start: 'top 85%'
-  })
-
   // 3. General Reveal Sections
   $ScrollTrigger.batch('.reveal-section', {
     onEnter: (batch: any) => {
@@ -418,9 +469,6 @@ const initGsapAnimations = () => {
 }
 
 const initScrollAnimation = () => {
-  // 获取 GSAP 和 ScrollTrigger 实例
-  const { $gsap, $ScrollTrigger } = useNuxtApp() as any
-
   if (!$gsap || !$ScrollTrigger) {
     console.warn('GSAP or ScrollTrigger not available')
     return
@@ -495,7 +543,6 @@ const updateAnimationPhase = (progress: number) => {
 onUnmounted(() => {
   // 清理 ScrollTrigger
   if (process.client) {
-    const { $ScrollTrigger } = useNuxtApp() as any
     if ($ScrollTrigger) {
       $ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill())
     }

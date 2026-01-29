@@ -7,9 +7,10 @@ import { defineEventHandler, createError } from 'h3'
  */
 export default defineEventHandler((event) => {
   const path = event.path
+  // 检查是否是 /_nuxt 或 /_nuxt/ (不带文件名)
   if (path === '/_nuxt' || path === '/_nuxt/') {
-    // 捕获并返回 404，不抛出异常以避免被错误日志记录器捕获
-    event.node.res.statusCode = 404
-    return '404 Not Found'
+    // 设置 404 状态并直接结束请求，防止触发 unhandled 错误日志
+    setResponseStatus(event, 404)
+    return 'Not Found'
   }
 })

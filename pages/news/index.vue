@@ -24,8 +24,8 @@
           </div>
         </template>
         <template v-else-if="posts && posts.length">
-          <div v-for="post in posts" :key="post.id"
-            class="col-span-12 md:col-span-6 lg:col-span-4 border-r border-b border-gray-100">
+          <div v-for="(post, index) in posts" :key="post.id"
+            class="col-span-12 md:col-span-6 lg:col-span-4 border-r border-b border-gray-100 news-page-card-item opacity-0 translate-y-8">
             <NewsCard :post="post" class="!border-none" />
           </div>
         </template>
@@ -65,4 +65,33 @@ watchEffect(() => {
     console.error('Failed to load news:', error.value)
   }
 })
+
+// 添加动画逻辑
+const nuxtApp = useNuxtApp()
+const { $gsap, $ScrollTrigger } = nuxtApp as any
+
+watch(pending, (isPending) => {
+  if (!isPending && process.client) {
+    // 数据加载完成，等 DOM 更新后触发动画
+    nextTick(() => {
+      if ($gsap && $ScrollTrigger) {
+        $ScrollTrigger.batch('.news-page-card-item', {
+          onEnter: (batch: any) => {
+            $gsap.to(batch, {
+              opacity: 1,
+              y: 0,
+              stagger: 0.1,
+              duration: 0.8,
+              ease: 'power3.out',
+              overwrite: true
+            })
+          },
+          start: 'top 90%',
+          once: true
+        })
+        $ScrollTrigger.refresh()
+      }
+    })
+  }
+}, { immediate: true })
 </script>

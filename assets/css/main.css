@@ -20,11 +20,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Smooth scroll for browsers that support it */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+/* Disable native smooth scroll as it conflicts with Lenis */
+html {
+  scroll-behavior: auto !important;
 }
 
 /* Selection color - Swiss Design Style */
@@ -137,7 +135,16 @@ a:active {
 
 /* 6. Advanced Reveal Animations (GSAP companion classes) */
 .reveal-text-mask {
-  @apply overflow-hidden relative block;
+  @apply overflow-hidden relative;
+}
+
+.swiss-text-reveal__inner {
+  opacity: 0;
+  transform: translateY(120%) rotateX(-10deg) translateZ(0);
+  will-change: transform, opacity;
+  /* 确保文字不会因为旋转而被裁剪太严重 */
+  transform-origin: top center;
+  backface-visibility: hidden;
 }
 
 .reveal-text-mask span {

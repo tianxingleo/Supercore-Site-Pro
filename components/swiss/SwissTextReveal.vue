@@ -10,7 +10,6 @@
   >
     <span
       class="swiss-text-reveal__inner block will-change-transform"
-      :style="{ transitionDelay: `${delay}ms` }"
     >
       <slot>{{ text }}</slot>
     </span>
@@ -26,7 +25,8 @@ interface Props {
   delay?: number
   duration?: number
   stagger?: number
-  trigger?: boolean // If false, manual trigger
+  trigger?: boolean // If false, no scroll trigger
+  immediate?: boolean // If true, animate immediately on mount
   block?: boolean
   widthClass?: string
 }
@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   delay: 0,
   duration: 0.8,
   trigger: true,
+  immediate: false,
   block: false,
   widthClass: 'w-full'
 })
@@ -44,33 +45,51 @@ const props = withDefaults(defineProps<Props>(), {
 const el = ref<HTMLElement | null>(null)
 let ctx: gsap.Context | null = null
 
-const { $gsap } = useNuxtApp() as any
+const nuxtApp = useNuxtApp()
+const { $gsap, $ScrollTrigger } = nuxtApp as any
 
 onMounted(() => {
   if (!el.value) return
 
-  ctx = $gsap.context(() => {
-    // Initial State
-    $gsap.set(el.value!.querySelector('.swiss-text-reveal__inner'), {
-      y: '120%',
-      opacity: 0,
-      rotateX: -10
-    })
+  // 检查 GSAP 和 ScrollTrigger 是否可用
+  if (!$gsap || !$ScrollTrigger) {
+    console.warn('[SwissTextReveal] GSAP or ScrollTrigger not available')
+    return
+  }
 
-    if (props.trigger) {
-      $gsap.to(el.value!.querySelector('.swiss-text-reveal__inner'), {
-        scrollTrigger: {
-          trigger: el.value,
-          start: 'top 90%', // Trigger when top of element hits 90% viewport height
-          toggleActions: 'play none none reverse'
-        },
-        y: '0%',
-        opacity: 1,
-        rotateX: 0,
-        duration: props.duration,
-        ease: 'power3.out',
-        delay: props.delay / 1000
-      })
+  const innerEl = el.value.querySelector('.swiss-text-reveal__inner')
+  if (!innerEl) return
+
+  ctx = $gsap.context(() => {
+    const animationVars = {
+      y: '0%',
+      opacity: 1,
+      rotateX: 0,
+      duration: props.duration,
+      ease: 'power3.out',
+      delay: props.delay / 1000,
+      overwrite: 'auto' // 防止动画叠加
+    }
+
+    if (props.immediate) {
+      // 立即触发入场动画（首屏优化）
+      $gsap.fromTo(innerEl, 
+        { y: '120%', opacity: 0, rotateX: -10 },
+        animationVars
+      )
+    } else if (props.trigger) {
+      // 滚动触发入场动画
+      $gsap.fromTo(innerEl,
+        { y: '120%', opacity: 0, rotateX: -10 },
+        {
+          ...animationVars,
+          scrollTrigger: {
+            trigger: el.value,
+            start: 'top 92%', // 略微调整触发点
+            toggleActions: 'play none none reverse'
+          }
+        }
+      )
     }
   }, el.value)
 })
@@ -83,11 +102,18 @@ onBeforeUnmount(() => {
 <style scoped>
 .swiss-text-reveal {
   overflow: hidden;
-  /* Ensure mask works */
+  perspective: 1000px;
+  /* 确保作为 inline-block 时不会塌陷 */
+  min-height: 1.25em;
 }
 
-/* 3D perspective for rotation effect */
-.swiss-text-reveal {
-  perspective: 1000px;
+/* 初始隐藏状态，防止JS加载前闪现 */
+.swiss-text-reveal__inner {
+  opacity: 0;
+  transform: translateY(120%) rotateX(-10deg) translateZ(0);
+  will-change: transform, opacity;
+  /* 确保文字不会因为旋转而被裁剪太严重 */
+  transform-origin: top center;
+  backface-visibility: hidden;
 }
 </style>
