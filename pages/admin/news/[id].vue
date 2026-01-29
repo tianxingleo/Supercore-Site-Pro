@@ -165,7 +165,7 @@ const form = ref({
 })
 
 const tagsInput = computed({
-  get: () => form.value.tags.join(', '),
+  get: () => (form.value.tags || []).join(', '),
   set: (val: string) => {
     form.value.tags = val
       .split(',')
@@ -186,7 +186,7 @@ onMounted(async () => {
   if (!isNew.value) {
     loading.value = true
     try {
-      const response = (await $fetch(`/api/news/${route.params.id}`)) as any
+      const response = (await $fetch(`/api/news/admin/${route.params.id}`)) as any
       if (response.success) {
         const data = response.data
         form.value = {
@@ -195,6 +195,7 @@ onMounted(async () => {
           title: { ...form.value.title, ...data.title },
           summary: { ...form.value.summary, ...data.summary },
           content: { ...form.value.content, ...data.content },
+          tags: data.tags || [], // Ensure tags is always an array
         }
       }
     } catch (error: any) {
@@ -226,8 +227,8 @@ async function savePost() {
       })
     } else {
       // 更新现有文章
-      response = (await $fetch(`/api/news/${route.params.id}`, {
-        method: 'PUT' as any,
+      response = (await $fetch(`/api/news/admin/${route.params.id}`, {
+        method: 'PUT',
         body: payload,
       })) as any
     }

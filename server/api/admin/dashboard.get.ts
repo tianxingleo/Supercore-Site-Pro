@@ -1,4 +1,5 @@
-import { createClient } from '@supabase/supabase-js'
+import { serverSupabaseServiceRole } from '#supabase/server'
+import { requireAdminAuth } from '~/server/utils/auth'
 import { withApiHandler, createSuccessResponse, createErrorResponse } from '~/utils/apiHandler'
 import { logger, createRequestContext } from '~/utils/logger'
 
@@ -6,25 +7,16 @@ export default withApiHandler(async (event) => {
   const requestContext = createRequestContext(event)
   const startTime = Date.now()
 
-  // 验证配置
-  const supabaseUrl = process.env.SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_SECRET_KEY
-
-  if (!supabaseUrl || !supabaseKey) {
-    await logger.error('Supabase configuration is missing', null, 'API' as any, {
-      ...requestContext,
-    })
-
-    return createErrorResponse('Supabase configuration is missing', 500)
+  // 1. 验证管理员身份
+  try {
+    await requireAdminAuth(event)
+  } catch (err: any) {
+    return createErrorResponse(err.message || 'Unauthorized', err.statusCode || 401)
   }
 
-  // 创建客户端
-  const client = createClient(supabaseUrl, supabaseKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  })
+  // 2. 获取针对后端的 Service Role 客户端
+  const client = serverSupabaseServiceRole(event)
+
 
   try {
     // 测试后端连接时间并获取数据

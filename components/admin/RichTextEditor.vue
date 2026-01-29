@@ -69,6 +69,8 @@ const editor = useEditor({
       heading: {
         levels: [1, 2, 3],
       },
+      // Exclude Link extension to avoid duplicate with our custom Link configuration
+      link: false,
     }),
     Image.configure({
       inline: true,
@@ -137,28 +139,28 @@ const buttons = computed(() => {
     },
     {
       name: 'h1',
-      icon: 'i-heroicons-1',
+      icon: 'i-heroicons-chevron-double-down',
       title: '標題 1',
       action: () => editor.value?.chain().focus().toggleHeading({ level: 1 }).run(),
       active: () => editor.value?.isActive('heading', { level: 1 }),
     },
     {
       name: 'h2',
-      icon: 'i-heroicons-2',
+      icon: 'i-heroicons-chevron-down',
       title: '標題 2',
       action: () => editor.value?.chain().focus().toggleHeading({ level: 2 }).run(),
       active: () => editor.value?.isActive('heading', { level: 2 }),
     },
     {
       name: 'h3',
-      icon: 'i-heroicons-3',
+      icon: 'i-heroicons-minus',
       title: '標題 3',
       action: () => editor.value?.chain().focus().toggleHeading({ level: 3 }).run(),
       active: () => editor.value?.isActive('heading', { level: 3 }),
     },
     {
       name: 'paragraph',
-      icon: 'i-heroicons-paragraph',
+      icon: 'i-heroicons-document-text',
       title: '段落',
       action: () => editor.value?.chain().focus().setParagraph().run(),
       active: () => editor.value?.isActive('paragraph'),
@@ -200,7 +202,7 @@ const buttons = computed(() => {
     },
     {
       name: 'textAlignCenter',
-      icon: 'i-heroicons-chevron-left-right',
+      icon: 'i-heroicons-arrows-left-right',
       title: '居中對齊',
       action: () => editor.value?.chain().focus().setTextAlign('center').run(),
       active: () => editor.value?.isActive({ textAlign: 'center' }),
