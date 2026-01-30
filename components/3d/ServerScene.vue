@@ -114,50 +114,81 @@ const initScene = () => {
 
     // 載入模型
     // 請確保您的模型文件放在 public/models/server/ 目錄下
-    mtlLoader.load('/models/server/model.mtl', (materials) => {
-      materials.preload()
-      objLoader.setMaterials(materials)
-      objLoader.load('/models/server/model.obj', (object) => {
-        // 自定義模型處理
-        object.traverse((child) => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true
-            child.receiveShadow = true
+    mtlLoader.load(
+      '/models/server/model.mtl',
+      (materials) => {
+        try {
+          materials.preload()
+          objLoader.setMaterials(materials)
+        } catch (err) {
+          console.warn('[ServerScene] Failed to apply MTL materials, using default materials:', err)
+        }
+        loadOBJModel()
+      },
+      (xhr) => {
+        if (xhr.total > 0) {
+          console.log(`[ServerScene] MTL loading: ${Math.round(xhr.loaded / xhr.total * 100)}%`)
+        }
+      },
+      (error) => {
+        // MTL 加载失败时，仍然尝试加载 OBJ 模型（使用默认材质）
+        console.warn('[ServerScene] Failed to load MTL file, loading OBJ with default materials:', error)
+        loadOBJModel()
+      }
+    )
+
+    const loadOBJModel = () => {
+      objLoader.load(
+        '/models/server/model.obj',
+        (object) => {
+          try {
+            // 自定義模型處理
+            object.traverse((child) => {
+              if (child instanceof THREE.Mesh) {
+                child.castShadow = true
+                child.receiveShadow = true
+              }
+            })
+
+            // 自動縮放並對齊中心
+            const box = new THREE.Box3().setFromObject(object)
+            const center = box.getCenter(new THREE.Vector3())
+            const size = box.getSize(new THREE.Vector3())
+
+            const maxDim = Math.max(size.x, size.y, size.z)
+            const scale = 4 / maxDim
+            object.scale.setScalar(scale)
+            object.position.set(-center.x * scale, -center.y * scale, -center.z * scale)
+
+            // 應用初始旋轉
+            object.rotation.x = props.initialRotation.x
+            object.rotation.y = props.initialRotation.y
+            object.rotation.z = props.initialRotation.z
+
+            const group = new THREE.Group()
+            group.add(object)
+            cube = group as any
+            scene.add(group)
+
+            console.log('[ServerScene] 3D model loaded successfully')
+          } catch (err) {
+            console.error('[ServerScene] Failed to process 3D model:', err)
+          } finally {
+            // 無論成功或失敗，都隱藏加載狀態
+            isLoading.value = false
           }
-        })
-
-        // 自動縮放並對齊中心
-        const box = new THREE.Box3().setFromObject(object)
-        const center = box.getCenter(new THREE.Vector3())
-        const size = box.getSize(new THREE.Vector3())
-
-        const maxDim = Math.max(size.x, size.y, size.z)
-        const scale = 4 / maxDim
-        object.scale.setScalar(scale)
-        object.position.set(-center.x * scale, -center.y * scale, -center.z * scale)
-
-        // 應用初始旋轉
-        object.rotation.x = props.initialRotation.x
-        object.rotation.y = props.initialRotation.y
-        object.rotation.z = props.initialRotation.z
-
-        const group = new THREE.Group()
-        group.add(object)
-        cube = group as any
-        scene.add(group)
-        
-        // 加載完成
-        isLoading.value = false
-      }, (xhr) => {
-        console.log((xhr.loaded / xhr.total * 100) + '% loaded')
-      }, (error) => {
-        console.error('An error happened while loading OBJ', error)
-        isLoading.value = false
-      })
-    }, (error) => {
-      console.error('An error happened while loading MTL', error)
-      isLoading.value = false
-    })
+        },
+        (xhr) => {
+          if (xhr.total > 0) {
+            console.log(`[ServerScene] OBJ loading: ${Math.round(xhr.loaded / xhr.total * 100)}%`)
+          }
+        },
+        (error) => {
+          console.error('[ServerScene] Failed to load OBJ model:', error)
+          isLoading.value = false
+        }
+      )
+    }
 
     // Lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)

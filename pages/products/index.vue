@@ -48,7 +48,7 @@
         <!-- No Data State -->
         <template v-else>
           <div class="col-span-12 border-r border-b border-gray-100 py-32 text-center">
-            <p class="text-swiss-secondary uppercase tracking-widest text-sm">暂无產品數據</p>
+            <p class="text-swiss-secondary uppercase tracking-widest text-sm">暂無產品數據</p>
           </div>
         </template>
       </GridContainer>
@@ -58,87 +58,15 @@
 
 <script setup lang="ts">
 import type { Product } from '~/types'
-import { mockProducts } from '~/utils/mockData'
 
 console.log('[Products] Page mounting...')
 
-// 使用 useLazyFetch 确保加载动画可见
-const { data: apiProducts, pending, error } = useLazyFetch('/api/products/public')
-
-// 监听数据变化
-watch(apiProducts, (newData) => {
-  console.log('[Products] apiProducts changed:', {
-    isNull: newData === null,
-    isUndefined: newData === undefined,
-    isArray: Array.isArray(newData),
-    length: newData?.length,
-    data: newData,
-  })
+// 使用 useLazyFetch 获取产品数据
+const { data: products, pending } = useLazyFetch<Product[]>('/api/products/public', {
+  default: () => []
 })
 
-// 数据加载完成后的处理
-const products = computed(() => {
-  console.log('[Products] Computed called')
-
-  const apiResponse = apiProducts.value
-  const isError = error.value
-  const isLoading = pending.value
-
-  console.log('[Products] API response structure:', {
-    isLoading,
-    isError,
-    apiResponse,
-    hasSuccess: apiResponse?.success,
-    hasData: apiResponse?.data,
-    dataArray: apiResponse?.data,
-    isArray: Array.isArray(apiResponse?.data),
-    length: apiResponse?.data?.length,
-  })
-
-  // 如果还在加载中，返回空数组（让 pending 状态显示骨架屏）
-  if (isLoading || !apiResponse) {
-    console.log('[Products] Still loading, returning empty array')
-    return []
-  }
-
-  // 如果有错误
-  if (isError) {
-    console.error('[Products] API Error:', isError)
-    return []
-  }
-
-  // API 正常返回数据
-  if (apiResponse.success && Array.isArray(apiResponse.data) && apiResponse.data.length > 0) {
-    console.log('[Products] Using API data', {
-      count: apiResponse.data.length,
-      data: apiResponse.data,
-    })
-    return apiResponse.data
-  }
-
-  // 如果数据为空
-  console.log('[Products] API returned no data')
-  return []
-})
-
-// 监听产品变化
-watch(products, (newProducts) => {
-  console.log('[Products] Display products changed:', {
-    length: newProducts.length,
-    isUsingMock: newProducts === mockProducts,
-    apiProductsLength: apiProducts.value?.data?.length || 0,
-    mockProductsLength: mockProducts.length,
-  })
-})
-
-// 监听错误和数据状态
-watch([error, apiProducts, pending], ([newError, newData, isPending]) => {
-  console.log('[Products] State changed:', {
-    error: newError,
-    isPending,
-    apiProductsLength: newData?.value?.length || 0,
-  })
-})
+console.log('[Products] Page mounted, data:', products.value, 'pending:', pending.value)
 
 useHead({
   title: '产品 - 超核技術有限公司',
@@ -148,28 +76,52 @@ useHead({
 const nuxtApp = useNuxtApp()
 const { $gsap, $ScrollTrigger } = nuxtApp as any
 
-watch(pending, (isPending) => {
-  if (!isPending && process.client) {
-    // 数据加载完成，等 DOM 更新后触发动画
-    nextTick(() => {
-      if ($gsap && $ScrollTrigger) {
-        $ScrollTrigger.batch('.product-card-item', {
-          onEnter: (batch: any) => {
-            $gsap.to(batch, {
-              opacity: 1,
-              y: 0,
-              stagger: 0.1,
-              duration: 0.8,
-              ease: 'power3.out',
-              overwrite: true
-            })
-          },
-          start: 'top 90%',
-          once: true
+// 使用 onMounted 确保组件已挂载到 DOM
+onMounted(() => {
+  console.log('[Products] onMounted triggered')
+
+  // 使用 nextTick 等待 DOM 更新完成
+  nextTick(() => {
+    console.log('[Products] After nextTick in onMounted')
+
+    // 再等待一下，确保子组件也渲染完成
+    setTimeout(() => {
+      console.log('[Products] Checking GSAP and DOM...')
+
+      if ($gsap && $ScrollTrigger && process.client) {
+        const cards = document.querySelectorAll('.product-card-item')
+        console.log('[Products] Found cards:', cards.length)
+
+        if (cards.length > 0) {
+          console.log('[Products] Starting GSAP animation...')
+          $ScrollTrigger.batch('.product-card-item', {
+            onEnter: (batch: any) => {
+              console.log('[Products] GSAP onEnter fired for batch:', batch.length)
+              $gsap.to(batch, {
+                opacity: 1,
+                y: 0,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: 'power3.out',
+                overwrite: true
+              })
+            },
+            start: 'top 90%',
+            once: true
+          })
+          $ScrollTrigger.refresh()
+          console.log('[Products] Animation triggered successfully!')
+        } else {
+          console.warn('[Products] No cards found in DOM')
+        }
+      } else {
+        console.warn('[Products] GSAP or ScrollTrigger not available', {
+          hasGsap: !!$gsap,
+          hasScrollTrigger: !!$ScrollTrigger,
+          isClient: process.client
         })
-        $ScrollTrigger.refresh()
       }
-    })
-  }
-}, { immediate: true })
+    }, 100)
+  })
+})
 </script>

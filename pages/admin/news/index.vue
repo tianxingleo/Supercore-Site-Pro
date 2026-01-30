@@ -203,7 +203,7 @@ async function exportData(format: 'json' | 'csv') {
     link.download = `news_${new Date().toISOString().split('T')[0]}.${format}`
     document.body.appendChild(link)
     link.click()
-    
+
     // 清理
     setTimeout(() => {
       document.body.removeChild(link)

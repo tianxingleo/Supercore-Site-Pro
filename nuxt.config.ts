@@ -60,6 +60,14 @@ export default defineNuxtConfig({
   // Supabase Configuration
   supabase: {
     redirect: true,
+    // Cookie 配置 - 确保本地开发环境正常工作
+    cookieOptions: {
+      path: '/',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production', // 仅在生产环境使用 secure
+      httpOnly: false, // 允许客户端访问
+      maxAge: 60 * 60 * 24 * 7, // 7 天
+    },
     redirectOptions: {
       login: '/admin/login',
       callback: '/admin',
@@ -86,12 +94,14 @@ export default defineNuxtConfig({
         '/en',
         '/en/**',
         '/_nuxt/**',
-        '/api/products',
-        '/api/products/**',
+        '/api/products/public',
+        '/api/news/public',
+        '/api/solutions/public',
+        '/api/inquiries', // 公共询盘提交表单
+        '/api/errors', // 错误监控端点
+        '/api/system', // 系统状态检查
         '/api/news',
-        '/api/news/**',
         '/api/solutions',
-        '/api/solutions/**',
       ],
     },
   },

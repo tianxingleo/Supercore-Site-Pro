@@ -7,7 +7,7 @@ export default defineNitroPlugin((nitroApp) => {
     if ((path.startsWith('/_nuxt/') || path.includes('_payload.json')) && (error as H3Error).statusCode === 404) {
       return
     }
-    
+
     // 如果是开发环境且是已知的控制台报错，可以选择性过滤
     if (process.dev) {
       if (error.message?.includes('PostgrestError') || error.message?.includes('FunctionRegion')) {

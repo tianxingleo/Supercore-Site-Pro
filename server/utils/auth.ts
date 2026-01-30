@@ -1,4 +1,6 @@
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
+import { getHeaders, getRequestHeader } from 'h3'
+import { createClient } from '@supabase/supabase-js'
 
 /**
  * 验证用户是否已登录且具有管理员角色
@@ -8,12 +10,79 @@ import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
  * @returns 用户信息和个人资料
  */
 export async function requireAdminAuth(event: any) {
-  // 获取已认证的用户
-  const user = await serverSupabaseUser(event)
+  // 方法1: 尝试使用 serverSupabaseUser
+  let user = await serverSupabaseUser(event)
+
+  // 方法2: 如果方法1失败，手动从 cookie 读取 session
+  if (!user) {
+    try {
+      const cookie = getRequestHeader(event, 'cookie')
+      if (cookie) {
+        // 尝试多种 Supabase cookie 格式
+        // 格式1: sb-access-token / sb-refresh-token (旧版)
+        // 格式2: sb-<project-ref>-auth-token (新版)
+
+        let accessToken = null
+        let refreshToken = null
+
+        // 尝试格式1
+        const accessTokenMatch = cookie.match(/sb-access-token=([^;]+)/)
+        const refreshTokenMatch = cookie.match(/sb-refresh-token=([^;]+)/)
+
+        if (accessTokenMatch && refreshTokenMatch) {
+          accessToken = decodeURIComponent(accessTokenMatch[1])
+          refreshToken = decodeURIComponent(refreshTokenMatch[1])
+        } else {
+          // 尝试格式2: 新版 Supabase 使用单个 auth token cookie
+          const authTokenMatch = cookie.match(/sb-[^-]+-auth-token=([^;]+)/)
+          if (authTokenMatch) {
+            // 新版本中，auth token 包含了 session 信息
+            // 尝试直接使用这个 token
+            try {
+              const authToken = JSON.parse(decodeURIComponent(authTokenMatch[1]))
+              accessToken = authToken.access_token
+              refreshToken = authToken.refresh_token
+            } catch {
+              // 如果不是 JSON，可能是 base64 编码的 token
+              accessToken = decodeURIComponent(authTokenMatch[1])
+            }
+          }
+        }
+
+        if (accessToken) {
+          const supabaseUrl = process.env.SUPABASE_URL
+          const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_KEY
+
+          if (supabaseUrl && supabaseKey) {
+            const supabase = createClient(supabaseUrl, supabaseKey, {
+              auth: {
+                autoRefreshToken: false,
+                persistSession: false,
+              },
+            })
+
+            // 尝试使用 access token 获取用户
+            const { data: userData, error: userError } = await supabase.auth.getUser(accessToken)
+
+            if (!userError && userData?.user) {
+              user = userData.user
+              console.log('[Auth] Successfully restored session from cookie')
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('[Auth] Failed to restore session from cookie:', error)
+    }
+  }
 
   if (!user) {
-    const cookie = event.getHeaders().cookie
-    console.error('[Auth] No user found in session. Cookies present:', !!cookie)
+    const headers = getHeaders(event)
+    const cookie = headers.cookie
+    console.error('[Auth] No user found in session.')
+    console.error('[Auth] Cookies present:', !!cookie)
+    console.error('[Auth] Request path:', event.node.req.url)
+    console.error('[Auth] Cookie preview:', cookie ? cookie.substring(0, 100) + '...' : 'none')
     throw createError({
       statusCode: 401,
       message: '未授权：请先登录'

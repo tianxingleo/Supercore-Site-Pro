@@ -19,7 +19,7 @@
               {{ $t('home.hero.title') }}
             </TypographyHeader>
           </SwissTextReveal>
-          
+
           <SwissTextReveal tag="div" :delay="450" :duration="1" immediate>
             <div class="max-w-2xl border-l-2 border-swiss-text/5 pl-8 lg:pl-12 mt-6 lg:mt-8 mb-4 lg:mb-6">
               <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="!mb-0 opacity-90 leading-tight">
@@ -39,7 +39,7 @@
                 {{ $t('home.hero.cta') }}
               </SwissButton>
             </SwissTextReveal>
-            
+
             <SwissTextReveal tag="div" :delay="750" :duration="0.8" immediate width-class="w-auto">
               <SwissButton variant="ghost" size="lg" class="!px-12 !py-5 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300 text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
                 @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
@@ -209,24 +209,34 @@
         </div>
 
         <div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-l border-gray-100">
-          <!-- Loading State -->
-          <template v-if="pendingNews">
-            <div v-for="i in 3" :key="i" class="border-r border-b border-gray-100">
-              <NewsSkeleton class="!border-none" />
-            </div>
-          </template>
+          <!-- 使用 ClientOnly 避免 hydration mismatch，因为数据只在客户端加载 -->
+          <ClientOnly>
+            <!-- Loading State -->
+            <template v-if="pendingNews">
+              <div v-for="i in 3" :key="i" class="border-r border-b border-gray-100">
+                <NewsSkeleton class="!border-none" />
+              </div>
+            </template>
 
-          <!-- Data Loaded State -->
-          <template v-else-if="latestPosts && latestPosts.length > 0">
-            <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100 bg-white news-card-item opacity-0 translate-y-8">
-              <NewsCard :post="post" class="!border-none" />
-            </div>
-          </template>
+            <!-- Data Loaded State -->
+            <template v-else-if="latestPosts && latestPosts.length > 0">
+              <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100 bg-white news-card-item opacity-0 translate-y-8">
+                <NewsCard :post="post" class="!border-none" />
+              </div>
+            </template>
 
-          <!-- Empty State -->
-          <div v-else class="col-span-3 py-24 text-center border-r border-b border-gray-100">
-            <p class="text-swiss-secondary uppercase tracking-widest text-sm opacity-50">{{ $t('news.noNews') }}</p>
-          </div>
+            <!-- Empty State -->
+            <div v-else class="col-span-3 py-24 text-center border-r border-b border-gray-100">
+              <p class="text-swiss-secondary uppercase tracking-widest text-sm opacity-50">{{ $t('news.noNews') }}</p>
+            </div>
+
+            <!-- Server-side fallback -->
+            <template #fallback>
+              <div v-for="i in 3" :key="i" class="border-r border-b border-gray-100">
+                <NewsSkeleton class="!border-none" />
+              </div>
+            </template>
+          </ClientOnly>
         </div>
       </GridContainer>
     </section>
@@ -336,10 +346,11 @@ const { data: latestPosts, pending: pendingNews } = useLazyFetch<Post[]>('/api/n
 
 // 監聽新聞數據加載并播放進場動畫
 watch([latestPosts, pendingNews], ([newPosts, isPending]) => {
+  // 数据加载完成且有文章数据时触发动画
   if (!isPending && newPosts && newPosts.length > 0 && process.client) {
     nextTick(() => {
       if (!$gsap || !$ScrollTrigger) return
-      
+
       const cards = document.querySelectorAll('.news-card-item')
       if (cards.length > 0) {
         $ScrollTrigger.batch(cards, {
@@ -361,7 +372,7 @@ watch([latestPosts, pendingNews], ([newPosts, isPending]) => {
       }
     })
   }
-}, { immediate: true })
+})
 
 // 添加 canonical 標籤
 const baseUrl = 'https://www.supercore.hk'
@@ -416,7 +427,7 @@ onMounted(() => {
         })
       })
     }
-    
+
     // 初始化其他 GSAP 動畫 (不需要 3D 也可以運行)
     nextTick(() => {
       initGsapAnimations()
@@ -437,24 +448,24 @@ const initGsapAnimations = () => {
           start: 'top 85%',
         }
       })
-      
+
       // Separator expands
-      tl.to(item.querySelectorAll('.swiss-separator'), { 
-        duration: 0.8, 
-        scaleX: 1, 
-        ease: 'power3.out' 
+      tl.to(item.querySelectorAll('.swiss-separator'), {
+        duration: 0.8,
+        scaleX: 1,
+        ease: 'power3.out'
       })
-      
+
       // Number fades in
-      $gsap.from(item.querySelector('.swiss-feature-number'), { 
+      $gsap.from(item.querySelector('.swiss-feature-number'), {
         scrollTrigger: {
           trigger: item,
           start: 'top 90%',
         },
-        opacity: 0, 
-        x: -20, 
-        duration: 1, 
-        ease: 'power2.out' 
+        opacity: 0,
+        x: -20,
+        duration: 1,
+        ease: 'power2.out'
       })
     })
   }

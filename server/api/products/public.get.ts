@@ -1,27 +1,15 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Product } from '~/types'
-import {
-  withApiHandler,
-  createSuccessResponse,
-  createErrorResponse,
-  withDatabaseLogging,
-} from '~/utils/apiHandler'
-import { logger, createRequestContext } from '~/utils/logger'
 
-export default withApiHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const limit = query.limit ? parseInt(query.limit as string) : undefined
-  const requestContext = createRequestContext(event)
 
   // 验证配置
   const supabaseUrl = process.env.SUPABASE_URL
   const supabaseKey = process.env.SUPABASE_SECRET_KEY
 
   if (!supabaseUrl || !supabaseKey) {
-    await logger.error('Supabase configuration is missing', null, 'API' as any, {
-      ...requestContext,
-    })
-
     throw createError({
       statusCode: 500,
       message: 'Supabase configuration is missing',
@@ -37,30 +25,19 @@ export default withApiHandler(async (event) => {
   })
 
   // 查询产品
-  const { data, error } = await withDatabaseLogging(
-    'Fetch public products',
-    async () => {
-      let queryBuilder = client
-        .from('products')
-        .select('*')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false })
+  let queryBuilder = client
+    .from('products')
+    .select('*')
+    .eq('status', 'published')
+    .order('created_at', { ascending: false })
 
-      if (limit) {
-        queryBuilder = queryBuilder.limit(limit)
-      }
+  if (limit) {
+    queryBuilder = queryBuilder.limit(limit)
+  }
 
-      return await queryBuilder
-    },
-    { ...requestContext, limit }
-  )
+  const { data, error } = await queryBuilder
 
   if (error) {
-    await logger.error('Failed to fetch products', error, 'API' as any, {
-      ...requestContext,
-      limit,
-    })
-
     throw createError({
       statusCode: 500,
       message: error.message,
@@ -88,10 +65,6 @@ export default withApiHandler(async (event) => {
     createdAt: item.created_at,
   }))
 
-  await logger.info(`Successfully fetched ${mappedProducts.length} products`, 'API' as any, {
-    ...requestContext,
-    count: mappedProducts.length,
-  })
-
-  return createSuccessResponse(mappedProducts)
+  // 直接返回产品数组，与news API保持一致
+  return mappedProducts
 })

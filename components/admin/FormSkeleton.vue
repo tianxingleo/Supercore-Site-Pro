@@ -12,7 +12,7 @@
       <div class="p-6 md:p-8 border-b border-swiss-text/10">
         <div class="h-4 w-24 bg-gray-200"></div>
       </div>
-      
+
       <!-- Card Content -->
       <div class="p-6 md:p-8 space-y-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -20,7 +20,7 @@
             <div class="h-3 w-32 bg-gray-100"></div>
             <div class="h-12 w-full bg-gray-50 border border-swiss-text/5"></div>
           </div>
-          
+
           <div v-for="i in 2" :key="'area-'+i" class="md:col-span-2 space-y-2">
             <div class="h-3 w-32 bg-gray-100"></div>
             <div class="h-32 w-full bg-gray-50 border border-swiss-text/5"></div>

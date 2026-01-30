@@ -4,13 +4,13 @@
     <section class="pt-48 pb-24 border-b border-gray-100 mb-12">
       <GridContainer :grid="true">
         <div class="col-span-12 lg:col-span-8">
-          <SwissTextReveal tag="div" :duration="1.2">
+          <SwissTextReveal tag="div" :duration="1.2" :immediate="true">
             <TypographyHeader :level="1" size="display" class="mb-8">
               {{ $t('nav.contact') }}
             </TypographyHeader>
           </SwissTextReveal>
-          
-          <SwissTextReveal tag="div" :delay="200" :duration="1">
+
+          <SwissTextReveal tag="div" :delay="200" :duration="1" :immediate="true">
             <TypographyHeader
               :level="2"
               size="h3"
@@ -44,7 +44,7 @@
         <div class="col-span-12 lg:col-span-5 space-y-px bg-gray-100">
           <!-- Contact Info -->
           <div class="bg-white p-12 md:p-20 h-full border-r border-b border-gray-100">
-            <SwissTextReveal tag="div">
+            <SwissTextReveal tag="div" :immediate="true">
               <div
                 class="inline-block mb-12 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1"
               >
@@ -54,7 +54,7 @@
 
             <div class="space-y-16 mt-12">
               <!-- Email -->
-              <SwissTextReveal tag="div" :delay="100">
+              <SwissTextReveal tag="div" :delay="100" :immediate="true">
                 <div class="flex flex-col">
                   <span
                     class="text-[9px] font-bold text-swiss-text/30 uppercase tracking-[0.2em] mb-4"
@@ -70,7 +70,7 @@
               </SwissTextReveal>
 
               <!-- Phone -->
-              <SwissTextReveal tag="div" :delay="250">
+              <SwissTextReveal tag="div" :delay="250" :immediate="true">
                 <div class="flex flex-col">
                   <span
                     class="text-[9px] font-bold text-swiss-text/30 uppercase tracking-[0.2em] mb-4"
@@ -86,7 +86,7 @@
               </SwissTextReveal>
 
               <!-- Address -->
-              <SwissTextReveal tag="div" :delay="400">
+              <SwissTextReveal tag="div" :delay="400" :immediate="true">
                 <div class="flex flex-col">
                   <span
                     class="text-[9px] font-bold text-swiss-text/30 uppercase tracking-[0.2em] mb-4"

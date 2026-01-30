@@ -127,7 +127,21 @@ const columns = [
 const { data: response, pending, refresh, error } = useLazyFetch('/api/products', {
   key: () => `products-${refreshKey.value}`,
   transform: (data: any) => data,
-  default: () => ({ success: false, data: [] })
+  default: () => ({ success: false, data: [] }),
+  onRequestError({ error }) {
+    console.error('请求失败:', error)
+  },
+  onResponseError({ response }) {
+    // 401 未授权，跳转到登录页
+    if (response.status === 401) {
+      console.warn('未授权访问，跳转到登录页')
+      navigateTo('/admin/login')
+    }
+    // 403 禁止访问（非管理员）
+    if (response.status === 403) {
+      console.error('权限不足：需要管理员权限')
+    }
+  }
 })
 
 const products = computed(() => response.value?.success ? response.value.data : [])
@@ -296,7 +310,7 @@ async function exportData(format: 'json' | 'csv') {
     link.download = `products_${new Date().toISOString().split('T')[0]}.${format}`
     document.body.appendChild(link)
     link.click()
-    
+
     // 清理
     setTimeout(() => {
       document.body.removeChild(link)

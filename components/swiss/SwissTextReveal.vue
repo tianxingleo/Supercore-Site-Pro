@@ -73,7 +73,7 @@ onMounted(() => {
 
     if (props.immediate) {
       // 立即触发入场动画（首屏优化）
-      $gsap.fromTo(innerEl, 
+      $gsap.fromTo(innerEl,
         { y: '120%', opacity: 0, rotateX: -10 },
         animationVars
       )
