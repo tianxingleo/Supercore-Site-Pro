@@ -9,6 +9,8 @@ let config = [];
 const ignores = {
   ignores: [
     '.nuxt/**',
+    '**/.nuxt/**',
+    '0.0.0.0/**',
     'dist/**',
     'node_modules/**',
     'repomix-output.xml'
