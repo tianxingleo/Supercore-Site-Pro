@@ -10,6 +10,8 @@ const ignores = {
   ignores: [
     '.nuxt/**',
     '**/.nuxt/**',
+    '.output/**',
+    '**/.output/**',
     '0.0.0.0/**',
     'dist/**',
     'node_modules/**',
