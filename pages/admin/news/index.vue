@@ -17,7 +17,7 @@
 - **移動端**：垂直堆疊（標題區域和按鈕區域上下排列）
 - **桌面端**：水平排列（標題區域在左，按鈕區域在右）
 
-```vue
+vue
 <!-- 頂部區域：標題 + 按鈕 -->
 <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-6">
   <!-- 左側：標題和描述 -->
@@ -29,12 +29,12 @@
   <!-- 右側：發佈諮訊按鈕 -->
   <SwissButton tag="a" to="/admin/news/new">發佈諮訊</SwissButton>
 </div>
-```
+
 
 ### 2. 動態數據加載
 使用 `useLazyFetch` 實現動態數據加載和自動刷新：
 
-```typescript
+typescript
 const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
   key: () => `news-${refreshKey.value}`,  // 使用 refreshKey 作為緩存鍵
   transform: (data: any) => data,         // 數據轉換
@@ -42,7 +42,7 @@ const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
 })
 
 const posts = computed(() => response.value?.success ? response.value.data : [])
-```
+
 
 **為什麼使用 `useLazyFetch` 而不是 `useFetch`？**
 
@@ -57,13 +57,13 @@ const posts = computed(() => response.value?.success ? response.value.data : [])
 ### 3. 自動刷新機制
 通過修改 `refreshKey` 觸發數據刷新：
 
-```typescript
+typescript
 const refreshKey = ref(0)
 
 // 當需要刷新數據時
 refreshKey.value++  // 修改 refreshKey
 await refresh()    // 重新調用 API
-```
+
 
 **為什麼這樣設計？**
 
@@ -79,12 +79,12 @@ await refresh()    // 重新調用 API
 ### 4. 骨架屏優化
 在加載時顯示骨架屏：
 
-```vue
+vue
 <div class="bg-white border border-swiss-text/10">
   <TableSkeleton v-if="pending" />
   <UTable v-else :rows="posts" :columns="columns" />
 </div>
-```
+
 
 好處：
 - 減少感知加載時間
@@ -94,7 +94,7 @@ await refresh()    // 重新調用 API
 ### 5. 表格自定義列
 使用 `<template #column-data="{ row }">` 語法自定義列的渲染：
 
-```vue
+vue
 <UTable :rows="posts" :columns="columns">
   <!-- 自定義標題列 -->
   <template #title-data="{ row }">
@@ -112,7 +112,7 @@ await refresh()    // 重新調用 API
     <button @click="deletePost(row.id)">刪除</button>
   </template>
 </UTable>
-```
+
 
 **為什麼使用插槽？**
 
@@ -123,7 +123,7 @@ await refresh()    // 重新調用 API
 ### 6. 多語言支持
 新聞標題支持多語言（繁體中文、簡體中文、英文）：
 
-```typescript
+typescript
 // 數據結構
 {
   title: {
@@ -135,7 +135,7 @@ await refresh()    // 重新調用 API
 
 // 在 UI 中顯示
 {{ row.title?.['zh-HK'] || row.title?.['hk'] }}
-```
+
 
 **為什麼這樣處理？**
 
@@ -146,7 +146,7 @@ await refresh()    // 重新調用 API
 ### 7. 批量操作（已註釋掉）
 代碼中包含批量操作和導出的邏輯，但被註釋掉了：
 
-```typescript
+typescript
 // 批量刪除
 async function bulkDelete() {
   if (!confirm(`確定要刪除選中的 ${selectedItems.value.length} 篇文章嗎？`)) return
@@ -161,7 +161,7 @@ async function bulkDelete() {
   refreshKey.value++
   await refresh()
 }
-```
+
 
 **為什麼註釋掉？**
 
@@ -172,7 +172,7 @@ async function bulkDelete() {
 ### 8. 數據導出（已註釋掉）
 支持導出為 JSON 和 CSV 格式：
 
-```typescript
+typescript
 async function exportData(format: 'json' | 'csv') {
   const blob = await $fetch(`/api/news/admin/export?format=${format}`, {
     method: 'GET',
@@ -193,7 +193,7 @@ async function exportData(format: 'json' | 'csv') {
     window.URL.revokeObjectURL(url)
   }, 100)
 }
-```
+
 
 **技術細節**：
 - `responseType: 'blob'`：指定響應類型為 Blob（二進制大對象）
@@ -204,7 +204,7 @@ async function exportData(format: 'json' | 'csv') {
 ### 9. 響應式表格樣式
 使用 `ui` 屬性自定義 UTable 的樣式：
 
-```typescript
+typescript
 <UTable :rows="posts" :columns="columns" :ui="{
   wrapper: 'overflow-x-auto',  // 表格容器：水平滾動
   thead: 'bg-swiss-bg-soft',   // 表頭背景顏色
@@ -218,7 +218,7 @@ async function exportData(format: 'json' | 'csv') {
     active: 'bg-swiss-bg-soft',  // 懸停行背景顏色
   },
 }">
-```
+
 
 **為什麼使用瑞士設計樣式？**
 
@@ -230,13 +230,13 @@ async function exportData(format: 'json' | 'csv') {
 ### 10. 錯誤處理
 在 `watchEffect` 中監聽錯誤：
 
-```typescript
+typescript
 watchEffect(() => {
   if (error.value) {
     console.error('獲取文章列表失敗:', error.value)
   }
 })
-```
+
 
 **為什麼使用 `watchEffect` 而不是 `watch`？**
 
@@ -320,11 +320,11 @@ watchEffect(() => {
 ### 優化 1：懶加載數據
 使用 `useLazyFetch` 而不是 `useFetch`：
 
-```typescript
+typescript
 const { data: response, pending, refresh } = useLazyFetch('/api/news', {
   key: () => `news-${refreshKey.value}`,
 })
-```
+
 
 好處：
 - 頁面立即渲染（先顯示骨架屏）
@@ -334,9 +334,9 @@ const { data: response, pending, refresh } = useLazyFetch('/api/news', {
 ### 優化 2：計算屬性緩存
 使用 `computed` 計算文章列表：
 
-```typescript
+typescript
 const posts = computed(() => response.value?.success ? response.value.data : [])
-```
+
 
 好處：
 - 當 `response.value` 改變時自動重新計算
@@ -346,10 +346,10 @@ const posts = computed(() => response.value?.success ? response.value.data : [])
 ### 優化 3：骨架屏優化
 使用 `TableSkeleton` 組件：
 
-```vue
+vue
 <TableSkeleton v-if="pending" />
 <UTable v-else :rows="posts" />
-```
+
 
 好處：
 - 減少感知加載時間
@@ -359,14 +359,14 @@ const posts = computed(() => response.value?.success ? response.value.data : [])
 ### 優化 4：條件渲染
 使用 `v-if` 和 `v-else` 切換骨架屏和表格：
 
-```vue
+vue
 <div v-if="pending">
   <TableSkeleton />
 </div>
 <div v-else>
   <UTable :rows="posts" />
 </div>
-```
+
 
 好處：
 - `v-if` 完全移除/添加 DOM 元素（初始渲染性能好）
@@ -375,13 +375,13 @@ const posts = computed(() => response.value?.success ? response.value.data : [])
 ### 優化 5：自動刷新機制
 通過 `refreshKey` 觸發數據刷新：
 
-```typescript
+typescript
 const refreshKey = ref(0)
 
 // 刷新數據
 refreshKey.value++
 await refresh()
-```
+
 
 好處：
 - 利用 `useLazyFetch` 的緩存機制
@@ -409,12 +409,12 @@ await refresh()
 ### 可訪問性 3：錯誤處理
 使用 `alert()` 顯示錯誤消息：
 
-```typescript
+typescript
 catch (error: any) {
   const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
   alert(errorMessage)
 }
-```
+
 
 改進建議：
 - 應該使用非阻塞的通知組件而不是 `alert()`
@@ -423,9 +423,9 @@ catch (error: any) {
 ### 可訪問性 4：確認對話框
 使用 `confirm()` 顯示確認對話框：
 
-```typescript
+typescript
 if (!confirm('確定刪除此文章？')) return
-```
+
 
 改進建議：
 - 應該使用自定義的確認模態框
@@ -470,12 +470,12 @@ if (!confirm('確定刪除此文章？')) return
 用途：獲取所有新聞文章
 
 請求示例：
-```typescript
+typescript
 const { data: response, pending } = useLazyFetch('/api/news')
-```
+
 
 預期響應：
-```json
+json
 {
   "success": true,
   "data": [
@@ -497,33 +497,33 @@ const { data: response, pending } = useLazyFetch('/api/news')
     }
   ]
 }
-```
+
 
 ### API 2：刪除新聞
 端點：`DELETE /api/news/{id}`
 用途：刪除單篇新聞
 
 請求示例：
-```typescript
+typescript
 await $fetch(`/api/news/${id}`, {
   method: 'DELETE'
 })
-```
+
 
 預期響應：
-```json
+json
 {
   "success": true,
   "message": "文章刪除成功"
 }
-```
+
 
 ### API 3：批量刪除（已註釋掉）
 端點：`POST /api/news/admin/bulk`
 用途：批量刪除多篇新聞
 
 請求示例：
-```typescript
+typescript
 await $fetch('/api/news/admin/bulk', {
   method: 'POST',
   body: {
@@ -531,27 +531,27 @@ await $fetch('/api/news/admin/bulk', {
     action: 'delete'
   }
 })
-```
+
 
 預期響應：
-```json
+json
 {
   "success": true,
   "message": "批量刪除成功"
 }
-```
+
 
 ### API 4：導出數據（已註釋掉）
 端點：`GET /api/news/admin/export?format={format}`
 用途：導出新聞數據
 
 請求示例：
-```typescript
+typescript
 const blob = await $fetch(`/api/news/admin/export?format=json`, {
   method: 'GET',
   responseType: 'blob'
 })
-```
+
 
 預期響應：
 - Blob 對象（二進制大對象）
@@ -559,7 +559,7 @@ const blob = await $fetch(`/api/news/admin/export?format=json`, {
 ## 數據流
 
 ### 數據流 1：頁面加載
-```
+
 用戶訪問 /admin/news
   ↓
 組件掛載
@@ -575,10 +575,10 @@ pending = false（顯示表格）
 computed 計算 posts 列表
   ↓
 表格渲染 posts
-```
+
 
 ### 數據流 2：刪除文章
-```
+
 用戶點擊刪除按鈕
   ↓
 確認對話框
@@ -596,10 +596,10 @@ refreshKey.value++（修改緩存鍵）
 useLazyFetch 自動重新請求
   ↓
 表格自動更新
-```
+
 
 ### 數據流 3：導出數據（已註釋掉）
-```
+
 用戶選擇導出格式
   ↓
 調用 GET /api/news/admin/export?format=json
@@ -613,7 +613,7 @@ API 返回 Blob 對象
 觸發下載
   ↓
 清理臨時 URL
-```
+
 
 ## Tailwind CSS 類名說明
 
@@ -673,11 +673,11 @@ API 返回 Blob 對象
 ### ref
 用於創建響應式引用：
 
-```typescript
+typescript
 const search = ref('')
 const refreshKey = ref(0)
 const selectedItems = ref<any[]>([])
-```
+
 
 好處：
 - 在模板中可以直接訪問 `search.value`
@@ -687,9 +687,9 @@ const selectedItems = ref<any[]>([])
 ### computed
 用於創建計算屬性：
 
-```typescript
+typescript
 const posts = computed(() => response.value?.success ? response.value.data : [])
-```
+
 
 好處：
 - 基於 `response.value` 自動計算
@@ -699,13 +699,13 @@ const posts = computed(() => response.value?.success ? response.value.data : [])
 ### watchEffect
 用於自動追蹤依賴的副作用：
 
-```typescript
+typescript
 watchEffect(() => {
   if (error.value) {
     console.error('獲取文章列表失敗:', error.value)
   }
 })
-```
+
 
 好處：
 - 自動追蹤 `error.value`
@@ -715,13 +715,13 @@ watchEffect(() => {
 ### useLazyFetch
 用於異步加載數據：
 
-```typescript
+typescript
 const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
   key: () => `news-${refreshKey.value}`,
   transform: (data: any) => data,
   default: () => ({ success: false, data: [] })
 })
-```
+
 
 好處：
 - 頁面立即渲染（不阻塞）
@@ -731,10 +731,10 @@ const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
 ### v-if 和 v-else
 用於條件渲染：
 
-```vue
+vue
 <TableSkeleton v-if="pending" />
 <UTable v-else :rows="posts" :columns="columns" />
-```
+
 
 好處：
 - 根據條件切換顯示內容
@@ -743,13 +743,13 @@ const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
 ### v-for
 用於循環渲染：
 
-```vue
+vue
 <UTable :rows="posts" :columns="columns">
   <template #title-data="{ row }">
     <div>{{ row.title?.['zh-HK'] }}</div>
   </template>
 </UTable>
-```
+
 
 好處：
 - 為每行動態生成內容
@@ -758,13 +758,13 @@ const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
 ### 插槽 (Slots)
 使用具名插槽自定義列的渲染：
 
-```vue
+vue
 <UTable :rows="posts" :columns="columns">
   <template #title-data="{ row }">
     <div>{{ row.title?.['zh-HK'] }}</div>
   </template>
 </UTable>
-```
+
 
 好處：
 - 允許自定義單元格的渲染邏輯
@@ -774,11 +774,11 @@ const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
 ### defineExpose
 暴露函數給父組件：
 
-```typescript
+typescript
 defineExpose({
   refresh
 })
-```
+
 
 好處：
 - 父組件可以調用 `refresh()` 函數
@@ -789,24 +789,24 @@ defineExpose({
 ### 類型 1：any[]
 用於選中的項目數組：
 
-```typescript
+typescript
 selectedItems: ref<any[]>([])
-```
+
 
 示例值：
-```typescript
+typescript
 [
   { id: 1, title: {...}, ... },
   { id: 2, title: {...}, ... }
 ]
-```
+
 
 ### 類型 2：'json' | 'csv'
 用於導出格式：
 
-```typescript
+typescript
 async function exportData(format: 'json' | 'csv')
-```
+
 
 可選值：
 - `'json'`：JSON 格式
@@ -815,12 +815,12 @@ async function exportData(format: 'json' | 'csv')
 ### 類型 3：Blob
 用於二進制大對象（文件下載）：
 
-```typescript
+typescript
 const blob = await $fetch('/api/news/admin/export?format=json', {
   method: 'GET',
   responseType: 'blob'
 })
-```
+
 
 作用：
 - 表示二進制數據（如文件、圖片）
@@ -829,13 +829,13 @@ const blob = await $fetch('/api/news/admin/export?format=json', {
 ### 類型 4：error: any
 用於錯誤對象：
 
-```typescript
+typescript
 catch (error: any) {
   console.error('刪除失敗:', error)
   const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
   alert(errorMessage)
 }
-```
+
 
 作用：
 - 捕獲任何類型的錯誤
@@ -844,13 +844,13 @@ catch (error: any) {
 ## 錯誤處理
 
 ### 錯誤 1：數據加載失敗
-```typescript
+typescript
 watchEffect(() => {
   if (error.value) {
     console.error('獲取文章列表失敗:', error.value)
   }
 })
-```
+
 
 處理方式：
 - 記錄錯誤到控制台
@@ -861,13 +861,13 @@ watchEffect(() => {
 - 應該提供重試按鈕
 
 ### 錯誤 2：刪除失敗
-```typescript
+typescript
 catch (error: any) {
   console.error('刪除失敗:', error)
   const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
   alert(errorMessage)
 }
-```
+
 
 處理方式：
 - 記錄錯誤到控制台
@@ -875,24 +875,24 @@ catch (error: any) {
 - 不導航離開，允許用戶重試
 
 ### 錯誤 3：批量刪除失敗
-```typescript
+typescript
 catch (error: any) {
   console.error('批量刪除失敗:', error)
   alert(error.data?.message || '批量刪除失敗')
 }
-```
+
 
 處理方式：
 - 記錄錯誤到控制台
 - 顯示錯誤消息給用戶
 
 ### 錯誤 4：導出失敗
-```typescript
+typescript
 catch (error: any) {
   console.error('導出失敗:', error)
   alert('導出失敗，請重試')
 }
-```
+
 
 處理方式：
 - 記錄錯誤到控制台
@@ -927,12 +927,12 @@ catch (error: any) {
 ### 安全 4：文件下載安全
 在導出數據時使用 `responseType: 'blob'`：
 
-```typescript
+typescript
 const blob = await $fetch('/api/news/admin/export?format=json', {
   method: 'GET',
   responseType: 'blob'
 })
-```
+
 
 好處：
 - 避免瀏覽器嘗試解析文件內容
@@ -976,7 +976,7 @@ const blob = await $fetch('/api/news/admin/export?format=json', {
 當前問題：沒有搜索功能
 
 建議實現：
-```typescript
+typescript
 // 添加搜索輸入框
 <input v-model="search" placeholder="搜索文章..." />
 
@@ -989,13 +989,13 @@ const filteredPosts = computed(() => {
     return title.toLowerCase().includes(search.value.toLowerCase())
   })
 })
-```
+
 
 ### 改進 6：分頁功能
 當前問題：沒有分頁功能
 
 建議實現：
-```typescript
+typescript
 // 添加分頁狀態
 const page = ref(1)
 const pageSize = ref(10)
@@ -1006,13 +1006,13 @@ const paginatedPosts = computed(() => {
   const end = start + pageSize.value
   return posts.value.slice(start, end)
 })
-```
+
 
 ### 改進 7：排序功能
 當前問題：沒有排序功能
 
 建議實現：
-```typescript
+typescript
 // 添加排序狀態
 const sortBy = ref('published_at')
 const sortOrder = ref<'asc' | 'desc'>('desc')
@@ -1030,12 +1030,12 @@ const sortedPosts = computed(() => {
     }
   })
 })
-```
+
 
 ## 測試建議
 
 ### 測試 1：頁面加載
-```typescript
+typescript
 test('should load news list', async () => {
   const { data, pending } = useLazyFetch('/api/news')
   
@@ -1046,10 +1046,10 @@ test('should load news list', async () => {
     expect(data.value?.data).toBeInstanceOf(Array)
   })
 })
-```
+
 
 ### 測試 2：刪除文章
-```typescript
+typescript
 test('should delete post', async () => {
   const id = 1
   
@@ -1062,10 +1062,10 @@ test('should delete post', async () => {
     expect(posts.value.find(p => p.id === id)).toBeUndefined()
   })
 })
-```
+
 
 ### 測試 3：導出數據
-```typescript
+typescript
 test('should export data as JSON', async () => {
   const blob = await $fetch('/api/news/admin/export?format=json', {
     method: 'GET',
@@ -1075,7 +1075,7 @@ test('should export data as JSON', async () => {
   expect(blob).toBeInstanceOf(Blob)
   expect(blob.type).toContain('application/json')
 })
-```
+
 
 ## 總結
 

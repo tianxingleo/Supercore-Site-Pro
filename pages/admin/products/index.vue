@@ -148,7 +148,7 @@
             <!-- uppercase：全大写 -->
             <!-- tracking-wider：字母间距加宽 -->
             <div class="text-xs text-swiss-text-muted uppercase tracking-wider">
-              <!-- {{ row.slug }}
+              {{ row.slug }}
             </div>
           </div>
         </template>

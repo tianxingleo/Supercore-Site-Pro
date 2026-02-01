@@ -14,15 +14,15 @@
 - `isNew.value === true`：顯示"發佈資訊"標題，調用 POST API
 - `isNew.value === false`：顯示"編輯資訊"標題，加載現有數據，調用 PUT API
 
-```typescript
+typescript
 const route = useRoute()
 const isNew = computed(() => route.params.id === 'new')
-```
+
 
 ### 2. 表單數據管理
 使用 Vue 3 的 `ref` 創建響應式表單數據：
 
-```typescript
+typescript
 const form = ref({
   slug: '',                        // URL 標識，用於生成友好的 URL
   title: { hk: '', cn: '', en: '' },  // 多語言標題
@@ -32,31 +32,31 @@ const form = ref({
   tags: [] as string[],            // 標籤數組
   published_at: null as string | null,  // 發佈時間（ISO 格式）
 })
-```
+
 
 ### 3. 多語言支持
 使用循環渲染為每種語言創建輸入框：
 
-```vue
+vue
 <div v-for="lang in langTabs" :key="lang.key">
   <label>{{ lang.label }}</label>
   <input v-model="form.title[lang.key]" />
 </div>
-```
+
 
 數據結構：
-```typescript
+typescript
 form.value.title = {
   hk: '超核技術發布新產品',  // 繁體中文
   cn: '超核技术发布新产品',  // 簡體中文
   en: 'Nucleon Tech Launches New Product',  // 英文
 }
-```
+
 
 ### 4. 標籤處理（字符串 ↔ 數組轉換）
 使用計算屬性的 getter/setter 實現字符串和數組的雙向綁定：
 
-```typescript
+typescript
 const tagsInput = computed({
   get: () => (form.value.tags || []).join(','),  // 數組 → 字符串
   set: (val: string) => {                        // 字符串 → 數組
@@ -66,7 +66,7 @@ const tagsInput = computed({
       .filter((t) => t)      // 過濾空字符串
   },
 })
-```
+
 
 **為什麼這樣設計？**
 
@@ -75,7 +75,7 @@ const tagsInput = computed({
 - 計算屬性自動處理轉換，用戶無需關心
 
 **示例**：
-```typescript
+typescript
 // 用戶輸入
 tagsInput.value = "AI, Infrastructure, Cloud"
 
@@ -84,12 +84,12 @@ form.value.tags = ["AI", "Infrastructure", "Cloud"]
 
 // 當訪問 tagsInput 時
 console.log(tagsInput.value)  // "AI, Infrastructure, Cloud"
-```
+
 
 ### 5. 發佈時間處理（本地時間 ↔ ISO 格式）
 使用計算屬性的 getter/setter 處理本地時間和 ISO 格式的轉換：
 
-```typescript
+typescript
 const publishedAtLocal = computed({
   get: () =>
     form.value.published_at ? new Date(form.value.published_at).toISOString().slice(0, 16) : '',
@@ -97,7 +97,7 @@ const publishedAtLocal = computed({
     form.value.published_at = val ? new Date(val).toISOString() : null
   },
 })
-```
+
 
 **為什麼這樣設計？**
 
@@ -106,7 +106,7 @@ const publishedAtLocal = computed({
 - 計算屬性自動處理轉換，用戶無需關心
 
 **示例**：
-```typescript
+typescript
 // 用戶選擇（本地時間）
 publishedAtLocal.value = "2024-01-15T10:00"
 
@@ -115,7 +115,7 @@ form.value.published_at = "2024-01-15T02:00:00.000Z"  // UTC 時間（假設時�
 
 // 當訪問 publishedAtLocal 時
 console.log(publishedAtLocal.value)  // "2024-01-15T10:00"
-```
+
 
 **技術細節**：
 - `toISOString()`：將 Date 對象轉換為 ISO 格式字符串
@@ -124,9 +124,9 @@ console.log(publishedAtLocal.value)  // "2024-01-15T10:00"
 ### 6. 富文本編輯器
 使用 `RichTextEditor` 組件編輯新聞正文：
 
-```vue
+vue
 <RichTextEditor v-model="form.content[lang.key]" />
-```
+
 
 **功能預期**：
 - 富文本格式（粗體、斜體、標題、列表等）
@@ -137,9 +137,9 @@ console.log(publishedAtLocal.value)  // "2024-01-15T10:00"
 ### 7. 圖片上傳
 使用 `AdminImageUpload` 組件上傳封面圖片：
 
-```vue
+vue
 <AdminImageUpload v-model="form.cover_image" bucket-name="news-covers" />
-```
+
 
 **功能預期**：
 - 拖拽上傳
@@ -149,9 +149,9 @@ console.log(publishedAtLocal.value)  // "2024-01-15T10:00"
 - 上傳到 Supabase Storage（`news-covers` 存儲桶）
 
 **或直接輸入 URL**：
-```vue
+vue
 <input v-model="form.cover_image" placeholder="https://example.com/image.jpg" />
-```
+
 
 ### 8. 數據加載流程
 對於編輯模式（`!isNew.value`），頁面掛載時會：
@@ -163,7 +163,7 @@ console.log(publishedAtLocal.value)  // "2024-01-15T10:00"
 5. 確保 `tags` 始終是數組
 6. 設置 `loading.value = false` 顯示實際表單
 
-```typescript
+typescript
 if (response.success) {
   const data = response.data
   form.value = {
@@ -175,7 +175,7 @@ if (response.success) {
     tags: data.tags || [],    // 確保 tags 是數組
   }
 }
-```
+
 
 **為什麼使用展開運算符合併多語言字段？**
 
@@ -194,7 +194,7 @@ if (response.success) {
 4. 如果失敗，顯示錯誤消息
 5. 最終設置 `saving.value = false`
 
-```typescript
+typescript
 if (isNew.value) {
   // 創建新文章
   response = await $fetch('/api/news', {
@@ -208,7 +208,7 @@ if (isNew.value) {
     body: payload,
   })
 }
-```
+
 
 ### 10. 固定底部操作欄
 使用 `fixed bottom-0` 創建固定底部欄，包含：
@@ -226,12 +226,12 @@ if (isNew.value) {
 - 移動端：單列布局（`grid-cols-1`）
 - 桌面端：雙列布局（`md:grid-cols-2`）
 
-```vue
+vue
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
   <div>標題字段</div>
   <div>URL Slug 字段</div>
 </div>
-```
+
 
 ## 核心功能
 
@@ -300,14 +300,14 @@ if (isNew.value) {
 
 ### 優化 1：骨架屏優化
 在加載新聞數據時顯示骨架屏：
-```vue
+vue
 <div v-if="loading" class="space-y-12">
   <FormSkeleton />
 </div>
 <form v-else>
   <!-- 實際表單內容 -->
 </form>
-```
+
 
 好處：
 - 減少感知加載時間
@@ -326,7 +326,7 @@ if (isNew.value) {
 
 ### 優化 3：計算屬性緩存
 使用 `computed` 處理標籤和發佈時間：
-```typescript
+typescript
 const tagsInput = computed({
   get: () => (form.value.tags || []).join(','),
   set: (val: string) => { ... },
@@ -336,7 +336,7 @@ const publishedAtLocal = computed({
   get: () => form.value.published_at ? ... : '',
   set: (val: string) => { ... },
 })
-```
+
 
 好處：
 - 自動緩存結果
@@ -348,10 +348,10 @@ const publishedAtLocal = computed({
 ### 可訪問性 1：表單標籤關聯
 每個輸入框都有關聯的 `<label>` 元素：
 
-```vue
+vue
 <label for="slug-input">URL Slug (唯一標識) *</label>
 <input id="slug-input" v-model="form.slug" />
-```
+
 
 好處：
 - 屏幕閱讀器可以讀出標籤和輸入框的關聯
@@ -360,11 +360,11 @@ const publishedAtLocal = computed({
 
 ### 可訪問性 2：必填字段標記
 使用 `*` 符號標記必填字段：
-```vue
+vue
 <label>標題 *</label>
 <label>摘要 *</label>
 <label>正文 (富文本) *</label>
-```
+
 
 好處：
 - 視覺上清晰標識必填字段
@@ -372,13 +372,13 @@ const publishedAtLocal = computed({
 
 ### 可訪問性 3：錯誤處理
 在 `catch` 塊中顯示錯誤消息：
-```typescript
+typescript
 catch (error: any) {
   console.error('獲取文章失敗:', error)
   const errorMessage = error.data?.statusMessage || error.message || '獲取文章失敗'
   alert(errorMessage)
 }
-```
+
 
 改進建議（未實現）：
 - 應該使用非阻塞的通知組件而不是 `alert()`
@@ -437,12 +437,12 @@ catch (error: any) {
 用途：獲取單個新聞的詳細信息
 
 請求示例：
-```typescript
+typescript
 const response = await $fetch('/api/news/admin/123')
-```
+
 
 預期響應：
-```json
+json
 {
   "success": true,
   "data": {
@@ -469,14 +469,14 @@ const response = await $fetch('/api/news/admin/123')
     "status": "published"
   }
 }
-```
+
 
 ### API 2：創建新聞
 端點：`POST /api/news`
 用途：創建新新聞
 
 請求示例：
-```typescript
+typescript
 const response = await $fetch('/api/news', {
   method: 'POST',
   body: {
@@ -489,10 +489,10 @@ const response = await $fetch('/api/news', {
     published_at: '2024-01-15T10:00:00Z'
   }
 })
-```
+
 
 預期響應：
-```json
+json
 {
   "success": true,
   "data": {
@@ -501,14 +501,14 @@ const response = await $fetch('/api/news', {
     ...
   }
 }
-```
+
 
 ### API 3：更新新聞
 端點：`PUT /api/news/admin/{id}`
 用途：更新現有新聞
 
 請求示例：
-```typescript
+typescript
 const response = await $fetch('/api/news/admin/123', {
   method: 'PUT',
   body: {
@@ -517,10 +517,10 @@ const response = await $fetch('/api/news/admin/123', {
     ...
   }
 })
-```
+
 
 預期響應：
-```json
+json
 {
   "success": true,
   "data": {
@@ -529,12 +529,12 @@ const response = await $fetch('/api/news/admin/123', {
     ...
   }
 }
-```
+
 
 ## 數據流
 
 ### 數據流 1：加載新聞（編輯模式）
-```
+
 用戶訪問 /admin/news/123
   ↓
 onMounted() 鉤子觸發
@@ -550,10 +550,10 @@ API 返回新聞數據
 設置 loading = false
   ↓
 顯示表單內容
-```
+
 
 ### 數據流 2：保存新聞（創建模式）
-```
+
 用戶填寫表單
   ↓
 點擊"保存資訊"按鈕
@@ -567,10 +567,10 @@ API 創建新聞
 返回成功響應
   ↓
 導航到 /admin/news
-```
+
 
 ### 數據流 3：保存新聞（編輯模式）
-```
+
 用戶修改表單
   ↓
 點擊"保存資訊"按鈕
@@ -584,10 +584,10 @@ API 更新新聞
 返回成功響應
   ↓
 導航到 /admin/news
-```
+
 
 ### 數據流 4：標籤處理
-```
+
 用戶輸入標籤
   ↓
 tagsInput setter 觸發
@@ -599,10 +599,10 @@ tagsInput setter 觸發
 過濾空字符串
   ↓
 存儲到 form.value.tags（數組）
-```
+
 
 ### 數據流 5：發佈時間處理
-```
+
 用戶選擇發佈時間
   ↓
 publishedAtLocal setter 觸發
@@ -612,7 +612,7 @@ publishedAtLocal setter 觸發
 轉換為 ISO 格式（UTC 時間）
   ↓
 存儲到 form.value.published_at
-```
+
 
 ## Tailwind CSS 類名說明
 
@@ -696,13 +696,13 @@ publishedAtLocal setter 觸發
 ### ref
 用於創建響應式引用：
 
-```typescript
+typescript
 const form = ref({
   slug: '',
   title: { hk: '', cn: '', en: '' },
   // ...
 })
-```
+
 
 好處：
 - 在模板中可以直接訪問 `form.value`
@@ -712,9 +712,9 @@ const form = ref({
 ### computed
 用於創建計算屬性：
 
-```typescript
+typescript
 const isNew = computed(() => route.params.id === 'new')
-```
+
 
 好處：
 - 基於 `route.params.id` 自動計算
@@ -724,14 +724,14 @@ const isNew = computed(() => route.params.id === 'new')
 ### computed with getter/setter
 用於創建帶有 getter 和 setter 的計算屬性：
 
-```typescript
+typescript
 const tagsInput = computed({
   get: () => (form.value.tags || []).join(','),
   set: (val: string) => {
     form.value.tags = val.split(',').map(t => t.trim()).filter(t => t)
   },
 })
-```
+
 
 好處：
 - 支持雙向綁定
@@ -741,7 +741,7 @@ const tagsInput = computed({
 ### onMounted
 用於註冊組件掛載後的回調：
 
-```typescript
+typescript
 onMounted(async () => {
   if (!isNew.value) {
     loading.value = true
@@ -753,7 +753,7 @@ onMounted(async () => {
     }
   }
 })
-```
+
 
 好處：
 - 確保 DOM 已經掛載
@@ -763,17 +763,17 @@ onMounted(async () => {
 ### v-model
 用於雙向數據綁定：
 
-```vue
+vue
 <input v-model="form.slug" />
-```
+
 
 等價於：
-```vue
+vue
 <input
   :value="form.slug"
   @input="form.slug = $event.target.value"
 />
-```
+
 
 好處：
 - 簡化雙向綁定代碼
@@ -782,12 +782,12 @@ onMounted(async () => {
 ### v-for
 用於循環渲染：
 
-```vue
+vue
 <div v-for="lang in langTabs" :key="lang.key">
   <label>{{ lang.label }}</label>
   <input v-model="form.title[lang.key]" />
 </div>
-```
+
 
 好處：
 - 為每種語言動態生成輸入框
@@ -796,14 +796,14 @@ onMounted(async () => {
 ### v-if
 用於條件渲染：
 
-```vue
+vue
 <div v-if="loading">
   <FormSkeleton />
 </div>
 <form v-else>
   <!-- 表單內容 -->
 </form>
-```
+
 
 好處：
 - 根據條件切換顯示內容
@@ -812,11 +812,11 @@ onMounted(async () => {
 ### @submit.prevent
 用於攔截表單提交並阻止默認行為：
 
-```vue
+vue
 <form @submit.prevent="savePost">
   <!-- 表單內容 -->
 </form>
-```
+
 
 好處：
 - 阻止頁面刷新（默認表單提交行為）
@@ -827,54 +827,54 @@ onMounted(async () => {
 ### 類型 1：Record<string, string>
 用於多語言字段的鍵值對對象：
 
-```typescript
+typescript
 title: { hk: '', cn: '', en: '' } as Record<string, string>
-```
+
 
 示例值：
-```typescript
+typescript
 {
   "hk": "超核技術發布新產品",
   "cn": "超核技术发布新产品",
   "en": "Nucleon Tech Launches New Product"
 }
-```
+
 
 ### 類型 2：string[]
 用於標籤數組：
 
-```typescript
+typescript
 tags: [] as string[]
-```
+
 
 示例值：
-```typescript
+typescript
 ["AI", "Infrastructure", "Cloud"]
-```
+
 
 ### 類型 3：string | null
 用於可選字符串：
 
-```typescript
+typescript
 published_at: null as string | null
-```
+
 
 示例值：
-```typescript
+typescript
 null  // 未發佈
 "2024-01-15T10:00:00Z"  // 已發佈
-```
+
 
 ## 錯誤處理
 
 ### 錯誤 1：新聞加載失敗
-```typescript
+typescript
 catch (error: any) {
   console.error('獲取文章失敗:', error)
   const errorMessage = error.data?.statusMessage || error.message || '獲取文章失敗'
   alert(errorMessage)
 }
-```
+
 
 處理方式：
 - 記錄錯誤到控制台
@@ -882,13 +882,13 @@ catch (error: any) {
 - 不導航離開，允許用戶重試
 
 ### 錯誤 2：新聞保存失敗
-```typescript
+typescript
 catch (error: any) {
   console.error('保存失敗:', error)
   const errorMessage = error.data?.statusMessage || error.message || '保存失敗，請重試'
   alert(errorMessage)
 }
-```
+
 
 處理方式：
 - 顯示 Nuxt 錯誤消息（`e.data?.statusMessage`）
@@ -945,7 +945,7 @@ catch (error: any) {
 當前問題：沒有表單驗證
 
 建議實現：
-```typescript
+typescript
 const validateForm = () => {
   if (!form.value.slug) {
     alert('請輸入 URL Slug')
@@ -968,13 +968,13 @@ async function savePost() {
   }
   // 保存邏輯...
 }
-```
+
 
 ### 改進 2：Slug 唯一性驗證
 當前問題：沒有檢查 slug 是否已存在
 
 建議實現：
-```typescript
+typescript
 async function checkSlugUnique(slug: string) {
   const response = await $fetch(`/api/news/check-slug?slug=${slug}`)
   return response.isUnique
@@ -987,13 +987,13 @@ async function checkSlugUnique(slug: string) {
     alert('此 URL Slug 已被使用')
   }
 }}" />
-```
+
 
 ### 改進 3：自動保存草稿
 當前問題：用戶可能忘記保存
 
 建議實現：
-```typescript
+typescript
 // 每隔 30 秒自動保存為草稿
 const saveDraftInterval = setInterval(() => {
   if (!isNew.value && form.value.status === 'draft') {
@@ -1007,7 +1007,7 @@ const saveDraftInterval = setInterval(() => {
 onUnmounted(() => {
   clearInterval(saveDraftInterval)
 })
-```
+
 
 ### 改進 4：離線支持
 當前問題：離線時無法編輯
@@ -1021,7 +1021,7 @@ onUnmounted(() => {
 當前問題：上傳的圖片可能過大
 
 建議實現：
-```typescript
+typescript
 async function compressImage(file: File): Promise<string> {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
@@ -1038,12 +1038,12 @@ async function compressImage(file: File): Promise<string> {
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
   return canvas.toDataURL('image/jpeg', 0.85)
 }
-```
+
 
 ## 測試建議
 
 ### 測試 1：新新聞創建
-```typescript
+typescript
 test('should create new post', async () => {
   const form = ref({
     slug: 'test-post',
@@ -1063,10 +1063,10 @@ test('should create new post', async () => {
   expect(response.success).toBe(true)
   expect(response.data.slug).toBe('test-post')
 })
-```
+
 
 ### 測試 2：新聞更新
-```typescript
+typescript
 test('should update existing post', async () => {
   const response = await $fetch('/api/news/admin/123', {
     method: 'PUT',
@@ -1079,10 +1079,10 @@ test('should update existing post', async () => {
   expect(response.success).toBe(true)
   expect(response.data.slug).toBe('updated-post')
 })
-```
+
 
 ### 測試 3：標籤處理
-```typescript
+typescript
 test('should parse tags from string', () => {
   form.value.tags = []
   tagsInput.value = 'AI, Infrastructure, Cloud'
@@ -1095,10 +1095,10 @@ test('should format tags to string', () => {
 
   expect(tagsInput.value).toBe('AI, Infrastructure, Cloud')
 })
-```
+
 
 ### 測試 4：發佈時間處理
-```typescript
+typescript
 test('should convert local time to ISO format', () => {
   publishedAtLocal.value = '2024-01-15T10:00'
 
@@ -1110,7 +1110,7 @@ test('should convert ISO format to local time', () => {
 
   expect(publishedAtLocal.value).toBe('2024-01-15T10:00')  // 本地時間（假設時區為 +8）
 })
-```
+
 
 ## 總結
 

@@ -12,14 +12,14 @@
 ### 1. 筛选过滤器
 使用下拉菜单选择日志类型：
 
-```vue
+vue
 <select v-model="filterType">
   <option value="">所有類型</option>
   <option value="products">產品</option>
   <option value="posts">新聞</option>
   <option value="inquiries">詢盤</option>
 </select>
-```
+
 
 **支持的日志类型**：
 - 所有类型
@@ -31,11 +31,11 @@
 ### 2. 表格数据加载
 使用 `useLazyFetch` 实现动态数据加载：
 
-```typescript
+typescript
 const { data: response, pending } = useLazyFetch(`/api/logs?${queryParams}`, {
   key: () => `logs-${currentPage.value}-${filterType.value}`,
 })
-```
+
 
 **查询参数**：
 - `page`：当前页码
@@ -49,7 +49,7 @@ const { data: response, pending } = useLazyFetch(`/api/logs?${queryParams}`, {
 ### 3. 表格列配置
 使用 `columns` 數組定表格列配置：
 
-```typescript
+typescript
 const columns = [
   { key: 'user_email', label: '用戶' },
   { key: 'action', label: '操作' },
@@ -59,7 +59,7 @@ const columns = [
   { key: 'actions', label: '' },
 ]
 ]
-```
+
 
 **列說明**：
 - `user_email`：用戶郵箱地址
@@ -72,7 +72,7 @@ const columns = [
 ### 4. 表格自定義列
 使用插槽自定義每列的渲染：
 
-```vue
+vue
 <!-- 電箱地址列 -->
 <template #user_email-data="{ row }">
   <div class="font-medium text-swiss-text">
@@ -128,27 +128,27 @@ const columns = [
     </button>
   </div>
 </template>
-```
+
 
 ### 5. 格式化函數
 
 #### formatDate
-```typescript
+typescript
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('zh-HK')
 }
-```
+
 
 **作用**：將 ISO 日期字符串格式化為本地化日期格式
 
 **示例**：
-```typescript
+typescript
 formatDate('2024-01-15T10:30:00Z')  // '2024/1/15'
 formatDate('2024-01-15T10:30:00Z')  // '2024/1/15'
-```
+
 
 #### formatAction
-```typescript
+typescript
 function formatAction(action: string): string {
   const actionMap: Record<string, string> = {
     create: '創建',
@@ -160,7 +160,7 @@ function formatAction(action: string): string {
   }
   return actionMap[action] || action
 }
-```
+
 
 **映射關係**：
 - `create` → `創建`
@@ -176,7 +176,7 @@ function formatAction(action: string): string {
 - 提供更友好的用戶體驗體
 
 #### formatResourceType
-```typescript
+typescript
 function formatResourceType(type: string): string {
   const typeMap: Record<string, string> = {
     products: '產品',
@@ -186,7 +186,7 @@ function formatResourceType(type: string): string {
   }
   return typeMap[type] || type
 }
-```
+
 
 **映射關係**：
 - `products` → `產品`
@@ -200,7 +200,7 @@ function formatResourceType(type: string): string {
 - 提供更友好的用戶體驗體
 
 #### formatDetails
-```typescript
+typescript
 function formatDetails(log: any): string {
   // 如果是產品類型，顯示產品名稱和類別
   if (log.resource_type === 'products') {
@@ -220,7 +220,7 @@ function formatDetails(log: any): string {
   // 否則，返回資源類型和 ID
   return `${formatResourceType(log.resource_type)} #${log.resource_id}`
 }
-```
+
 
 **為什麼使用多層三元運算符？**
 - 優先返回中文優先級：繁體中文 > �體中文 > 英文
@@ -229,7 +229,7 @@ function formatDetails(log: any): string {
 
 ### 6. 分頁功能
 
-```typescript
+typescript
 const currentPage = ref(1)
 const limit = ref(50)
 
@@ -246,16 +246,16 @@ const queryParams = computed(() => {
 // 獲取分頁數據
 const logs = computed(() => response.value?.success ? response.value.data.logs || [] : [])
 const pagination = computed(() => response.value?.success ? response.value.data.pagination : { page: 1, total: 0, totalPages: 0 })
-```
+
 
 **分頁數據結構**：
-```typescript
+typescript
 {
   page: 1,          // 當前頁碼
   total: 0,          // 總數
   totalPages: 0,    // 總頁數
 }
-```
+
 
 **分頁控件**：
 - 上一頁按�：`currentPage.value--1`
@@ -270,7 +270,7 @@ const pagination = computed(() => response.value?.success ? response.value.data.
 ### 7. 錉錄操作
 
 #### 刪除日誌
-```typescript
+typescript
 async function deleteLog(id: number) {
   if (!confirm('確定要刪除此操作記錄？')) return
   
@@ -287,7 +287,7 @@ async function deleteLog(id: number) {
     alert(errorMessage)
   }
 }
-```
+
 
 **工作流程**：
 1. 彈出確認對話框
@@ -303,7 +303,7 @@ async function deleteLog(id: number) {
 #### �量操作（已註釋�）
 當前版本已隱藏了批量操作功能（代碼中標記為"批量操作（已隱藏）"）：
 
-```vue
+vue
 <!-- 已註釋的批量操作 -->
 <!--
 <div class="flex flex-col md:flex-row md:justify-between gap-4">
@@ -317,8 +317,8 @@ async function deleteLog(id: number) {
     </UDropdown>
   </div>
 </div>
--->
-```
+
+
 
 **批量操作功能（已隱藏）**：
 - 批量選中多個日誌
@@ -333,7 +333,7 @@ async function deleteLog(id: number) {
 
 ### 8. 數據處理
 
-```typescript
+typescript
 const { data: response, error } = useLazyFetch(`/api/logs?${queryParams}`, {
   watch: [queryParams], // 監聽查詢參數變化
 })
@@ -342,7 +342,7 @@ watchEffect(() => {
     console.error('獲取日誌失敗:', error.value)
   }
 })
-```
+
 
 **錯誤處理**：
 - 監聽 `error.value` 的變化
@@ -351,7 +351,7 @@ watchEffect(() => {
 
 ### 9. 頁面佈局
 
-```vue
+vue
 <div class="space-y-12">
   <!-- 標題區域 -->
   <div>
@@ -395,7 +395,7 @@ watchEffect(() => {
     </div>
   </div>
 </div>
-```
+
 
 ## 核心功能
 
@@ -454,7 +454,7 @@ watchEffect(() => {
 ### 優化查詢參數
 使用 `computed` 構建查詢參數：
 
-```typescript
+typescript
 const queryParams = computed(() => {
   const params = new URLSearchParams()
   params.append('page', currentPage.value.toString())
@@ -463,7 +463,7 @@ const queryParams = computed(() => {
   }
   return params.toString()
 })
-```
+
 
 **為什麼這樣設計？**
 - 自動追蹴 `currentPage` 和 `filterType` 的變化
@@ -473,9 +473,9 @@ const queryParams = computed(() => {
 ### 懒加載數據
 使用 `useLazyFetch` 實現懶加載：
 
-```typescript
+typescript
 const { data: response, pending } = useLazyFetch(`/api/logs?${queryParams}`)
-```
+
 
 **好處**：
 - 頁面立即渲染（不阻塞）
@@ -485,9 +485,9 @@ const { data: response, pending } = useLazyFetch(`/api/logs?${queryParams}`)
 ### 限制每頁記錄數量
 使用 `limit: 50` 限制每頁 50 條記錄：
 
-```typescript
+typescript
 const limit = ref(50)
-```
+
 
 **為什麼限制？**
 - 避免一次加載過多數據
@@ -497,10 +497,10 @@ const limit = ref(50)
 ### 使用骨架屏
 使用 `TableSkeleton` 提供視覺佔位符：
 
-```vue
+vue
 <TableSkeleton v-if="pending" />
 <UTable v-else :rows="logs" :columns="columns" />
-```
+
 
 **好處**：
 - 減少感知加載時間
@@ -512,11 +512,11 @@ const limit = ref(50)
 ### 可訪問性 1：表格結構
 使用語義化的 HTML 表格：
 
-```vue
+vue
 <UTable :rows="logs" :columns="columns">
   <!-- UTable 會自動生成正確的 table、thead、tbody、tr、th、td -->
 </UTable>
-```
+
 
 **好處**：
 - 屏幕閱讀器可以識別表格結構
@@ -526,10 +526,10 @@ const limit = ref(50)
 ### 可訪問性 2：操作按�標籤
 為所有按�添加 `aria-label` 標籤：
 
-```vue
+vue
 <NuxtLink :to="getResourceUrl(row)" aria-label="編輯此資源">✎</NuxtLink>
 <button @click="deleteLog(row.id)" aria-label="刪除此操作日誌">✕</button>
-```
+
 
 **好處**：
 - 提供按鍕的文本說明
@@ -539,13 +539,13 @@ const limit = ref(50)
 ### 可訪問性 3：錯誤處理
 使用 `alert()` 顯示錯誤消息：
 
-```typescript
+typescript
 catch (error: any) {
   console.error('刪除日誌失敗:', error)
   const errorMessage = error.data?.statusMessage || error.message || '刪除失敗，請重試'
   alert(errorMessage)
 }
-```
+
 
 **改進建議（未實現）**：
 - 使用非阻塞的通知組件（如 Toast）
@@ -636,16 +636,16 @@ catch (error: any) {
 ### ref
 用於創建響應式引用：
 
-```typescript
+typescript
 const filterType = ref('')
 const currentPage = ref(1)
 const limit = ref(50)
-```
+
 
 ### computed
 用於創建計算屬性：
 
-```typescript
+typescript
 const queryParams = computed(() => {
   const params = new URLSearchParams()
   params.append('page', currentPage.value.toString())
@@ -667,12 +667,12 @@ const queryParams = computed(() => {
   }
   return params.toString()
 })
-```
+
 
 ### watch
 用於監聽數據變化：
 
-```typescript
+typescript
 const { error } = useLazyFetch(`/api/logs?${queryParams}`, {
   watch: [queryParams],  // 監聽查詢參數變化
 })
@@ -682,60 +682,60 @@ watchEffect(() => {
     console.error('獲取日誌失敗:', error.value)
   }
 })
-```
+
 
 ### watchEffect
 用於監聽錯誤狀態：
 
-```typescript
+typescript
 watchEffect(() => {
   if (error.value) {
     console.error('獲取日誌失敗:', error.value)
   }
 })
-```
+
 
 ### onMounted
 用於組件掛載後的回調：
 
-```typescript
+typescript
 onMounted(async () => {
   // 組件掛載後的邏輯
 })
-```
+
 
 ### v-model
 用於雙向數據綁定：
 
-```vue
+vue
 <select v-model="filterType">
   <option value="">所有類型</option>
   <option value="products">產品</option>
 </select>
-```
+
 
 ### v-if 和 v-else
 用於條件渲染：
 
-```vue
+vue
 <TableSkeleton v-if="pending" />
 <UTable v-else :rows="logs" :columns="columns" />
-```
+
 
 ### v-for
 用於循環渲染：
 
-```vue
+vue
 <!-- 循環渲染每種語言的輸入框 -->
 <div v-for="lang in langTabs" :key="lang.key">
   <label>{{ lang.label }}</label>
   <input v-model="form.title[lang.key]" />
 </div>
-```
+
 
 ### :style 綁定動態樣式
 
-```vue
+vue
 <!-- 動態設置固定底部欄 -->
 <!-- class="..." :class="..." -->
 
@@ -744,24 +744,24 @@ onMounted(async () => {
 
 <!-- 動態設置 disabled -->
 <!-- :disabled="saving"：根據 saving 狀態禁用按� -->
-```
+
 
 ### slots
 用於自定義列的渲染：
 
-```vue
+vue
 <!-- 自定義 email 列 -->
 <template #user_email-data="{ row }">
   <div class="font-medium text-swiss-text">
     {{ row.user_email }}
   </div>
 </template>
-```
+
 
 ### UTable UI 配置
 使用 `ui` 屬性自定義 UTable 的樣式：
 
-```vue
+vue
 <UTable :rows="logs" :columns="columns" :loading="false" :ui="{
   wrapper: 'overflow-x-auto',
   thead: 'bg-swiss-bg-soft',
@@ -775,7 +775,7 @@ onMounted(async () => {
     active: 'bg-swiss-bg-soft',
   },
 }">
-```
+
 
 **UI 配置說明**：
 - `wrapper`：表格包裹層樣式（水平滾動）
@@ -789,12 +789,12 @@ onMounted(async () => {
 ### 類型 1：logs 類型
 用於描述從 API 返回的日誌數據：
 
-```typescript
+typescript
 const logs = computed(() => response.value?.success ? response.value.data.logs || [] : [])
-```
+
 
 **數據結構**：
-```typescript
+typescript
 {
   logs: Array<{
     id: number,
@@ -816,12 +816,12 @@ const logs = computed(() => response.value?.success ? response.value.data.logs |
     totalPages: number, // 總頁數
   }
 }
-```
+
 
 ### 類型 2：queryParams 字符串
 用於構建查詢參數：
 
-```typescript
+typescript
 const queryParams = computed(() => {
   const params = new URLSearchParams()
   params.append('page', currentPage.value.toString())
@@ -830,7 +830,7 @@ const queryParams = computed(() => {
   }
   return params.toString()
 })
-```
+
 
 **示例值**：
 - `page=2&type=products`：獲取第 2 頁的產品操作日誌
@@ -842,9 +842,9 @@ const queryParams = computed(() => {
 ### 類型 3：filterType 類型
 用於選擇過濾器類型：
 
-```typescript
+typescript
 const filterType = ref('')
-```
+
 
 **可能值**：
 - `''`（空字符串）：所有類型
@@ -856,27 +856,27 @@ const filterType = ref('')
 ### 類型 4：currentPage 類型
 用於當前頁碼：
 
-```typescript
+typescript
 const currentPage = ref(1)
-```
+
 
 **範圍**：1 到 總頁數
 
 ### 類型 5：limit 類型
 用於限制每頁記錄數量：
 
-```typescript
+typescript
 const limit = ref(50)
-```
+
 
 **值**：50 條記錄
 
 ### 類型 6：pagination 類型
 用於分頁信息：
 
-```typescript
+typescript
 const pagination = computed(() => response.value?.success ? response.value.data.pagination : { page: 1, total: 0, totalPages: 0 }})
-```
+
 
 **字段說明**：
 - `page`：當前頁碼
@@ -886,12 +886,12 @@ const pagination = computed(() => response.value?.success ? response.value.data.
 ### 類型 7：logs 類型
 用於從 API 韻取日誌數據：
 
-```typescript
+typescript
 const logs = computed(() => response.value?.success ? response.value.data.logs || [] : [])
-```
+
 
 **數據結構**：
-```typescript
+typescript
 [
   {
     id: number,              // 日誌 ID
@@ -909,13 +909,13 @@ const logs = computed(() => response.value?.success ? response.value.data.logs |
   },
   ...
 ]
-```
+
 
 ## 錙誤處理
 
 ### 錯誤 1：加載失敗
 
-```typescript
+typescript
 const { data: response, error } = useLazyFetch(`/api/logs?${queryParams}`, {
   watch: [queryParams],
 })
@@ -925,7 +925,7 @@ watchEffect(() => {
     console.error('獲取日誌失敗:', error.value)
   }
 })
-```
+
 
 **處理方式**：
 - 監聽 `error.value` 的變化
@@ -939,7 +939,7 @@ watchEffect(() => {
 
 ### 錯誤 2：刪除失敗
 
-```typescript
+typescript
 async function deleteLog(id: number) {
   if (!confirm('確定要刪除此操作記錄？')) return
   
@@ -956,7 +956,7 @@ async function deleteLog(id: number) {
     alert(errorMessage)
   }
 }
-```
+
 
 **處理方式**：
 - 彈出確認對話框
@@ -982,7 +982,7 @@ async function deleteLog(id: number) {
 - 實現批量導出功能
 
 **批量刪除流程**：
-```typescript
+typescript
 async function bulkDelete() {
   const ids = selectedItems.value.map(item => item.id)
   await $fetch('/api/logs/admin/bulk', {
@@ -994,13 +994,13 @@ async function bulkDelete() {
   refreshKey.value++
   await refresh()
 }
-```
+
 
 ### 改進 2：添加表單驗證
 當前問題：沒有表單驗證
 
 建議實現：
-```typescript
+typescript
 const validateForm = () => {
   if (!filterType.value) {
     return '請選擇資源類型'
@@ -1009,13 +1009,13 @@ const validateForm = () => {
 }
 
 // 在表單上添加 @blur 事件
-```
+
 
 ### 改進 3：添加鍵盤快捷鍵
 當前問題：沒有鍵盤快捷鍵
 
 建議實現：
-```typescript
+typescript
 function handleKeydown(e: KeyboardEvent) {
   // ESC：清除篩選
   if (e.key === 'Escape') {
@@ -1039,13 +1039,13 @@ function handleKeydown(e: KeyboardEvent) {
       if (currentPage.value < pagination.totalPages) currentPage.value++
   }
 }
-```
+
 
 ### 改進 4：添加日期範圍選擇
 當前問題：沒有日期範圍選擇器
 
 建議實現：
-```typescript
+typescript
 const dateRange = ref({
   start: '',
   end: ''
@@ -1070,13 +1070,13 @@ const queryParams = computed(() => {
   }
   return params.toString()
 })
-```
+
 
 ### 改進 5：添加搜索功能
 當前問題：沒有搜索功能
 
 建議實現：
-```typescript
+typescript
 const search = ref('')
 
 // 在查詢參數中添加搜索關�詞
@@ -1091,13 +1091,13 @@ const queryParams = computed(() => {
   }
   return params.toString()
 })
-```
+
 
 ### 改進 6：添加導出功能
 當前問題：導出功能已隱藏
 
 建議實現：
-```typescript
+typescript
 async function exportData(format: 'json' | 'csv') {
   const blob = await $fetch(`/api/admin/export/logs?format=${format}`, {
     method: 'GET',
@@ -1116,13 +1116,13 @@ async function exportData(format: 'json' | 'csv') {
     window.URL.revokeObjectURL(url)
   }, 100)
 }
-```
+
 
 ### 改進 7：添加日誌過濾器
 當前問題：沒有更多篩選條件
 
 建議實現：
-```typescript
+typescript
 const filters = {
   action: [
     { key: 'all', label: '所有' },
@@ -1134,12 +1134,12 @@ const filters = {
     start: '', end: '' },
   user: ''
 }
-```
+
 
 ## 測試建議
 
 ### 測試 1：頁面渲染測試
-```typescript
+typescript
 test('should render logs page correctly', async () => {
   const wrapper = mount(ActivityLogs, {
     props: {
@@ -1159,10 +1159,10 @@ test('should render logs page correctly', async () => {
   // 檢查表格
   expect(wrapper.find('.UTable').exists()).toBe(true)
 })
-```
+
 
 ### 測試 2：篩選功能測試
-```typescript
+typescript
 test('should filter logs by type', async () => {
   const wrapper = mount(ActivityLogs)
   
@@ -1189,10 +1189,10 @@ test('should filter logs by type', async () => {
   // 應要顯示新聞相關日誌
   expect(wrapper.vm.filterType).toBe('posts')
 })
-```
+
 
 ### 測試 3：分頁功能測試
-```typescript
+typescript
 test('should paginate correctly', async () => {
   const wrapper = mount(ActivityLogs)
   
@@ -1251,18 +1251,18 @@ test('should paginate correctly', async () => {
   expect(wrapper.vm.total).toBe(100)
   expect(wrapper.vm.totalPages).toBe(2)
 })
-```
+
 
 ### 測試 4：格式化函數測試
-```typescript
+typescript
 describe('formatDate', () => {
   expect(formatDate('2024-01-15T10:30:00Z')).toBe('2024/1/15')
   expect(formatDate('2024-01-15T10:30:00Z')).toBe('2024/1/15')
 })
-```
+
 
 ### 測試 5：可訪問性測試
-```typescript
+typescript
 describe('should have accessibility labels', () => {
   const wrapper = mount(ActivityLogs)
   
@@ -1272,7 +1272,7 @@ describe('should have accessibility labels', () => {
   // 檢查按�的 aria-label
   expect(wrapper.find('button[aria-label]').exists()).toBe(true)
 })
-```
+
 
 ## 總結
 

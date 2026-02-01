@@ -17,7 +17,7 @@
 ### 2. 表单数据管理
 使用 Vue 3 的 `ref` 创建响应式表单数据：
 
-```typescript
+typescript
 const form = ref({
   slug: '',                      // URL 標識，用於生成友好的 URL
   name: { hk: '', cn: '', en: '' },  // 多語言名稱
@@ -29,7 +29,7 @@ const form = ref({
   is_featured: false,            // 是否首頁推薦
   status: 'draft',               // 狀態：draft/published/archived
 })
-```
+
 
 ### 3. 規格參數動態管理
 為了方便用戶編輯規格參數（鍵值對形式），我們維護了兩個數據結構：
@@ -41,7 +41,7 @@ const form = ref({
 2. `blur` 事件觸發 `syncSpecs()` 將數組轉換為對象存儲到 `form.value.specs`
 3. 提交時 `form.value.specs` 會被發送到 API
 
-```typescript
+typescript
 // 同步 specsItems 到 form.specs
 const syncSpecs = () => {
   const newSpecs: Record<string, string> = {}
@@ -52,7 +52,7 @@ const syncSpecs = () => {
   })
   form.value.specs = newSpecs
 }
-```
+
 
 ### 4. 數據加載流程
 對於編輯模式（`!isNew.value`），頁面掛載時會：
@@ -64,7 +64,7 @@ const syncSpecs = () => {
 5. 初始化 `specsItems` 數組以供 UI 顯示
 6. 設置 `loading.value = false` 顯示實際表單
 
-```typescript
+typescript
 // 確保 specs 字段存在
 const specs = data.specs || {}
 
@@ -81,7 +81,7 @@ form.value = {
   specs: specs,  // 使用處理後的 specs
   // ...
 }
-```
+
 
 ### 5. 保存流程
 當用戶點擊"保存更改"按鈕時：
@@ -106,13 +106,13 @@ form.value = {
 - 桌面端：雙列布局（`md:grid-cols-2`）
 - 兩列跨越：`md:col-span-2`
 
-```vue
+vue
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
   <div>字段 1</div>
   <div>字段 2</div>
   <div class="md:col-span-2">跨越兩列的字段</div>
 </div>
-```
+
 
 ### 8. 固定底部操作欄
 使用 `fixed bottom-0` 創建固定底部欄，包含：
@@ -128,21 +128,21 @@ form.value = {
 ### 9. 多語言支持
 使用循環渲染為每種語言創建輸入框：
 
-```vue
+vue
 <div v-for="lang in langTabs" :key="lang.key">
   <label>{{ lang.label }}</label>
   <input v-model="(form.name as any)[lang.key]" />
 </div>
-```
+
 
 數據結構：
-```typescript
+typescript
 form.value.name = {
   hk: '超核 G2 服務器',  // 繁體中文
   cn: '超核 G2 服务器',  // 簡體中文
   en: 'SuperCore G2 Server',  // 英文
 }
-```
+
 
 ## 核心功能
 
@@ -214,14 +214,14 @@ form.value.name = {
 
 ### 優化 1：骨架屏優化
 在加載產品數據時顯示骨架屏：
-```vue
+vue
 <div v-if="loading" class="space-y-12">
   <FormSkeleton />
 </div>
 <form v-else>
   <!-- 實際表單內容 -->
 </form>
-```
+
 
 好處：
 - 減少感知加載時間
@@ -241,9 +241,9 @@ form.value.name = {
 ### 優化 3：防抖和節流
 在規格參數輸入框上使用 `@blur` 事件而不是 `@input`：
 
-```vue
+vue
 <input v-model="item.key" @blur="syncSpecs" />
-```
+
 
 好處：
 - 減少 `syncSpecs()` 的調用次數
@@ -255,10 +255,10 @@ form.value.name = {
 ### 可訪問性 1：表單標籤關聯
 每個輸入框都有關聯的 `<label>` 元素：
 
-```vue
+vue
 <label for="slug-input">URL 標識 (Slug) *</label>
 <input id="slug-input" v-model="form.slug" />
-```
+
 
 好處：
 - 屏幕閱讀器可以讀出標籤和輸入框的關聯
@@ -267,9 +267,9 @@ form.value.name = {
 
 ### 可訪問性 2：必填字段標記
 使用 `*` 符號標記必填字段：
-```vue
+vue
 <label>URL 標識 (Slug) *</label>
-```
+
 
 好處：
 - 視覺上清晰標識必填字段
@@ -277,11 +277,11 @@ form.value.name = {
 
 ### 可訪問性 3：錯誤處理
 在 `catch` 塊中顯示錯誤消息：
-```typescript
+typescript
 catch (e: any) {
   alert('加載產品失敗: ' + e.message)
 }
-```
+
 
 改進建議（未實現）：
 - 應該使用非阻塞的通知組件而不是 `alert()`
@@ -330,12 +330,12 @@ catch (e: any) {
 用途：獲取單個產品的詳細信息
 
 請求示例：
-```typescript
+typescript
 const data = await $fetch('/api/products/admin/123')
-```
+
 
 預期響應：
-```json
+json
 {
   "id": 123,
   "slug": "supercore-g2-server",
@@ -363,14 +363,14 @@ const data = await $fetch('/api/products/admin/123')
   "featured": true,
   "status": "published"
 }
-```
+
 
 ### API 2：創建產品
 端點：`POST /api/products`
 用途：創建新產品
 
 請求示例：
-```typescript
+typescript
 const response = await $fetch('/api/products', {
   method: 'POST',
   body: {
@@ -385,10 +385,10 @@ const response = await $fetch('/api/products', {
     status: 'draft'
   }
 })
-```
+
 
 預期響應：
-```json
+json
 {
   "success": true,
   "product": {
@@ -397,14 +397,14 @@ const response = await $fetch('/api/products', {
     ...
   }
 }
-```
+
 
 ### API 3：更新產品
 端點：`PUT /api/products/admin/{id}`
 用途：更新現有產品
 
 請求示例：
-```typescript
+typescript
 const response = await $fetch('/api/products/admin/123', {
   method: 'PUT',
   body: {
@@ -413,10 +413,10 @@ const response = await $fetch('/api/products/admin/123', {
     ...
   }
 })
-```
+
 
 預期響應：
-```json
+json
 {
   "success": true,
   "product": {
@@ -425,12 +425,12 @@ const response = await $fetch('/api/products/admin/123', {
     ...
   }
 }
-```
+
 
 ## 數據流
 
 ### 數據流 1：加載產品（編輯模式）
-```
+
 用戶訪問 /admin/products/123
   ↓
 onMounted() 鉤子觸發
@@ -448,10 +448,10 @@ API 返回產品數據
 設置 loading = false
   ↓
 顯示表單內容
-```
+
 
 ### 數據流 2：保存產品（創建模式）
-```
+
 用戶填寫表單
   ↓
 點擊"保存更改"按鈕
@@ -467,10 +467,10 @@ API 創建產品
 返回成功響應
   ↓
 導航到 /admin/products
-```
+
 
 ### 數據流 3：保存產品（編輯模式）
-```
+
 用戶修改表單
   ↓
 點擊"保存更改"按鈕
@@ -486,7 +486,7 @@ API 更新產品
 返回成功響應
   ↓
 導航到 /admin/products
-```
+
 
 ## Tailwind CSS 類名說明
 
@@ -571,13 +571,13 @@ API 更新產品
 ### ref
 用於創建響應式引用：
 
-```typescript
+typescript
 const form = ref({
   slug: '',
   name: { hk: '', cn: '', en: '' },
   // ...
 })
-```
+
 
 好處：
 - 在模板中可以直接訪問 `form.value`
@@ -587,9 +587,9 @@ const form = ref({
 ### computed
 用於創建計算屬性：
 
-```typescript
+typescript
 const isNew = computed(() => route.params.id === 'new')
-```
+
 
 好處：
 - 基於 `route.params.id` 自動計算
@@ -599,7 +599,7 @@ const isNew = computed(() => route.params.id === 'new')
 ### onMounted
 用於註冊組件掛載後的回調：
 
-```typescript
+typescript
 onMounted(async () => {
   if (!isNew.value) {
     loading.value = true
@@ -611,7 +611,7 @@ onMounted(async () => {
     }
   }
 })
-```
+
 
 好處：
 - 確保 DOM 已經掛載
@@ -621,17 +621,17 @@ onMounted(async () => {
 ### v-model
 用於雙向數據綁定：
 
-```vue
+vue
 <input v-model="form.slug" />
-```
+
 
 等價於：
-```vue
+vue
 <input
   :value="form.slug"
   @input="form.slug = $event.target.value"
 />
-```
+
 
 好處：
 - 簡化雙向綁定代碼
@@ -640,12 +640,12 @@ onMounted(async () => {
 ### v-for
 用於循環渲染：
 
-```vue
+vue
 <div v-for="lang in langTabs" :key="lang.key">
   <label>{{ lang.label }}</label>
   <input v-model="(form.name as any)[lang.key]" />
 </div>
-```
+
 
 好處：
 - 為每種語言動態生成輸入框
@@ -654,14 +654,14 @@ onMounted(async () => {
 ### v-if
 用於條件渲染：
 
-```vue
+vue
 <div v-if="loading">
   <FormSkeleton />
 </div>
 <form v-else>
   <!-- 表單內容 -->
 </form>
-```
+
 
 好處：
 - 根據條件切換顯示內容
@@ -673,11 +673,11 @@ onMounted(async () => {
 ### @submit.prevent
 用於攔截表單提交並阻止默認行為：
 
-```vue
+vue
 <form @submit.prevent="saveProduct">
   <!-- 表單內容 -->
 </form>
-```
+
 
 好處：
 - 阻止頁面刷新（默認表單提交行為）
@@ -688,43 +688,43 @@ onMounted(async () => {
 ### 類型 1：Record<string, string>
 用於規格參數的鍵值對對象：
 
-```typescript
+typescript
 specs: {} as Record<string, string>
-```
+
 
 示例值：
-```typescript
+typescript
 {
   "CPU": "2x AMD EPYC 7763",
   "RAM": "128GB DDR4",
   "Storage": "2TB NVMe SSD"
 }
-```
+
 
 ### 類型 2：string[]
 用於產品圖片數組：
 
-```typescript
+typescript
 images: [] as string[]
-```
+
 
 示例值：
-```typescript
+typescript
 [
   "https://example.com/product-1.jpg",
   "https://example.com/product-2.jpg"
 ]
-```
+
 
 ### 類型 3：Array<{ id: string; key: string; value: string }>
 用於規格參數項目數組：
 
-```typescript
+typescript
 specsItems: ref<Array<{ id: string; key: string; value: string }>>
-```
+
 
 示例值：
-```typescript
+typescript
 [
   {
     id: "spec_0_1234567890",
@@ -737,14 +737,14 @@ specsItems: ref<Array<{ id: string; key: string; value: string }>>
     value: "128GB DDR4"
   }
 ]
-```
+
 
 ### 類型斷言：as any
 用於繞過 TypeScript 類型檢查：
 
-```vue
+vue
 <input v-model="(form.name as any)[lang.key]" />
-```
+
 
 為什麼使用：
 - `form.name` 的類型是 `{ hk: string; cn: string; en: string }`
@@ -752,24 +752,24 @@ specsItems: ref<Array<{ id: string; key: string; value: string }>>
 - TypeScript 無法確定動態訪問的安全性，因此需要類型斷言
 
 更好的方式（未實現）：
-```typescript
+typescript
 type Language = 'hk' | 'cn' | 'en'
 form.name: Record<Language, string>
 
 // 然後可以直接訪問
 <input v-model="form.name[lang.key as Language]" />
-```
+
 
 ## 錯誤處理
 
 ### 錯誤 1：產品加載失敗
-```typescript
+typescript
 catch (e: any) {
   console.error('[Product Edit] Failed to load product:', e)
   alert('加載產品失敗: ' + e.message)
   navigateTo('/admin/products')
 }
-```
+
 
 處理方式：
 - 記錄錯誤到控制台
@@ -777,11 +777,11 @@ catch (e: any) {
 - 導航回產品列表頁
 
 ### 錯誤 2：產品保存失敗
-```typescript
+typescript
 catch (e: any) {
   alert(e.data?.statusMessage || e.message || '保存失敗，請重試')
 }
-```
+
 
 處理方式：
 - 顯示 Nuxt 錯誤消息（`e.data?.statusMessage`）
@@ -829,7 +829,7 @@ catch (e: any) {
 當前問題：沒有表單驗證
 
 建議實現：
-```typescript
+typescript
 const validateForm = () => {
   if (!form.value.slug) {
     alert('請輸入 URL 標識')
@@ -852,13 +852,13 @@ async function saveProduct() {
   }
   // 保存邏輯...
 }
-```
+
 
 ### 改進 2：Slug 唯一性驗證
 當前問題：沒有檢查 slug 是否已存在
 
 建議實現：
-```typescript
+typescript
 async function checkSlugUnique(slug: string) {
   const response = await $fetch(`/api/products/check-slug?slug=${slug}`)
   return response.isUnique
@@ -871,13 +871,13 @@ async function checkSlugUnique(slug: string) {
     alert('此 URL 標識已被使用')
   }
 }}" />
-```
+
 
 ### 改進 3：自動保存草稿
 當前問題：用戶可能忘記保存
 
 建議實現：
-```typescript
+typescript
 // 每隔 30 秒自動保存為草稿
 const saveDraftInterval = setInterval(() => {
   if (!isNew.value && form.value.status === 'draft') {
@@ -891,7 +891,7 @@ const saveDraftInterval = setInterval(() => {
 onUnmounted(() => {
   clearInterval(saveDraftInterval)
 })
-```
+
 
 ### 改進 4：離線支持
 當前問題：離線時無法編輯
@@ -905,7 +905,7 @@ onUnmounted(() => {
 當前問題：上傳的圖片可能過大
 
 建議實現：
-```typescript
+typescript
 async function compressImage(file: File): Promise<string> {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
@@ -922,12 +922,12 @@ async function compressImage(file: File): Promise<string> {
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
   return canvas.toDataURL('image/jpeg', 0.85)
 }
-```
+
 
 ## 測試建議
 
 ### 測試 1：新產品創建
-```typescript
+typescript
 test('should create new product', async () => {
   const form = ref({
     slug: 'test-product',
@@ -949,10 +949,10 @@ test('should create new product', async () => {
   expect(response.success).toBe(true)
   expect(response.product.slug).toBe('test-product')
 })
-```
+
 
 ### 測試 2：產品更新
-```typescript
+typescript
 test('should update existing product', async () => {
   const response = await $fetch('/api/products/admin/123', {
     method: 'PUT',
@@ -965,10 +965,10 @@ test('should update existing product', async () => {
   expect(response.success).toBe(true)
   expect(response.product.slug).toBe('updated-product')
 })
-```
+
 
 ### 測試 3：規格參數同步
-```typescript
+typescript
 test('should sync specsItems to form.specs', () => {
   specsItems.value = [
     { id: '1', key: 'CPU', value: 'Intel' },
@@ -982,7 +982,7 @@ test('should sync specsItems to form.specs', () => {
     RAM: '16GB'
   })
 })
-```
+
 
 ## 總結
 

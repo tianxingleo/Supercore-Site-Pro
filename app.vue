@@ -121,7 +121,9 @@ useHead({
 // ============================================================================
 // Page Transition：页面切换转场
 // Layout Transition：布局切换转场
+</script>
 
+<style scoped>
 /* Page Transition Animation */
 .page-enter-active,
 .page-leave-active {
