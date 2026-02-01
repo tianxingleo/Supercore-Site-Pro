@@ -1166,8 +1166,8 @@ test('should sync specsItems to form.specs', () =&gt; {
                     <!-- uppercase：轉換為大寫 -->
                     <!-- tracking-wider：字間距為 0.05em -->
                     <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
-                      lang.label  <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
-                    }}</label>
+                      <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
+                      lang.label
                     
                     <!-- input：語言名稱輸入框 -->
                     <!-- v-model="(form.name as any)[lang.key]"：雙向數據綁定到 form.name[lang.key] -->

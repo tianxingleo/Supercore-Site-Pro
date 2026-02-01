@@ -292,7 +292,7 @@ async function deleteLog(id: number) {
 當前版本已隱藏了批量操作功能（代碼中標記為"批量操作（已隱藏）"）：
 
 <!-- 已註釋的批量操作 -->
-<!--
+
 <div class="flex flex-col md:flex-row md:justify-between gap-4">
   <div class="flex-1"></div>
   
