@@ -1,4 +1,4 @@
-<!--
+&lt;!--
 # 新聞管理頁面 (News Management Page)
 
 ## 文件作用
@@ -18,17 +18,17 @@
 - **桌面端**：水平排列（標題區域在左，按鈕區域在右）
 
 vue
-<!-- 頂部區域：標題 + 按鈕 -->
-<div class="flex flex-col md:flex-row md:justify-between md:items-end gap-6">
-  <!-- 左側：標題和描述 -->
-  <div>
-    <TypographyHeader :level="2" size="h2">資訊管理 News</TypographyHeader>
-    <p>發佈行業動態及公司新聞。</p>
-  </div>
+&lt;!-- 頂部區域：標題 + 按鈕 --&gt;
+&lt;div class="flex flex-col md:flex-row md:justify-between md:items-end gap-6"&gt;
+  &lt;!-- 左側：標題和描述 --&gt;
+  &lt;div&gt;
+    &lt;TypographyHeader :level="2" size="h2"&gt;資訊管理 News&lt;/TypographyHeader&gt;
+    &lt;p&gt;發佈行業動態及公司新聞。&lt;/p&gt;
+  &lt;/div&gt;
   
-  <!-- 右側：發佈諮訊按鈕 -->
-  <SwissButton tag="a" to="/admin/news/new">發佈諮訊</SwissButton>
-</div>
+  &lt;!-- 右側：發佈諮訊按鈕 --&gt;
+  &lt;SwissButton tag="a" to="/admin/news/new"&gt;發佈諮訊&lt;/SwissButton&gt;
+&lt;/div&gt;
 
 
 ### 2. 動態數據加載
@@ -36,12 +36,12 @@ vue
 
 typescript
 const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
-  key: () => `news-${refreshKey.value}`,  // 使用 refreshKey 作為緩存鍵
-  transform: (data: any) => data,         // 數據轉換
-  default: () => ({ success: false, data: [] })  // 默認值
+  key: () =&gt; `news-${refreshKey.value}`,  // 使用 refreshKey 作為緩存鍵
+  transform: (data: any) =&gt; data,         // 數據轉換
+  default: () =&gt; ({ success: false, data: [] })  // 默認值
 })
 
-const posts = computed(() => response.value?.success ? response.value.data : [])
+const posts = computed(() =&gt; response.value?.success ? response.value.data : [])
 
 
 **為什麼使用 `useLazyFetch` 而不是 `useFetch`？**
@@ -80,10 +80,10 @@ await refresh()    // 重新調用 API
 在加載時顯示骨架屏：
 
 vue
-<div class="bg-white border border-swiss-text/10">
-  <TableSkeleton v-if="pending" />
-  <UTable v-else :rows="posts" :columns="columns" />
-</div>
+&lt;div class="bg-white border border-swiss-text/10"&gt;
+  &lt;TableSkeleton v-if="pending" /&gt;
+  &lt;UTable v-else :rows="posts" :columns="columns" /&gt;
+&lt;/div&gt;
 
 
 好處：
@@ -92,26 +92,26 @@ vue
 - 避免頁面閃爍
 
 ### 5. 表格自定義列
-使用 `<template #column-data="{ row }">` 語法自定義列的渲染：
+使用 `&lt;template #column-data="{ row }"&gt;` 語法自定義列的渲染：
 
 vue
-<UTable :rows="posts" :columns="columns">
-  <!-- 自定義標題列 -->
-  <template #title-data="{ row }">
-    <div>{{ row.title?.['zh-HK'] || row.title?.['hk'] }}</div>
-  </template>
+&lt;UTable :rows="posts" :columns="columns"&gt;
+  &lt;!-- 自定義標題列 --&gt;
+  &lt;template #title-data="{ row }"&gt;
+    &lt;div&gt;{{ row.title?.['zh-HK'] || row.title?.['hk'] }}&lt;/div&gt;
+  &lt;/template&gt;
   
-  <!-- 自定義發佈時間列 -->
-  <template #published_at-data="{ row }">
-    <span>{{ row.published_at ? formatDate(row.published_at) : '未發佈' }}</span>
-  </template>
+  &lt;!-- 自定義發佈時間列 --&gt;
+  &lt;template #published_at-data="{ row }"&gt;
+    &lt;span&gt;{{ row.published_at ? formatDate(row.published_at) : '未發佈' }}&lt;/span&gt;
+  &lt;/template&gt;
   
-  <!-- 自定義操作列 -->
-  <template #actions-data="{ row }">
-    <NuxtLink :to="`/admin/news/${row.id}`">編輯</NuxtLink>
-    <button @click="deletePost(row.id)">刪除</button>
-  </template>
-</UTable>
+  &lt;!-- 自定義操作列 --&gt;
+  &lt;template #actions-data="{ row }"&gt;
+    &lt;NuxtLink :to="`/admin/news/${row.id}`"&gt;編輯&lt;/NuxtLink&gt;
+    &lt;button @click="deletePost(row.id)"&gt;刪除&lt;/button&gt;
+  &lt;/template&gt;
+&lt;/UTable&gt;
 
 
 **為什麼使用插槽？**
@@ -151,7 +151,7 @@ typescript
 async function bulkDelete() {
   if (!confirm(`確定要刪除選中的 ${selectedItems.value.length} 篇文章嗎？`)) return
   
-  const ids = selectedItems.value.map((item) => item.id)
+  const ids = selectedItems.value.map((item) =&gt; item.id)
   await $fetch('/api/news/admin/bulk', {
     method: 'POST',
     body: { ids, action: 'delete' },
@@ -188,7 +188,7 @@ async function exportData(format: 'json' | 'csv') {
   link.click()
   
   // 清理
-  setTimeout(() => {
+  setTimeout(() =&gt; {
     document.body.removeChild(link)
     window.URL.revokeObjectURL(url)
   }, 100)
@@ -205,7 +205,7 @@ async function exportData(format: 'json' | 'csv') {
 使用 `ui` 屬性自定義 UTable 的樣式：
 
 typescript
-<UTable :rows="posts" :columns="columns" :ui="{
+&lt;UTable :rows="posts" :columns="columns" :ui="{
   wrapper: 'overflow-x-auto',  // 表格容器：水平滾動
   thead: 'bg-swiss-bg-soft',   // 表頭背景顏色
   th: {
@@ -217,7 +217,7 @@ typescript
   tr: {
     active: 'bg-swiss-bg-soft',  // 懸停行背景顏色
   },
-}">
+}"&gt;
 
 
 **為什麼使用瑞士設計樣式？**
@@ -231,7 +231,7 @@ typescript
 在 `watchEffect` 中監聽錯誤：
 
 typescript
-watchEffect(() => {
+watchEffect(() =&gt; {
   if (error.value) {
     console.error('獲取文章列表失敗:', error.value)
   }
@@ -245,7 +245,7 @@ watchEffect(() => {
 
 在這裡使用 `watchEffect` 的好處：
 - 自動追蹤 `error.value`
-- 不需要手動指定 `() => error.value`
+- 不需要手動指定 `() =&gt; error.value`
 - 代碼更簡潔
 
 ## 核心功能
@@ -257,7 +257,7 @@ watchEffect(() => {
 
 ### 功能 2：創建新聞
 - 點擊"發佈諮訊"按鈕導航到 `/admin/news/new`
-- 路由：`<NuxtLink>` 或 `SwissButton` 的 `to` 屬性
+- 路由：`&lt;NuxtLink&gt;` 或 `SwissButton` 的 `to` 屬性
 
 ### 功能 3：編輯新聞
 - 點擊編輯按鈕（✎）導航到 `/admin/news/{id}`
@@ -322,7 +322,7 @@ watchEffect(() => {
 
 typescript
 const { data: response, pending, refresh } = useLazyFetch('/api/news', {
-  key: () => `news-${refreshKey.value}`,
+  key: () =&gt; `news-${refreshKey.value}`,
 })
 
 
@@ -335,7 +335,7 @@ const { data: response, pending, refresh } = useLazyFetch('/api/news', {
 使用 `computed` 計算文章列表：
 
 typescript
-const posts = computed(() => response.value?.success ? response.value.data : [])
+const posts = computed(() =&gt; response.value?.success ? response.value.data : [])
 
 
 好處：
@@ -347,8 +347,8 @@ const posts = computed(() => response.value?.success ? response.value.data : [])
 使用 `TableSkeleton` 組件：
 
 vue
-<TableSkeleton v-if="pending" />
-<UTable v-else :rows="posts" />
+&lt;TableSkeleton v-if="pending" /&gt;
+&lt;UTable v-else :rows="posts" /&gt;
 
 
 好處：
@@ -360,12 +360,12 @@ vue
 使用 `v-if` 和 `v-else` 切換骨架屏和表格：
 
 vue
-<div v-if="pending">
-  <TableSkeleton />
-</div>
-<div v-else>
-  <UTable :rows="posts" />
-</div>
+&lt;div v-if="pending"&gt;
+  &lt;TableSkeleton /&gt;
+&lt;/div&gt;
+&lt;div v-else&gt;
+  &lt;UTable :rows="posts" /&gt;
+&lt;/div&gt;
 
 
 好處：
@@ -392,19 +392,19 @@ await refresh()
 
 ### 可訪問性 1：語義化 HTML
 使用語義化標籤：
-- `<div>`：通用容器
-- `<button>`：交互元素
-- `<NuxtLink>`：鏈接元素
-- `<span>`：行內文本
+- `&lt;div&gt;`：通用容器
+- `&lt;button&gt;`：交互元素
+- `&lt;NuxtLink&gt;`：鏈接元素
+- `&lt;span&gt;`：行內文本
 
 改進建議：
-- 應該使用 `<table>` 元素而不是 `<UTable>` 組件
-- 應該使用 `<th>` 和 `<td>` 元素
+- 應該使用 `&lt;table&gt;` 元素而不是 `&lt;UTable&gt;` 組件
+- 應該使用 `&lt;th&gt;` 和 `&lt;td&gt;` 元素
 
 ### 可訪問性 2：鍵盤導航
 所有交互元素都支持鍵盤操作：
-- `<NuxtLink>`：Tab 鍵聚焦，Enter 鍵導航
-- `<button>`：Tab 鍵聚焦，Enter/Space 鍵觸發
+- `&lt;NuxtLink&gt;`：Tab 鍵聚焦，Enter 鍵導航
+- `&lt;button&gt;`：Tab 鍵聚焦，Enter/Space 鍵觸發
 
 ### 可訪問性 3：錯誤處理
 使用 `alert()` 顯示錯誤消息：
@@ -676,7 +676,7 @@ API 返回 Blob 對象
 typescript
 const search = ref('')
 const refreshKey = ref(0)
-const selectedItems = ref<any[]>([])
+const selectedItems = ref&lt;any[]&gt;([])
 
 
 好處：
@@ -688,7 +688,7 @@ const selectedItems = ref<any[]>([])
 用於創建計算屬性：
 
 typescript
-const posts = computed(() => response.value?.success ? response.value.data : [])
+const posts = computed(() =&gt; response.value?.success ? response.value.data : [])
 
 
 好處：
@@ -700,7 +700,7 @@ const posts = computed(() => response.value?.success ? response.value.data : [])
 用於自動追蹤依賴的副作用：
 
 typescript
-watchEffect(() => {
+watchEffect(() =&gt; {
   if (error.value) {
     console.error('獲取文章列表失敗:', error.value)
   }
@@ -717,9 +717,9 @@ watchEffect(() => {
 
 typescript
 const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
-  key: () => `news-${refreshKey.value}`,
-  transform: (data: any) => data,
-  default: () => ({ success: false, data: [] })
+  key: () =&gt; `news-${refreshKey.value}`,
+  transform: (data: any) =&gt; data,
+  default: () =&gt; ({ success: false, data: [] })
 })
 
 
@@ -732,8 +732,8 @@ const { data: response, pending, refresh, error } = useLazyFetch('/api/news', {
 用於條件渲染：
 
 vue
-<TableSkeleton v-if="pending" />
-<UTable v-else :rows="posts" :columns="columns" />
+&lt;TableSkeleton v-if="pending" /&gt;
+&lt;UTable v-else :rows="posts" :columns="columns" /&gt;
 
 
 好處：
@@ -744,11 +744,11 @@ vue
 用於循環渲染：
 
 vue
-<UTable :rows="posts" :columns="columns">
-  <template #title-data="{ row }">
-    <div>{{ row.title?.['zh-HK'] }}</div>
-  </template>
-</UTable>
+&lt;UTable :rows="posts" :columns="columns"&gt;
+  &lt;template #title-data="{ row }"&gt;
+    &lt;div&gt;{{ row.title?.['zh-HK'] }}&lt;/div&gt;
+  &lt;/template&gt;
+&lt;/UTable&gt;
 
 
 好處：
@@ -759,11 +759,11 @@ vue
 使用具名插槽自定義列的渲染：
 
 vue
-<UTable :rows="posts" :columns="columns">
-  <template #title-data="{ row }">
-    <div>{{ row.title?.['zh-HK'] }}</div>
-  </template>
-</UTable>
+&lt;UTable :rows="posts" :columns="columns"&gt;
+  &lt;template #title-data="{ row }"&gt;
+    &lt;div&gt;{{ row.title?.['zh-HK'] }}&lt;/div&gt;
+  &lt;/template&gt;
+&lt;/UTable&gt;
 
 
 好處：
@@ -790,7 +790,7 @@ defineExpose({
 用於選中的項目數組：
 
 typescript
-selectedItems: ref<any[]>([])
+selectedItems: ref&lt;any[]&gt;([])
 
 
 示例值：
@@ -845,7 +845,7 @@ catch (error: any) {
 
 ### 錯誤 1：數據加載失敗
 typescript
-watchEffect(() => {
+watchEffect(() =&gt; {
   if (error.value) {
     console.error('獲取文章列表失敗:', error.value)
   }
@@ -978,13 +978,13 @@ const blob = await $fetch('/api/news/admin/export?format=json', {
 建議實現：
 typescript
 // 添加搜索輸入框
-<input v-model="search" placeholder="搜索文章..." />
+&lt;input v-model="search" placeholder="搜索文章..." /&gt;
 
 // 根據搜索關鍵詞過濾
-const filteredPosts = computed(() => {
+const filteredPosts = computed(() =&gt; {
   if (!search.value) return posts.value
   
-  return posts.value.filter(post => {
+  return posts.value.filter(post =&gt; {
     const title = post.title?.['zh-HK'] || post.title?.['hk'] || ''
     return title.toLowerCase().includes(search.value.toLowerCase())
   })
@@ -1001,7 +1001,7 @@ const page = ref(1)
 const pageSize = ref(10)
 
 // 根據頁碼和頁面大小過濾
-const paginatedPosts = computed(() => {
+const paginatedPosts = computed(() =&gt; {
   const start = (page.value - 1) * pageSize.value
   const end = start + pageSize.value
   return posts.value.slice(start, end)
@@ -1015,18 +1015,18 @@ const paginatedPosts = computed(() => {
 typescript
 // 添加排序狀態
 const sortBy = ref('published_at')
-const sortOrder = ref<'asc' | 'desc'>('desc')
+const sortOrder = ref&lt;'asc' | 'desc'&gt;('desc')
 
 // 根據排序字段和順序排序
-const sortedPosts = computed(() => {
-  return [...posts.value].sort((a, b) => {
+const sortedPosts = computed(() =&gt; {
+  return [...posts.value].sort((a, b) =&gt; {
     const valueA = a[sortBy.value]
     const valueB = b[sortBy.value]
     
     if (sortOrder.value === 'asc') {
-      return valueA > valueB ? 1 : -1
+      return valueA &gt; valueB ? 1 : -1
     } else {
-      return valueA < valueB ? 1 : -1
+      return valueA &lt; valueB ? 1 : -1
     }
   })
 })
@@ -1036,12 +1036,12 @@ const sortedPosts = computed(() => {
 
 ### 測試 1：頁面加載
 typescript
-test('should load news list', async () => {
+test('should load news list', async () =&gt; {
   const { data, pending } = useLazyFetch('/api/news')
   
   expect(pending.value).toBe(true)
   
-  await waitFor(() => {
+  await waitFor(() =&gt; {
     expect(data.value?.success).toBe(true)
     expect(data.value?.data).toBeInstanceOf(Array)
   })
@@ -1050,7 +1050,7 @@ test('should load news list', async () => {
 
 ### 測試 2：刪除文章
 typescript
-test('should delete post', async () => {
+test('should delete post', async () =&gt; {
   const id = 1
   
   await $fetch(`/api/news/${id}`, {
@@ -1058,15 +1058,15 @@ test('should delete post', async () => {
   })
   
   // 等待數據刷新
-  await waitFor(() => {
-    expect(posts.value.find(p => p.id === id)).toBeUndefined()
+  await waitFor(() =&gt; {
+    expect(posts.value.find(p =&gt; p.id === id)).toBeUndefined()
   })
 })
 
 
 ### 測試 3：導出數據
 typescript
-test('should export data as JSON', async () => {
+test('should export data as JSON', async () =&gt; {
   const blob = await $fetch('/api/news/admin/export?format=json', {
     method: 'GET',
     responseType: 'blob'
@@ -1101,7 +1101,7 @@ test('should export data as JSON', async () => {
 - ⏳ 排序功能
 
 這是一個功能完整、性能優化的新聞管理頁面，遵循了瑞士設計原則和 Vue 3 最佳實踐。
--->
+--&gt;
 <template>
   <!-- 外層容器：垂直排列元素，間距為 48px -->
   <div class="space-y-12">

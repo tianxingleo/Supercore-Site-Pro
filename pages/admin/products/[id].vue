@@ -1,4 +1,4 @@
-<!--
+&lt;!--
 # 产品编辑页面 (Product Edit Page)
 
 ## 文件作用
@@ -23,7 +23,7 @@ const form = ref({
   name: { hk: '', cn: '', en: '' },  // 多語言名稱
   description: { hk: '', cn: '', en: '' },  // 多語言描述
   category: 'server',            // 產品分類
-  specs: {} as Record<string, string>,  // 規格參數（鍵值對）
+  specs: {} as Record&lt;string, string&gt;,  // 規格參數（鍵值對）
   images: [] as string[],        // 產品圖片數組
   model_3d_url: '',              // 3D 模型 URL
   is_featured: false,            // 是否首頁推薦
@@ -43,9 +43,9 @@ const form = ref({
 
 typescript
 // 同步 specsItems 到 form.specs
-const syncSpecs = () => {
-  const newSpecs: Record<string, string> = {}
-  specsItems.value.forEach(item => {
+const syncSpecs = () =&gt; {
+  const newSpecs: Record&lt;string, string&gt; = {}
+  specsItems.value.forEach(item =&gt; {
     if (item.key) {
       newSpecs[item.key] = item.value
     }
@@ -107,11 +107,11 @@ form.value = {
 - 兩列跨越：`md:col-span-2`
 
 vue
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <div>字段 1</div>
-  <div>字段 2</div>
-  <div class="md:col-span-2">跨越兩列的字段</div>
-</div>
+&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;
+  &lt;div&gt;字段 1&lt;/div&gt;
+  &lt;div&gt;字段 2&lt;/div&gt;
+  &lt;div class="md:col-span-2"&gt;跨越兩列的字段&lt;/div&gt;
+&lt;/div&gt;
 
 
 ### 8. 固定底部操作欄
@@ -129,10 +129,10 @@ vue
 使用循環渲染為每種語言創建輸入框：
 
 vue
-<div v-for="lang in langTabs" :key="lang.key">
-  <label>{{ lang.label }}</label>
-  <input v-model="(form.name as any)[lang.key]" />
-</div>
+&lt;div v-for="lang in langTabs" :key="lang.key"&gt;
+  &lt;label&gt;{{ lang.label }}&lt;/label&gt;
+  &lt;input v-model="(form.name as any)[lang.key]" /&gt;
+&lt;/div&gt;
 
 
 數據結構：
@@ -215,12 +215,12 @@ form.value.name = {
 ### 優化 1：骨架屏優化
 在加載產品數據時顯示骨架屏：
 vue
-<div v-if="loading" class="space-y-12">
-  <FormSkeleton />
-</div>
-<form v-else>
-  <!-- 實際表單內容 -->
-</form>
+&lt;div v-if="loading" class="space-y-12"&gt;
+  &lt;FormSkeleton /&gt;
+&lt;/div&gt;
+&lt;form v-else&gt;
+  &lt;!-- 實際表單內容 --&gt;
+&lt;/form&gt;
 
 
 好處：
@@ -242,7 +242,7 @@ vue
 在規格參數輸入框上使用 `@blur` 事件而不是 `@input`：
 
 vue
-<input v-model="item.key" @blur="syncSpecs" />
+&lt;input v-model="item.key" @blur="syncSpecs" /&gt;
 
 
 好處：
@@ -253,11 +253,11 @@ vue
 ## 可訪問性 (Accessibility)
 
 ### 可訪問性 1：表單標籤關聯
-每個輸入框都有關聯的 `<label>` 元素：
+每個輸入框都有關聯的 `&lt;label&gt;` 元素：
 
 vue
-<label for="slug-input">URL 標識 (Slug) *</label>
-<input id="slug-input" v-model="form.slug" />
+&lt;label for="slug-input"&gt;URL 標識 (Slug) *&lt;/label&gt;
+&lt;input id="slug-input" v-model="form.slug" /&gt;
 
 
 好處：
@@ -268,7 +268,7 @@ vue
 ### 可訪問性 2：必填字段標記
 使用 `*` 符號標記必填字段：
 vue
-<label>URL 標識 (Slug) *</label>
+&lt;label&gt;URL 標識 (Slug) *&lt;/label&gt;
 
 
 好處：
@@ -290,9 +290,9 @@ catch (e: any) {
 
 ### 可訪問性 4：鍵盤導航
 所有交互元素都支持鍵盤操作：
-- `<NuxtLink>`：使用 Tab 鍵可以聚焦，Enter 鍵導航
-- `<button>`：使用 Tab 鍵可以聚焦，Enter/Space 鍵觸發
-- `<input>`：使用 Tab 鍵可以聚焦，直接輸入
+- `&lt;NuxtLink&gt;`：使用 Tab 鍵可以聚焦，Enter 鍵導航
+- `&lt;button&gt;`：使用 Tab 鍵可以聚焦，Enter/Space 鍵觸發
+- `&lt;input&gt;`：使用 Tab 鍵可以聚焦，直接輸入
 
 ## 依賴組件
 
@@ -588,7 +588,7 @@ const form = ref({
 用於創建計算屬性：
 
 typescript
-const isNew = computed(() => route.params.id === 'new')
+const isNew = computed(() =&gt; route.params.id === 'new')
 
 
 好處：
@@ -600,7 +600,7 @@ const isNew = computed(() => route.params.id === 'new')
 用於註冊組件掛載後的回調：
 
 typescript
-onMounted(async () => {
+onMounted(async () =&gt; {
   if (!isNew.value) {
     loading.value = true
     try {
@@ -622,15 +622,15 @@ onMounted(async () => {
 用於雙向數據綁定：
 
 vue
-<input v-model="form.slug" />
+&lt;input v-model="form.slug" /&gt;
 
 
 等價於：
 vue
-<input
+&lt;input
   :value="form.slug"
   @input="form.slug = $event.target.value"
-/>
+/&gt;
 
 
 好處：
@@ -641,10 +641,10 @@ vue
 用於循環渲染：
 
 vue
-<div v-for="lang in langTabs" :key="lang.key">
-  <label>{{ lang.label }}</label>
-  <input v-model="(form.name as any)[lang.key]" />
-</div>
+&lt;div v-for="lang in langTabs" :key="lang.key"&gt;
+  &lt;label&gt;{{ lang.label }}&lt;/label&gt;
+  &lt;input v-model="(form.name as any)[lang.key]" /&gt;
+&lt;/div&gt;
 
 
 好處：
@@ -655,12 +655,12 @@ vue
 用於條件渲染：
 
 vue
-<div v-if="loading">
-  <FormSkeleton />
-</div>
-<form v-else>
-  <!-- 表單內容 -->
-</form>
+&lt;div v-if="loading"&gt;
+  &lt;FormSkeleton /&gt;
+&lt;/div&gt;
+&lt;form v-else&gt;
+  &lt;!-- 表單內容 --&gt;
+&lt;/form&gt;
 
 
 好處：
@@ -674,9 +674,9 @@ vue
 用於攔截表單提交並阻止默認行為：
 
 vue
-<form @submit.prevent="saveProduct">
-  <!-- 表單內容 -->
-</form>
+&lt;form @submit.prevent="saveProduct"&gt;
+  &lt;!-- 表單內容 --&gt;
+&lt;/form&gt;
 
 
 好處：
@@ -685,11 +685,11 @@ vue
 
 ## TypeScript 類型說明
 
-### 類型 1：Record<string, string>
+### 類型 1：Record&lt;string, string&gt;
 用於規格參數的鍵值對對象：
 
 typescript
-specs: {} as Record<string, string>
+specs: {} as Record&lt;string, string&gt;
 
 
 示例值：
@@ -716,11 +716,11 @@ typescript
 ]
 
 
-### 類型 3：Array<{ id: string; key: string; value: string }>
+### 類型 3：Array&lt;{ id: string; key: string; value: string }&gt;
 用於規格參數項目數組：
 
 typescript
-specsItems: ref<Array<{ id: string; key: string; value: string }>>
+specsItems: ref&lt;Array&lt;{ id: string; key: string; value: string }&gt;&gt;
 
 
 示例值：
@@ -743,7 +743,7 @@ typescript
 用於繞過 TypeScript 類型檢查：
 
 vue
-<input v-model="(form.name as any)[lang.key]" />
+&lt;input v-model="(form.name as any)[lang.key]" /&gt;
 
 
 為什麼使用：
@@ -754,10 +754,10 @@ vue
 更好的方式（未實現）：
 typescript
 type Language = 'hk' | 'cn' | 'en'
-form.name: Record<Language, string>
+form.name: Record&lt;Language, string&gt;
 
 // 然後可以直接訪問
-<input v-model="form.name[lang.key as Language]" />
+&lt;input v-model="form.name[lang.key as Language]" /&gt;
 
 
 ## 錯誤處理
@@ -830,16 +830,16 @@ catch (e: any) {
 
 建議實現：
 typescript
-const validateForm = () => {
+const validateForm = () =&gt; {
   if (!form.value.slug) {
     alert('請輸入 URL 標識')
     return false
   }
-  if (!Object.values(form.value.name).some(name => name.trim())) {
+  if (!Object.values(form.value.name).some(name =&gt; name.trim())) {
     alert('請輸入至少一種語言的名稱')
     return false
   }
-  if (!Object.values(form.value.description).some(desc => desc.trim())) {
+  if (!Object.values(form.value.description).some(desc =&gt; desc.trim())) {
     alert('請輸入至少一種語言的描述')
     return false
   }
@@ -865,12 +865,12 @@ async function checkSlugUnique(slug: string) {
 }
 
 // 在 blur 時檢查
-<input v-model="form.slug" @blur="async () => {
+&lt;input v-model="form.slug" @blur="async () =&gt; {
   const isUnique = await checkSlugUnique(form.value.slug)
   if (!isUnique) {
     alert('此 URL 標識已被使用')
   }
-}}" />
+}}" /&gt;
 
 
 ### 改進 3：自動保存草稿
@@ -879,7 +879,7 @@ async function checkSlugUnique(slug: string) {
 建議實現：
 typescript
 // 每隔 30 秒自動保存為草稿
-const saveDraftInterval = setInterval(() => {
+const saveDraftInterval = setInterval(() =&gt; {
   if (!isNew.value && form.value.status === 'draft') {
     $fetch(`/api/products/admin/${route.params.id}`, {
       method: 'PUT',
@@ -888,7 +888,7 @@ const saveDraftInterval = setInterval(() => {
   }
 }, 30000)
 
-onUnmounted(() => {
+onUnmounted(() =&gt; {
   clearInterval(saveDraftInterval)
 })
 
@@ -906,7 +906,7 @@ onUnmounted(() => {
 
 建議實現：
 typescript
-async function compressImage(file: File): Promise<string> {
+async function compressImage(file: File): Promise&lt;string&gt; {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
   const img = await createImageBitmap(file)
@@ -928,7 +928,7 @@ async function compressImage(file: File): Promise<string> {
 
 ### 測試 1：新產品創建
 typescript
-test('should create new product', async () => {
+test('should create new product', async () =&gt; {
   const form = ref({
     slug: 'test-product',
     name: { hk: '測試產品', cn: '测试产品', en: 'Test Product' },
@@ -953,7 +953,7 @@ test('should create new product', async () => {
 
 ### 測試 2：產品更新
 typescript
-test('should update existing product', async () => {
+test('should update existing product', async () =&gt; {
   const response = await $fetch('/api/products/admin/123', {
     method: 'PUT',
     body: {
@@ -969,7 +969,7 @@ test('should update existing product', async () => {
 
 ### 測試 3：規格參數同步
 typescript
-test('should sync specsItems to form.specs', () => {
+test('should sync specsItems to form.specs', () =&gt; {
   specsItems.value = [
     { id: '1', key: 'CPU', value: 'Intel' },
     { id: '2', key: 'RAM', value: '16GB' }
@@ -1003,7 +1003,7 @@ test('should sync specsItems to form.specs', () => {
 - ⏳ 圖片壓縮
 
 這是一個功能完整、用戶友好的產品管理頁面，遵循了瑞士設計原則和 Vue 3 最佳實踐。
--->
+--&gt;
 <template>
   <!-- 管理頁面容器：外層包裹容器 -->
   <div class="admin-page-container">

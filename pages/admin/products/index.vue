@@ -78,15 +78,15 @@
       <!-- :loading="false"：加载状态（false = 不显示加载动画） -->
       <!-- :ui：UI 配置对象 -->
       <UTable v-else :rows="filteredProducts" :columns="columns" :loading="false" v-model="selectedItems" :ui="{
-        <!-- wrapper：表格包裹层样式 -->
-        // overflow-x-auto：水平溢出时显示滚动条 -->
+        // wrapper：表格包裹层样式 
+        // overflow-x-auto：水平溢出时显示滚动条 
         wrapper: 'overflow-x-auto',
-        <!-- thead：表头样式 -->
-        // bg-swiss-bg-soft：瑞士风格浅色背景 -->
+        // thead：表头样式 
+        // bg-swiss-bg-soft：瑞士风格浅色背景 
         thead: 'bg-swiss-bg-soft',
-        // th：表头单元格样式 -->
+        // th：表头单元格样式 
         th: {
-          <!-- base：基础样式 -->
+          // base：基础样式 
           //   - text-[10px]：极小字体（10px）
           //   - font-bold：字重加粗
           //   - uppercase：全大写
@@ -94,14 +94,14 @@
           //   - text-swiss-text-muted：次要文本颜色
           base: 'text-[10px] font-bold uppercase tracking-widest text-swiss-text-muted',
         },
-        // td：表格单元格样式 -->
+        // td：表格单元格样式 
         td: {
           // base：基础样式
           //   - text-sm：小号字体（14px）
           //   - text-swiss-text：主文本颜色
           base: 'text-sm text-swiss-text',
         },
-        // tr：表格行样式 -->
+        // tr：表格行样式 
         tr: {
           // active：激活状态样式（选中或悬停）
           //   - bg-swiss-bg-soft：瑞士风格浅色背景

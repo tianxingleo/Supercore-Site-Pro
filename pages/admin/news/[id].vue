@@ -1,4 +1,4 @@
-<!--
+&lt;!--
 # 新聞編輯頁面 (News Edit Page)
 
 ## 文件作用
@@ -16,7 +16,7 @@
 
 typescript
 const route = useRoute()
-const isNew = computed(() => route.params.id === 'new')
+const isNew = computed(() =&gt; route.params.id === 'new')
 
 
 ### 2. 表單數據管理
@@ -38,10 +38,10 @@ const form = ref({
 使用循環渲染為每種語言創建輸入框：
 
 vue
-<div v-for="lang in langTabs" :key="lang.key">
-  <label>{{ lang.label }}</label>
-  <input v-model="form.title[lang.key]" />
-</div>
+&lt;div v-for="lang in langTabs" :key="lang.key"&gt;
+  &lt;label&gt;{{ lang.label }}&lt;/label&gt;
+  &lt;input v-model="form.title[lang.key]" /&gt;
+&lt;/div&gt;
 
 
 數據結構：
@@ -58,12 +58,12 @@ form.value.title = {
 
 typescript
 const tagsInput = computed({
-  get: () => (form.value.tags || []).join(','),  // 數組 → 字符串
-  set: (val: string) => {                        // 字符串 → 數組
+  get: () =&gt; (form.value.tags || []).join(','),  // 數組 → 字符串
+  set: (val: string) =&gt; {                        // 字符串 → 數組
     form.value.tags = val
       .split(',')           // 按逗號分割
-      .map((t) => t.trim()) // 去除首尾空格
-      .filter((t) => t)      // 過濾空字符串
+      .map((t) =&gt; t.trim()) // 去除首尾空格
+      .filter((t) =&gt; t)      // 過濾空字符串
   },
 })
 
@@ -91,9 +91,9 @@ console.log(tagsInput.value)  // "AI, Infrastructure, Cloud"
 
 typescript
 const publishedAtLocal = computed({
-  get: () =>
+  get: () =&gt;
     form.value.published_at ? new Date(form.value.published_at).toISOString().slice(0, 16) : '',
-  set: (val: string) => {
+  set: (val: string) =&gt; {
     form.value.published_at = val ? new Date(val).toISOString() : null
   },
 })
@@ -101,7 +101,7 @@ const publishedAtLocal = computed({
 
 **為什麼這樣設計？**
 
-- HTML `<input type="datetime-local">` 要求格式：`YYYY-MM-DDTHH:mm`（本地時間）
+- HTML `&lt;input type="datetime-local"&gt;` 要求格式：`YYYY-MM-DDTHH:mm`（本地時間）
 - 數據庫存儲格式：`YYYY-MM-DDTHH:mm:ss.sssZ`（ISO 格式，UTC 時間）
 - 計算屬性自動處理轉換，用戶無需關心
 
@@ -125,7 +125,7 @@ console.log(publishedAtLocal.value)  // "2024-01-15T10:00"
 使用 `RichTextEditor` 組件編輯新聞正文：
 
 vue
-<RichTextEditor v-model="form.content[lang.key]" />
+&lt;RichTextEditor v-model="form.content[lang.key]" /&gt;
 
 
 **功能預期**：
@@ -138,7 +138,7 @@ vue
 使用 `AdminImageUpload` 組件上傳封面圖片：
 
 vue
-<AdminImageUpload v-model="form.cover_image" bucket-name="news-covers" />
+&lt;AdminImageUpload v-model="form.cover_image" bucket-name="news-covers" /&gt;
 
 
 **功能預期**：
@@ -150,7 +150,7 @@ vue
 
 **或直接輸入 URL**：
 vue
-<input v-model="form.cover_image" placeholder="https://example.com/image.jpg" />
+&lt;input v-model="form.cover_image" placeholder="https://example.com/image.jpg" /&gt;
 
 
 ### 8. 數據加載流程
@@ -227,10 +227,10 @@ if (isNew.value) {
 - 桌面端：雙列布局（`md:grid-cols-2`）
 
 vue
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <div>標題字段</div>
-  <div>URL Slug 字段</div>
-</div>
+&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;
+  &lt;div&gt;標題字段&lt;/div&gt;
+  &lt;div&gt;URL Slug 字段&lt;/div&gt;
+&lt;/div&gt;
 
 
 ## 核心功能
@@ -301,12 +301,12 @@ vue
 ### 優化 1：骨架屏優化
 在加載新聞數據時顯示骨架屏：
 vue
-<div v-if="loading" class="space-y-12">
-  <FormSkeleton />
-</div>
-<form v-else>
-  <!-- 實際表單內容 -->
-</form>
+&lt;div v-if="loading" class="space-y-12"&gt;
+  &lt;FormSkeleton /&gt;
+&lt;/div&gt;
+&lt;form v-else&gt;
+  &lt;!-- 實際表單內容 --&gt;
+&lt;/form&gt;
 
 
 好處：
@@ -328,13 +328,13 @@ vue
 使用 `computed` 處理標籤和發佈時間：
 typescript
 const tagsInput = computed({
-  get: () => (form.value.tags || []).join(','),
-  set: (val: string) => { ... },
+  get: () =&gt; (form.value.tags || []).join(','),
+  set: (val: string) =&gt; { ... },
 })
 
 const publishedAtLocal = computed({
-  get: () => form.value.published_at ? ... : '',
-  set: (val: string) => { ... },
+  get: () =&gt; form.value.published_at ? ... : '',
+  set: (val: string) =&gt; { ... },
 })
 
 
@@ -346,11 +346,11 @@ const publishedAtLocal = computed({
 ## 可訪問性 (Accessibility)
 
 ### 可訪問性 1：表單標籤關聯
-每個輸入框都有關聯的 `<label>` 元素：
+每個輸入框都有關聯的 `&lt;label&gt;` 元素：
 
 vue
-<label for="slug-input">URL Slug (唯一標識) *</label>
-<input id="slug-input" v-model="form.slug" />
+&lt;label for="slug-input"&gt;URL Slug (唯一標識) *&lt;/label&gt;
+&lt;input id="slug-input" v-model="form.slug" /&gt;
 
 
 好處：
@@ -361,9 +361,9 @@ vue
 ### 可訪問性 2：必填字段標記
 使用 `*` 符號標記必填字段：
 vue
-<label>標題 *</label>
-<label>摘要 *</label>
-<label>正文 (富文本) *</label>
+&lt;label&gt;標題 *&lt;/label&gt;
+&lt;label&gt;摘要 *&lt;/label&gt;
+&lt;label&gt;正文 (富文本) *&lt;/label&gt;
 
 
 好處：
@@ -387,9 +387,9 @@ catch (error: any) {
 
 ### 可訪問性 4：鍵盤導航
 所有交互元素都支持鍵盤操作：
-- `<NuxtLink>`：使用 Tab 鍵可以聚焦，Enter 鍵導航
-- `<button>`：使用 Tab 鍵可以聚焦，Enter/Space 鍵觸發
-- `<input>`：使用 Tab 鍵可以聚焦，直接輸入
+- `&lt;NuxtLink&gt;`：使用 Tab 鍵可以聚焦，Enter 鍵導航
+- `&lt;button&gt;`：使用 Tab 鍵可以聚焦，Enter/Space 鍵觸發
+- `&lt;input&gt;`：使用 Tab 鍵可以聚焦，直接輸入
 
 ## 依賴組件
 
@@ -713,7 +713,7 @@ const form = ref({
 用於創建計算屬性：
 
 typescript
-const isNew = computed(() => route.params.id === 'new')
+const isNew = computed(() =&gt; route.params.id === 'new')
 
 
 好處：
@@ -726,9 +726,9 @@ const isNew = computed(() => route.params.id === 'new')
 
 typescript
 const tagsInput = computed({
-  get: () => (form.value.tags || []).join(','),
-  set: (val: string) => {
-    form.value.tags = val.split(',').map(t => t.trim()).filter(t => t)
+  get: () =&gt; (form.value.tags || []).join(','),
+  set: (val: string) =&gt; {
+    form.value.tags = val.split(',').map(t =&gt; t.trim()).filter(t =&gt; t)
   },
 })
 
@@ -742,7 +742,7 @@ const tagsInput = computed({
 用於註冊組件掛載後的回調：
 
 typescript
-onMounted(async () => {
+onMounted(async () =&gt; {
   if (!isNew.value) {
     loading.value = true
     try {
@@ -764,15 +764,15 @@ onMounted(async () => {
 用於雙向數據綁定：
 
 vue
-<input v-model="form.slug" />
+&lt;input v-model="form.slug" /&gt;
 
 
 等價於：
 vue
-<input
+&lt;input
   :value="form.slug"
   @input="form.slug = $event.target.value"
-/>
+/&gt;
 
 
 好處：
@@ -783,10 +783,10 @@ vue
 用於循環渲染：
 
 vue
-<div v-for="lang in langTabs" :key="lang.key">
-  <label>{{ lang.label }}</label>
-  <input v-model="form.title[lang.key]" />
-</div>
+&lt;div v-for="lang in langTabs" :key="lang.key"&gt;
+  &lt;label&gt;{{ lang.label }}&lt;/label&gt;
+  &lt;input v-model="form.title[lang.key]" /&gt;
+&lt;/div&gt;
 
 
 好處：
@@ -797,12 +797,12 @@ vue
 用於條件渲染：
 
 vue
-<div v-if="loading">
-  <FormSkeleton />
-</div>
-<form v-else>
-  <!-- 表單內容 -->
-</form>
+&lt;div v-if="loading"&gt;
+  &lt;FormSkeleton /&gt;
+&lt;/div&gt;
+&lt;form v-else&gt;
+  &lt;!-- 表單內容 --&gt;
+&lt;/form&gt;
 
 
 好處：
@@ -813,9 +813,9 @@ vue
 用於攔截表單提交並阻止默認行為：
 
 vue
-<form @submit.prevent="savePost">
-  <!-- 表單內容 -->
-</form>
+&lt;form @submit.prevent="savePost"&gt;
+  &lt;!-- 表單內容 --&gt;
+&lt;/form&gt;
 
 
 好處：
@@ -824,11 +824,11 @@ vue
 
 ## TypeScript 類型說明
 
-### 類型 1：Record<string, string>
+### 類型 1：Record&lt;string, string&gt;
 用於多語言字段的鍵值對對象：
 
 typescript
-title: { hk: '', cn: '', en: '' } as Record<string, string>
+title: { hk: '', cn: '', en: '' } as Record&lt;string, string&gt;
 
 
 示例值：
@@ -911,7 +911,7 @@ catch (error: any) {
 
 建議：
 - API 應該對輸入內容進行 HTML 轉義
-- 富文本編輯器應該過濾危險標籤（`<script>`, `<iframe>` 等）
+- 富文本編輯器應該過濾危險標籤（`&lt;script&gt;`, `&lt;iframe&gt;` 等）
 - 在顯示時使用 `v-html` 應該謹慎
 
 ### 安全 3：身份驗證
@@ -946,16 +946,16 @@ catch (error: any) {
 
 建議實現：
 typescript
-const validateForm = () => {
+const validateForm = () =&gt; {
   if (!form.value.slug) {
     alert('請輸入 URL Slug')
     return false
   }
-  if (!Object.values(form.value.title).some(title => title.trim())) {
+  if (!Object.values(form.value.title).some(title =&gt; title.trim())) {
     alert('請輸入至少一種語言的標題')
     return false
   }
-  if (!Object.values(form.value.summary).some(summary => summary.trim())) {
+  if (!Object.values(form.value.summary).some(summary =&gt; summary.trim())) {
     alert('請輸入至少一種語言的摘要')
     return false
   }
@@ -981,12 +981,12 @@ async function checkSlugUnique(slug: string) {
 }
 
 // 在 blur 時檢查
-<input v-model="form.slug" @blur="async () => {
+&lt;input v-model="form.slug" @blur="async () =&gt; {
   const isUnique = await checkSlugUnique(form.value.slug)
   if (!isUnique) {
     alert('此 URL Slug 已被使用')
   }
-}}" />
+}}" /&gt;
 
 
 ### 改進 3：自動保存草稿
@@ -995,7 +995,7 @@ async function checkSlugUnique(slug: string) {
 建議實現：
 typescript
 // 每隔 30 秒自動保存為草稿
-const saveDraftInterval = setInterval(() => {
+const saveDraftInterval = setInterval(() =&gt; {
   if (!isNew.value && form.value.status === 'draft') {
     $fetch(`/api/news/admin/${route.params.id}`, {
       method: 'PUT',
@@ -1004,7 +1004,7 @@ const saveDraftInterval = setInterval(() => {
   }
 }, 30000)
 
-onUnmounted(() => {
+onUnmounted(() =&gt; {
   clearInterval(saveDraftInterval)
 })
 
@@ -1022,7 +1022,7 @@ onUnmounted(() => {
 
 建議實現：
 typescript
-async function compressImage(file: File): Promise<string> {
+async function compressImage(file: File): Promise&lt;string&gt; {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
   const img = await createImageBitmap(file)
@@ -1044,7 +1044,7 @@ async function compressImage(file: File): Promise<string> {
 
 ### 測試 1：新新聞創建
 typescript
-test('should create new post', async () => {
+test('should create new post', async () =&gt; {
   const form = ref({
     slug: 'test-post',
     title: { hk: '測試文章', cn: '测试文章', en: 'Test Post' },
@@ -1067,7 +1067,7 @@ test('should create new post', async () => {
 
 ### 測試 2：新聞更新
 typescript
-test('should update existing post', async () => {
+test('should update existing post', async () =&gt; {
   const response = await $fetch('/api/news/admin/123', {
     method: 'PUT',
     body: {
@@ -1083,14 +1083,14 @@ test('should update existing post', async () => {
 
 ### 測試 3：標籤處理
 typescript
-test('should parse tags from string', () => {
+test('should parse tags from string', () =&gt; {
   form.value.tags = []
   tagsInput.value = 'AI, Infrastructure, Cloud'
 
   expect(form.value.tags).toEqual(['AI', 'Infrastructure', 'Cloud'])
 })
 
-test('should format tags to string', () => {
+test('should format tags to string', () =&gt; {
   form.value.tags = ['AI', 'Infrastructure', 'Cloud']
 
   expect(tagsInput.value).toBe('AI, Infrastructure, Cloud')
@@ -1099,13 +1099,13 @@ test('should format tags to string', () => {
 
 ### 測試 4：發佈時間處理
 typescript
-test('should convert local time to ISO format', () => {
+test('should convert local time to ISO format', () =&gt; {
   publishedAtLocal.value = '2024-01-15T10:00'
 
   expect(form.value.published_at).toBe('2024-01-15T02:00:00.000Z')  // UTC 時間
 })
 
-test('should convert ISO format to local time', () => {
+test('should convert ISO format to local time', () =&gt; {
   form.value.published_at = '2024-01-15T02:00:00.000Z'  // UTC 時間
 
   expect(publishedAtLocal.value).toBe('2024-01-15T10:00')  // 本地時間（假設時區為 +8）
@@ -1134,7 +1134,7 @@ test('should convert ISO format to local time', () => {
 - ⏳ 圖片壓縮
 
 這是一個功能完整、用戶友好的新聞管理頁面，遵循了瑞士設計原則和 Vue 3 最佳實踐。
--->
+--&gt;
 <template>
   <!-- 管理頁面容器：外層包裹容器 -->
   <div class="admin-page-container">
