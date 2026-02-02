@@ -1230,10 +1230,11 @@ test('should convert ISO format to local time', () =&gt; {
                     <!-- text-swiss-text-muted：文字顏色為瑞士文本顏色（變暗） -->
                     <!-- uppercase：轉換為大寫 -->
                     <!-- tracking-wider：字間距為 0.05em -->
+                    <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
                     <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
-                      <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
                       lang.label
-                    
+                    }}</label>
+
                     <!-- input：語言標題輸入框 -->
                     <!-- v-model="form.title[lang.key]"：雙向數據綁定到 form.title[lang.key] -->
                     <!-- :placeholder：佔位符文本 -->
@@ -1302,8 +1303,9 @@ test('should convert ISO format to local time', () =&gt; {
                   <!-- text-swiss-text-muted：文字顏色為瑞士文本顏色（變暗） -->
                   <!-- uppercase：轉換為大寫 -->
                   <!-- tracking-wider：字間距為 0.05em -->
+                  <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
                   <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
-                    lang.label  <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
+                    lang.label
                   }}</label>
                   
                   <!-- textarea：多行文本輸入框 -->
@@ -1345,8 +1347,9 @@ test('should convert ISO format to local time', () =&gt; {
                   <!-- text-swiss-text-muted：文字顏色為瑞士文本顏色（變暗） -->
                   <!-- uppercase：轉換為大寫 -->
                   <!-- tracking-wider：字間距為 0.05em -->
+                  <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
                   <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
-                    lang.label  <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
+                    lang.label
                   }}</label>
                   
                   <!-- RichTextEditor：富文本編輯器組件（需要實現） -->

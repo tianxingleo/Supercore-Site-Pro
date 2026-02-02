@@ -165,9 +165,9 @@ const props = withDefaults(defineProps<Props>(), {
 // - 访问 DOM 元素
 // - 传递给 GSAP 进行动画
 // - 查询内部元素（.swiss-text-reveal__inner）
-*
+//
 // 初始值：null（组件挂载前为 null，挂载后为 HTMLElement）
-*
+//
 // ============================================================================
 const el = ref<HTMLElement | null>(null)
 
@@ -179,11 +179,11 @@ const el = ref<HTMLElement | null>(null)
 //
 // 用途：
 // - 存储动画上下文
-* - 组件卸载时清理动画（ctx.revert()）
-* - 避免内存泄漏
-*
+// - 组件卸载时清理动画（ctx.revert()）
+// - 避免内存泄漏
+//
 // 初始值：null（onMounted 后赋值）
-*
+//
 // ============================================================================
 let ctx: gsap.Context | null = null
 
@@ -194,9 +194,10 @@ let ctx: gsap.Context | null = null
 // useNuxtApp()：获取 Nuxt 应用上下文
 //
 // 返回值：
-* - Nuxt 应用对象，包含全局插件、注入的属性等
-* - 可以访问全局插件（如 GSAP、ScrollTrigger）
-*
+//
+// - Nuxt 应用对象，包含全局插件、注入的属性等
+// - 可以访问全局插件（如 GSAP、ScrollTrigger）
+//
 // ============================================================================
 const nuxtApp = useNuxtApp()
 
@@ -214,13 +215,13 @@ const { $gsap, $ScrollTrigger } = nuxtApp as any
 // - 用于执行初始化逻辑
 //
 // 工作流程：
-* 1. 检查 DOM 元素是否存在
-* 2. 检查 GSAP 和 ScrollTrigger 是否可用
-* 3. 查询内部元素（.swiss-text-reveal__inner）
-* 4. 创建 GSAP 上下文
-* 5. 设置动画参数
-* 6. 根据 immediate 或 trigger 选择触发方式
-*
+// 1. 检查 DOM 元素是否存在
+// 2. 检查 GSAP 和 ScrollTrigger 是否可用
+// 3. 查询内部元素（.swiss-text-reveal__inner）
+// 4. 创建 GSAP 上下文
+// 5. 设置动画参数
+// 6. 根据 immediate 或 trigger 选择触发方式
+
 // ============================================================================
 onMounted(() => {
   // 检查 DOM 元素是否存在
@@ -303,18 +304,18 @@ onMounted(() => {
 //
 // onBeforeUnmount：Vue 3 的生命周期钩子
 // - 组件卸载前调用
-* - 用于清理资源，避免内存泄漏
-*
+// - 用于清理资源，避免内存泄漏
+
 // 清理逻辑：
-* 1. 回滚 GSAP 上下文中的所有动画
-* 2. 清理 ScrollTrigger
-* 3. 释放内存
-*
+// 1. 回滚 GSAP 上下文中的所有动画
+// 2. 清理 ScrollTrigger
+// 3. 释放内存
+
 // 为什么要清理？
-* - 避免内存泄漏
-* - 清理 ScrollTrigger 监听器
-* - 移除动画定时器
-*
+// - 避免内存泄漏
+// - 清理 ScrollTrigger 监听器
+// - 移除动画定时器
+
 // ============================================================================
 onBeforeUnmount(() => {
   // 回滚 GSAP 上下文中的所有动画

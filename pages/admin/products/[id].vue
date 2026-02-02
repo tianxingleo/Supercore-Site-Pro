@@ -1165,10 +1165,11 @@ test('should sync specsItems to form.specs', () =&gt; {
                     <!-- text-swiss-text-muted：文字顏色為瑞士文本顏色（變暗） -->
                     <!-- uppercase：轉換為大寫 -->
                     <!-- tracking-wider：字間距為 0.05em -->
+                    <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
                     <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
-                      <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
                       lang.label
-                    
+                    }}</label>
+
                     <!-- input：語言名稱輸入框 -->
                     <!-- v-model="(form.name as any)[lang.key]"：雙向數據綁定到 form.name[lang.key] -->
                     <!-- (form.name as any)：類型斷言為 any，因為 TypeScript 無法確定動態訪問的安全性 -->
@@ -1208,8 +1209,9 @@ test('should sync specsItems to form.specs', () =&gt; {
                     <!-- text-swiss-text-muted：文字顏色為瑞士文本顏色（變暗） -->
                     <!-- uppercase：轉換為大寫 -->
                     <!-- tracking-wider：字間距為 0.05em -->
+                    <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
                     <label class="text-[10px] text-swiss-text-muted uppercase tracking-wider">{{
-                      lang.label  <!-- lang.label：語言標籤（繁體 (HK)、簡體 (CN)、English） -->
+                      lang.label
                     }}</label>
                     
                     <!-- textarea：多行文本輸入框 -->

@@ -155,7 +155,7 @@ interface Props {
 // - tracking: 'tight'：默认紧凑字母间距（瑞士设计特征）
 // - leading: 'tight'：默认紧凑行高
 // - margin: true：默认添加底部边距
-*
+//
 // ============================================================================
 const props = withDefaults(defineProps<Props>(), {
   level: 1,
@@ -174,20 +174,20 @@ const props = withDefaults(defineProps<Props>(), {
 //
 // 使用 computed 创建响应式计算属性
 // 根据 props.level 计算 HTML 标签名
-*
+
 // 返回值：
-* - h1, h2, h3, h4, h5, h6
-*
+// - h1, h2, h3, h4, h5, h6
+
 // 使用 const 断言：
-* - `h${props.level}` 会被推断为字符串类型
-* - `as const` 告诉 TypeScript 这是一个字面量类型
-* - 优化类型推断，提供更好的智能提示
-*
+// - `h${props.level}` 会被推断为字符串类型
+// - `as const` 告诉 TypeScript 这是一个字面量类型
+// - 优化类型推断，提供更好的智能提示
+
 // 示例：
-* - level=1 → tag = 'h1'
-* - level=2 → tag = 'h2'
-* - level=6 → tag = 'h6'
-*
+// - level=1 → tag = 'h1'
+// - level=2 → tag = 'h2'
+// - level=6 → tag = 'h6'
+
 // ============================================================================
 const tag = computed(() => `h${props.level}` as const)
 
@@ -196,19 +196,20 @@ const tag = computed(() => `h${props.level}` as const)
 // ============================================================================
 //
 // 使用 computed 创建响应式计算属性
-* 根据 props 的不同值动态生成 Tailwind CSS 类名
-*
+//
+// 根据 props 的不同值动态生成 Tailwind CSS 类名
+
 // 工作流程：
-* 1. 创建空数组 classes
-* 2. 根据 props.size 添加尺寸类名
-* 3. 根据 props.weight 添加字重类名
-* 4. 根据 props.color 添加颜色类名
-* 5. 根据 props.align 添加对齐类名
-* 6. 根据 props.tracking 添加字母间距类名
-* 7. 根据 props.leading 添加行高类名
-* 8. 根据 props.margin 添加边距类名
-* 9. 返回类名数组（Vue 会自动合并为字符串）
-*
+// 1. 创建空数组 classes
+// 2. 根据 props.size 添加尺寸类名
+// 3. 根据 props.weight 添加字重类名
+// 4. 根据 props.color 添加颜色类名
+// 5. 根据 props.align 添加对齐类名
+// 6. 根据 props.tracking 添加字母间距类名
+// 7. 根据 props.leading 添加行高类名
+// 8. 根据 props.margin 添加边距类名
+// 9. 返回类名数组（Vue 会自动合并为字符串）
+
 // ============================================================================
 const headerClasses = computed(() => {
   // 初始化类名数组
@@ -219,60 +220,60 @@ const headerClasses = computed(() => {
   // ============================================================================
   //
   // Swiss 设计特征：大标题，强烈的视觉冲击
-  *
+  //
   // 尺寸说明：
-  * - display：超大标题（用于页面主标题）
-  *   - 移动端：text-7xl（4.5rem，72px）
-  *   - 平板：sm:text-8xl（6rem，96px）
-  *   - 桌面：lg:text-9xl（8rem，128px）
-  *   - 字重：font-black（900）
-  *   - 字母间距：tracking-tighter（最紧凑）
-  *   - 行高：leading-[0.9]（0.9，非常紧凑）
-  *
+  // - display：超大标题（用于页面主标题）
+  //   - 移动端：text-7xl（4.5rem，72px）
+  //   - 平板：sm:text-8xl（6rem，96px）
+  //   - 桌面：lg:text-9xl（8rem，128px）
+  //   - 字重：font-black（900）
+  //   - 字母间距：tracking-tighter（最紧凑）
+  //   - 行高：leading-[0.9]（0.9，非常紧凑）
+  //
   // - h1：大号标题
-  *   - 移动端：text-5xl（3rem，48px）
-  *   - 平板：sm:text-6xl（3.75rem，60px）
-  *   - 桌面：lg:text-7xl（4.5rem，72px）
-  *   - 字重：font-black（900）
-  *   - 字母间距：tracking-tight（紧凑）
-  *
+  //   - 移动端：text-5xl（3rem，48px）
+  //   - 平板：sm:text-6xl（3.75rem，60px）
+  //   - 桌面：lg:text-7xl（4.5rem，72px）
+  //   - 字重：font-black（900）
+  //   - 字母间距：tracking-tight（紧凑）
+  //
   // - h2：中号标题
-  *   - 移动端：text-4xl（2.25rem，36px）
-  *   - 平板：sm:text-5xl（3rem，48px）
-  *   - 桌面：lg:text-6xl（3.75rem，60px）
-  *   - 字重：font-bold（700）
-  *   - 字母间距：tracking-tight（紧凑）
-  *
+  //   - 移动端：text-4xl（2.25rem，36px）
+  //   - 平板：sm:text-5xl（3rem，48px）
+  //   - 桌面：lg:text-6xl（3.75rem，60px）
+  //   - 字重：font-bold（700）
+  //   - 字母间距：tracking-tight（紧凑）
+  //
   // - h3：标准标题
-  *   - 移动端：text-3xl（1.875rem，30px）
-  *   - 平板：sm:text-4xl（2.25rem，36px）
-  *   - 桌面：lg:text-4xl（2.25rem，36px）
-  *   - 字重：font-bold（700）
-  *   - 字母间距：tracking-tight（紧凑）
-  *
+  //   - 移动端：text-3xl（1.875rem，30px）
+  //   - 平板：sm:text-4xl（2.25rem，36px）
+  //   - 桌面：lg:text-4xl（2.25rem，36px）
+  //   - 字重：font-bold（700）
+  //   - 字母间距：tracking-tight（紧凑）
+  //
   // - h4：小号标题
-  *   - 移动端：text-2xl（1.5rem，24px）
-  *   - 平板：sm:text-3xl（1.875rem，30px）
-  *   - 桌面：lg:text-3xl（1.875rem，30px）
-  *   - 字重：font-semibold（600）
-  *
+  //   - 移动端：text-2xl（1.5rem，24px）
+  //   - 平板：sm:text-3xl（1.875rem，30px）
+  //   - 桌面：lg:text-3xl（1.875rem，30px）
+  //   - 字重：font-semibold（600）
+  //
   // - h5：更小标题
-  *   - 移动端：text-xl（1.25rem，20px）
-  *   - 平板：sm:text-2xl（1.5rem，24px）
-  *   - 桌面：lg:text-2xl（1.5rem，24px）
-  *   - 字重：font-semibold（600）
-  *
+  //   - 移动端：text-xl（1.25rem，20px）
+  //   - 平板：sm:text-2xl（1.5rem，24px）
+  //   - 桌面：lg:text-2xl（1.5rem，24px）
+  //   - 字重：font-semibold（600）
+  //
   // - h6：最小标题
-  *   - 移动端：text-lg（1.125rem，18px）
-  *   - 平板：sm:text-xl（1.25rem，20px）
-  *   - 桌面：lg:text-xl（1.25rem，20px）
-  *   - 字重：font-semibold（600）
-  *
+  //   - 移动端：text-lg（1.125rem，18px）
+  //   - 平板：sm:text-xl（1.25rem，20px）
+  //   - 桌面：lg:text-xl（1.25rem，20px）
+  //   - 字重：font-semibold（600）
+  //
   // 响应式断点：
-  * - 无前缀：移动端（默认）
-  * - sm：平板（640px+）
-  * - lg：桌面（1024px+）
-  *
+  // - 无前缀：移动端（默认）
+  // - sm：平板（640px+）
+  // - lg：桌面（1024px+）
+  //
   // ============================================================================
   const sizes = {
     display: ['text-7xl', 'sm:text-8xl', 'lg:text-9xl', 'font-black', 'tracking-tighter', 'leading-[0.9]'],
@@ -292,21 +293,21 @@ const headerClasses = computed(() => {
   // ============================================================================
   //
   // 字重说明：
-  * - light：300，轻
-  * - normal：400，常规
-  * - medium：500，中等
-  * - semibold：600，半粗
-  * - bold：700，粗
-  * - black：900，特粗
-  *
+  // - light：300，轻
+  // - normal：400，常规
+  // - medium：500，中等
+  // - semibold：600，半粗
+  // - bold：700，粗
+  // - black：900，特粗
+  //
   // Tailwind CSS 字重类名：
-  * - font-light：对应 font-weight: 300
-  * - font-normal：对应 font-weight: 400
-  * - font-medium：对应 font-weight: 500
-  * - font-semibold：对应 font-weight: 600
-  * - font-bold：对应 font-weight: 700
-  * - font-black：对应 font-weight: 900
-  *
+  // - font-light：对应 font-weight: 300
+  // - font-normal：对应 font-weight: 400
+  // - font-medium：对应 font-weight: 500
+  // - font-semibold：对应 font-weight: 600
+  // - font-bold：对应 font-weight: 700
+  // - font-black：对应 font-weight: 900
+  //
   // ============================================================================
   const weights = {
     light: 'font-light',
@@ -323,17 +324,17 @@ const headerClasses = computed(() => {
   // ============================================================================
   //
   // 颜色说明：
-  * - text：主文本颜色（通常是黑色或深灰色）
-  * - secondary：次要文本颜色（通常是浅灰色）
-  * - accent：强调色（通常是品牌色）
-  * - white：白色
-  *
+  // - text：主文本颜色（通常是黑色或深灰色）
+  // - secondary：次要文本颜色（通常是浅灰色）
+  // - accent：强调色（通常是品牌色）
+  // - white：白色
+  //
   // Tailwind CSS 自定义颜色类名：
-  * - text-swiss-text：主文本颜色（在 tailwind.config.js 中定义）
-  * - text-swiss-text-muted：次要文本颜色
-  * - text-swiss-accent：强调色
-  * - text-white：白色（Tailwind 内置）
-  *
+  // - text-swiss-text：主文本颜色（在 tailwind.config.js 中定义）
+  // - text-swiss-text-muted：次要文本颜色
+  // - text-swiss-accent：强调色
+  // - text-white：白色（Tailwind 内置）
+  //
   // ============================================================================
   const colors = {
     text: 'text-swiss-text',
@@ -348,15 +349,15 @@ const headerClasses = computed(() => {
   // ============================================================================
   //
   // 对齐说明：
-  * - left：左对齐（默认）
-  * - center：居中对齐
-  * - right：右对齐
-  *
+  // - left：左对齐（默认）
+  // - center：居中对齐
+  // - right：右对齐
+  //
   // Tailwind CSS 对齐类名：
-  * - text-left：text-align: left
-  * - text-center：text-align: center
-  * - text-right：text-align: right
-  *
+  // - text-left：text-align: left
+  // - text-center：text-align: center
+  // - text-right：text-align: right
+  //
   // ============================================================================
   const alignments = {
     left: 'text-left',
@@ -370,26 +371,26 @@ const headerClasses = computed(() => {
   // ============================================================================
   //
   // 瑞士设计特征：紧凑的字母间距
-  *
+  //
   // 字母间距说明：
-  * - tighter：-0.05em（最紧凑）
-  * - tight：-0.025em（紧凑）
-  * - normal：0（正常）
-  * - wide：0.025em（宽）
-  * - wider：0.05em（最宽）
-  *
+  // - tighter：-0.05em（最紧凑）
+  // - tight：-0.025em（紧凑）
+  // - normal：0（正常）
+  // - wide：0.025em（宽）
+  // - wider：0.05em（最宽）
+  //
   // Tailwind CSS 字母间距类名：
-  * - tracking-tighter：letter-spacing: -0.05em
-  * - tracking-tight：letter-spacing: -0.025em
-  * - tracking-normal：letter-spacing: 0
-  * - tracking-wide：letter-spacing: 0.025em
-  * - tracking-wider：letter-spacing: 0.05em
-  *
+  // - tracking-tighter：letter-spacing: -0.05em
+  // - tracking-tight：letter-spacing: -0.025em
+  // - tracking-normal：letter-spacing: 0
+  // - tracking-wide：letter-spacing: 0.025em
+  // - tracking-wider：letter-spacing: 0.05em
+  //
   // 为什么使用紧凑字母间距？
-  * - Swiss 设计风格特征
-  * - 大标题看起来更现代、更有冲击力
-  * - 节省水平空间
-  *
+  // - Swiss 设计风格特征
+  // - 大标题看起来更现代、更有冲击力
+  // - 节省水平空间
+  //
   // ============================================================================
   const trackings = {
     tighter: 'tracking-tighter',
@@ -405,21 +406,21 @@ const headerClasses = computed(() => {
   // ============================================================================
   //
   // 行高说明：
-  * - none：1（无额外行高）
-  * - tight：1.25（紧凑）
-  * - snug：1.375（舒适）
-  * - normal：1.5（正常）
-  * - relaxed：1.625（宽松）
-  * - loose：2（最宽松）
-  *
+  // - none：1（无额外行高）
+  // - tight：1.25（紧凑）
+  // - snug：1.375（舒适）
+  // - normal：1.5（正常）
+  // - relaxed：1.625（宽松）
+  // - loose：2（最宽松）
+  //
   // Tailwind CSS 行高类名：
-  * - leading-none：line-height: 1
-  * - leading-tight：line-height: 1.25
-  * - leading-snug：line-height: 1.375
-  * - leading-normal：line-height: 1.5
-  * - leading-relaxed：line-height: 1.625
-  * - leading-loose：line-height: 2
-  *
+  // - leading-none：line-height: 1
+  // - leading-tight：line-height: 1.25
+  // - leading-snug：line-height: 1.375
+  // - leading-normal：line-height: 1.5
+  // - leading-relaxed：line-height: 1.625
+  // - leading-loose：line-height: 2
+  //
   // ============================================================================
   const lineHeights = {
     none: 'leading-none',
@@ -436,20 +437,20 @@ const headerClasses = computed(() => {
   // ============================================================================
   //
   // 边距说明：
-  * - margin = true：添加底部边距
-  *   - mb-4：底部边距 1rem（16px）
-  *   - last:mb-0：最后一个子元素不添加边距
-  *
+  // - margin = true：添加底部边距
+  //   - mb-4：底部边距 1rem（16px）
+  //   - last:mb-0：最后一个子元素不添加边距
+  //
   // 为什么要添加 last:mb-0？
-  * - 避免最后一个元素有多余的底部边距
-  * - 符合设计规范
-  * - 减少不必要的空白
-  *
+  // - 避免最后一个元素有多余的底部边距
+  // - 符合设计规范
+  // - 减少不必要的空白
+  //
   // Tailwind CSS 边距类名：
-  * - mb-4：margin-bottom: 1rem
-  * - last:mb-4：最后一个子元素的 margin-bottom: 1rem
-  * - last:mb-0：最后一个子元素的 margin-bottom: 0
-  *
+  // - mb-4：margin-bottom: 1rem
+  // - last:mb-4：最后一个子元素的 margin-bottom: 1rem
+  // - last:mb-0：最后一个子元素的 margin-bottom: 0
+  //
   // ============================================================================
   if (props.margin) {
     classes.push('mb-4', 'last:mb-0')

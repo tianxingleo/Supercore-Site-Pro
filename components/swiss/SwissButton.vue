@@ -45,71 +45,136 @@
 - 过渡动画：duration-300，ease-out
 
 使用示例：
-```vue
-<!-- 主要按钮：提交表单 -->
-<SwissButton variant="primary" size="lg" @click="submit">
-  {{ $t('common.submit') }}
-</SwissButton>
+- 主要按钮：SwissButton variant="primary" size="lg" 用于提交表单
+- 次要按钮：SwissButton variant="secondary" size="lg" 用于取消操作
+- 链接按钮：SwissButton variant="ghost" size="lg" tag="a" 用于导航
+- 禁用按钮：SwissButton :disabled="true" 用于禁用状态
+- 全宽按钮：SwissButton :fullWidth="true" 用于占满容器宽度
 
-<!-- 次要按钮：取消 -->
-<SwissButton variant="secondary" size="lg" @click="cancel">
-  {{ $t('common.cancel') }}
-</SwissButton>
+Props 属性：
+1. variant：按钮样式（可选）
+   - primary：主要样式（黑色背景，白色文字）
+   - secondary：次要样式（浅色背景，深色文字）
+   - ghost：幽灵样式（透明背景，hover 填充）
 
-<!-- 链接按钮：导航 -->
-<SwissButton variant="ghost" size="lg" tag="a" :to="'/products'">
-  {{ $t('nav.products') }}
-</SwissButton>
+2. size：按钮尺寸（可选，默认 md）
+   - sm：小尺寸
+   - md：中等尺寸（默认）
+   - lg：大尺寸
 
-<!-- 禁用按钮 -->
-<SwissButton variant="primary" size="lg" :disabled="true">
-  {{ $t('common.submit') }}
-</SwissButton>
+3. tag：标签类型（可选，默认 button）
+   - button：button 标签（用于表单提交）
+   - a：a 标签（用于导航）
 
-<!-- 全宽按钮 -->
-<SwissButton variant="primary" size="lg" :fullWidth="true">
-  {{ $t('common.submit') }}
-</SwissButton>
-``` Props 属性： 1. variant：按钮样式（可选） - primary：主要样式（黑色背景，白色文字） -
-secondary：次要样式（浅色背景，深色文字） - ghost：幽灵样式（透明背景，hover 填充） 2.
-size：按钮尺寸（可选，默认 md） - sm：小尺寸 - md：中等尺寸（默认） - lg：大尺寸 3.
-tag：标签类型（可选，默认 button） - button：button 标签（用于表单提交） - a：a 标签（用于导航） 4.
-type：button 类型（可选，默认 button） - button：普通按钮（不指定类型） - submit：提交按钮 -
-reset：重置按钮 5. to：链接地址（可选） - 如果 tag="a"，则 to 会被传递给 NuxtLink - 如果
-tag="button"，则 to 会被传递给 a 标签的 href 6. disabled：是否禁用（可选，默认 false） - 如果为
-true，按钮会降低透明度并禁用点击 7. fullWidth：是否全宽（可选，默认 false） - 如果为
-true，按钮宽度为 100% 样式详解： 1. 基础样式（所有按钮通用）： - inline-flex：内联弹性布局 -
-items-center：垂直居中 - justify-center：水平居中 - font-semibold：中等字重（600） -
-transition-all：所有属性都有过渡动画 - duration-300：过渡动画持续 300ms -
-ease-out：缓动函数（快速开始，慢速结束） - rounded-none：无圆角（直角设计） -
-tracking-widest：超宽字间距（瑞士设计特征） - uppercase：全大写（瑞士设计特征） - text-[10px]：10px
-字体（瑞士设计小字体） - font-bold：粗体 - focus-visible:outline-2：焦点轮廓 2px -
-focus-visible:outline-offset-2：焦点轮廓偏移 2px -
-focus-visible:outline-swiss-text：焦点轮廓颜色（瑞士设计文本色） 2. 尺寸样式（sizes 对象）： - sm：
-- px-4：水平内边距 1rem - py-2：垂直内边距 0.5rem - text-sm：小字体（14px） - md： -
-px-6：水平内边距 1.5rem - py-3：垂直内边距 0.75rem - text-base：基础字体（16px） - lg： -
-px-8：水平内边距 2rem - py-4：垂直内边距 1rem - text-lg：大字体（18px） 3. 样式样式（variants
-对象）： - primary： - bg-swiss-text：瑞士设计文本色背景（黑色） - text-white：白色文字 -
-hover:bg-swiss-text/90：hover 时 90% 透明度 - hover:-translate-y-0.5：hover 时向上移动 0.5rem -
-hover:shadow-lg：hover 时大阴影 - active:scale-[0.98]：激活时缩小到 98% -
-disabled:opacity-50：禁用时 50% 透明度 - disabled:cursor-not-allowed：禁用时禁用手型光标 -
-secondary： - bg-swiss-bg-soft：浅灰色背景 - text-swiss-text：瑞士设计文本色文字 -
-hover:bg-gray-200：hover 时更深的灰色 - hover:-translate-y-0.5：hover 时向上移动 0.5rem -
-hover:shadow-md：hover 时中阴影 - active:scale-[0.98]：激活时缩小到 98% -
-disabled:opacity-50：禁用时 50% 透明度 - disabled:cursor-not-allowed：禁用时禁用手型光标 - ghost： -
-bg-transparent：透明背景 - text-swiss-text：瑞士设计文本色文字 - border：边框 -
-border-swiss-text/20：20% 透明度的瑞士设计文本色边框 - hover:border-swiss-text：hover 时边框变为
-100% 瑞士设计文本色 - hover:bg-swiss-text：hover 时背景填充瑞士设计文本色 - hover:text-white：hover
-时文字变为白色 - hover:-translate-y-0.5：hover 时向上移动 0.5rem - active:scale-[0.98]：激活时缩小到
-98% - disabled:opacity-50：禁用时 50% 透明度 - disabled:cursor-not-allowed：禁用时禁用手型光标 4.
-宽度样式（width）： - fullWidth：w-full（100% 宽度） - 默认：w-auto（自动宽度） 无障碍支持： -
-aria-label：由父组件或用户提供 - disabled 属性：禁用状态（传递给 button 标签） - keyboard 交互： -
-Enter 键：点击按钮（@keydown.enter.prevent） - Space 键：点击按钮（@keydown.space.prevent）
-设计原则： 1. 简洁：无装饰，强调内容 2. 一致：所有按钮都有相同的交互反馈 3.
-可访问：支持键盘和屏幕阅读器 4. 响应式：3 种尺寸适应不同设备 5. 状态反馈：disabled、hover、active
-状态清晰 技术栈： - 框架：Nuxt 3（Vue 3） - 样式：Tailwind CSS - 路由：NuxtLink（用于链接按钮）
-注意： - tag="a" 时，to 会被传递给 NuxtLink（支持路由） - tag="button" 时，to 会被传递给 a 标签的
-href（外部链接） - disabled 状态下，点击事件不会触发 - 使用 defineOptions({ inheritAttrs: false })
+4. type：button 类型（可选，默认 button）
+   - button：普通按钮（不指定类型）
+   - submit：提交按钮
+   - reset：重置按钮
+
+5. to：链接地址（可选）
+   - 如果 tag="a"，则 to 会被传递给 NuxtLink
+   - 如果 tag="button"，则 to 会被传递给 a 标签的 href
+
+6. disabled：是否禁用（可选，默认 false）
+   - 如果为 true，按钮会降低透明度并禁用点击
+
+7. fullWidth：是否全宽（可选，默认 false）
+   - 如果为 true，按钮宽度为 100%
+
+样式详解：
+1. 基础样式（所有按钮通用）：
+   - inline-flex：内联弹性布局
+   - items-center：垂直居中
+   - justify-center：水平居中
+   - font-semibold：中等字重（600）
+   - transition-all：所有属性都有过渡动画
+   - duration-300：过渡动画持续 300ms
+   - ease-out：缓动函数（快速开始，慢速结束）
+   - rounded-none：无圆角（直角设计）
+   - tracking-widest：超宽字间距（瑞士设计特征）
+   - uppercase：全大写（瑞士设计特征）
+   - text-[10px]：10px 字体（瑞士设计小字体）
+   - font-bold：粗体
+   - focus-visible:outline-2：焦点轮廓 2px
+   - focus-visible:outline-offset-2：焦点轮廓偏移 2px
+   - focus-visible:outline-swiss-text：焦点轮廓颜色（瑞士设计文本色）
+
+2. 尺寸样式（sizes 对象）：
+   - sm：
+     - px-4：水平内边距 1rem
+     - py-2：垂直内边距 0.5rem
+     - text-sm：小字体（14px）
+   - md：
+     - px-6：水平内边距 1.5rem
+     - py-3：垂直内边距 0.75rem
+     - text-base：基础字体（16px）
+   - lg：
+     - px-8：水平内边距 2rem
+     - py-4：垂直内边距 1rem
+     - text-lg：大字体（18px）
+
+3. 样式样式（variants 对象）：
+   - primary：
+     - bg-swiss-text：瑞士设计文本色背景（黑色）
+     - text-white：白色文字
+     - hover:bg-swiss-text/90：hover 时 90% 透明度
+     - hover:-translate-y-0.5：hover 时向上移动 0.5rem
+     - hover:shadow-lg：hover 时大阴影
+     - active:scale-[0.98]：激活时缩小到 98%
+     - disabled:opacity-50：禁用时 50% 透明度
+     - disabled:cursor-not-allowed：禁用时禁用手型光标
+   - secondary：
+     - bg-swiss-bg-soft：浅灰色背景
+     - text-swiss-text：瑞士设计文本色文字
+     - hover:bg-gray-200：hover 时更深的灰色
+     - hover:-translate-y-0.5：hover 时向上移动 0.5rem
+     - hover:shadow-md：hover 时中阴影
+     - active:scale-[0.98]：激活时缩小到 98%
+     - disabled:opacity-50：禁用时 50% 透明度
+     - disabled:cursor-not-allowed：禁用时禁用手型光标
+   - ghost：
+     - bg-transparent：透明背景
+     - text-swiss-text：瑞士设计文本色文字
+     - border：边框
+     - border-swiss-text/20：20% 透明度的瑞士设计文本色边框
+     - hover:border-swiss-text：hover 时边框变为 100% 瑞士设计文本色
+     - hover:bg-swiss-text：hover 时背景填充瑞士设计文本色
+     - hover:text-white：hover 时文字变为白色
+     - hover:-translate-y-0.5：hover 时向上移动 0.5rem
+     - active:scale-[0.98]：激活时缩小到 98%
+     - disabled:opacity-50：禁用时 50% 透明度
+     - disabled:cursor-not-allowed：禁用时禁用手型光标
+
+4. 宽度样式（width）：
+   - fullWidth：w-full（100% 宽度）
+   - 默认：w-auto（自动宽度）
+
+无障碍支持：
+- aria-label：由父组件或用户提供
+- disabled 属性：禁用状态（传递给 button 标签）
+- keyboard 交互：
+  - Enter 键：点击按钮（@keydown.enter.prevent）
+  - Space 键：点击按钮（@keydown.space.prevent）
+
+设计原则：
+1. 简洁：无装饰，强调内容
+2. 一致：所有按钮都有相同的交互反馈
+3. 可访问：支持键盘和屏幕阅读器
+4. 响应式：3 种尺寸适应不同设备
+5. 状态反馈：disabled、hover、active 状态清晰
+
+技术栈：
+- 框架：Nuxt 3（Vue 3）
+- 样式：Tailwind CSS
+- 路由：NuxtLink（用于链接按钮）
+
+注意：
+- tag="a" 时，to 会被传递给 NuxtLink（支持路由）
+- tag="button" 时，to 会被传递给 a 标签的 href（外部链接）
+- disabled 状态下，点击事件不会触发
+- 使用 defineOptions({ inheritAttrs: false }) 禁止属性继承
+
+================================================================================ -->
 禁止属性继承 ================================================================================ -->
 
 <template>
@@ -257,7 +322,7 @@ const emit = defineEmits<{
   // click：点击事件
   // - [event: Event]：事件对象
   click: [event: Event]
-}>())
+}>()
 
 // ====================================================================================
 // 动态计算按钮类名

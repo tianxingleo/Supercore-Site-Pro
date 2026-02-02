@@ -13,22 +13,12 @@
 ## 实现手段
 
 ### 1. 骨架屏布局结构
-使用 Flexbox 布局创建骨架屏卡片：
+使用 Flexbox 布局创建骨架屏卡片。
 
-```vue
-<div class="h-full bg-white border border-gray-100 overflow-hidden flex flex-col">
-  <!-- 封面图片骨架 -->
-  <div class="aspect-video ...">...</div>
-  
-  <!-- 内容骨架 -->
-  <div class="p-6 flex-grow flex flex-col">
-    <!-- 标签骨架 -->
-    <!-- 标题骨架 -->
-    <!-- 摘要骨架 -->
-    <!-- 阅读更多骨架 -->
-  </div>
-</div>
-```
+布局示例：
+- 外层容器：h-full bg-white border border-gray-100 overflow-hidden flex flex-col
+- 封面图片骨架：aspect-video
+- 内容骨架：p-6 flex-grow flex flex-col（包含标签、标题、摘要、阅读更多骨架）
 
 **布局特点**：
 - `h-full`：高度占满父容器
@@ -39,25 +29,14 @@
 - `aspect-video`：16:9 的宽高比（视频比例）
 
 ### 2. 闪烁动画效果
-使用 CSS 渐变和动画创建闪烁效果：
+使用 CSS 渐变和动画创建闪烁效果。
 
-```css
-.shimmer {
-  background: linear-gradient(90deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.6) 45%,
-          rgba(255, 255, 255, 0.9) 50%,
-          rgba(255, 255, 255, 0.6) 55%,
-          rgba(255, 255, 255, 0) 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite linear;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-```
+CSS 实现：
+- .shimmer 类使用 linear-gradient 创建渐变
+- 渐变方向：90deg（从左到右）
+- 渐变颜色：从透明到白色再到透明
+- background-size: 200% 100%
+- animation: shimmer 1.5s infinite linear
 
 **动画原理**：
 1. **渐变背景**：创建从透明到白色再到透明的渐变
@@ -81,18 +60,12 @@
 - 告知用户内容正在加载
 
 ### 3. 占位符元素设计
-使用不同的尺寸和颜色模拟实际内容：
+使用不同的尺寸和颜色模拟实际内容。
 
-```vue
-<!-- 标签骨架（小矩形） -->
-<div class="h-4 w-12 bg-gray-50 rounded-full ..."></div>
-
-<!-- 标题骨架（中等长条） -->
-<div class="h-5 w-full bg-gray-100 ..."></div>
-
-<!-- 摘要骨架（细长条） -->
-<div class="h-3 w-full bg-gray-50 ..."></div>
-```
+尺寸示例：
+- 标签骨架（小矩形）：h-4 w-12 bg-gray-50 rounded-full
+- 标题骨架（中等长条）：h-5 w-full bg-gray-100
+- 摘要骨架（细长条）：h-3 w-full bg-gray-50
 
 **尺寸说明**：
 - `h-3`：高度 12px（模拟小文字）
@@ -115,15 +88,11 @@
 - 无圆角：用于标题和摘要（瑞士设计的锐利边缘）
 
 ### 4. 相对定位与绝对定位
-使用 `relative` 和 `absolute` 定位闪烁动画层：
+使用 `relative` 和 `absolute` 定位闪烁动画层。
 
-```vue
-<!-- 父元素：相对定位 -->
-<div class="h-4 w-12 bg-gray-50 rounded-full relative overflow-hidden">
-  <!-- 子元素：绝对定位（覆盖父元素） -->
-  <div class="shimmer absolute inset-0"></div>
-</div>
-```
+定位示例：
+- 父元素：relative（建立定位上下文）
+- 子元素：absolute inset-0（覆盖父元素）
 
 **为什么这样设计？**
 - `relative`：建立定位上下文
@@ -132,15 +101,11 @@
 - `overflow-hidden`：确保闪烁效果不溢出父元素
 
 ### 5. 循环渲染占位符
-使用 `v-for` 渲染多个占位符元素：
+使用 `v-for` 渲染多个占位符元素。
 
-```vue
-<!-- 标签骨架：2 个 -->
-<div v-for="i in 2" :key="i" class="h-4 w-12 bg-gray-50 ..."></div>
-
-<!-- 摘要骨架：3 行 -->
-<div v-for="i in 3" :key="i" class="h-3 w-full bg-gray-50 ..."></div>
-```
+循环示例：
+- 标签骨架：v-for="i in 2"
+- 摘要骨架：v-for="i in 3"
 
 **为什么使用循环？**
 - 减少重复代码
@@ -180,12 +145,11 @@
 ## 使用场景
 
 ### 场景 1：新闻列表加载
-```vue
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-  <!-- 显示 3 个骨架屏卡片 -->
-  <NewsSkeleton v-for="i in 3" :key="i" />
-</div>
-```
+在网格布局中显示多个骨架屏卡片。
+
+使用方式：
+- grid grid-cols-1 md:grid-cols-3 gap-6
+- 使用 v-for 显示 3 个骨架屏
 
 **使用时机**：
 - 页面初始加载时
@@ -194,16 +158,9 @@
 - 数据加载完成后隐藏，显示实际卡片
 
 ### 场景 2：与实际卡片切换
-```vue
-<div v-if="pending">
-  <NewsSkeleton v-for="i in 3" :key="i" />
-</div>
-<div v-else>
-  <NewsCard v-for="item in items" :key="item.id" />
-</div>
-```
+使用 v-if 和 v-else 在骨架屏和实际卡片之间切换。
 
-**切换流程**：
+切换流程：
 1. 页面加载，`pending = true`
 2. 显示骨架屏（NewsSkeleton）
 3. 数据加载完成，`pending = false`
@@ -212,31 +169,15 @@
 ## 性能优化
 
 ### 优化 1：CSS 动画性能
-使用 `transform` 和 `opacity` 而不是改变 `background-position`：
+使用 `transform` 和 `opacity` 而不是改变 `background-position`。
 
-**当前实现**：
-```css
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-```
+**当前实现**：使用 background-position
 
 **性能影响**：
 - 改变 `background-position` 会触发重绘（repaint）
 - 在现代浏览器中性能尚可
 
-**改进建议**：
-```css
-.shimmer {
-  transform: translateX(-200%);
-  animation: shimmer 1.5s infinite linear;
-}
-
-@keyframes shimmer {
-  100% { transform: translateX(200%); }
-}
-```
+**改进建议**：使用 transform translateX
 
 **好处**：
 - 使用 `transform` 触发合成（composite）
@@ -244,29 +185,11 @@
 - 更好的性能（GPU 加速）
 
 ### 优化 2：减少 DOM 节点
-使用伪元素而不是额外的 `div`：
+使用伪元素而不是额外的 `div`。
 
-**当前实现**：
-```vue
-<div class="h-4 w-12 bg-gray-50 rounded-full relative overflow-hidden">
-  <div class="shimmer absolute inset-0"></div>
-</div>
-```
+**当前实现**：使用嵌套的 div 元素
 
-**改进建议**：
-```vue
-<div class="h-4 w-12 bg-gray-50 rounded-full skeleton-item"></div>
-
-<style scoped>
-.skeleton-item::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(...);
-  animation: shimmer 1.5s infinite linear;
-}
-</style>
-```
+**改进建议**：使用伪元素 ::after
 
 **好处**：
 - 减少一个 DOM 节点
@@ -274,26 +197,12 @@
 - 更快的渲染
 
 ### 优化 3：使用 CSS 变量
-使用 CSS 变量定义动画参数：
+使用 CSS 变量定义动画参数。
 
-```css
-<style scoped>
-:root {
-  --shimmer-duration: 1.5s;
-  --shimmer-color: 255, 255, 255;
-}
-
-.shimmer {
-  background: linear-gradient(90deg,
-          rgba(var(--shimmer-color), 0) 0%,
-          rgba(var(--shimmer-color), 0.6) 45%,
-          rgba(var(--shimmer-color), 0.9) 50%,
-          rgba(var(--shimmer-color), 0.6) 55%,
-          rgba(var(--shimmer-color), 0) 100%);
-  animation: shimmer var(--shimmer-duration) infinite linear;
-}
-</style>
-```
+**实现方式**：
+- 定义 --shimmer-duration: 1.5s
+- 定义 --shimmer-color: 255, 255, 255
+- 在 animation 属性中使用 var(--shimmer-duration)
 
 **好处**：
 - 易于调整动画参数
@@ -303,13 +212,7 @@
 ## 可访问性 (Accessibility)
 
 ### 可访问性 1：aria-label
-骨架屏是视觉占位符，不需要 `aria-label`，但可以添加以帮助屏幕阅读器：
-
-```vue
-<div aria-label="正在加载新闻内容..." role="status">
-  <NewsSkeleton />
-</div>
-```
+骨架屏是视觉占位符，不需要 `aria-label`，但可以添加以帮助屏幕阅读器。
 
 **改进建议**：
 - 添加 `role="status"`：表示加载状态
@@ -317,14 +220,7 @@
 - 添加 `aria-live="polite"`：在加载完成后通知用户
 
 ### 可访问性 2：aria-busy
-使用 `aria-busy` 表示内容正在加载：
-
-```vue
-<div :aria-busy="pending">
-  <NewsSkeleton v-if="pending" />
-  <NewsCard v-for="item in items" v-else />
-</div>
-```
+使用 `aria-busy` 表示内容正在加载。
 
 **作用**：
 - 告知屏幕阅读器内容正在加载
@@ -384,19 +280,7 @@
 ## Vue 3 特性说明
 
 ### v-for
-用于循环渲染占位符元素：
-
-```vue
-<!-- 标签骨架：2 个 -->
-<div v-for="i in 2" :key="i" class="h-4 w-12 bg-gray-50 ...">
-  <div class="shimmer absolute inset-0"></div>
-</div>
-
-<!-- 摘要骨架：3 行 -->
-<div v-for="i in 3" :key="i" class="h-3 w-full bg-gray-50 ...">
-  <div class="shimmer absolute inset-0"></div>
-</div>
-```
+用于循环渲染占位符元素。
 
 **好处**：
 - 减少重复代码
@@ -404,19 +288,7 @@
 - 保持代码简洁
 
 ### scoped style
-使用 `scoped` 限制样式作用域：
-
-```vue
-<style scoped>
-.shimmer {
-  /* 只在当前组件中生效 */
-}
-
-@keyframes shimmer {
-  /* 全局动画，但只在当前组件中使用 */
-}
-</style>
-```
+使用 `scoped` 限制样式作用域。
 
 **好处**：
 - 避免样式污染全局
@@ -426,14 +298,7 @@
 ## CSS 动画说明
 
 ### 渐变背景 (linear-gradient)
-```css
-background: linear-gradient(90deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.6) 45%,
-        rgba(255, 255, 255, 0.9) 50%,
-        rgba(255, 255, 255, 0.6) 55%,
-        rgba(255, 255, 255, 0) 100%);
-```
+使用 linear-gradient 创建从左到右的渐变。
 
 **参数说明**：
 - `90deg`：渐变方向（从左到右）
@@ -447,19 +312,10 @@ background: linear-gradient(90deg,
 - 提供更好的视觉效果
 
 ### 背景大小 (background-size)
-```css
-background-size: 200% 100%;
-```
-
-**作用**：
-- 背景宽度是元素的 2 倍
-- 背景高度与元素相同
-- 确保渐变可以完全扫过元素
+设置背景宽度是元素的 2 倍，背景高度与元素相同，确保渐变可以完全扫过元素。
 
 ### 动画定义 (animation)
-```css
-animation: shimmer 1.5s infinite linear;
-```
+设置 shimmer 动画的持续时间为 1.5s，无限循环，线性动画。
 
 **参数说明**：
 - `shimmer`：动画名称（定义在 `@keyframes` 中）
@@ -468,17 +324,7 @@ animation: shimmer 1.5s infinite linear;
 - `linear`：线性动画（无缓动）
 
 ### 关键帧动画 (@keyframes)
-```css
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-```
+定义 shimmer 动画的关键帧。
 
 **作用**：
 - 定义动画的关键帧
@@ -491,13 +337,7 @@ animation: shimmer 1.5s infinite linear;
 ### 改进 1：使用 transform 优化性能
 当前问题：使用 `background-position` 触发重绘
 
-建议实现：
-```css
-@keyframes shimmer {
-  0% { transform: translateX(-200%); }
-  100% { transform: translateX(200%); }
-}
-```
+建议实现：使用 transform translateX
 
 好处：
 - 使用 `transform` 触发合成
@@ -507,20 +347,7 @@ animation: shimmer 1.5s infinite linear;
 ### 改进 2：使用伪元素减少 DOM 节点
 当前问题：每个占位符都有额外的 `div` 元素
 
-建议实现：
-```vue
-<div class="h-4 w-12 bg-gray-50 rounded-full skeleton-item"></div>
-
-<style scoped>
-.skeleton-item::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(...);
-  animation: shimmer 1.5s infinite linear;
-}
-</style>
-```
+建议实现：使用伪元素 ::after
 
 好处：
 - 减少一个 DOM 节点
@@ -530,25 +357,7 @@ animation: shimmer 1.5s infinite linear;
 ### 改进 3：使用 CSS 变量
 当前问题：动画参数硬编码
 
-建议实现：
-```css
-<style scoped>
-:root {
-  --shimmer-duration: 1.5s;
-  --shimmer-color: 255, 255, 255;
-}
-
-.shimmer {
-  background: linear-gradient(90deg,
-          rgba(var(--shimmer-color), 0) 0%,
-          rgba(var(--shimmer-color), 0.6) 45%,
-          rgba(var(--shimmer-color), 0.9) 50%,
-          rgba(var(--shimmer-color), 0.6) 55%,
-          rgba(var(--shimmer-color), 0) 100%);
-  animation: shimmer var(--shimmer-duration) infinite linear;
-}
-</style>
-```
+建议实现：使用 CSS 变量定义动画参数
 
 好处：
 - 易于调整动画参数
@@ -558,12 +367,7 @@ animation: shimmer 1.5s infinite linear;
 ### 改进 4：添加可访问性属性
 当前问题：没有 `aria-label` 或 `aria-busy`
 
-建议实现：
-```vue
-<div :aria-busy="true" aria-label="正在加载新闻内容..." role="status">
-  <NewsSkeleton />
-</div>
-```
+建议实现：添加 aria-busy、aria-label、role="status"
 
 好处：
 - 帮助屏幕阅读器理解加载状态
@@ -572,28 +376,7 @@ animation: shimmer 1.5s infinite linear;
 ### 改进 5：支持自定义动画速度
 当前问题：动画速度固定为 1.5s
 
-建议实现：
-```vue
-<template>
-  <div class="news-skeleton" :style="{ animationDuration }">
-    <!-- ... -->
-  </div>
-</template>
-
-<script setup lang="ts">
-const props = defineProps<{
-  animationDuration?: string
-}>()
-
-const animationDuration = computed(() => props.animationDuration || '1.5s')
-</script>
-
-<style scoped>
-.shimmer {
-  animation: shimmer var(--animation-duration) infinite linear;
-}
-</style>
-```
+建议实现：通过 props 接收 animationDuration 参数
 
 好处：
 - 允许父组件自定义动画速度
@@ -602,55 +385,28 @@ const animationDuration = computed(() => props.animationDuration || '1.5s')
 ## 测试建议
 
 ### 测试 1：渲染测试
-```typescript
-test('should render skeleton correctly', () => {
-  const wrapper = mount(NewsSkeleton)
-  
-  // 检查封面图片骨架
-  expect(wrapper.find('.aspect-video').exists()).toBe(true)
-  
-  // 检查标签骨架（2 个）
-  expect(wrapper.findAll('.rounded-full').length).toBe(2)
-  
-  // 检查标题骨架（2 行）
-  expect(wrapper.findAll('.h-5').length).toBe(2)
-  
-  // 检查摘要骨架（3 行）
-  expect(wrapper.findAll('.h-3').length).toBe(3)
-})
-```
+测试骨架屏是否正确渲染。
+
+检查项：
+- 封面图片骨架是否存在
+- 标签骨架数量（2 个）
+- 标题骨架数量（2 行）
+- 摘要骨架数量（3 行）
 
 ### 测试 2：动画测试
-```typescript
-test('should have shimmer animation', () => {
-  const wrapper = mount(NewsSkeleton)
-  
-  // 检查闪烁元素是否存在
-  const shimmerElements = wrapper.findAll('.shimmer')
-  expect(shimmerElements.length).toBeGreaterThan(0)
-  
-  // 检查动画属性（通过 computed style）
-  const shimmerStyle = window.getComputedStyle(shimmerElements[0].element)
-  expect(shimmerStyle.animation).toContain('shimmer')
-})
-```
+测试闪烁动画是否正确应用。
+
+检查项：
+- 闪烁元素是否存在
+- 动画属性是否正确设置
 
 ### 测试 3：可访问性测试
-```typescript
-test('should have accessibility attributes', () => {
-  const wrapper = mount(NewsSkeleton, {
-    attrs: {
-      'aria-busy': 'true',
-      'aria-label': '正在加载新闻内容...',
-      role: 'status'
-    }
-  })
-  
-  expect(wrapper.attributes('aria-busy')).toBe('true')
-  expect(wrapper.attributes('aria-label')).toBe('正在加载新闻内容...')
-  expect(wrapper.attributes('role')).toBe('status')
-})
-```
+测试可访问性属性是否正确设置。
+
+检查项：
+- aria-busy 属性
+- aria-label 属性
+- role 属性
 
 ## 总结
 

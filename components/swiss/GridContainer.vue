@@ -32,48 +32,12 @@
 5. 内边距：启用/禁用内边距
 
 使用示例：
-```vue
-<!-- 基础用法：默认配置 -->
-<GridContainer>
-  <div class="col-span-12">内容</div>
-</GridContainer>
+- 基础用法：使用默认配置的 GridContainer
+- 小尺寸容器：使用 size="sm" 指定小屏幕尺寸
+- 全宽容器：使用 size="full" 并禁用内边距
+- 网格布局：启用网格系统和无间距创建网格线效果
+- 左对齐：使用 centered="false" 禁用居中对齐
 
-<!-- 小尺寸容器 -->
-<GridContainer size="sm">
-  <div class="col-span-12">内容</div>
-</GridContainer>
-
-<!-- 全宽容器 -->
-<GridContainer size="full" :padding="false">
-  <div class="col-span-12">内容</div>
-</GridContainer>
-
-<!-- 网格布局 + 无间距（创建网格线） -->
-<GridContainer :grid="true" :gap="none" class="border-t border-l border-gray-100">
-  <div class="col-span-12 border-r border-b border-gray-100">内容 1</div>
-  <div class="col-span-12 border-b border-gray-100">内容 2</div>
-</GridContainer>
-
-<!-- 左对齐 -->
-<GridContainer :centered="false">
-  <div class="col-span-12">内容</div>
-</GridContainer>
-``` 瑞士设计网格系统： - col-span-12：占满整行（移动端） - col-span-6：占半行（2 列布局） -
-col-span-4：占 1/3 行（3 列布局） - col-span-3：占 1/4 行（4 列布局） - col-span-2：占 1/6 行（6
-列布局） - col-span-1：占 1/12 行（12 列布局） GridContainer vs GridColumn： -
-GridContainer：容器组件，控制整体布局 - GridColumn：列组件，控制单个单元格 -
-配合使用实现瑞士设计网格系统 Props 属性： 1. size：容器尺寸（可选） - sm：小屏幕（max-w-3xl，42rem）
-- md：中屏幕（max-w-5xl，70rem） - lg：大屏幕（max-w-7xl，98rem） - xl：超大屏幕（max-w-1400px） -
-full：全宽（max-w-full） 2. grid：是否启用网格（可选，默认 false） - true：启用 Tailwind
-网格系统（grid grid-cols-12） - false：不启用（普通 div） 3. cols：网格列数（可选，默认 12） -
-Tailwind 的 grid-cols-* 类名 - 例如：1、2、3、4、6、12 4. gap：间距（可选，默认 md） - none：无间距
-- sm：小间距（gap-4） - md：中等间距（gap-6） - lg：大间距（gap-8） - xl：超大间距（gap-12） 5.
-centered：是否居中（可选，默认 true） - true：水平居中（mx-auto） - false：左对齐（默认行为） 6.
-padding：是否有内边距（可选，默认 true） - true：添加内边距（px-6 sm:px-8 lg:px-12） -
-false：无内边距 设计特点： - 瑞士国际主义风格：简洁、网格系统 - 响应式设计：支持所有设备尺寸 -
-灵活的间距控制：支持 5 种间距 - 居中对齐：默认居中，可配置 - 内边距控制：可启用/禁用 技术栈： -
-框架：Nuxt 3（Vue 3） - 样式：Tailwind CSS - 响应式：Tailwind 断点（sm、md、lg、xl） 性能优化： -
-computed 缓存：类名计算结果缓存 - 避免不必要的类名更新 - 最小化重渲染
 ================================================================================ -->
 
 <template>
@@ -94,10 +58,108 @@ computed 缓存：类名计算结果缓存 - 避免不必要的类名更新 - �
   </div>
 </template>
 <script setup lang="ts">
+/**
+ * GridContainer - 瑞士设计网格容器组件
+ *
+ * @description 灵活的响应式布局容器，支持多种尺寸、网格系统、间距和对齐方式
+ *
+ * 使用示例：
+ *
+ * ```vue
+ * <!-- 基础用法：默认配置 -->
+ * <GridContainer>
+ *   <div class="col-span-12">内容</div>
+ * </GridContainer>
+ *
+ * <!-- 小尺寸容器 -->
+ * <GridContainer size="sm">
+ *   <div class="col-span-12">内容</div>
+ * </GridContainer>
+ *
+ * <!-- 全宽容器 -->
+ * <GridContainer size="full" :padding="false">
+ *   <div class="col-span-12">内容</div>
+ * </GridContainer>
+ *
+ * <!-- 网格布局 + 无间距（创建网格线） -->
+ * <GridContainer :grid="true" gap="none" class="border-t border-l border-gray-100">
+ *   <div class="col-span-12 border-r border-b border-gray-100">内容 1</div>
+ *   <div class="col-span-12 border-b border-gray-100">内容 2</div>
+ * </GridContainer>
+ *
+ * <!-- 左对齐 -->
+ * <GridContainer :centered="false">
+ *   <div class="col-span-12">内容</div>
+ * </GridContainer>
+ * ```
+ *
+ * 瑞士设计网格系统：
+ * - col-span-12：占满整行（移动端）
+ * - col-span-6：占半行（2 列布局）
+ * - col-span-4：占 1/3 行（3 列布局）
+ * - col-span-3：占 1/4 行（4 列布局）
+ * - col-span-2：占 1/6 行（6 列布局）
+ * - col-span-1：占 1/12 行（12 列布局）
+ *
+ * GridContainer vs GridColumn：
+ * - GridContainer：容器组件，控制整体布局
+ * - GridColumn：列组件，控制单个单元格
+ * - 配合使用实现瑞士设计网格系统
+ *
+ * Props 属性：
+ * 1. size：容器尺寸（可选，默认 'lg'）
+ *    - sm：小屏幕（max-w-3xl，42rem）
+ *    - md：中屏幕（max-w-5xl，70rem）
+ *    - lg：大屏幕（max-w-7xl，98rem）
+ *    - xl：超大屏幕（max-w-1400px）
+ *    - full：全宽（max-w-full）
+ *
+ * 2. grid：是否启用网格（可选，默认 false）
+ *    - true：启用 Tailwind 网格系统（grid grid-cols-12）
+ *    - false：不启用（普通 div）
+ *
+ * 3. cols：网格列数（可选，默认 12）
+ *    - Tailwind 的 grid-cols-* 类名
+ *    - 例如：1、2、3、4、6、12
+ *
+ * 4. gap：间距（可选，默认 'md'）
+ *    - none：无间距
+ *    - sm：小间距（gap-4）
+ *    - md：中等间距（gap-6）
+ *    - lg：大间距（gap-8）
+ *    - xl：超大间距（gap-12）
+ *
+ * 5. centered：是否居中（可选，默认 true）
+ *    - true：水平居中（mx-auto）
+ *    - false：左对齐（默认行为）
+ *
+ * 6. padding：是否有内边距（可选，默认 true）
+ *    - true：添加内边距（px-6 sm:px-8 lg:px-12）
+ *    - false：无内边距
+ *
+ * 设计特点：
+ * - 瑞士国际主义风格：简洁、网格系统
+ * - 响应式设计：支持所有设备尺寸
+ * - 灵活的间距控制：支持 5 种间距
+ * - 居中对齐：默认居中，可配置
+ * - 内边距控制：可启用/禁用
+ *
+ * 技术栈：
+ * - 框架：Nuxt 3（Vue 3）
+ * - 样式：Tailwind CSS
+ * - 响应式：Tailwind 断点（sm、md、lg、xl）
+ *
+ * 性能优化：
+ * - computed 缓存：类名计算结果缓存
+ * - 避免不必要的类名更新
+ * - 最小化重渲染
+ */
+
 // ====================================================================================
 // Props 属性定义
 // ====================================================================================
 // 定义 GridContainer 组件接收的属性
+
 /**
  * Props 接口：GridContainer 组件的属性定义
  *
