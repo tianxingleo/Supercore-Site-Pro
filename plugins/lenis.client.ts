@@ -16,6 +16,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     smoothWheel: true,
     wheelMultiplier: 1.1, // Slightly more responsive
     touchMultiplier: 1.5,
+    // 排除 AI 聊天窗口和其他需要原生滚动的元素
+    wrapper: document.documentElement,
+    content: document.body,
   })
 
   // 整合 ScrollTrigger 和 Lenis

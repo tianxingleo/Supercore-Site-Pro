@@ -25,6 +25,7 @@
 - 🔍 **SEO 友好** - 结构化数据、动态 Sitemap、完整 Meta 标签
 - ♿ **可访问性** - 完整 ARIA 标签、键盘导航支持
 - 🛠️ **完整 CMS 后台** - 产品/新闻/询盘管理、批量操作、全局搜索
+- 🤖 **AI 智能助手** - 基于阿里云通义千问的向量搜索客服系统
 
 ---
 
@@ -50,6 +51,13 @@
 - **Supabase** - PostgreSQL 数据库 + 认证 + 存储
 - **多语言 i18n** - 完整翻译支持
 - **Tiptap** - 富文本编辑器
+
+### AI 与向量搜索
+- **Vercel AI SDK** - AI 流式响应框架
+- **阿里云通义千问** - Qwen-Plus 大语言模型
+- **阿里云 DashScope** - 文本 Embedding (text-embedding-v3)
+- **OpenAI SDK** - 兼容层调用阿里云 API
+- **Supabase pgvector** - 向量相似度搜索 (match_products RPC)
 
 ---
 
@@ -105,6 +113,7 @@ Web-For-HK/
 │   │   ├── news/          # 新闻API
 │   │   ├── inquiries/     # 询盘API
 │   │   ├── admin/         # 后台API
+│   │   ├── ai-chat.ts     # AI聊天API (向量搜索+通义千问)
 │   │   └── stats/         # 统计API
 │   ├── middleware/        # 中间件
 │   └── utils/             # 服务端工具
@@ -173,6 +182,9 @@ npm install
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_anon_key
 SUPABASE_SECRET_KEY=your_supabase_service_role_key
+
+# AI 助手配置 (阿里云 DashScope)
+DASHSCOPE_API_KEY=your_dashscope_api_key
 ```
 
 ### 开发服务器
@@ -202,6 +214,7 @@ npm run preview
 ### 前台页面
 
 - **首页** (`/`) - 3D 场景 Hero 区块 + 产品分类展示
+- **AI 智能助手** - 右下角悬浮聊天窗口，支持产品咨询和智能问答
 - **产品** (`/products`) - 产品列表和详情页
 - **解决方案** (`/solutions`) - 解决方案展示
 - **新闻** (`/news`) - 新闻列表和详情页
@@ -358,6 +371,48 @@ H6: 14px / 0.875rem
 
 ---
 
+## AI 助手功能
+
+### 技术实现
+
+**前端组件** (`components/ui/AiChat.vue`)
+- 使用 Vercel AI SDK 的 `useChat` hook
+- 流式响应，实时打字效果
+- 右下角悬浮按钮，点击展开聊天窗口
+- 支持深色/浅色模式自适应
+
+**后端 API** (`server/api/ai-chat.ts`)
+- 向量 Embedding 生成（阿里云 text-embedding-v3，1024 维）
+- Supabase pgvector 相似度搜索
+- 通义千问 Qwen-Plus 大语言模型
+- 流式响应返回
+
+### 工作流程
+
+```
+用户提问
+    ↓
+生成问题向量 (text-embedding-v3)
+    ↓
+Supabase 向量搜索 (match_products RPC)
+    ↓
+构建上下文 (Top 5 相关产品)
+    ↓
+Qwen-Plus 生成回答 (流式输出)
+    ↓
+前端实时显示
+```
+
+### 特性
+
+- 🔍 **语义搜索** - 基于向量相似度，理解用户意图
+- 📊 **上下文感知** - 自动关联产品库信息
+- 🌐 **多语言支持** - 繁体中文/简体中文/英文
+- ⚡ **流式响应** - 实时打字效果，改善用户体验
+- 🎯 **精准匹配** - 相似度阈值 0.5，返回 Top 5 相关产品
+
+---
+
 ## CMS 后台功能
 
 ### 产品管理
@@ -399,7 +454,9 @@ H6: 14px / 0.875rem
 
 ### 核心表结构
 
-1. **products** - 产品表（多语言名称、JSONB 规格）
+1. **products** - 产品表（多语言名称、JSONB 规格、向量 Embedding）
+   - `embedding` 列：1024 维向量（阿里云 text-embedding-v3）
+   - `match_products` RPC 函数：向量相似度搜索
 2. **posts** - 资讯/博客表（多语言内容）
 3. **solutions** - 解决方案表
 4. **inquiries** - 客户询盘表

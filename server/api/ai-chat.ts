@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   // 2. 初始化客户端
   const supabaseAdmin = createClient(url, key)
-  
+
   // 初始化 OpenAI 客户端 (阿里云兼容)
   const openai = new OpenAI({
     apiKey: apiKey,
@@ -54,15 +54,15 @@ export default defineEventHandler(async (event) => {
       return `[产品]: ${name}\n[AI摘要]: ${item.content}\n---`
     }).join('\n') || '未找到相关产品'
 
-    const systemPrompt = `你是一个服务器硬件专家 (Supercore AI)，你的回答必须准确基于提供的[产品库数据]。
-    
-规则：
-1. 请用繁体中文(香港)回答用户。
-2. 如果用户询问具体配置，请引用产品的详细参数。
-3. 如果库里没有相关产品，请直接告知"目前数据库中没有关于此问题的详细资料，请联系客服查询。"
-4. 回答要专业、热情。
+    const systemPrompt = `你是一個專業的服務器硬件專家 (Supercore AI)。你的回答必須精確、簡潔，並始終基於提供的 [產品庫數據]。
 
-【产品库数据】:
+行為規則：
+1. 始終使用【繁體中文(香港)】回答用戶，無論用戶使用何種語言提問。
+2. 保持專業、冷靜且理性的語氣（瑞士工業設計風格）。
+3. 優先引用產品的型號名稱、技術細節和參數。
+4. 如果數據庫中沒有相關產品，請直接告知："目前數據庫中沒有關於此問題的詳細資料，請聯繫我們的技術團隊查詢。"
+
+【產品庫數據】:
 ${contextBlock}`
 
     // 7. 流式生成回答 (使用 OpenAIStream)

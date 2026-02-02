@@ -169,3 +169,12 @@ a:active {
 .is-visible .swiss-separator {
   @apply scale-x-100;
 }
+
+/* AI Chat Window - 使用原生滚动，不被 Lenis 拦截 */
+[data-lenis-prevent] {
+  scroll-behavior: auto !important;
+}
+
+[data-lenis-prevent] > * {
+  scroll-behavior: auto !important;
+}
