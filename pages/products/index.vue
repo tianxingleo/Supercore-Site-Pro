@@ -76,14 +76,10 @@ useHead({
 const nuxtApp = useNuxtApp()
 const { $gsap, $ScrollTrigger } = nuxtApp as any
 
-// 使用 onMounted 确保组件已挂载到 DOM
-onMounted(() => {
-  console.log('[Products] onMounted triggered')
-
+// 动画初始化函数
+const initAnimation = () => {
   // 使用 nextTick 等待 DOM 更新完成
   nextTick(() => {
-    console.log('[Products] After nextTick in onMounted')
-
     // 再等待一下，确保子组件也渲染完成
     setTimeout(() => {
       console.log('[Products] Checking GSAP and DOM...')
@@ -114,14 +110,22 @@ onMounted(() => {
         } else {
           console.warn('[Products] No cards found in DOM')
         }
-      } else {
-        console.warn('[Products] GSAP or ScrollTrigger not available', {
-          hasGsap: !!$gsap,
-          hasScrollTrigger: !!$ScrollTrigger,
-          isClient: process.client
-        })
       }
     }, 100)
   })
+}
+
+// 使用 onMounted 确保组件已挂载到 DOM
+onMounted(() => {
+  console.log('[Products] onMounted triggered')
+  initAnimation()
+})
+
+// 监听数据变化，确保数据加载后执行动画
+watch(products, (newVal) => {
+  if (newVal && newVal.length > 0) {
+    console.log('[Products] Data loaded, re-initializing animation...')
+    initAnimation()
+  }
 })
 </script>
