@@ -141,7 +141,7 @@
                 TECHNICAL_SPEC // 01
               </div>
             </SwissTextReveal>
-            
+
             <SwissTextReveal tag="div" :delay="200">
               <TypographyHeader :level="1" size="h1" class="!mb-4 !tracking-tighter">
                 {{ product.name[locale] || product.name['zh-HK'] || product.name.en }}
@@ -166,7 +166,7 @@
                   <span class="text-2xl md:text-3xl font-black tracking-tighter text-swiss-text uppercase leading-none">{{ product.slug }}</span>
                 </div>
               </SwissTextReveal>
-              
+
               <SwissTextReveal tag="div" :delay="500">
                 <div class="flex flex-col gap-1">
                   <span class="text-[10px] font-bold tracking-[0.4em] uppercase text-swiss-text/20 font-mono">Category_Id</span>
@@ -305,7 +305,7 @@ onMounted(() => {
   }
 
   window.addEventListener('keydown', handleKeydown)
-  
+
   // 初始挂载后检查第一张图是否已加载
   checkImageComplete()
 

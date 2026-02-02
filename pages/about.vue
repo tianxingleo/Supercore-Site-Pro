@@ -9,7 +9,7 @@
               {{ $t('about.pageTitle') }}
             </TypographyHeader>
           </SwissTextReveal>
-          
+
           <SwissTextReveal tag="div" :delay="200" :duration="1">
             <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-3xl mx-auto opacity-80">
               {{ $t('about.pageSubtitle') }}
@@ -29,13 +29,13 @@
               Company Overview
             </div>
           </SwissTextReveal>
-          
+
           <SwissTextReveal tag="div" :delay="100">
             <TypographyHeader :level="2" size="h1" class="mb-12">
               {{ $t('about.companyOverview.title') }}
             </TypographyHeader>
           </SwissTextReveal>
-          
+
           <div class="space-y-8 text-swiss-text-muted text-lg leading-relaxed font-medium">
             <SwissTextReveal tag="p" :delay="200">{{ $t('about.companyOverview.description1') }}</SwissTextReveal>
             <SwissTextReveal tag="p" :delay="300">{{ $t('about.companyOverview.description2') }}</SwissTextReveal>
