@@ -15,11 +15,11 @@ const baseUrl = 'https://www.supercore.hk'
 const organizationData = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: '超核技術有限公司',
+  name: 'Supercore Technology Co., Ltd.',
   url: baseUrl,
   logo: `${baseUrl}/icon.png`,
   description:
-    '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
+    'Leading global AI computing infrastructure provider, focusing on AI server & GPU cluster R&D, production and full-stack solutions.',
   address: {
     '@type': 'PostalAddress',
     addressCountry: 'HK',
@@ -36,9 +36,9 @@ const organizationData = {
 const websiteData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: '超核技術有限公司',
+  name: 'Supercore Technology Co., Ltd.',
   url: baseUrl,
-  description: '全球領先的AI算力基礎設施服務商',
+  description: 'Global leading AI computing infrastructure service provider',
   potentialAction: {
     '@type': 'SearchAction',
     target: `${baseUrl}/search?q={search_term_string}`,

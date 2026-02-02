@@ -68,8 +68,10 @@ const { data: products, pending } = useLazyFetch<Product[]>('/api/products/publi
 
 console.log('[Products] Page mounted, data:', products.value, 'pending:', pending.value)
 
+const { t } = useI18n()
+
 useHead({
-  title: '产品 - 超核技術有限公司',
+  title: computed(() => `${t('products.title')} - Supercore`),
 })
 
 // 添加动画逻辑

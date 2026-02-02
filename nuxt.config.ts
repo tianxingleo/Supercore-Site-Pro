@@ -121,13 +121,7 @@ export default defineNuxtConfig({
       { code: 'zh-CN', iso: 'zh-CN', name: '简体中文', file: 'zh-CN.json' },
       { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' },
     ],
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_redirected',
-      fallbackLocale: 'en',
-      redirectOn: 'root',
-      alwaysRedirect: false,
-    },
+    detectBrowserLanguage: false,
     langDir: 'locales',
     lazy: false,
     bundle: {
@@ -144,7 +138,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: '超核技術有限公司',
+      title: 'Supercore - Computing the Future',
       meta: [
         {
           name: 'description',

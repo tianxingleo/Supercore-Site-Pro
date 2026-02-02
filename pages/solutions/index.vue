@@ -81,6 +81,6 @@ const filteredSolutions = computed(() => {
 })
 
 useHead({
-  title: '解决方案 - 超核技術有限公司',
+  title: computed(() => `${t('nav.solutions')} - Supercore`),
 })
 </script>

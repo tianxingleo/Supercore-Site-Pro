@@ -80,10 +80,9 @@
       <GridContainer>
         <div class="col-span-12 mb-16">
           <SwissTextReveal tag="div" :delay="100">
-            <div
-              class="inline-block mb-6 text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text border-b border-swiss-text pb-1">
+            <TypographyHeader :level="2" size="h2" class="mb-6">
               {{ $t('products.title') }}
-            </div>
+            </TypographyHeader>
           </SwissTextReveal>
         </div>
 
@@ -97,15 +96,15 @@
             <SwissTextReveal tag="div" :delay="index * 150" :duration="1">
               <div
                 class="border-t border-gray-100 pt-8 transition-all duration-500 group-hover:border-swiss-text h-full hover-scale-subtle cursor-pointer">
-                <div class="text-[8px] font-mono text-swiss-text/30 mb-4 uppercase">CAT_0{{ index + 1 }}</div>
-                <TypographyHeader :level="3" size="h5" class="!mb-2 !tracking-tight">
+                <div class="text-[10px] font-mono text-swiss-text/30 mb-4 uppercase">CAT_0{{ index + 1 }}</div>
+                <TypographyHeader :level="3" size="h4" class="!mb-2 !tracking-tight">
                   {{ $t(`products.categories.${cat}.title`) }}
                 </TypographyHeader>
-                <div class="text-[9px] text-swiss-text/40 font-bold uppercase tracking-widest mb-6">
+                <div class="text-xs text-swiss-text/40 font-bold uppercase tracking-widest mb-6">
                   {{ $t(`products.categories.${cat}.subtitle`) }}
                 </div>
                 <p v-if="cat !== 'serverProducts'"
-                  class="text-[11px] text-swiss-text-muted leading-relaxed line-clamp-4 group-hover:text-swiss-text transition-colors duration-500">
+                  class="text-sm text-swiss-text-muted leading-relaxed line-clamp-4 group-hover:text-swiss-text transition-colors duration-500">
                   {{ $t(`products.categories.${cat}.description`) }}
                 </p>
               </div>
@@ -388,7 +387,8 @@ const breadcrumbStructuredData = useBreadcrumbStructuredData([
 ])
 
 useHead({
-  title: '首页 - 超核技術有限公司',
+  title: computed(() => `${t('nav.home')} - Supercore`),
+  // 移除 snap-y snap-mandatory scroll-pt-24 md:scroll-pt-32 以解决滚动卡顿问题
   link: [
     {
       rel: 'canonical',

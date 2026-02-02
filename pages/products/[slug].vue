@@ -363,7 +363,7 @@ watchEffect(() => {
     ])
 
     useHead({
-      title: `${product.value.name[langKey as keyof typeof product.value.name] || product.value.name['zh-HK']} - 超核技術有限公司`,
+      title: `${product.value.name[langKey as keyof typeof product.value.name] || product.value.name['zh-HK']} - Supercore`,
       link: [
         {
           rel: 'canonical',

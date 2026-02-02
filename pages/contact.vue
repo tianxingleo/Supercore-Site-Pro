@@ -113,7 +113,9 @@ const handleFormSubmit = (data: ContactFormData) => {
   // This event is kept for potential future use
 }
 
+const { t } = useI18n()
+
 useHead({
-  title: '聯絡我們 - 超核技術有限公司',
+  title: computed(() => `${t('nav.contact')} - Supercore`),
 })
 </script>

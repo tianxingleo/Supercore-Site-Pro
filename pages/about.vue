@@ -177,8 +177,10 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 useHead({
-  title: '關於超核 - 超核技術有限公司',
+  title: computed(() => `${t('nav.about')} - Supercore`),
 })
 
 const localePath = useLocalePath()

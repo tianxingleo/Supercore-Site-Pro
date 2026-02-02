@@ -193,7 +193,7 @@ watchEffect(() => {
     ])
 
     useHead({
-      title: (post.value?.title[lang.value] || 'News') + ' - 超核技術有限公司',
+      title: (post.value?.title[lang.value] || 'News') + ' - Supercore',
       link: [
         {
           rel: 'canonical',
