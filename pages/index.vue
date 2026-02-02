@@ -330,6 +330,16 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
 
+// Prevent component destruction on locale change to ensure animation state is preserved
+definePageMeta({
+  key: (route) => {
+    // Strip the locale suffix (e.g., "index___en" -> "index")
+    // This makes the key stable across languages, forcing Vue to reuse the component
+    const name = route.name?.toString() || ''
+    return name.split('___')[0]
+  }
+})
+
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const route = useRoute()
@@ -344,7 +354,7 @@ const { data: latestPosts, pending: pendingNews } = useLazyFetch<Post[]>('/api/n
 })
 
 // 監聽新聞數據加載并播放進場動畫
-watch([latestPosts, pendingNews], ([newPosts, isPending]) => {
+watch([latestPosts, pendingNews, locale], ([newPosts, isPending, newLocale]) => {
   // 数据加载完成且有文章数据时触发动画
   if (!isPending && newPosts && newPosts.length > 0 && process.client) {
     nextTick(() => {
@@ -367,8 +377,30 @@ watch([latestPosts, pendingNews], ([newPosts, isPending]) => {
           once: true
         })
         // 重新刷新 ScrollTrigger 以確保其他動畫位置正確
-        $ScrollTrigger.refresh()
+        setTimeout(() => $ScrollTrigger.refresh(), 100)
       }
+    })
+  }
+}, { immediate: true })
+
+// 监听语言切换，刷新滚动触发器
+watch(locale, () => {
+  if (process.client && $ScrollTrigger) {
+    console.log('[Home] Locale changed, deep refreshing animations...')
+    
+    // 不再使用 :key 强制重绘组件，而是依赖 Vue 的响应式更新内容
+    // 仅刷新 ScrollTrigger 以纠正布局偏移
+    nextTick(() => {
+      // 等待 DOM 更新后的下两个 tick 或一小段时间
+      setTimeout(() => {
+        // 全局强制刷新 ScrollTrigger 计算位置
+        $ScrollTrigger.refresh()
+        
+        // 再次刷新，确保位置计算准确
+        setTimeout(() => $ScrollTrigger.refresh(), 100)
+        
+        console.log('[Home] Deep refresh completed')
+      }, 350)
     })
   }
 })
@@ -436,16 +468,36 @@ onMounted(() => {
 })
 
 const initGsapAnimations = () => {
-  if (!$gsap || !$ScrollTrigger) return
+  console.log('[Home] initGsapAnimations started')
+  if (!$gsap || !$ScrollTrigger) {
+    console.warn('[Home] GSAP/ScrollTrigger missing')
+    return
+  }
+
+  // 清除旧的相关的 ScrollTrigger，防止重复
+  const kills = []
+  $ScrollTrigger.getAll().forEach((trigger: any) => {
+    if (trigger.vars && (trigger.vars.className === 'feature-trigger' || trigger.vars.className === 'reveal-trigger')) {
+      kills.push(trigger)
+      trigger.kill(true)
+    }
+  })
+  console.log(`[Home] Killed ${kills.length} existing triggers`)
 
   // 1. Feature Items Staggered Reveal
   const featureItems = document.querySelectorAll('.feature-item')
+  console.log(`[Home] Found ${featureItems.length} feature items`)
+  
   if (featureItems.length) {
     featureItems.forEach((item, index) => {
       const tl = $gsap.timeline({
          scrollTrigger: {
           trigger: item,
           start: 'top 85%',
+          className: 'feature-trigger',
+          toggleActions: 'play none none none',
+          onEnter: () => console.log(`[Home] Feature Item ${index} Enter`),
+          onRefresh: () => console.log(`[Home] Feature Item ${index} Refresh`),
         }
       })
 
@@ -453,29 +505,48 @@ const initGsapAnimations = () => {
       tl.to(item.querySelectorAll('.swiss-separator'), {
         duration: 0.8,
         scaleX: 1,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        overwrite: 'auto'
       })
 
-      // Number fades in
-      $gsap.from(item.querySelector('.swiss-feature-number'), {
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 90%',
+      // Number fades in - 使用 fromTo 确保终态为可见
+      $gsap.fromTo(item.querySelector('.swiss-feature-number'), 
+        { 
+          opacity: 0, 
+          x: -20 
         },
-        opacity: 0,
-        x: -20,
-        duration: 1,
-        ease: 'power2.out'
-      })
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: 'power2.out',
+          overwrite: 'auto',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 90%',
+            className: 'feature-trigger',
+            toggleActions: 'play none none none'
+          }
+        }
+      )
     })
   }
 
   // 3. General Reveal Sections
+  const revealSections = document.querySelectorAll('.reveal-section')
+  console.log(`[Home] Found ${revealSections.length} reveal sections`)
+
   $ScrollTrigger.batch('.reveal-section', {
     onEnter: (batch: any) => {
-      $gsap.from(batch, { opacity: 0, y: 30, duration: 1, ease: 'power2.out' })
+      console.log(`[Home] Reveal Section Batch Enter (${batch.length} items)`)
+      // 同样改为 fromTo 增强鲁棒性
+      $gsap.fromTo(batch, 
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, ease: 'power2.out', overwrite: 'auto' }
+      )
     },
-     start: 'top 85%'
+    start: 'top 85%',
+    className: 'reveal-trigger'
   })
 }
 

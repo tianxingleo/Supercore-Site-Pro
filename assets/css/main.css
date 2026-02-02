@@ -138,14 +138,10 @@ a:active {
   @apply overflow-hidden relative;
 }
 
-.swiss-text-reveal__inner {
-  opacity: 0;
-  transform: translateY(120%) rotateX(-10deg) translateZ(0);
-  will-change: transform, opacity;
-  /* 确保文字不会因为旋转而被裁剪太严重 */
-  transform-origin: top center;
-  backface-visibility: hidden;
-}
+/* 
+   Moved specific styles to SwissTextReveal.vue component to avoid global conflicts 
+   and Ensure styles are scoped/managed by the component lifecycle
+*/
 
 .reveal-text-mask span {
   @apply block transform translate-y-full transition-transform duration-700 ease-out;
