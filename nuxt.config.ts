@@ -8,14 +8,15 @@ export default defineNuxtConfig({
 
   // Runtime Config
   runtimeConfig: {
-    public: {
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabaseKey: process.env.SUPABASE_KEY,
-    },
-    // 服务端私有配置（使用 service_role key）
+    // 服务端私有配置
+    dashscopeApiKey: process.env.DASHSCOPE_API_KEY,
     supabaseService: {
       url: process.env.SUPABASE_URL,
       key: process.env.SUPABASE_SECRET_KEY,
+    },
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
     },
   },
 
@@ -33,6 +34,11 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: false, // Disabled due to vue-tsc issues in dev mode
+  },
+
+  sourcemap: {
+    server: false,
+    client: false
   },
 
   // Modules
@@ -102,6 +108,7 @@ export default defineNuxtConfig({
         '/api/system', // 系统状态检查
         '/api/news',
         '/api/solutions',
+        '/api/ai-chat', // AI Chat API (Renamed)
       ],
     },
   },

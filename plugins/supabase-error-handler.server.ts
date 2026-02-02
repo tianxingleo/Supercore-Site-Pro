@@ -8,6 +8,7 @@ export default defineNuxtPlugin({
     async setup(nuxtApp) {
         // 监听Supabase相关错误
         nuxtApp.hook('app:error', (error) => {
+            console.error('[Supabase Plugin] Raw Error Caught:', error) // 添加这行来排查原始错误
             const errorMessage = error?.message || String(error)
 
             // 如果是Supabase连接错误，记录但不阻断

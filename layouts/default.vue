@@ -6,7 +6,8 @@
     </div>
 
     <!-- 开发工具 -->
-    <PerformancePanel v-if="isDev" :metrics="performanceMetrics" :is-dev="isDev" />
+    <!-- <PerformancePanel v-if="isDev" :metrics="performanceMetrics" :is-dev="isDev" /> -->
+    <AiChat />
   </div>
 </template>
 

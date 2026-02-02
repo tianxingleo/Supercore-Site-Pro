@@ -29,8 +29,8 @@ export default defineNuxtPlugin((nuxtApp) => {
           name: error?.name,
           context: {
             ...context,
-            userAgent: navigator.userAgent,
-            url: window.location.href,
+            userAgent: process.client ? navigator.userAgent : 'Server',
+            url: process.client ? window.location.href : 'Server',
             timestamp: new Date().toISOString(),
           },
         },
