@@ -53,7 +53,7 @@ watch(isOpen, async (val) => {
       <div class="p-4 bg-white dark:bg-zinc-950 text-black dark:text-white flex justify-between items-center select-none border-b border-black dark:border-white relative overflow-hidden text-nowrap">
         <!-- Background Scanning Line (Header) -->
         <div v-if="isLoading" class="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 dark:via-white/5 to-transparent h-full w-full -translate-y-full animate-[scan_2s_linear_infinite]"></div>
-        
+
         <div class="flex items-center gap-4">
           <div class="flex flex-col">
             <span class="text-[9px] leading-none opacity-40 font-mono tracking-widest uppercase mb-1">Terminal v2.1.0</span>
@@ -63,14 +63,14 @@ watch(isOpen, async (val) => {
             </div>
           </div>
         </div>
-        
+
         <div class="flex items-center gap-2">
           <div class="hidden sm:flex flex-col items-end mr-4 font-mono text-[9px] opacity-40 uppercase">
             <span>Lat: 22.2988° N</span>
             <span>Lng: 114.1741° E</span>
           </div>
-          <button 
-            @click="isOpen = false" 
+          <button
+            @click="isOpen = false"
             class="group hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all p-2 border border-black dark:border-white"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" class="group-hover:rotate-90 transition-transform duration-300"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -102,11 +102,11 @@ watch(isOpen, async (val) => {
         </div>
 
         <div v-for="m in messages" :key="m.id" class="flex flex-col animate-in fade-in duration-300">
-          <div 
+          <div
             :class="[
-              'p-5 text-sm max-w-[95%] relative', 
-              m.role === 'user' 
-                ? 'bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white ml-auto border border-black/10 dark:border-white/10' 
+              'p-5 text-sm max-w-[95%] relative',
+              m.role === 'user'
+                ? 'bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white ml-auto border border-black/10 dark:border-white/10'
                 : 'bg-white dark:bg-zinc-900 text-black dark:text-white border border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,0.05)] mr-auto'
             ]"
           >
@@ -132,7 +132,7 @@ watch(isOpen, async (val) => {
             />
           </div>
         </div>
-        
+
         <!-- Loading Indicator -->
         <div v-if="isLoading" class="flex flex-col gap-2 pt-4">
           <div class="flex items-center gap-3 text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">
@@ -160,9 +160,9 @@ watch(isOpen, async (val) => {
               placeholder="Query system..."
               class="flex-1 bg-transparent text-sm outline-none transition-all placeholder:text-zinc-300 dark:placeholder:text-zinc-700 font-medium tracking-tight"
             />
-            <button 
-              type="submit" 
-              :disabled="isLoading || !input.trim()" 
+            <button
+              type="submit"
+              :disabled="isLoading || !input.trim()"
               class="group px-4 py-2 bg-transparent text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white transition-all disabled:opacity-5 disabled:grayscale flex items-center justify-center p-0"
             >
               <span class="text-[10px] font-bold uppercase mr-2 group-disabled:hidden">Send</span>
@@ -174,19 +174,19 @@ watch(isOpen, async (val) => {
     </div>
 
     <!-- Toggle Button -->
-    <button 
-      @click="isOpen = !isOpen" 
+    <button
+      @click="isOpen = !isOpen"
       class="group relative w-16 h-16 bg-white dark:bg-zinc-950 text-black dark:text-white border-2 border-black dark:border-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] hover:shadow-none hover:translate-y-[2px] transition-all duration-300 flex items-center justify-center z-50 overflow-hidden"
     >
       <div class="relative w-full h-full flex flex-col items-center justify-center">
-        <span 
+        <span
           class="transition-all duration-300 font-black tracking-tighter leading-none"
           :class="isOpen ? 'opacity-0 scale-50 rotate-90' : 'opacity-100 scale-100 rotate-0'"
         >
           <span class="text-xl block italic">AI</span>
           <span class="text-[8px] uppercase tracking-[0.2em] font-mono opacity-40">Active</span>
         </span>
-        <span 
+        <span
           class="absolute transition-all duration-300 transform"
           :class="isOpen ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 -rotate-90'"
         >

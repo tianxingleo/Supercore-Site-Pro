@@ -373,35 +373,96 @@ H6: 14px / 0.875rem
 
 ## AI 助手功能
 
-### 技术实现
+### 系统架构
 
-**前端组件** (`components/ui/AiChat.vue`)
-- 使用 Vercel AI SDK 的 `useChat` hook
-- 流式响应，实时打字效果
-- 右下角悬浮按钮，点击展开聊天窗口
-- 支持深色/浅色模式自适应
-
-**后端 API** (`server/api/ai-chat.ts`)
-- 向量 Embedding 生成（阿里云 text-embedding-v3，1024 维）
-- Supabase pgvector 相似度搜索
-- 通义千问 Qwen-Plus 大语言模型
-- 流式响应返回
-
-### 工作流程
+**RAG (检索增强生成) 流程**：
 
 ```
+┌─────────────────┐
+│  数据写入流程   │
+└─────────────────┘
+管理员更新产品
+    ↓
+Supabase Webhook
+    ↓
+Edge Function (数据清洗)
+    ↓
+生成向量 (1024维)
+    ↓
+写入 product_embeddings 表
+
+┌─────────────────┐
+│  用户查询流程   │
+└─────────────────┘
 用户提问
     ↓
-生成问题向量 (text-embedding-v3)
+生成问题向量
     ↓
-Supabase 向量搜索 (match_products RPC)
+pgvector 相似度搜索
     ↓
-构建上下文 (Top 5 相关产品)
+匹配 Top 5 产品
     ↓
-Qwen-Plus 生成回答 (流式输出)
+组装 Prompt
+    ↓
+Qwen-Plus 流式生成
     ↓
 前端实时显示
 ```
+
+### 技术实现
+
+**前端组件** (`components/ui/AiChat.vue`)
+- Vercel AI SDK 的 `useChat` hook
+- Swiss Design 风格 UI
+- Markdown 渲染 (marked)
+- 自动滚动、加载动画
+
+**后端 API** (`server/api/ai-chat.ts`)
+- 阿里云 text-embedding-v3 (1024 维向量)
+- Supabase pgvector 相似度搜索
+- 通义千问 Qwen-Plus
+- 流式响应 (DataStreamResponse)
+
+**自动化向量化** (Supabase Edge Function)
+- 监听 `products` 表的 INSERT/UPDATE
+- 自动清洗 JSON 数据为自然语言
+- 生成并更新向量到 `product_embeddings` 表
+- 全自动化，无需手动同步
+
+### 数据库设计
+
+**核心表结构**：
+- `products` - 原产品表（多语言 JSONB）
+- `product_embeddings` - 向量表（关联 products）
+  - `content` - 清洗后的自然语言文本
+  - `embedding` - 1024 维向量 (vector(1024))
+- `match_products` - RPC 搜索函数
+
+**关键 SQL**：
+```sql
+-- 向量相似度搜索
+select * from match_products(
+  query_embedding => '[...]',  -- 用户问题向量
+  match_threshold => 0.5,      -- 相似度阈值
+  match_count => 5             -- 返回数量
+)
+```
+
+### 常见问题与解决
+
+**问题 1：配置文件修改后页面白屏**
+- **原因**：Nuxt 缓存未更新
+- **解决**：删除 `.nuxt` 文件夹并重启
+
+**问题 2：API 请求被拦截 (302)**
+- **原因**：Supabase 路由保护
+- **解决**：在 `nuxt.config.ts` 中添加 `/api/ai-chat` 到白名单
+
+**问题 3：向量维度错误**
+- **原因**：阿里云模型是 1024 维，不是 1536
+- **解决**：数据库使用 `vector(1024)`
+
+详细技术文档：[AI_FEATURES.md](./docs/AI_FEATURES.md)
 
 ### 特性
 
@@ -410,6 +471,7 @@ Qwen-Plus 生成回答 (流式输出)
 - 🌐 **多语言支持** - 繁体中文/简体中文/英文
 - ⚡ **流式响应** - 实时打字效果，改善用户体验
 - 🎯 **精准匹配** - 相似度阈值 0.5，返回 Top 5 相关产品
+- 🤖 **自动化同步** - 产品更新自动生成向量，无需人工干预
 
 ---
 
@@ -566,6 +628,7 @@ git push origin feat/new-feature
 
 ## 文档
 
+- [AI 助手功能开发指南](./docs/AI_FEATURES.md) - RAG 系统架构、数据库设计、踩坑实录
 - [管理后台快速开始](./docs/QUICK_START_ADMIN.md)
 - [后台功能增强说明](./docs/ADMIN_ENHANCEMENTS.md)
 - [实现总结](./docs/IMPLEMENTATION_SUMMARY.md)
