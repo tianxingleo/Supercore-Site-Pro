@@ -387,7 +387,7 @@ watch([latestPosts, pendingNews, locale], ([newPosts, isPending, newLocale]) => 
 watch(locale, () => {
   if (process.client && $ScrollTrigger) {
     console.log('[Home] Locale changed, deep refreshing animations...')
-    
+
     // 不再使用 :key 强制重绘组件，而是依赖 Vue 的响应式更新内容
     // 仅刷新 ScrollTrigger 以纠正布局偏移
     nextTick(() => {
@@ -395,10 +395,10 @@ watch(locale, () => {
       setTimeout(() => {
         // 全局强制刷新 ScrollTrigger 计算位置
         $ScrollTrigger.refresh()
-        
+
         // 再次刷新，确保位置计算准确
         setTimeout(() => $ScrollTrigger.refresh(), 100)
-        
+
         console.log('[Home] Deep refresh completed')
       }, 350)
     })
@@ -487,7 +487,7 @@ const initGsapAnimations = () => {
   // 1. Feature Items Staggered Reveal
   const featureItems = document.querySelectorAll('.feature-item')
   console.log(`[Home] Found ${featureItems.length} feature items`)
-  
+
   if (featureItems.length) {
     featureItems.forEach((item, index) => {
       const tl = $gsap.timeline({
@@ -510,10 +510,10 @@ const initGsapAnimations = () => {
       })
 
       // Number fades in - 使用 fromTo 确保终态为可见
-      $gsap.fromTo(item.querySelector('.swiss-feature-number'), 
-        { 
-          opacity: 0, 
-          x: -20 
+      $gsap.fromTo(item.querySelector('.swiss-feature-number'),
+        {
+          opacity: 0,
+          x: -20
         },
         {
           opacity: 1,
@@ -540,7 +540,7 @@ const initGsapAnimations = () => {
     onEnter: (batch: any) => {
       console.log(`[Home] Reveal Section Batch Enter (${batch.length} items)`)
       // 同样改为 fromTo 增强鲁棒性
-      $gsap.fromTo(batch, 
+      $gsap.fromTo(batch,
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 1, ease: 'power2.out', overwrite: 'auto' }
       )

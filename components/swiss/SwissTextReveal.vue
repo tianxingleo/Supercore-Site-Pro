@@ -64,10 +64,10 @@ onMounted(() => {
   ctx = $gsap.context(() => {
     // 显式设置初始状态，确保 animation 从正确的起点开始
     // 即使 CSS 已经被移除，这里也能保证初始隐藏
-    $gsap.set(innerEl, { 
-      y: '120%', 
-      opacity: 0, 
-      rotateX: -10 
+    $gsap.set(innerEl, {
+      y: '120%',
+      opacity: 0,
+      rotateX: -10
     })
 
     const animationVars = {
@@ -129,7 +129,7 @@ onBeforeUnmount(() => {
   min-height: 1.25em;
 }
 
-/* 
+/*
   初始样式由 JS 控制 (gsap.set)，
   但也保留 CSS 基础属性以防 JS 异常时的布局崩坏
 */

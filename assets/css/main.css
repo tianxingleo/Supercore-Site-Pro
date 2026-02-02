@@ -138,8 +138,8 @@ a:active {
   @apply overflow-hidden relative;
 }
 
-/* 
-   Moved specific styles to SwissTextReveal.vue component to avoid global conflicts 
+/*
+   Moved specific styles to SwissTextReveal.vue component to avoid global conflicts
    and Ensure styles are scoped/managed by the component lifecycle
 */
 
