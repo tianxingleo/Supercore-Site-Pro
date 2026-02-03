@@ -161,7 +161,8 @@ export default defineNuxtConfig({
           name: 'keywords',
           content: 'AI服務器,GPU計算集群,算力基礎設施,HPC,人工智能,超級計算,IDC服務',
         },
-        { name: 'author', content: '超核技術有限公司' },
+        { name: 'author', content: 'tianxingleo' },
+        { name: 'copyright', content: 'tianxingleo' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: '超核技術有限公司' },
         { property: 'og:locale', content: 'zh_HK' },
@@ -198,6 +199,7 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+HK:wght@300;400;500;700&display=swap',
         },
+        { rel: 'author', type: 'text/plain', href: '/humans.txt' },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -205,6 +207,13 @@ export default defineNuxtConfig({
 
   // Route Rules (ISR for performance)
   routeRules: {
+    '/**': {
+      headers: {
+        'X-Powered-By': "tianxingleo's Engine",
+        'X-Maintainer': 'tianxingleo',
+        'X-Created-By': 'tianxingleo',
+      },
+    },
     '/': { isr: 3600 }, // 1 hour
     '/products': { isr: 86400 }, // 1 day
     '/products/**': { isr: 86400 },
