@@ -13,17 +13,92 @@ node_modules
 logs
 *.log
 
-# Misc
-.DS_Store
-.fleet
-.idea
+# ========================================
+# 临时和镜像数据目录（重要！）
+# ========================================
+scripts/boer_*/
+repomix-output.xml
 
+# ========================================
+# IDE/编辑器配置
+# ========================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.fleet
+
+# ========================================
+# 操作系统文件
+# ========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.directory
+
+# ========================================
+# 临时文件和缓存
+# ========================================
+*.tmp
+*.temp
+*.cache
+.temp/
+.cache/
+coverage/
+.nyc_output/
+.eslintcache
+.stylelintcache
+
+# ========================================
+# 测试覆盖率报告
+# ========================================
+coverage/
+lcov-report/
+lcov.info
+.nyc_output/
+
+# ========================================
+# 数据库文件
+# ========================================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# ========================================
 # Local env files
+# ========================================
 .env
 .env.*
 !.env.example
+.env.local
+.env.*.local
 
+# ========================================
 # TypeScript
+# ========================================
 *.tsbuildinfo
 *_CONFIG*.md
 *_GUIDE.md
@@ -31,6 +106,10 @@ logs
 *_REFERENCE.md
 *_VERIFICATION.md
 
-
+# ========================================
+# 其他开发工具
+# ========================================
+.pnpm-debug.log*
+.yarn-integrity
 nul
 **/nul
