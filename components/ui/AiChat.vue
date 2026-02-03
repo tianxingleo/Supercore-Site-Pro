@@ -1,25 +1,63 @@
 <script setup lang="ts">
 import { useChat } from 'ai/vue'
-import { ref, watch, nextTick, computed } from 'vue'
-import { marked } from 'marked'
+import { ref, watch, nextTick, computed, onMounted, onUnmounted } from 'vue'
+import { useSafeMarkdown } from '~/composables/useSafeMarkdown'
+
+const { renderMarkdown } = useSafeMarkdown()
 
 const isOpen = ref(false)
 const scrollContainer = ref<HTMLDivElement | null>(null)
+const copyFeedback = ref<{ messageId: string; show: boolean }>({ messageId: '', show: false })
+
+// 存储每条消息的反馈状态
+const messageFeedback = ref<Map<string, 'thumbs_up' | 'thumbs_down' | null>>(new Map())
 
 // useChat 会自动调用 /api/chat
 const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
   api: '/api/ai-chat'
 })
 
-// 配置 marked 选项
-marked.setOptions({
-  breaks: true, // 支持换行
-  gfm: true, // 支持 GitHub Flavored Markdown
-})
+// 复制到剪贴板
+const copyToClipboard = async (content: string, messageId: string) => {
+  try {
+    await navigator.clipboard.writeText(content)
+    copyFeedback.value = { messageId, show: true }
+    setTimeout(() => {
+      copyFeedback.value = { messageId: '', show: false }
+    }, 2000)
+  } catch (error) {
+    console.error('Failed to copy:', error)
+  }
+}
 
-// 渲染 Markdown 为 HTML
-const renderMarkdown = (content: string) => {
-  return marked(content)
+// 提交反馈
+const submitFeedback = async (messageId: string, rating: 'thumbs_up' | 'thumbs_down') => {
+  // 切换反馈状态（如果已经选择了相同的评分，则取消）
+  const currentRating = messageFeedback.value.get(messageId)
+  if (currentRating === rating) {
+    messageFeedback.value.set(messageId, null)
+  } else {
+    messageFeedback.value.set(messageId, rating)
+  }
+
+  // TODO: 发送到后端 API
+  // await $fetch('/api/chat/feedback', {
+  //   method: 'POST',
+  //   body: { messageId, rating }
+  // })
+}
+
+// 键盘快捷键
+const handleKeydown = (e: KeyboardEvent) => {
+  // Cmd/Ctrl + K: 打开/关闭聊天
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault()
+    isOpen.value = !isOpen.value
+  }
+  // Escape: 关闭聊天
+  else if (e.key === 'Escape' && isOpen.value) {
+    isOpen.value = false
+  }
 }
 
 // 监听消息变化，自动滚动到底部
@@ -39,6 +77,15 @@ watch(isOpen, async (val) => {
     }
   }
 })
+
+// 生命周期钩子
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>
@@ -47,6 +94,9 @@ watch(isOpen, async (val) => {
     <div
       v-if="isOpen"
       data-lenis-prevent
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="chat-title"
       class="mb-4 w-[420px] max-w-[90vw] h-[650px] max-h-[85vh] bg-white dark:bg-zinc-950 border border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,0.08)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.08)] flex flex-col overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] origin-bottom-right"
     >
       <!-- Header with Swiss Grid Info -->
@@ -59,7 +109,7 @@ watch(isOpen, async (val) => {
             <span class="text-[9px] leading-none opacity-40 font-mono tracking-widest uppercase mb-1">Terminal v2.1.0</span>
             <div class="flex items-center gap-2">
               <div class="w-2 h-2 bg-black dark:bg-white animate-pulse"></div>
-              <span class="font-bold tracking-tighter uppercase text-base italic">Supercore AI</span>
+              <span id="chat-title" class="font-bold tracking-tighter uppercase text-base italic">Supercore AI</span>
             </div>
           </div>
         </div>
@@ -71,6 +121,7 @@ watch(isOpen, async (val) => {
           </div>
           <button
             @click="isOpen = false"
+            aria-label="关闭聊天窗口"
             class="group hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all p-2 border border-black dark:border-white"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" class="group-hover:rotate-90 transition-transform duration-300"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -81,6 +132,10 @@ watch(isOpen, async (val) => {
       <!-- Messages Area with Grid Pattern -->
       <div
         ref="scrollContainer"
+        role="log"
+        aria-live="polite"
+        aria-atomic="false"
+        aria-label="聊天消息"
         class="flex-1 overflow-y-auto overflow-x-hidden p-6 space-y-10 relative scrollbar-thin scrollbar-thumb-black dark:scrollbar-thumb-white scrollbar-track-transparent bg-[#F5F5F7] dark:bg-black"
         style="overscroll-behavior: contain; background-image: radial-gradient(rgba(0,0,0,0.1) 1px, transparent 1px); background-size: 24px 24px;"
       >
@@ -98,13 +153,18 @@ watch(isOpen, async (val) => {
               <button @click="input = '查看服務器產品規格'; handleSubmit($event as any)" class="text-[9px] font-bold uppercase border border-black/20 dark:border-white/20 bg-white dark:bg-zinc-900 px-3 py-2 text-center hover:border-black dark:hover:border-white transition-all">Specs.</button>
               <button @click="input = '聯繫技術支持'; handleSubmit($event as any)" class="text-[9px] font-bold uppercase border border-black/20 dark:border-white/20 bg-white dark:bg-zinc-900 px-3 py-2 text-center hover:border-black dark:hover:border-white transition-all">Support.</button>
             </div>
+            <div class="pt-4 border-t border-black/10 dark:border-white/10">
+              <p class="text-[9px] font-mono opacity-30 uppercase tracking-widest">
+                Keyboard Shortcuts: Cmd/Ctrl+K to toggle
+              </p>
+            </div>
           </div>
         </div>
 
         <div v-for="m in messages" :key="m.id" class="flex flex-col animate-in fade-in duration-300">
           <div
             :class="[
-              'p-5 text-sm max-w-[95%] relative',
+              'p-5 text-sm max-w-[95%] relative group',
               m.role === 'user'
                 ? 'bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white ml-auto border border-black/10 dark:border-white/10'
                 : 'bg-white dark:bg-zinc-900 text-black dark:text-white border border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,0.05)] mr-auto'
@@ -130,6 +190,49 @@ watch(isOpen, async (val) => {
                      prose-th:bg-zinc-100 dark:prose-th:bg-zinc-800 prose-th:text-black dark:prose-th:text-white prose-th:p-2 prose-th:uppercase prose-th:text-[10px]"
               v-html="renderMarkdown(m.content)"
             />
+
+            <!-- 操作栏（仅 AI 消息显示） -->
+            <div
+              v-if="m.role === 'assistant'"
+              class="flex items-center gap-2 mt-3 pt-3 border-t border-black/10 dark:border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            >
+              <!-- 复制按钮 -->
+              <button
+                @click="copyToClipboard(m.content, m.id)"
+                :aria-label="copyFeedback.messageId === m.id && copyFeedback.show ? '已复制' : '复制消息'"
+                class="text-[9px] font-bold uppercase tracking-widest px-2 py-1 border border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white transition-all flex items-center gap-1"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                {{ copyFeedback.messageId === m.id && copyFeedback.show ? 'Copied' : 'Copy' }}
+              </button>
+
+              <!-- 反馈按钮 -->
+              <div class="flex gap-1 ml-auto">
+                <button
+                  @click="submitFeedback(m.id, 'thumbs_up')"
+                  :aria-label="messageFeedback.get(m.id) === 'thumbs_up' ? '已点赞' : '点赞'"
+                  :class="messageFeedback.get(m.id) === 'thumbs_up' ? 'bg-black text-white dark:bg-white dark:text-black' : 'border border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white'"
+                  class="text-[9px] font-bold uppercase px-2 py-1 transition-all flex items-center gap-1"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                  </svg>
+                </button>
+                <button
+                  @click="submitFeedback(m.id, 'thumbs_down')"
+                  :aria-label="messageFeedback.get(m.id) === 'thumbs_down' ? '已点踩' : '点踩'"
+                  :class="messageFeedback.get(m.id) === 'thumbs_down' ? 'bg-black text-white dark:bg-white dark:text-black' : 'border border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white'"
+                  class="text-[9px] font-bold uppercase px-2 py-1 transition-all flex items-center gap-1"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+                    <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -157,12 +260,16 @@ watch(isOpen, async (val) => {
             <input
               v-model="input"
               @change="handleInputChange"
+              :aria-busy="isLoading"
               placeholder="Query system..."
+              aria-label="输入您的消息"
+              maxlength="500"
               class="flex-1 bg-transparent text-sm outline-none transition-all placeholder:text-zinc-300 dark:placeholder:text-zinc-700 font-medium tracking-tight"
             />
             <button
               type="submit"
               :disabled="isLoading || !input.trim()"
+              :aria-label="isLoading ? '正在发送' : '发送消息'"
               class="group px-4 py-2 bg-transparent text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white transition-all disabled:opacity-5 disabled:grayscale flex items-center justify-center p-0"
             >
               <span class="text-[10px] font-bold uppercase mr-2 group-disabled:hidden">Send</span>
@@ -176,6 +283,9 @@ watch(isOpen, async (val) => {
     <!-- Toggle Button -->
     <button
       @click="isOpen = !isOpen"
+      :aria-label="isOpen ? '关闭 AI 助手' : '打开 AI 助手 (快捷键: Cmd/Ctrl+K)'"
+      :aria-expanded="isOpen"
+      aria-controls="chat-window"
       class="group relative w-16 h-16 bg-white dark:bg-zinc-950 text-black dark:text-white border-2 border-black dark:border-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] hover:shadow-none hover:translate-y-[2px] transition-all duration-300 flex items-center justify-center z-50 overflow-hidden"
     >
       <div class="relative w-full h-full flex flex-col items-center justify-center">
