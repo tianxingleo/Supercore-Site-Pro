@@ -49,16 +49,16 @@ export const useChatStore = defineStore('chat', {
     /**
      * 加载会话列表
      */
-    async loadSessions(status: 'active' | 'archived' | 'all' = 'active') {
+    async loadSessions(status: 'active' | 'archived' | 'all' = 'active', anonymousUserId?: string) {
       try {
         this.isLoading = true
         this.error = null
 
-        console.log('[ChatStore] 正在加载会话列表...')
+        console.log('[ChatStore] 正在加载会话列表...', { anonymousUserId })
 
         const response = await $fetch<any>('/api/chat/sessions', {
           method: 'GET',
-          params: { status }
+          params: { status, anonymousUserId }
         })
 
         console.log('[ChatStore] 会话列表响应:', response)

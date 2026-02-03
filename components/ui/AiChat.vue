@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import { useSafeMarkdown } from '~/composables/useSafeMarkdown'
+import { useAnonymousUser } from '~/composables/useAnonymousUser'
 import ChatSidebar from '~/components/chat/ChatSidebar.vue'
 
 const { renderMarkdown } = useSafeMarkdown()
+const { getAnonymousUserId } = useAnonymousUser()
 
 // 延迟初始化 store
 const chatStore = ref<any>(null)
 const currentSessionId = ref<number | null>(null)
+const anonymousUserId = ref<string>('')
+
+// 初始化匿名用户 ID
+onMounted(() => {
+  anonymousUserId.value = getAnonymousUserId()
+  console.log('[AiChat] 匿名用户 ID:', anonymousUserId.value)
+})
 
 const isOpen = ref(false)
 const sidebarOpen = ref(false)
@@ -64,6 +73,7 @@ const handleSubmit = async (event: Event) => {
       body: JSON.stringify({
         messages: [{ role: 'user', content: messageContent }],
         sessionId: currentSessionId.value,
+        anonymousUserId: anonymousUserId.value, // 添加匿名用户 ID
         language: 'zh-HK'
       })
     })
@@ -232,7 +242,8 @@ const handleSubmit = async (event: Event) => {
     console.log('[AiChat] 消息发送完成')
     // 重新加载会话列表
     if (chatStore.value) {
-      await chatStore.value.loadSessions()
+      // ⭐ 传入匿名用户 ID，确保只加载当前用户的会话
+      await chatStore.value.loadSessions('active', anonymousUserId.value)
 
       // 检查是否创建了新会话（从响应头获取）
       const newSessionId = response.headers.get('X-Session-ID')
@@ -359,7 +370,8 @@ watch(isOpen, async (val) => {
     }
     // 打开时加载会话列表（如果还没有加载）
     if (chatStore.value && chatStore.value.sessions.length === 0) {
-      chatStore.value.loadSessions()
+      // ⭐ 传入匿名用户 ID，确保只加载当前用户的会话
+      chatStore.value.loadSessions('active', anonymousUserId.value)
     }
   } else {
     // 关闭时同时关闭侧边栏

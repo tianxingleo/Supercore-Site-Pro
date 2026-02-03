@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
+import { useAnonymousUser } from '~/composables/useAnonymousUser'
 
 interface ChatSession {
   id: number
@@ -27,6 +28,8 @@ const emit = defineEmits<Emits>()
 // 延迟初始化 store
 const chatStore = ref<any>(null)
 const searchQuery = ref('')
+const { getAnonymousUserId } = useAnonymousUser()
+const anonymousUserId = ref<string>('')
 
 // 计算属性：过滤后的会话列表
 const filteredSessions = computed(() => {
@@ -104,10 +107,17 @@ onMounted(async () => {
 
   console.log('[ChatSidebar] store 已初始化:', chatStore.value)
 
-  // 加载会话列表
-  await chatStore.value.loadSessions()
+  // ⭐ 先获取匿名用户 ID，确保不为空
+  anonymousUserId.value = getAnonymousUserId()
+  console.log('[ChatSidebar] 匿名用户 ID:', anonymousUserId.value)
 
-  console.log('[ChatSidebar] filteredSessions 长度:', filteredSessions.value.length)
+  // 加载会话列表（确保传入匿名用户 ID）
+  if (anonymousUserId.value) {
+    await chatStore.value.loadSessions('active', anonymousUserId.value)
+    console.log('[ChatSidebar] filteredSessions 长度:', filteredSessions.value.length)
+  } else {
+    console.error('[ChatSidebar] 匿名用户 ID 为空，无法加载会话')
+  }
 })
 </script>
 

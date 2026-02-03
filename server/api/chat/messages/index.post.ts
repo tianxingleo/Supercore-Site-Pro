@@ -24,9 +24,9 @@ export default defineEventHandler(async (event) => {
 
   try {
     // 3. 解析用户输入
-    const { messages, sessionId, language = 'zh-HK' } = await readBody(event)
+    const { messages, sessionId, anonymousUserId, language = 'zh-HK' } = await readBody(event)
 
-    console.log('[API] 收到消息请求:', { sessionId, language, messageCount: messages?.length })
+    console.log('[API] 收到消息请求:', { sessionId, anonymousUserId, language, messageCount: messages?.length })
 
     if (!messages || !Array.isArray(messages)) {
       throw createError({ statusCode: 400, statusMessage: 'Invalid messages format' })
@@ -43,14 +43,15 @@ export default defineEventHandler(async (event) => {
       // 使用第一条消息的前 30 个字符作为标题
       const title = lastMessage.content.slice(0, 30) + (lastMessage.content.length > 30 ? '...' : '')
 
-      console.log('[API] 创建新会话，标题:', title)
+      console.log('[API] 创建新会话，标题:', title, '匿名用户 ID:', anonymousUserId)
 
       const { data: newSession, error: insertError } = await supabaseAdmin
         .from('chat_sessions')
         .insert({
           session_title: title,
           language,
-          status: 'active'
+          status: 'active',
+          anonymous_user_id: anonymousUserId || null // ⭐ 保存匿名用户 ID
         })
         .select()
         .single()

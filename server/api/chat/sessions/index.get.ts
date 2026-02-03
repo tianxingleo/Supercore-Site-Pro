@@ -22,13 +22,22 @@ export default defineEventHandler(async (event) => {
     const {
       status = 'active',
       limit = 50,
-      offset = 0
+      offset = 0,
+      anonymousUserId // 添加匿名用户 ID
     } = query
 
-    // 4. 查询会话列表
+    console.log('[API Sessions] 查询参数:', { status, anonymousUserId })
+
+    // 4. 查询会话列表（使用匿名用户 ID 过滤）
     let queryBuilder = supabase
       .from('chat_sessions')
       .select('*', { count: 'exact' })
+
+    // ⭐ 添加匿名用户 ID 过滤（用户隔离）
+    if (anonymousUserId && typeof anonymousUserId === 'string') {
+      queryBuilder = queryBuilder.eq('anonymous_user_id', anonymousUserId)
+      console.log('[API Sessions] 使用匿名用户 ID 过滤:', anonymousUserId)
+    }
 
     // 添加状态过滤
     if (status !== 'all') {
