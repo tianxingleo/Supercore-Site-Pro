@@ -42,8 +42,9 @@
 | **数据库** | Supabase | PostgreSQL + pgvector 扩展 |
 | **大模型** | 阿里云通义千问 | Qwen-Plus (便宜、中文友好) |
 | **向量模型** | 阿里云 text-embedding-v3 | **1024 维** (注意不是 1536) |
+| **状态管理** | Pinia | 用于管理多会话状态、消息历史和持久化 |
 | **AI SDK** | Vercel AI SDK v3 | `ai` + `@ai-sdk/openai` |
-| **Markdown** | marked | 用于渲染 AI 回复中的格式化文本 |
+| **Markdown** | useSafeMarkdown | 基于 marked + DOMPurify 的安全渲染组件 |
 
 ---
 
@@ -325,11 +326,20 @@ ${contextBlock}`
     throw createError({ statusCode: 500, statusMessage: e.message })
   }
 })
-```
 
 ### 3. 前端组件
 
-**文件路径**：`components/ui/AiChat.vue`
+**状态管理** (`stores/chat.ts`)
+- Pinia Store 处理会话列表同步
+- 自动处理会话创建、切换、删除和重命名
+- 消息历史记录管理
+
+**前端组件** (`components/ui/AiChat.vue`)
+- 集成 `useChatStore` 统一管理状态
+- Vercel AI SDK 的 `useChat` hook 处理流式计算
+- Swiss Design 风格 UI，支持多会话侧栏
+- `useSafeMarkdown` 安全渲染 Markdown 内容
+- 自动滚动、加载动画、交互反馈
 
 ```vue
 <script setup lang="ts">

@@ -35,6 +35,7 @@
 - **Nuxt 3** - Vue 3 SSR 框架
 - **TypeScript** - 严格类型检查
 - **Vue 3 Composition API** - 响应式开发
+- **Pinia** - 状态管理库 (Chat Session 管理等)
 
 ### 样式与设计
 - **Tailwind CSS** - 实用工具 CSS 框架
@@ -51,6 +52,7 @@
 - **Supabase** - PostgreSQL 数据库 + 认证 + 存储
 - **多语言 i18n** - 完整翻译支持
 - **Tiptap** - 富文本编辑器
+- **DOMPurify + marked** - 安全的 Markdown 渲染 (useSafeMarkdown)
 
 ### AI 与向量搜索
 - **Vercel AI SDK** - AI 流式响应框架
@@ -132,13 +134,17 @@ Web-For-HK/
 ├── middleware/            # Nuxt中间件
 │   └── errorHandler.ts    # 错误处理中间件
 │
-├── types/                 # TypeScript类型定义
+├── stores/                # Pinia 状态管理
+│   └── chat.ts            # AI 聊天会话状态
+│
+├── types/                 # TypeScript 类型定义
 │   └── index.ts           # 主要类型
 │
 ├── utils/                 # 前端工具函数
-│   ├── apiHandler.ts      # API处理
+│   ├── apiHandler.ts      # API 处理
 │   ├── imagePlaceholder.ts # 图片占位符
-│   └── logger.ts          # 日志工具
+│   ├── logger.ts          # 日志工具
+│   └── markdown.ts        # Markdown 处理工具
 │
 ├── database/              # 数据库相关
 │   └── migrations/        # 数据库迁移文件
@@ -214,7 +220,10 @@ npm run preview
 ### 前台页面
 
 - **首页** (`/`) - 3D 场景 Hero 区块 + 产品分类展示
-- **AI 智能助手** - 右下角悬浮聊天窗口，支持产品咨询和智能问答
+- **AI 智能助手** - 右下角悬浮聊天窗口，支持：
+  - **产品咨询**：基于向量搜索的产品智能答疑
+  - **多会话管理**：支持创建、切换、删除和重命名多个对话
+  - **历史记录**：自动保存对话内容，支持跨会话切换
 - **产品** (`/products`) - 产品列表和详情页
 - **解决方案** (`/solutions`) - 解决方案展示
 - **新闻** (`/news`) - 新闻列表和详情页
@@ -467,9 +476,11 @@ select * from match_products(
 ### 特性
 
 - 🔍 **语义搜索** - 基于向量相似度，理解用户意图
-- 📊 **上下文感知** - 自动关联产品库信息
+- 📅 **多会话支持** - 支持创建多个独立聊天会话，自动保存历史记录
+- 📊 **上下文感知** - 自动关联产品库信息及当前对话上下文
 - 🌐 **多语言支持** - 繁体中文/简体中文/英文
 - ⚡ **流式响应** - 实时打字效果，改善用户体验
+- 🛡️ **安全渲染** - 使用 DOMPurify 过滤，防止 XSS 攻击
 - 🎯 **精准匹配** - 相似度阈值 0.5，返回 Top 5 相关产品
 - 🤖 **自动化同步** - 产品更新自动生成向量，无需人工干预
 

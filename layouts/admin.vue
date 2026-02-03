@@ -27,9 +27,13 @@
           <NuxtLink v-for="item in navItems" :key="item.path" :to="item.path"
             class="flex items-center px-4 py-3 text-[10px] font-bold uppercase tracking-widest rounded-sm transition-colors"
             :class="[
-              route.path === item.path
-                ? 'bg-swiss-text text-white'
-                : 'text-swiss-text-muted hover:bg-swiss-text/5 hover:text-swiss-text',
+              item.path === '/admin'
+                ? route.path === '/admin'
+                  ? 'bg-swiss-text text-white'
+                  : 'text-swiss-text-muted hover:bg-swiss-text/5 hover:text-swiss-text'
+                : route.path.startsWith(item.path)
+                  ? 'bg-swiss-text text-white'
+                  : 'text-swiss-text-muted hover:bg-swiss-text/5 hover:text-swiss-text',
             ]">
             {{ item.name }}
           </NuxtLink>
@@ -61,6 +65,7 @@ const navItems = [
   { name: 'Products', path: '/admin/products' },
   { name: 'News', path: '/admin/news' },
   { name: 'Inquiries', path: '/admin/inquiries' },
+  { name: 'AI Chat', path: '/admin/chat' },
   { name: 'Logs', path: '/admin/logs' },
   // { name: 'Settings', path: '/admin/settings' }, // TODO: Create settings page
 ]
