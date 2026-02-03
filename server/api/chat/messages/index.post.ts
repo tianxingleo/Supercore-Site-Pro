@@ -32,6 +32,44 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400, statusMessage: 'Invalid messages format' })
     }
 
+    // --- 每日 Token 限制检查 ---
+    const DAILY_TOKEN_LIMIT = 100000 // 10万 token
+
+    // 计算单个消息 Token 的函数
+    const estimateTokens = (text: string) => {
+      if (!text) return 0
+      const chineseChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length
+      const otherChars = (text.length || 0) - chineseChars
+      return Math.ceil(chineseChars * 1.5 + otherChars * 0.3)
+    }
+
+    // 1. 获取今日已使用的 Token 数
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    const { data: todayMessages } = await supabaseAdmin
+      .from('chat_messages')
+      .select('content')
+      .gte('created_at', today.toISOString())
+
+    let todayTokensUsed = 0
+    todayMessages?.forEach(msg => {
+      todayTokensUsed += estimateTokens(msg.content || '')
+    })
+
+    // 2. 日志显示剩余情况
+    const remainingTokens = Math.max(0, DAILY_TOKEN_LIMIT - todayTokensUsed)
+    console.log(`[API] 今日 Token 使用情况: 已用 ${todayTokensUsed}, 剩余 ${remainingTokens}, 限制 ${DAILY_TOKEN_LIMIT}`)
+
+    // 3. 检查是否超出限制
+    if (todayTokensUsed >= DAILY_TOKEN_LIMIT) {
+      throw createError({ 
+        statusCode: 429, 
+        statusMessage: '今日 AI 使用額度已達上限 (100,000 Tokens)，請明天再試。' 
+      })
+    }
+    // --- 结束 每日 Token 限制检查 ---
+
     // 4. 处理会话
     let currentSessionId = sessionId
 
@@ -39,9 +77,12 @@ export default defineEventHandler(async (event) => {
 
     // 如果没有提供 sessionId，创建新会话
     if (!currentSessionId) {
-      const lastMessage = messages[messages.length - 1]
+      const lastMessage = messages?.[messages.length - 1]
+      if (!lastMessage) {
+        throw createError({ statusCode: 400, statusMessage: 'No message content found' })
+      }
       // 使用第一条消息的前 30 个字符作为标题
-      const title = lastMessage.content.slice(0, 30) + (lastMessage.content.length > 30 ? '...' : '')
+      const title = (lastMessage.content || '').slice(0, 30) + (lastMessage.content?.length > 30 ? '...' : '')
 
       console.log('[API] 创建新会话，标题:', title, '匿名用户 ID:', anonymousUserId)
 
@@ -68,17 +109,19 @@ export default defineEventHandler(async (event) => {
 
     // 5. 保存用户消息到数据库
     const userMessage = messages[messages.length - 1]
-    await supabaseAdmin
-      .from('chat_messages')
-      .insert({
-        session_id: currentSessionId,
-        role: 'user',
-        content: userMessage.content,
-        metadata: { language }
-      })
+    if (userMessage) {
+      await supabaseAdmin
+        .from('chat_messages')
+        .insert({
+          session_id: currentSessionId,
+          role: 'user',
+          content: userMessage.content,
+          metadata: { language }
+        })
+    }
 
     // 6. 生成 AI 回复
-    const lastMessage = messages[messages.length - 1].content
+    const lastMessage = messages?.[messages.length - 1]?.content || ''
 
     // 生成问题向量 (阿里 v3, 1024维)
     const embeddingResp = await openai.embeddings.create({
@@ -89,7 +132,7 @@ export default defineEventHandler(async (event) => {
 
     // 7. 数据库检索 (调用 RPC)
     const { data: products } = await supabaseAdmin.rpc('match_products', {
-      query_embedding: embeddingResp.data[0].embedding,
+      query_embedding: embeddingResp.data?.[0]?.embedding,
       match_threshold: 0.5,
       match_count: 5
     })

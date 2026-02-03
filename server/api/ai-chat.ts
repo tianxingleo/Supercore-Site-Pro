@@ -29,7 +29,45 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Invalid messages format' })
   }
 
-  const lastMessage = messages[messages.length - 1].content
+  // --- 每日 Token 限制检查 ---
+  const DAILY_TOKEN_LIMIT = 10 // 10万 token
+
+  // 计算单个消息 Token 的函数 (与统计 API 保持一致)
+  const estimateTokens = (text: string) => {
+    if (!text) return 0
+    const chineseChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length
+    const otherChars = text.length - chineseChars
+    // 约略估算：中文 1.5 tokens，其他 (英文/符号) 0.3 tokens
+    return Math.ceil(chineseChars * 1.5 + otherChars * 0.3)
+  }
+
+  // 1. 获取今日已使用的 Token 数
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  
+  const { data: todayMessages } = await supabaseAdmin
+    .from('chat_messages')
+    .select('content')
+    .gte('created_at', today.toISOString())
+
+  let todayTokensUsed = 0
+  todayMessages?.forEach(msg => {
+    todayTokensUsed += estimateTokens(msg.content || '')
+  })
+
+  // 2. 检查是否超出限制
+  const remainingTokens = Math.max(0, DAILY_TOKEN_LIMIT - todayTokensUsed)
+  console.log(`[AI Chat] 今日 Token 使用情况: 已用 ${todayTokensUsed}, 剩余 ${remainingTokens}, 限制 ${DAILY_TOKEN_LIMIT}`)
+
+  if (todayTokensUsed >= DAILY_TOKEN_LIMIT) {
+    throw createError({ 
+      statusCode: 429, 
+      statusMessage: '今日 AI 使用額度已達上限 (100,000 Tokens)，請明天再試。' 
+    })
+  }
+  // --- 结束 每日 Token 限制检查 ---
+
+  const lastMessage = messages?.[messages.length - 1]?.content || ''
 
   try {
     // 4. 生成问题向量 (阿里 v3, 1024维)
@@ -42,7 +80,7 @@ export default defineEventHandler(async (event) => {
 
     // 5. 数据库检索 (调用 RPC)
     const { data: products } = await supabaseAdmin.rpc('match_products', {
-      query_embedding: embeddingResp.data[0].embedding,
+      query_embedding: embeddingResp.data?.[0]?.embedding,
       match_threshold: 0.5,
       match_count: 5
     })
