@@ -45,6 +45,9 @@
 | **状态管理** | Pinia | 用于管理多会话状态、消息历史和持久化 |
 | **AI SDK** | Vercel AI SDK v3 | `ai` + `@ai-sdk/openai` |
 | **Markdown** | useSafeMarkdown | 基于 marked + DOMPurify 的安全渲染组件 |
+| **匿名识别** | useAnonymousUser | 基于 FPJS 的浏览器指纹识别，管理 `anonymous_user_id` |
+| **Token 管理** | checkUsageLimit | 服务端 Token 消耗估算与每日额度限制 (默认 10k) |
+| **数据可视化** | ECharts | 用于管理后台 AI 统计图表展示 |
 
 ---
 
@@ -340,6 +343,21 @@ ${contextBlock}`
 - Swiss Design 风格 UI，支持多会话侧栏
 - `useSafeMarkdown` 安全渲染 Markdown 内容
 - 自动滚动、加载动画、交互反馈
+- **匿名用户管理** (`composables/useAnonymousUser.ts`):
+  - 自动生成并持久化唯一标识。
+  - 确保即使用户未登录，也能追踪其对话历史和配额消耗。
+
+### 4. AI 管理与成本控制 (Administration)
+
+**服务端限制** (`server/api/ai-chat.ts`):
+- **Token 估算**: 根据 Qwen-Plus 模型标准对 Prompt 和响应进行 Token 计算。
+- **每日限额**: 每个用户（含匿名）有固定的每日 Token 累计限额，保护后端 API 成本。
+- **异常检测**: 异常高频请求自动熔断。
+
+**管理后台统计** (`pages/admin/chat/analytics.vue`):
+- **实时看板**: 接入 ECharts 展示每日 Token 消耗趋势、消息数量及响应耗时分布。
+- **财务成本**: 自动将 Token 换算为预估美金成本，方便管理。
+- **会话溯源**: 支持在后台直接查看任意会话的完整明细。
 
 ```vue
 <script setup lang="ts">
