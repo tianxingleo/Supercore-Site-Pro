@@ -41,6 +41,11 @@ export default defineNuxtConfig({
     client: false
   },
 
+  // Pinia Configuration
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
+
   // Modules
   modules: ['@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/supabase', '@nuxt/ui'],
 

@@ -1,20 +1,291 @@
 <script setup lang="ts">
-import { useChat } from 'ai/vue'
-import { ref, watch, nextTick, computed, onMounted, onUnmounted } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import { useSafeMarkdown } from '~/composables/useSafeMarkdown'
+import ChatSidebar from '~/components/chat/ChatSidebar.vue'
 
 const { renderMarkdown } = useSafeMarkdown()
 
+// 延迟初始化 store
+const chatStore = ref<any>(null)
+const currentSessionId = ref<number | null>(null)
+
 const isOpen = ref(false)
+const sidebarOpen = ref(false)
 const scrollContainer = ref<HTMLDivElement | null>(null)
 const copyFeedback = ref<{ messageId: string; show: boolean }>({ messageId: '', show: false })
+
+// 聊天状态（手动管理，替代 useChat）
+const chatMessages = ref<any[]>([])
+const input = ref('')
+const isLoading = ref(false)
+const error = ref<Error | null>(null)
+const isCreatingNewChat = ref(false) // 标志：是否正在创建新对话
 
 // 存储每条消息的反馈状态
 const messageFeedback = ref<Map<string, 'thumbs_up' | 'thumbs_down' | null>>(new Map())
 
-// useChat 会自动调用 /api/chat
-const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-  api: '/api/ai-chat'
+// 监听 currentSessionId 变化，用于调试
+watch(currentSessionId, (newId) => {
+  console.log('[AiChat] currentSessionId 变化:', newId)
+})
+
+// 手动实现消息发送和流式响应处理
+const handleSubmit = async (event: Event) => {
+  event.preventDefault()
+
+  const messageContent = input.value.trim()
+  if (!messageContent || isLoading.value) return
+
+  console.log('[AiChat] 发送消息:', messageContent)
+  console.log('[AiChat] 当前 sessionId:', currentSessionId.value)
+
+  try {
+    isLoading.value = true
+    error.value = null
+
+    // 添加用户消息到列表
+    const userMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: messageContent,
+      createdAt: new Date()
+    }
+    chatMessages.value.push(userMessage)
+
+    // 清空输入框
+    input.value = ''
+
+    // 发送请求到 API
+    const response = await fetch('/api/chat/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: messageContent }],
+        sessionId: currentSessionId.value,
+        language: 'zh-HK'
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    // 创建 AI 消息（用于流式更新）
+    const assistantMessageIndex = chatMessages.value.length
+    chatMessages.value.push({
+      id: (Date.now() + 1).toString(),
+      role: 'assistant' as const,
+      content: '',
+      createdAt: new Date()
+    })
+
+    // 读取流式响应
+    const reader = response.body?.getReader()
+    if (!reader) throw new Error('No response body')
+
+    const decoder = new TextDecoder()
+    let buffer = ''
+    let accumulatedContent = ''
+    let chunkCount = 0
+
+    console.log('[AiChat] 开始读取流式响应...')
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) {
+        console.log('[AiChat] 流式响应完成，共接收', chunkCount, '个chunk')
+        break
+      }
+
+      const chunk = decoder.decode(value, { stream: true })
+      chunkCount++
+      console.log('[AiChat] 接收 chunk #' + chunkCount + ', 长度:', chunk.length, '内容:', chunk.substring(0, 100))
+
+      buffer += chunk
+      const lines = buffer.split('\n')
+      buffer = lines.pop() || ''
+
+      for (const line of lines) {
+        if (line.trim() === '') continue
+
+        console.log('[AiChat] 解析行:', line.substring(0, 100))
+
+        // 尝试多种格式
+        if (line.startsWith('data:')) {
+          const data = line.slice(5).trim()
+          if (data === '[DONE]') {
+            console.log('[AiChat] 接收到 [DONE] 标记')
+            continue
+          }
+
+          try {
+            const parsed = JSON.parse(data)
+            console.log('[AiChat] 解析后的数据(data:):', JSON.stringify(parsed).substring(0, 200))
+
+            if (parsed.content) {
+              accumulatedContent += parsed.content
+              console.log('[AiChat] 累积内容长度:', accumulatedContent.length, '最新片段:', parsed.content.substring(0, 50))
+
+              // 创建新数组，触发 Vue 响应式更新
+              chatMessages.value = [
+                ...chatMessages.value.slice(0, assistantMessageIndex),
+                {
+                  ...chatMessages.value[assistantMessageIndex],
+                  content: accumulatedContent
+                },
+                ...chatMessages.value.slice(assistantMessageIndex + 1)
+              ]
+            } else {
+              console.log('[AiChat] 解析的数据没有 content 字段:', Object.keys(parsed))
+            }
+          } catch (e) {
+            console.log('[AiChat] JSON 解析失败(data:):', e)
+          }
+        } else if (line.match(/^\d+:/)) {
+          // 处理 Vercel AI SDK 的 RSC 流格式: {index}:{json_string}
+          // 例如: 0:"你好" 或 1:"，"
+          console.log('[AiChat] 检测到 RSC 流格式')
+
+          try {
+            // 分割索引和内容
+            const colonIndex = line.indexOf(':')
+            if (colonIndex === -1) {
+              console.log('[AiChat] 无效的 RSC 格式，缺少冒号')
+              continue
+            }
+
+            const index = line.substring(0, colonIndex)
+            const valueStr = line.substring(colonIndex + 1)
+            console.log('[AiChat] RSC 索引:', index, '值字符串:', valueStr.substring(0, 50))
+
+            // 值字符串本身就是一个 JSON 字符串，需要 parse
+            const parsed = JSON.parse(valueStr)
+            console.log('[AiChat] 解析后的值:', JSON.stringify(parsed).substring(0, 200), '类型:', typeof parsed)
+
+            // 处理多种可能的格式
+            let contentToAdd = ''
+
+            // 1. 如果是数组，遍历所有字符串元素
+            if (Array.isArray(parsed)) {
+              for (const item of parsed) {
+                if (typeof item === 'string') {
+                  contentToAdd += item
+                } else if (item?.text) {
+                  contentToAdd += item.text
+                } else if (item?.content) {
+                  contentToAdd += item.content
+                }
+              }
+            }
+            // 2. 如果直接是字符串，使用它
+            else if (typeof parsed === 'string') {
+              contentToAdd = parsed
+            }
+            // 3. 如果是对象且有 content 字段
+            else if (parsed?.content) {
+              contentToAdd = parsed.content
+            }
+            // 4. 如果是对象且有 text 字段
+            else if (parsed?.text) {
+              contentToAdd = parsed.text
+            }
+
+            if (contentToAdd) {
+              accumulatedContent += contentToAdd
+              console.log('[AiChat] 累积内容长度:', accumulatedContent.length, '新增片段:', contentToAdd.substring(0, 50))
+
+              // 创建新数组，触发 Vue 响应式更新
+              chatMessages.value = [
+                ...chatMessages.value.slice(0, assistantMessageIndex),
+                {
+                  ...chatMessages.value[assistantMessageIndex],
+                  content: accumulatedContent
+                },
+                ...chatMessages.value.slice(assistantMessageIndex + 1)
+              ]
+            } else {
+              console.log('[AiChat] 无法从解析结果中提取内容，parsed:', parsed)
+            }
+          } catch (e) {
+            console.log('[AiChat] RSC 格式解析失败:', e, '原始行:', line)
+          }
+        } else {
+          console.log('[AiChat] 未识别的格式，尝试直接添加到内容')
+          // 如果都不是，可能就是纯文本，直接添加
+          accumulatedContent += line
+          chatMessages.value = [
+            ...chatMessages.value.slice(0, assistantMessageIndex),
+            {
+              ...chatMessages.value[assistantMessageIndex],
+              content: accumulatedContent
+            },
+            ...chatMessages.value.slice(assistantMessageIndex + 1)
+          ]
+        }
+      }
+    }
+
+    console.log('[AiChat] 流式响应处理完成，最终内容长度:', accumulatedContent.length)
+
+    console.log('[AiChat] 消息发送完成')
+    // 重新加载会话列表
+    if (chatStore.value) {
+      await chatStore.value.loadSessions()
+
+      // 检查是否创建了新会话（从响应头获取）
+      const newSessionId = response.headers.get('X-Session-ID')
+      if (newSessionId) {
+        const sessionIdNum = parseInt(newSessionId)
+        console.log('[AiChat] 新会话创建成功:', sessionIdNum)
+
+        // 将当前消息同步到 store 的 messages Map
+        chatStore.value.messages.set(sessionIdNum, [...chatMessages.value])
+
+        // 更新 store 的 currentSession，确保指向新会话
+        if (chatStore.value.sessions.length > 0) {
+          const newSession = chatStore.value.sessions.find((s: any) => s.id === sessionIdNum)
+          if (newSession) {
+            chatStore.value.currentSession = newSession
+            console.log('[AiChat] 更新 currentSession 到新会话:', sessionIdNum)
+          }
+        }
+      }
+    }
+  } catch (err: any) {
+    console.error('[AiChat] 发送消息失败:', err)
+    error.value = err
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// setMessages 函数（用于清空消息）
+const setMessages = (msgs: any[]) => {
+  chatMessages.value = msgs
+}
+
+// 监听 chatMessages 的变化
+watch(chatMessages, (msgs) => {
+  console.log('[AiChat] chatMessages 变化:', msgs.length, msgs)
+  console.log('[AiChat] 消息详情:', msgs.map((m: any) => ({
+    id: m.id,
+    role: m.role,
+    contentLength: m.content?.length || 0,
+    contentPreview: m.content?.substring(0, 50) || '(empty)'
+  })))
+}, { deep: true })
+
+// 监听 isLoading 的变化
+watch(isLoading, (loading) => {
+  console.log('[AiChat] isLoading 变化:', loading)
+})
+
+// 使用 computed 来获取消息，支持从 store 更新
+const messages = computed(() => {
+  // 始终返回 chatMessages，避免切换会话时显示空列表
+  return chatMessages.value
 })
 
 // 复制到剪贴板
@@ -54,9 +325,20 @@ const handleKeydown = (e: KeyboardEvent) => {
     e.preventDefault()
     isOpen.value = !isOpen.value
   }
-  // Escape: 关闭聊天
-  else if (e.key === 'Escape' && isOpen.value) {
-    isOpen.value = false
+  // Cmd/Ctrl + H: 打开/关闭侧边栏
+  else if ((e.metaKey || e.ctrlKey) && e.key === 'h') {
+    e.preventDefault()
+    if (isOpen.value) {
+      sidebarOpen.value = !sidebarOpen.value
+    }
+  }
+  // Escape: 关闭聊天和侧边栏
+  else if (e.key === 'Escape') {
+    if (sidebarOpen.value) {
+      sidebarOpen.value = false
+    } else if (isOpen.value) {
+      isOpen.value = false
+    }
   }
 }
 
@@ -75,12 +357,129 @@ watch(isOpen, async (val) => {
     if (scrollContainer.value) {
       scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight
     }
+    // 打开时加载会话列表（如果还没有加载）
+    if (chatStore.value && chatStore.value.sessions.length === 0) {
+      chatStore.value.loadSessions()
+    }
+  } else {
+    // 关闭时同时关闭侧边栏
+    sidebarOpen.value = false
   }
 })
 
+// 创建新会话（清空当前会话，不立即创建新会话）
+const handleNewChat = async () => {
+  try {
+    if (chatStore.value) {
+      // 设置标志，阻止自动切换会话
+      isCreatingNewChat.value = true
+
+      // 清空当前会话，不立即创建新会话
+      // 等到用户发送第一条消息时，API 会自动创建新会话并生成标题
+      chatStore.value.clearCurrentSession()
+
+      // 重置 currentSessionId
+      currentSessionId.value = null
+
+      // 清空 useChat 的消息
+      setMessages([])
+
+      // 清空输入
+      input.value = ''
+
+      console.log('[AiChat] 新对话已创建')
+
+      // 延迟重置标志，确保所有异步操作完成
+      setTimeout(() => {
+        isCreatingNewChat.value = false
+      }, 500)
+    }
+  } catch (error) {
+    console.error('Failed to create new chat:', error)
+    isCreatingNewChat.value = false
+  }
+}
+
+// 切换会话
+const handleSwitchSession = async (sessionId: number) => {
+  try {
+    if (chatStore.value) {
+      // 如果正在创建新对话，阻止切换
+      if (isCreatingNewChat.value) {
+        console.log('[AiChat] 正在创建新对话，忽略会话切换')
+        return
+      }
+
+      // 如果要切换的会话就是当前会话，跳过
+      if (currentSessionId.value === sessionId) {
+        console.log('[AiChat] 已经在当前会话，跳过切换')
+        return
+      }
+
+      console.log('[AiChat] 切换会话到:', sessionId)
+
+      // 清空输入
+      input.value = ''
+
+      // 切换 store 中的会话（这会触发 watch 自动同步消息）
+      await chatStore.value.switchSession(sessionId)
+
+      console.log('[AiChat] 会话切换完成')
+
+      // 强制更新视图
+      await nextTick()
+    }
+  } catch (error) {
+    console.error('Failed to switch session:', error)
+  }
+}
+
 // 生命周期钩子
-onMounted(() => {
+onMounted(async () => {
+  // 动态导入 Pinia store (Nuxt 3 方式)
+  const { useChatStore } = await import('~/stores/chat')
+  chatStore.value = useChatStore()
+
+  // 监听 store 的 currentSession 变化
+  watch(() => chatStore.value.currentSession, (session) => {
+    const oldId = currentSessionId.value
+    const newId = session?.id || null
+
+    currentSessionId.value = newId
+
+    console.log('[AiChat] currentSession 变化:', {
+      oldId,
+      newId,
+      session
+    })
+
+    // 如果正在加载或发送消息，不要自动同步（避免覆盖当前消息）
+    if (isLoading.value) {
+      console.log('[AiChat] 正在发送消息，跳过自动同步')
+      return
+    }
+
+    // 如果会话 ID 变化了，同步消息到 chatMessages
+    if (newId !== oldId && newId !== null) {
+      const sessionMessages = chatStore.value.messages.get(newId)
+      if (sessionMessages && sessionMessages.length > 0) {
+        console.log('[AiChat] 自动同步会话消息:', sessionMessages.length, '条')
+        setMessages([...sessionMessages])
+      }
+    }
+  }, { immediate: true })
+
+  // 键盘事件监听
   window.addEventListener('keydown', handleKeydown)
+
+  // 全局错误捕获
+  window.addEventListener('error', (event) => {
+    console.error('[AiChat] 全局错误:', event.error)
+  })
+
+  window.addEventListener('unhandledrejection', (event) => {
+    console.error('[AiChat] 未处理的 Promise 错误:', event.reason)
+  })
 })
 
 onUnmounted(() => {
@@ -105,6 +504,19 @@ onUnmounted(() => {
         <div v-if="isLoading" class="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 dark:via-white/5 to-transparent h-full w-full -translate-y-full animate-[scan_2s_linear_infinite]"></div>
 
         <div class="flex items-center gap-4">
+          <!-- 侧边栏切换按钮 -->
+          <button
+            @click="sidebarOpen = !sidebarOpen"
+            aria-label="切换会话历史"
+            :aria-expanded="sidebarOpen"
+            class="hover:bg-black/5 dark:hover:bg-white/5 p-1.5 rounded transition-colors mr-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+            </svg>
+          </button>
+
           <div class="flex flex-col">
             <span class="text-[9px] leading-none opacity-40 font-mono tracking-widest uppercase mb-1">Terminal v2.1.0</span>
             <div class="flex items-center gap-2">
@@ -142,9 +554,23 @@ onUnmounted(() => {
         <!-- Welcome Message -->
         <div v-if="messages.length === 0" class="mt-8 space-y-6 select-none relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 text-nowrap">
           <div class="w-12 h-0.5 bg-black dark:bg-white"></div>
-          <h2 class="font-bold text-4xl tracking-tighter text-black dark:text-white uppercase leading-[0.85]">
-            Modular<br/>Intelligence.
-          </h2>
+          <div class="flex items-center justify-between">
+            <h2 class="font-bold text-4xl tracking-tighter text-black dark:text-white uppercase leading-[0.85]">
+              Modular<br/>Intelligence.
+            </h2>
+            <!-- 新建会话按钮 -->
+            <button
+              v-if="chatStore.value?.hasCurrentSession"
+              @click="handleNewChat"
+              class="text-[9px] font-bold uppercase border border-black/20 dark:border-white/20 bg-white dark:bg-zinc-900 px-3 py-2 hover:border-black dark:hover:border-white transition-all flex items-center gap-1"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              New Chat
+            </button>
+          </div>
           <div class="space-y-4 max-w-[300px]">
             <p class="text-[13px] text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed whitespace-normal text-wrap uppercase tracking-tight">
               System is operational. Provide parameters or specific queries regarding infrastructure solutions.
@@ -155,7 +581,7 @@ onUnmounted(() => {
             </div>
             <div class="pt-4 border-t border-black/10 dark:border-white/10">
               <p class="text-[9px] font-mono opacity-30 uppercase tracking-widest">
-                Keyboard Shortcuts: Cmd/Ctrl+K to toggle
+                Shortcuts: Cmd+K toggle, Cmd+H history
               </p>
             </div>
           </div>
@@ -249,7 +675,7 @@ onUnmounted(() => {
       </div>
 
       <!-- Input Area -->
-      <form @submit="handleSubmit" class="p-6 bg-white dark:bg-zinc-950 border-t border-black dark:border-white relative z-10">
+      <form @submit.prevent="handleSubmit" class="p-6 bg-white dark:bg-zinc-950 border-t border-black dark:border-white relative z-10">
         <div class="relative flex flex-col gap-3">
           <div class="flex items-center justify-between px-1 text-[8px] font-bold uppercase tracking-widest opacity-30">
             <span>Terminal Input Ready</span>
@@ -259,7 +685,7 @@ onUnmounted(() => {
             <div class="text-zinc-300 dark:text-zinc-700 font-mono text-sm leading-none">_</div>
             <input
               v-model="input"
-              @change="handleInputChange"
+              name="prompt"
               :aria-busy="isLoading"
               placeholder="Query system..."
               aria-label="输入您的消息"
@@ -268,6 +694,7 @@ onUnmounted(() => {
             />
             <button
               type="submit"
+              @click="() => console.log('[AiChat] 按钮被点击')"
               :disabled="isLoading || !input.trim()"
               :aria-label="isLoading ? '正在发送' : '发送消息'"
               class="group px-4 py-2 bg-transparent text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white transition-all disabled:opacity-5 disabled:grayscale flex items-center justify-center p-0"
@@ -279,6 +706,14 @@ onUnmounted(() => {
         </div>
       </form>
     </div>
+
+    <!-- Chat Sidebar -->
+    <ChatSidebar
+      :is-open="sidebarOpen"
+      @close="sidebarOpen = false"
+      @switch-session="handleSwitchSession"
+      @create-new="handleNewChat"
+    />
 
     <!-- Toggle Button -->
     <button
