@@ -7,7 +7,7 @@
 
     <!-- 开发工具 -->
     <!-- <PerformancePanel v-if="isDev" :metrics="performanceMetrics" :is-dev="isDev" /> -->
-    <AiChat />
+    <!-- <AiChat /> -->
   </div>
 </template>
 
