@@ -1,16 +1,28 @@
-# XX TECHNOLOGY LIMITED
+# Swiss Style Enterprise Website with AI RAG
 
-> 瑞士国际主义风格的企业级基础设施解决方案官网
+[![Nuxt](https://img.shields.io/badge/Nuxt-3.x-00DC82?logo=nuxt.js)](https://nuxt.com/)
+[![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?logo=vue.js)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 项目概述
+> 🎨 极简主义设计 · 🤖 AI 智能助手 · 🚀 Nuxt 3 全栈企业级官网脚手架
 
-这是一个为香港及海外市场提供高端基础设施解决方案的企业官网，采用现代化的技术栈和设计理念。
+## 📖 项目概述
 
-**公司名称**：XX科技有限公司
-**公司地址**：香港九龙示例街道示例大厦XXX室
+这是一个**开箱即用的企业级官网脚手架**，集成了现代 Web 开发的最佳实践。适合作为：
 
-**Company Name**: XX TECHNOLOGY LIMITED
-**Company Address**: Room XXX, Example Building, Example Street, Hong Kong
+- 🏢 **企业官网模板** - SaaS、基础设施、咨询公司官网
+- 🎓 **学习项目** - 全栈开发、AI 集成、3D 交互示例
+- 💼 **作品集项目** - 展示前端工程能力
+- 🚀 **创业项目 MVP** - 快速搭建产品官网
+
+### 技术亮点
+
+- **AI 驱动**：集成阿里云通义千问 + RAG 向量搜索
+- **3D 交互**：Three.js 服务器模型 + GSAP 动画
+- **国际化**：3 种语言支持（繁中、简中、English）
+- **瑞士风格**：极简主义设计，40%+ 负空间
+- **完整后台**：CMS 内容管理系统 + 数据可视化
 
 ---
 
@@ -26,6 +38,78 @@
 - ♿ **可访问性** - 完整 ARIA 标签、键盘导航支持
 - 🛠️ **完整 CMS 后台** - 产品/新闻/询盘管理、批量操作、全局搜索、AI 统计与会话管理
 - 🤖 **AI 智能助手** - 基于阿里云通义千问的 RAG 客服系统，支持匿名识别、多会话持久化及每日 Token 限制
+
+---
+
+## 🎯 适用场景
+
+- **SaaS 产品官网** - 展示产品功能、定价、文档
+- **基础设施服务商** - 服务器、GPU 集群、云服务展示
+- **技术咨询公司** - 服务案例、解决方案介绍
+- **AI/科技初创** - 产品演示、智能客服集成
+
+---
+- 🌐 **多语言支持** - 繁体中文（香港）、简体中文、English
+- 🎭 **3D 交互场景** - Three.js 3D 服务器模型展示
+- 📱 **响应式设计** - 桌面端 3D + 移动端优化降级
+- 🎬 **GSAP 动画** - 流畅的滚动触发动画效果
+- ⚡ **性能优化** - WebP 图片、懒加载、ISR 缓存策略
+- 🔍 **SEO 友好** - 结构化数据、动态 Sitemap、完整 Meta 标签
+- ♿ **可访问性** - 完整 ARIA 标签、键盘导航支持
+- 🛠️ **完整 CMS 后台** - 产品/新闻/询盘管理、批量操作、全局搜索、AI 统计与会话管理
+- 🤖 **AI 智能助手** - 基于阿里云通义千问的 RAG 客服系统，支持匿名识别、多会话持久化及每日 Token 限制
+
+---
+
+## 🎬 演示与截图
+
+### 🏠 首页
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_e5aa933799a57be14f8f0f79850d3ca0.webp)
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_55fc1b687a344107d5c95899cdec96d5.webp)
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_5fb1216b41f0180e3d2f8906854305d0.webp)
+
+---
+
+### 🤖 AI 智能助手
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_60221f428a6d597b8615b2b2182bfedf.webp)
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_a8402d41ccaa6ec756218a0ae6f8831f.webp)
+
+---
+
+### 📦 产品页面
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_841d9d4cf76149a7bdf43a46ff8d766b.webp)
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_5195d79427766fd85e7903c76a2e4899.webp)
+
+---
+
+### 💡 解决方案页面
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_780bf1729065743582fd517b8e55db17.webp)
+
+---
+
+### 📰 新闻页面
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_ff4ad5c0e6f61d6b1ca8e9f3d8d134f2.webp)
+
+---
+
+### 🏢 关于页面
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_1f7196183d4a5fa7d44aea6d495fa218.webp)
+
+---
+
+### 📝 表单页面
+
+![](https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_0f951a23b647df06eec3d9ead5f77905.webp)
 
 ---
 
@@ -168,16 +252,28 @@ Web-For-HK/
 
 ## 快速开始
 
+### 30 秒快速预览
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/tianxingleo/your-repo.git
+cd your-repo
+
+# 2. 安装依赖
+npm install
+
+# 3. 启动开发服务器
+npm run dev
+```
+
+访问 http://localhost:3000 即可查看！
+
 ### 环境要求
 
 - Node.js 18+
 - npm 或 yarn 或 pnpm
 
-### 安装依赖
-
-```bash
-npm install
-```
+### 配置环境变量
 
 ### 配置环境变量
 
@@ -636,7 +732,21 @@ MIT License
 
 ---
 
-**XX TECHNOLOGY LIMITED** - 为香港及海外市场提供专业基础设施解决方案
+## 👨‍💻 作者
 
-**Website**: https://www.example.com
-**Email**: contact@example.com
+**tianxingleo** 
+
+- GitHub: [@tianxingleo](https://github.com/tianxingleo)
+- 项目地址: [https://github.com/tianxingleo/your-repo](https://github.com/tianxingleo/your-repo)
+
+## 🙏 致谢
+
+- 3D 模型来源: [Sketchfab - @Shalmon](https://sketchfab.com/Shalmon)
+- UI 设计灵感: Swiss International Style
+- AI 模型: 阿里云通义千问 Qwen-Plus
+
+**自由使用** - 欢迎用于个人或商业项目。欢迎 Star ⭐ 和 Fork 🍴
+
+---
+
+⭐ 如果这个项目对你有帮助，请给个 Star！
