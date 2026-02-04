@@ -5,26 +5,13 @@
   >
     <!-- Product Image -->
     <div class="aspect-square bg-swiss-bg-soft relative flex items-center justify-center p-8">
-      <!-- Shimmer Placeholder -->
-      <div
-        v-if="product.images && product.images.length > 0 && !imageLoaded"
-        class="shimmer absolute inset-0 z-10"
-      ></div>
-
       <NuxtImg
         v-if="product.images && product.images.length > 0"
         :src="product.images[0]"
         :alt="product.name[locale as keyof typeof product.name] || product.name['zh-HK'] || product.name.en"
         width="800"
         height="600"
-        format="webp"
-        quality="80"
-        loading="lazy"
-        sizes="xs:100vw sm:50vw md:33vw lg:25vw"
-        @load="imageLoaded = true"
         class="max-w-full max-h-full object-contain group-hover:scale-105 transition-all duration-700 ease-in-out"
-        :class="[imageLoaded ? 'opacity-100' : 'opacity-0']"
-        placeholder
       />
       <div v-else class="w-2/3 h-2/3 flex items-center justify-center">
         <!-- Fallback placeholder -->
@@ -85,7 +72,6 @@ interface Props {
 const props = defineProps<Props>()
 const localePath = useLocalePath()
 const { locale } = useI18n()
-const imageLoaded = ref(false)
 
 const currentLocale = computed(() => locale.value)
 
@@ -139,29 +125,6 @@ const getProductDescription = () => {
 </script>
 
 <style scoped>
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 45%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(255, 255, 255, 0.4) 55%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite linear;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

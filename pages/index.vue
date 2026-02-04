@@ -38,7 +38,7 @@
             <SwissTextReveal tag="div" :delay="600" :duration="0.8" immediate width-class="w-auto">
               <SwissButton variant="primary" size="lg"
                 class="!px-12 !py-5 hover-lift text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
-                @click="navigateTo(localePath('/solutions'))" aria-label="Explore our infrastructure solutions">
+                @click="navigateTo(localePath('/solutions'))">
                 {{ $t('home.hero.cta') }}
               </SwissButton>
             </SwissTextReveal>
@@ -46,7 +46,7 @@
             <SwissTextReveal tag="div" :delay="750" :duration="0.8" immediate width-class="w-auto">
               <SwissButton variant="ghost" size="lg"
                 class="!px-12 !py-5 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300 text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
-                @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
+                @click="navigateTo(localePath('/contact'))">
                 {{ $t('home.hero.ctaSecondary') }}
               </SwissButton>
             </SwissTextReveal>

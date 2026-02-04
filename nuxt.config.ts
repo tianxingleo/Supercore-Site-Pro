@@ -152,40 +152,6 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       title: 'Supercore - Computing the Future',
-      meta: [
-        {
-          name: 'description',
-          content:
-            '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
-        },
-        {
-          name: 'keywords',
-          content: 'AI服務器,GPU計算集群,算力基礎設施,HPC,人工智能,超級計算,IDC服務',
-        },
-        { name: 'author', content: 'tianxingleo' },
-        { name: 'copyright', content: 'tianxingleo' },
-        { property: 'og:type', content: 'website' },
-        { property: 'og:site_name', content: '超核技術有限公司' },
-        { property: 'og:locale', content: 'zh_HK' },
-        { property: 'og:title', content: '超核技術有限公司 - AI算力基礎設施服務商' },
-        {
-          property: 'og:description',
-          content:
-            '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
-        },
-        { property: 'og:image', content: '/og-image.png' },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: '超核技術有限公司 - AI算力基礎設施服務商' },
-        {
-          name: 'twitter:description',
-          content:
-            '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
-        },
-        { name: 'twitter:image', content: '/og-image.png' },
-      ],
-      htmlAttrs: {
-        lang: 'zh-HK',
-      },
       link: [
         { rel: 'icon', type: 'image/png', href: '/icon.png' },
         { rel: 'apple-touch-icon', href: '/icon.png' },
@@ -200,13 +166,12 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+HK:wght@300;400;500;700&display=swap',
         },
-        { rel: 'author', type: 'text/plain', href: '/humans.txt' },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
   },
 
-  // Route Rules (ISR for performance)
+  // Route Rules
   routeRules: {
     '/**': {
       headers: {
@@ -215,15 +180,6 @@ export default defineNuxtConfig({
         'X-Created-By': 'tianxingleo',
       },
     },
-    '/': { isr: 3600 }, // 1 hour
-    '/products': { isr: 86400 }, // 1 day
-    '/products/**': { isr: 86400 },
-    '/solutions': { isr: 86400 },
-    '/solutions/**': { isr: 86400 },
-    '/about': { isr: 604800 }, // 1 week
-    '/contact': { isr: 604800 },
-    '/icon.png': { isr: false },
-    '/supercore.png': { isr: false },
   },
 
   // Vite

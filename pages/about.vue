@@ -162,8 +162,7 @@
               </TypographyHeader>
               <div class="flex flex-col sm:flex-row justify-center gap-8">
                 <SwissButton tag="a" :to="localePath('/contact')" variant="primary" size="lg"
-                  class="!bg-white !text-swiss-text hover:!bg-gray-100 !px-12 w-full"
-                  aria-label="Contact us to optimize your infrastructure">
+                  class="!bg-white !text-swiss-text hover:!bg-gray-100 !px-12 w-full">
                   {{ $t('home.hero.ctaSecondary') }}
                 </SwissButton>
                 <SwissButton tag="a" :to="localePath('/products')" variant="ghost" size="lg"

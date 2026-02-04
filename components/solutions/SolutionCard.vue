@@ -1,9 +1,8 @@
 <template>
   <NuxtLink :to="localePath(`/solutions/${solution.slug}`)"
-    class="group block bg-white border border-gray-100 p-10 hover:border-swiss-text hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 min-h-full"
-    :aria-label="`Learn more about our ${solution.title[currentLocale]} solution`">
+    class="group block bg-white border border-gray-100 p-10 hover:border-swiss-text hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 min-h-full">
     <!-- Icon -->
-    <div class="mb-12" aria-hidden="true">
+    <div class="mb-12">
       <div
         class="w-12 h-12 flex items-center justify-center border border-gray-200 group-hover:bg-swiss-text group-hover:border-swiss-text group-hover:scale-110 transition-all duration-500">
         <component :is="getIcon(solution.icon)"
@@ -23,8 +22,7 @@
 
     <!-- Learn More Link -->
     <div
-      class="mt-auto pt-4 flex items-center text-xs font-bold tracking-widest uppercase text-swiss-text group-hover:translate-x-2 transition-transform duration-500"
-      aria-hidden="true">
+      class="mt-auto pt-4 flex items-center text-xs font-bold tracking-widest uppercase text-swiss-text group-hover:translate-x-2 transition-transform duration-500">
       {{ $t('common.learnMore') || 'Explore' }}
       <span class="ml-2">→</span>
     </div>
