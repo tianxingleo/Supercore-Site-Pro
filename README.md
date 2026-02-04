@@ -1,4 +1,4 @@
-# SUPERCORE TECHNOLOGY LIMITED
+# XX TECHNOLOGY LIMITED
 
 > 瑞士国际主义风格的企业级基础设施解决方案官网
 
@@ -6,11 +6,11 @@
 
 这是一个为香港及海外市场提供高端基础设施解决方案的企业官网，采用现代化的技术栈和设计理念。
 
-**公司名称**：超核技术有限公司
-**公司地址**：九龙尖沙咀科学馆道14号新文华中心B座7楼701室108单位
+**公司名称**：XX科技有限公司
+**公司地址**：香港九龙示例街道示例大厦XXX室
 
-**Company Name**: SUPERCORE TECHNOLOGY LIMITED
-**Company Address**: ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL
+**Company Name**: XX TECHNOLOGY LIMITED
+**Company Address**: Room XXX, Example Building, Example Street, Hong Kong
 
 ---
 
@@ -636,7 +636,7 @@ MIT License
 
 ---
 
-**SUPERCORE TECHNOLOGY LIMITED** - 为香港及海外市场提供专业基础设施解决方案
+**XX TECHNOLOGY LIMITED** - 为香港及海外市场提供专业基础设施解决方案
 
-**Website**: https://www.supercore.hk
-**Email**: info@supercore.hk
+**Website**: https://www.example.com
+**Email**: contact@example.com

@@ -413,7 +413,7 @@ watch(locale, () => {
 })
 
 // 添加 canonical 標籤
-const baseUrl = 'https://www.supercore.hk'
+const baseUrl = 'https://www.example.com'
 const canonicalUrl = computed(() => {
   return locale.value === 'en'
     ? `${baseUrl}${route.path}`

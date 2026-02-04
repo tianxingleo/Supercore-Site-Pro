@@ -5,20 +5,20 @@
     "solutions": "解决方案",
     "support": "技术支持",
     "news": "行业资讯",
-    "about": "关于超核",
+    "about": "关于XX",
     "contact": "联系我们",
-    "supercore": "SUPERCORE"
+    "supercore": "XX"
   },
   "company": {
-    "name": "超核技術有限公司",
-    "nameShort": "超核技术",
+    "name": "XX科技有限公司",
+    "nameShort": "XX技术",
     "slogan": "AI驱动，重构企业智能生产力",
     "mission": "了解客户需求；理解客户需求；满足客户需求；为客户提供超预期的产品与服务",
     "description": "全球领先的AI算力基础设施服务商，专注于AI服务器与GPU计算集群的研发、生产与全栈解决方案交付",
-    "address": "九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位",
-    "phone": "+86 18565106111",
-    "email": "kyle{'@'}supercore.hk",
-    "website": "https://www.supercore.com"
+    "address": "香港九龙示例街道示例大厦XXX室",
+    "phone": "+86 XXXXXXXXXX",
+    "email": "contact{'@'}example.com",
+    "website": "https://www.example.com"
   },
   "home": {
     "hero": {
@@ -34,7 +34,7 @@
       "phase4": "开启数字化转型之旅"
     },
     "mobileFallback": {
-      "title": "超核技术",
+      "title": "XX技术",
       "subtitle": "AI算力基础设施专家"
     },
     "features": {
@@ -130,11 +130,11 @@
     "mission": "我们的使命",
     "vision": "我们的愿景",
     "timeline": "发展历程",
-    "pageTitle": "关于超核",
+    "pageTitle": "关于XX",
     "pageSubtitle": "全球领先的AI算力基础设施服务商",
     "companyOverview": {
       "title": "关于我们",
-      "description1": "超核技術有限公司是全球领先的AI算力基础设施服务商，专注于AI服务器与GPU计算集群的研发、生产与全栈解决方案交付。",
+      "description1": "XX科技有限公司是全球领先的AI算力基础设施服务商，专注于AI服务器与GPU计算集群的研发、生产与全栈解决方案交付。",
       "description2": "我们与全球顶级IDC服务商、云厂商合作，提供AI超算集群的部署与运维服务，以\"AI驱动，重构企业智能生产力\"为核心使命。",
       "philosophy": {
         "title": "经营理念",
@@ -283,27 +283,27 @@
       "warranty": {
         "title": "保修期限",
         "point1": "保修期自产品首次购买日（\"购买日\"）起算，购买日以购买产品的发票日期为准。如无有效发票，则保修期将自产品签收单日期起算。",
-        "point2": "产品发票日期晚于产品实际交付日的，保修期自产品签收单日期起算。如送货单日期无法查实，以超核记录的服务器出厂日期为准。"
+        "point2": "产品发票日期晚于产品实际交付日的，保修期自产品签收单日期起算。如送货单日期无法查实，以XX记录的服务器出厂日期为准。"
       }
     },
     "contact": {
       "title": "联系方式",
-      "phone": "+86 18565106111",
-      "email": "kyle{'@'}supercore.hk"
+      "phone": "+86 XXXXXXXXXX",
+      "email": "contact{'@'}example.com"
     }
   },
   "supercore": {
-    "title": "SUPERCORE",
+    "title": "XX",
     "subtitle": "AI驱动，重构企业智能生产力",
     "hero": {
-      "title": "关于SUPERCORE"
+      "title": "关于XX"
     },
-    "companyName": "超核技術有限公司",
-    "companyNameEn": "SUPERCORE TECHNOLOGY LIMITED",
-    "address": "九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位",
-    "addressEn": "ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL",
-    "description": "SUPERCORE 是全球领先的AI 算力基础设施服务商，专注于 AI 服务器与 GPU 计算集群的研发、生产与全栈解决方案交付，以 \"AI 驱动，重构企业智能生产力\" 为核心使命，为全球企业提供高性能、高可靠的算力底座。SUPERCORE与全球顶级 IDC 服务商、云厂商合作，提供 AI 超算集群的部署与运维服务。",
-    "mission": "SUPERCORE 始终以 \"技术 + 服务\" 双轮驱动，让企业高效获取 AI 时代的核心生产力。",
+    "companyName": "XX科技有限公司",
+    "companyNameEn": "XX TECHNOLOGY LIMITED",
+    "address": "香港九龙示例街道示例大厦XXX室",
+    "addressEn": "Room XXX, Example Building, Example Street, Hong Kong",
+    "description": "XX 是全球领先的AI 算力基础设施服务商，专注于 AI 服务器与 GPU 计算集群的研发、生产与全栈解决方案交付，以 \"AI 驱动，重构企业智能生产力\" 为核心使命，为全球企业提供高性能、高可靠的算力底座。XX与全球顶级 IDC 服务商、云厂商合作，提供 AI 超算集群的部署与运维服务。",
+    "mission": "XX 始终以 \"技术 + 服务\" 双轮驱动，让企业高效获取 AI 时代的核心生产力。",
     "features": {
       "title": "定制化服务",
       "communication": {

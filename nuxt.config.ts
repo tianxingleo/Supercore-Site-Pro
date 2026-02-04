@@ -151,7 +151,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'Supercore - Computing the Future',
+      title: 'XX - Computing the Future',
       meta: [
         {
           name: 'description',
@@ -165,9 +165,9 @@ export default defineNuxtConfig({
         { name: 'author', content: 'tianxingleo' },
         { name: 'copyright', content: 'tianxingleo' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:site_name', content: '超核技術有限公司' },
+        { property: 'og:site_name', content: 'XX科技有限公司' },
         { property: 'og:locale', content: 'zh_HK' },
-        { property: 'og:title', content: '超核技術有限公司 - AI算力基礎設施服務商' },
+        { property: 'og:title', content: 'XX科技有限公司 - AI算力基礎設施服務商' },
         {
           property: 'og:description',
           content:
@@ -175,7 +175,7 @@ export default defineNuxtConfig({
         },
         { property: 'og:image', content: '/og-image.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: '超核技術有限公司 - AI算力基礎設施服務商' },
+        { name: 'twitter:title', content: 'XX科技有限公司 - AI算力基礎設施服務商' },
         {
           name: 'twitter:description',
           content:

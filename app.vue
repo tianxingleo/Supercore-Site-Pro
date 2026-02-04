@@ -10,12 +10,12 @@
 const { locale } = useI18n()
 
 // 直接定義全局結構化數據
-const baseUrl = 'https://www.supercore.hk'
+const baseUrl = 'https://www.example.com'
 
 const organizationData = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Supercore Technology Co., Ltd.',
+  name: 'XX Technology Co., Ltd.',
   url: baseUrl,
   logo: `${baseUrl}/icon.png`,
   description:
@@ -28,7 +28,7 @@ const organizationData = {
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer service',
-    email: 'kyle@supercore.hk',
+    email: 'contact@example.com',
   },
   sameAs: [] as string[],
 }
@@ -36,7 +36,7 @@ const organizationData = {
 const websiteData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Supercore Technology Co., Ltd.',
+  name: 'XX Technology Co., Ltd.',
   url: baseUrl,
   description: 'Global leading AI computing infrastructure service provider',
   potentialAction: {

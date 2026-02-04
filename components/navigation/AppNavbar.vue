@@ -10,10 +10,10 @@
     >
       <div class="flex items-center justify-between max-w-[1400px] mx-auto">
         <!-- Logo -->
-        <NuxtLink :to="localePath('/')" class="flex items-center group" aria-label="SUPERCORE Home">
+        <NuxtLink :to="localePath('/')" class="flex items-center group" aria-label="XX Home">
           <NuxtImg
             src="/icon.png"
-            alt="SUPERCORE Logo"
+            alt="XX Logo"
             width="256"
             height="256"
             format="webp"

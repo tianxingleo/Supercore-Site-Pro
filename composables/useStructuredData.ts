@@ -9,7 +9,7 @@ import type { Product, Post } from '~/types'
  * 生成產品的 JSON-LD 結構化數據
  */
 export function useProductStructuredData(product: Product, locale: string) {
-  const baseUrl = 'https://www.supercore.hk'
+  const baseUrl = 'https://www.example.com'
   const langKey = locale === 'zh-HK' ? 'hk' : locale === 'zh-CN' ? 'cn' : 'en'
 
   const structuredData = {
@@ -20,11 +20,11 @@ export function useProductStructuredData(product: Product, locale: string) {
     image: product.images,
     brand: {
       '@type': 'Brand',
-      name: '超核技術有限公司',
+      name: 'XX科技有限公司',
     },
     manufacturer: {
       '@type': 'Organization',
-      name: '超核技術有限公司',
+      name: 'XX科技有限公司',
       url: baseUrl,
     },
     offers: {
@@ -58,7 +58,7 @@ export function useProductStructuredData(product: Product, locale: string) {
  * 生成新聞文章的 JSON-LD 結構化數據
  */
 export function useArticleStructuredData(post: Post, locale: string) {
-  const baseUrl = 'https://www.supercore.hk'
+  const baseUrl = 'https://www.example.com'
   const langKey = locale === 'zh-HK' ? 'hk' : locale === 'zh-CN' ? 'cn' : 'en'
 
   const structuredData = {
@@ -70,7 +70,7 @@ export function useArticleStructuredData(post: Post, locale: string) {
     dateModified: post.updated_at || post.created_at,
     author: {
       '@type': 'Organization',
-      name: '超核技術有限公司',
+      name: 'XX科技有限公司',
       logo: {
         '@type': 'ImageObject',
         url: `${baseUrl}/icon.png`,
@@ -78,7 +78,7 @@ export function useArticleStructuredData(post: Post, locale: string) {
     },
     publisher: {
       '@type': 'Organization',
-      name: '超核技術有限公司',
+      name: 'XX科技有限公司',
       logo: {
         '@type': 'ImageObject',
         url: `${baseUrl}/icon.png`,
@@ -100,12 +100,12 @@ export function useArticleStructuredData(post: Post, locale: string) {
  * 生成組織的 JSON-LD 結構化數據
  */
 export function useOrganizationStructuredData() {
-  const baseUrl = 'https://www.supercore.hk'
+  const baseUrl = 'https://www.example.com'
 
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: '超核技術有限公司',
+    name: 'XX科技有限公司',
     url: baseUrl,
     logo: `${baseUrl}/icon.png`,
     description:
@@ -118,7 +118,7 @@ export function useOrganizationStructuredData() {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      email: 'info@supercore.hk',
+      email: 'contact@example.com',
     },
     sameAs: [
       // 社交媒體鏈接（如有）
@@ -132,12 +132,12 @@ export function useOrganizationStructuredData() {
  * 生成網站的 JSON-LD 結構化數據
  */
 export function useWebsiteStructuredData() {
-  const baseUrl = 'https://www.supercore.hk'
+  const baseUrl = 'https://www.example.com'
 
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: '超核技術有限公司',
+    name: 'XX科技有限公司',
     url: baseUrl,
     logo: `${baseUrl}/icon.png`,
     description:
@@ -150,7 +150,7 @@ export function useWebsiteStructuredData() {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      email: 'info@supercore.hk',
+      email: 'contact@example.com',
     },
     sameAs: [
       // 社交媒體鏈接（如有）
@@ -164,7 +164,7 @@ export function useWebsiteStructuredData() {
  * 生成麵包屑的 JSON-LD 結構化數據
  */
 export function useBreadcrumbStructuredData(items: Array<{ name: string; url: string }>) {
-  const baseUrl = 'https://www.supercore.hk'
+  const baseUrl = 'https://www.example.com'
 
   const structuredData = {
     '@context': 'https://schema.org',

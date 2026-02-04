@@ -30,8 +30,8 @@ export default defineEventHandler(async (event) => {
     }
   })
 
-  const adminEmail = 'admin@supercore.hk'
-  const adminPassword = 'SupercoreMagic123!' // 固定测试密码，仅内部使用
+  const adminEmail = 'admin@example.com'
+  const adminPassword = 'ExampleMagic123!' // 固定测试密码，仅内部使用
   
   // 1. 尝试获取现有用户
   const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers()

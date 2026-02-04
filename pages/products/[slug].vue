@@ -323,7 +323,7 @@ const getCategoryLabel = (category: string): string => {
 watchEffect(() => {
   if (product.value) {
     const langKey = locale.value
-    const baseUrl = 'https://www.supercore.hk'
+    const baseUrl = 'https://www.example.com'
     const currentPath = route.path
     const canonicalUrl =
       locale.value === 'en'

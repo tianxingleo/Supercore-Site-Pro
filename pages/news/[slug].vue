@@ -28,7 +28,7 @@
                         <div class="flex items-center space-x-6 text-sm text-swiss-secondary uppercase tracking-widest">
                             <span>{{ formatDate(post.published_at || post.created_at) }}</span>
                             <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>SUPERCORE NEWS</span>
+                            <span>XX NEWS</span>
                         </div>
                     </div>
                 </GridContainer>
@@ -176,7 +176,7 @@ function formatDate(dateStr: string) {
 // Set page title, structured data, and canonical
 watchEffect(() => {
   if (post.value) {
-    const baseUrl = 'https://www.supercore.hk'
+    const baseUrl = 'https://www.example.com'
     const currentPath = route.path
     const canonicalUrl = locale.value === 'en'
       ? `${baseUrl}${currentPath}`

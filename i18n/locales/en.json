@@ -5,20 +5,20 @@
     "solutions": "Solutions",
     "support": "Technical Support",
     "news": "Industry News",
-    "about": "About SUPERCORE",
+    "about": "About XX",
     "contact": "Contact Us",
-    "supercore": "SUPERCORE"
+    "supercore": "XX"
   },
   "company": {
-    "name": "SUPERCORE TECHNOLOGY LIMITED",
-    "nameShort": "SUPERCORE",
+    "name": "XX TECHNOLOGY LIMITED",
+    "nameShort": "XX",
     "slogan": "AI-driven, Reconstructing Enterprise Intelligent Productivity",
     "mission": "Understand customer needs; comprehend customer needs; meet customer needs; provide products and services that exceed customer expectations",
     "description": "Global leading AI computing infrastructure service provider, focusing on R&D, production and full-stack solution delivery of AI servers and GPU computing clusters",
-    "address": "ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL",
-    "phone": "+86 18565106111",
-    "email": "kyle{'@'}supercore.hk",
-    "website": "https://www.supercore.com"
+    "address": "Room XXX, Example Building, Example Street, Hong Kong",
+    "phone": "+86 XXXXXXXXXX",
+    "email": "contact{'@'}example.com",
+    "website": "https://www.example.com"
   },
   "home": {
     "hero": {
@@ -34,7 +34,7 @@
       "phase4": "Begin Your Digital Transformation"
     },
     "mobileFallback": {
-      "title": "SUPERCORE",
+      "title": "XX",
       "subtitle": "AI Computing Infrastructure Experts"
     },
     "features": {
@@ -130,11 +130,11 @@
     "mission": "Our Mission",
     "vision": "Our Vision",
     "timeline": "Timeline",
-    "pageTitle": "About SUPERCORE",
+    "pageTitle": "About XX",
     "pageSubtitle": "Global Leading AI Computing Infrastructure Service Provider",
     "companyOverview": {
       "title": "About Us",
-      "description1": "SUPERCORE TECHNOLOGY LIMITED is a global leading AI computing infrastructure service provider, focusing on R&D, production and full-stack solution delivery of AI servers and GPU computing clusters.",
+      "description1": "XX TECHNOLOGY LIMITED is a global leading AI computing infrastructure service provider, focusing on R&D, production and full-stack solution delivery of AI servers and GPU computing clusters.",
       "description2": "We cooperate with the world's top IDC service providers and cloud manufacturers to provide deployment and operation and maintenance services for AI supercomputing clusters.",
       "philosophy": {
         "title": "Business Philosophy",
@@ -259,27 +259,27 @@
       "warranty": {
         "title": "Warranty Period",
         "point1": "The warranty period starts from the date of first purchase of the product (\"purchase date\"), and the purchase date is subject to the invoice date of the purchased product. If there is no valid invoice, the warranty period will start from the date of product receipt.",
-        "point2": "If the product invoice date is later than the actual delivery date of the product, the warranty period will start from the date of product receipt. If the delivery note date cannot be verified, the date of server manufacture recorded by SUPERCORE shall prevail."
+        "point2": "If the product invoice date is later than the actual delivery date of the product, the warranty period will start from the date of product receipt. If the delivery note date cannot be verified, the date of server manufacture recorded by XX shall prevail."
       }
     },
     "contact": {
       "title": "Contact Information",
-      "phone": "+86 18565106111",
-      "email": "kyle{'@'}supercore.hk"
+      "phone": "+86 XXXXXXXXXX",
+      "email": "contact{'@'}example.com"
     }
   },
   "supercore": {
-    "title": "SUPERCORE",
+    "title": "XX",
     "subtitle": "AI-driven, Reconstructing Enterprise Intelligent Productivity",
     "hero": {
-      "title": "About SUPERCORE"
+      "title": "About XX"
     },
-    "companyName": "SUPERCORE TECHNOLOGY LIMITED",
-    "companyNameEn": "SUPERCORE TECHNOLOGY LIMITED",
-    "address": "ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL",
-    "addressEn": "ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL",
-    "description": "SUPERCORE is a global leading AI computing infrastructure service provider, focusing on the R&D, production and full-stack solution delivery of AI servers and GPU computing clusters. With \"AI-driven, reconstructing enterprise intelligent productivity\" as its core mission, it provides high-performance and highly reliable computing bases for global enterprises. SUPERCORE cooperates with the world's top IDC service providers and cloud manufacturers to provide deployment and operation and maintenance services for AI supercomputing clusters.",
-    "mission": "SUPERCORE always uses \"technology + service\" two-wheel drive to enable enterprises to efficiently obtain the core productivity of the AI era.",
+    "companyName": "XX TECHNOLOGY LIMITED",
+    "companyNameEn": "XX TECHNOLOGY LIMITED",
+    "address": "Room XXX, Example Building, Example Street, Hong Kong",
+    "addressEn": "Room XXX, Example Building, Example Street, Hong Kong",
+    "description": "XX is a global leading AI computing infrastructure service provider, focusing on the R&D, production and full-stack solution delivery of AI servers and GPU computing clusters. With \"AI-driven, reconstructing enterprise intelligent productivity\" as its core mission, it provides high-performance and highly reliable computing bases for global enterprises. XX cooperates with the world's top IDC service providers and cloud manufacturers to provide deployment and operation and maintenance services for AI supercomputing clusters.",
+    "mission": "XX always uses \"technology + service\" two-wheel drive to enable enterprises to efficiently obtain the core productivity of the AI era.",
     "features": {
       "title": "Customized Service",
       "communication": {
