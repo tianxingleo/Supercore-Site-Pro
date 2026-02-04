@@ -34,7 +34,7 @@ const headerClasses = computed(() => {
 
   // Size variants (Swiss design - large, bold headings)
   const sizes = {
-    display: ['text-7xl', 'sm:text-8xl', 'lg:text-9xl', 'font-black', 'tracking-tighter', 'leading-[0.9]'],
+    display: ['text-7xl', 'sm:text-8xl', 'lg:text-7xl', 'font-black', 'tracking-tighter', 'leading-[1.1]'],
     h1: ['text-5xl', 'sm:text-6xl', 'lg:text-7xl', 'font-black', 'tracking-tight'],
     h2: ['text-4xl', 'sm:text-5xl', 'lg:text-6xl', 'font-bold', 'tracking-tight'],
     h3: ['text-3xl', 'sm:text-4xl', 'lg:text-4xl', 'font-bold', 'tracking-tight'],

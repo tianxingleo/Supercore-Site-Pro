@@ -14,41 +14,47 @@
             </div>
           </SwissTextReveal>
 
-          <SwissTextReveal tag="div" :delay="250" :duration="1.2" immediate>
-            <TypographyHeader :level="1" size="display" class="mb-4 lg:mb-6">
-              {{ $t('home.hero.title') }}
-            </TypographyHeader>
+          <SwissTextReveal tag="div" :delay="250" :duration="1.2" immediate block>
+            <TypographyHeader :level="1" size="display" class="mb-4 lg:mb-6 whitespace-pre-line">{{
+              $t('home.hero.title') }}</TypographyHeader>
           </SwissTextReveal>
 
           <SwissTextReveal tag="div" :delay="450" :duration="1" immediate>
             <div class="max-w-2xl border-l-2 border-swiss-text/5 pl-8 lg:pl-12 mt-6 lg:mt-8 mb-4 lg:mb-6">
-              <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="!mb-0 opacity-90 leading-tight">
+              <TypographyHeader :level="2" size="h5" color="secondary" weight="normal"
+                class="!mb-0 opacity-90 leading-tight">
                 {{ $t('home.hero.subtitle') }}
               </TypographyHeader>
               <div class="mt-4 flex items-center gap-3">
                 <span class="w-1.5 h-1.5 rounded-full bg-swiss-accent animate-pulse"></span>
-                <span class="text-[9px] font-bold tracking-widest uppercase text-swiss-text/30 font-mono">Systems_Online: Hypercore_v4.0</span>
+                <span
+                  class="text-[9px] font-bold tracking-widest uppercase text-swiss-text/30 font-mono">Systems_Online:
+                  Hypercore_v4.0</span>
               </div>
             </div>
           </SwissTextReveal>
 
           <div class="flex flex-row flex-wrap items-center gap-6 lg:gap-10 mt-2 overflow-visible">
             <SwissTextReveal tag="div" :delay="600" :duration="0.8" immediate width-class="w-auto">
-              <SwissButton variant="primary" size="lg" class="!px-12 !py-5 hover-lift text-[11px] font-black tracking-[0.2em] whitespace-nowrap" @click="navigateTo(localePath('/solutions'))"
-                aria-label="Explore our infrastructure solutions">
+              <SwissButton variant="primary" size="lg"
+                class="!px-12 !py-5 hover-lift text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
+                @click="navigateTo(localePath('/solutions'))" aria-label="Explore our infrastructure solutions">
                 {{ $t('home.hero.cta') }}
               </SwissButton>
             </SwissTextReveal>
 
             <SwissTextReveal tag="div" :delay="750" :duration="0.8" immediate width-class="w-auto">
-              <SwissButton variant="ghost" size="lg" class="!px-12 !py-5 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300 text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
+              <SwissButton variant="ghost" size="lg"
+                class="!px-12 !py-5 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300 text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
                 @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
                 {{ $t('home.hero.ctaSecondary') }}
               </SwissButton>
             </SwissTextReveal>
 
-            <SwissTextReveal tag="div" :delay="900" :duration="0.8" immediate width-class="w-auto" class="hidden lg:block">
-              <div class="flex items-center gap-6 ml-4 opacity-10 group cursor-help transition-opacity hover:opacity-40">
+            <SwissTextReveal tag="div" :delay="900" :duration="0.8" immediate width-class="w-auto"
+              class="hidden lg:block">
+              <div
+                class="flex items-center gap-6 ml-4 opacity-10 group cursor-help transition-opacity hover:opacity-40">
                 <div class="h-10 w-px bg-swiss-text"></div>
                 <span class="text-[9px] font-mono uppercase tracking-tighter leading-none translate-y-1">
                   Ref_Code: HK_712<br>Axis_X: 114.167
@@ -132,9 +138,9 @@
           <div class="swiss-separator mb-8"></div>
           <div class="px-4">
             <SwissTextReveal tag="div" :delay="100">
-               <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors mb-4">
-                  {{ $t('home.features.feature1.title') }}
-               </TypographyHeader>
+              <TypographyHeader :level="3" size="h4" class="group-hover:text-swiss-accent transition-colors mb-4">
+                {{ $t('home.features.feature1.title') }}
+              </TypographyHeader>
             </SwissTextReveal>
             <SwissTextReveal tag="div" :delay="200">
               <p class="text-swiss-secondary text-sm leading-relaxed">
@@ -219,7 +225,8 @@
 
             <!-- Data Loaded State -->
             <template v-else-if="latestPosts && latestPosts.length > 0">
-              <div v-for="post in latestPosts" :key="post.id" class="border-r border-b border-gray-100 bg-white news-card-item opacity-0 translate-y-8">
+              <div v-for="post in latestPosts" :key="post.id"
+                class="border-r border-b border-gray-100 bg-white news-card-item opacity-0 translate-y-8">
                 <NewsCard :post="post" class="!border-none" />
               </div>
             </template>
@@ -451,8 +458,8 @@ onMounted(() => {
   // 等待 ClientOnly 組件渲染完成
   if (process.client) {
     if (canUse3D.value) {
-       // 等待下一個 tick，確保組件已掛載
-       nextTick(() => {
+      // 等待下一個 tick，確保組件已掛載
+      nextTick(() => {
         // 再等待一個 tick 以確保 ClientOnly 內的組件已經渲染
         nextTick(() => {
           initScrollAnimation()
@@ -491,7 +498,7 @@ const initGsapAnimations = () => {
   if (featureItems.length) {
     featureItems.forEach((item, index) => {
       const tl = $gsap.timeline({
-         scrollTrigger: {
+        scrollTrigger: {
           trigger: item,
           start: 'top 85%',
           className: 'feature-trigger',
