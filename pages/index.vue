@@ -68,8 +68,7 @@
           class="col-span-12 lg:col-span-12 xl:col-span-4 min-h-[400px] lg:min-h-[500px] relative mt-12 lg:mt-0 flex items-center justify-center">
           <!-- 桌面端：3D 場景 - 使用 ClientOnly 避免 hydration mismatch -->
           <ClientOnly>
-            <ServerScene v-if="canUseAdvanced3D()" ref="serverSceneRef" background-color="#FFFFFF" :auto-rotate="false"
-              :mouse-parallax="true" :initial-rotation="{ x: 0, y: (70 * Math.PI) / 180, z: 0 }" />
+            <ServerParticles v-if="canUseAdvanced3D()" ref="serverSceneRef" />
             <!-- 移動端：降級版本 -->
             <MobileFallback v-else :show-scroll-indicator="true" />
             <!-- 加載中的佔位符 -->
