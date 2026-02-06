@@ -6,7 +6,8 @@
 
 <script setup lang="ts">
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+// @ts-ignore
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // --- Shader Definitions ---
 const vertexShader = `
@@ -355,19 +356,19 @@ const setProgress = (val: number) => {
 };
 // Compatible method for old interface, though we just use linear progress now
 const setAnimationPhase = (phase: number, phaseProgress: number) => {
-   // Assuming phases map linearly to 0-1 range roughly
-   // But we prefer direct 0-1 control if possible.
-   // If we must implement compatibility:
-   // Phase 0 (0-20%): 0.2 * phaseProgress
-   // Phase 1 (20-50%): 0.2 + 0.3 * phaseProgress
-   // Phase 2 (50-80%): 0.5 + 0.3 * phaseProgress
-   // Phase 3 (80-100%): 0.8 + 0.2 * phaseProgress
-   let mappedProgress = 0;
-   if (phase === 0) mappedProgress = 0.2 * phaseProgress;
-   else if (phase === 1) mappedProgress = 0.2 + 0.3 * phaseProgress;
-   else if (phase === 2) mappedProgress = 0.5 + 0.3 * phaseProgress;
-   else if (phase === 3) mappedProgress = 0.8 + 0.2 * phaseProgress;
-   progress.value = mappedProgress;
+  // Assuming phases map linearly to 0-1 range roughly
+  // But we prefer direct 0-1 control if possible.
+  // If we must implement compatibility:
+  // Phase 0 (0-20%): 0.2 * phaseProgress
+  // Phase 1 (20-50%): 0.2 + 0.3 * phaseProgress
+  // Phase 2 (50-80%): 0.5 + 0.3 * phaseProgress
+  // Phase 3 (80-100%): 0.8 + 0.2 * phaseProgress
+  let mappedProgress = 0;
+  if (phase === 0) mappedProgress = 0.2 * phaseProgress;
+  else if (phase === 1) mappedProgress = 0.2 + 0.3 * phaseProgress;
+  else if (phase === 2) mappedProgress = 0.5 + 0.3 * phaseProgress;
+  else if (phase === 3) mappedProgress = 0.8 + 0.2 * phaseProgress;
+  progress.value = mappedProgress;
 };
 
 defineExpose({
@@ -388,19 +389,19 @@ onMounted(() => {
 
   // Initialize Scene
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff); // Use white background to match site
+  scene.background = new THREE.Color(0xffffff); // Use white background
 
   // Initialize Camera
   const width = containerRef.value.clientWidth;
   const height = containerRef.value.clientHeight;
-  camera = new THREE.PerspectiveCamera(30, width / height, 5, 200); // FOV 30 matches React
-  camera.position.set(25, 12, 35); // Initial position
+  camera = new THREE.PerspectiveCamera(30, width / height, 5, 200); // FOV 30
+  camera.position.set(25, 12, 65); // Initial position (Further back)
 
   // Initialize Renderer
   renderer = new THREE.WebGLRenderer({
     canvas: canvasRef.value,
     antialias: true,
-    alpha: false, // White background is opaque
+    alpha: false,
   });
   renderer.setSize(width, height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -408,11 +409,12 @@ onMounted(() => {
   // Initialize OrbitControls
   controls = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate = true;
-  controls.autoRotateSpeed = 0.3;
+  controls.autoRotateSpeed = 0.5; // Slightly faster rotation
   controls.minDistance = 5;
   controls.maxDistance = 200;
   controls.target.set(0, 0, 0);
   controls.enablePan = false;
+  controls.enableDamping = true; // Add smooth damping
 
   // Generate Geometry
   const data = generateModel(quality.value);
@@ -450,41 +452,76 @@ onMounted(() => {
   };
   window.addEventListener('resize', handleResize);
 
+  // Mouse Interaction for Parallax/Rotation
+  let mouseX = 0;
+  let mouseY = 0;
+  const handleMouseMove = (event: MouseEvent) => {
+    // Normalize mouse position -1 to 1
+    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+  };
+  window.addEventListener('mousemove', handleMouseMove);
+
   // Animation Loop
   const clock = new THREE.Clock();
-  
+
   const animate = () => {
     animationFrameId = requestAnimationFrame(animate);
-    
+
     const elapsedTime = clock.getElapsedTime();
     if (pointsMaterial) {
       pointsMaterial.uniforms['uTime'].value = elapsedTime;
       pointsMaterial.uniforms['uProgress'].value = progress.value;
     }
-    
+
     // Rig Logic (Camera/Group movement)
-    // In React, group moves. Here we can move the particle system itself.
-    const startThreshold = 0.15;
+    // 1. Calculate Rig Progress based on animation progress
+    const startThreshold = 0.05; // Start moving sooner
     let rigProgress = 0;
     if (progress.value > startThreshold) {
       rigProgress = (progress.value - startThreshold) / (1.0 - startThreshold);
     }
+    // Easing function for smooth transition
     const easeRig = 1.0 - Math.pow(1.0 - rigProgress, 3.0);
-    const targetZ = easeRig * -35.0;
-    const targetY = easeRig * -10.0;
-    const targetScale = 1.0 - (easeRig * 0.2);
 
+
+    // 2. Define Targets (Zoom In + Center + Enlarge)
+    // Horizontal X: Start at Right (15.0), Move to Center (0.0)
+    const targetX = (1.0 - easeRig) * 15.0;
+
+    // Zoom In (Z): Move Z closer. Initial 0. Target 35.0 (Dramatic zoom)
+    const targetZ = easeRig * 35.0;
+
+    // Center Y: Initial 0. Target 2.0 (Slightly up)
+    const targetY = easeRig * 2.0;
+
+    // Scale: Initial 0.8 (Small). Target 1.6 (Big!)
+    const targetScale = 0.8 + (easeRig * 0.8);
+
+    // 3. Apply Rig transform + Mouse Rotation
     if (particleSystem) {
-      particleSystem.position.z = THREE.MathUtils.lerp(particleSystem.position.z, targetZ, 0.1);
-      particleSystem.position.y = THREE.MathUtils.lerp(particleSystem.position.y, targetY, 0.1);
-      
-      // Lerp scale
+      // Position Lerp
+      particleSystem.position.x = THREE.MathUtils.lerp(particleSystem.position.x, targetX, 0.05);
+      particleSystem.position.z = THREE.MathUtils.lerp(particleSystem.position.z, targetZ, 0.05);
+      particleSystem.position.y = THREE.MathUtils.lerp(particleSystem.position.y, targetY, 0.05);
+
+      // Scale Lerp
       const currentScale = particleSystem.scale.x;
-      const nextScale = THREE.MathUtils.lerp(currentScale, targetScale, 0.1);
+      const nextScale = THREE.MathUtils.lerp(currentScale, targetScale, 0.05);
       particleSystem.scale.setScalar(nextScale);
+
+      // Rotation (Mouse Interaction)
+      // We layer mouse rotation on top of any existing rotation logic.
+      // Since autoRotate is on controls (camera), we can rotate the object for parallax.
+      // Target Rotation: Tilt based on mouse
+      const targetRotX = mouseY * 0.3; // Tilt up/down
+      const targetRotY = mouseX * 0.3; // Turn left/right
+
+      particleSystem.rotation.x = THREE.MathUtils.lerp(particleSystem.rotation.x, targetRotX, 0.1);
+      particleSystem.rotation.y = THREE.MathUtils.lerp(particleSystem.rotation.y, targetRotY, 0.1);
     }
 
-    controls.update(); // for autoRotate
+    controls.update();
     renderer.render(scene, camera);
   };
 
@@ -493,6 +530,7 @@ onMounted(() => {
   // Cleanup
   onUnmounted(() => {
     window.removeEventListener('resize', handleResize);
+    window.removeEventListener('mousemove', handleMouseMove);
     cancelAnimationFrame(animationFrameId);
     renderer.dispose();
     geometry.dispose();
