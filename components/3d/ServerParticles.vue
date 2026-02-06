@@ -23,6 +23,7 @@ const vertexShader = `
 
   varying vec3 vColor;
   varying float vGhost;
+  varying float vAlpha; // Pass alpha to fragment
 
   float easeOutCubic(float x) { return 1.0 - pow(1.0 - x, 3.0); }
 
@@ -102,13 +103,33 @@ const vertexShader = `
     // 幽灵粒子大小
     float sizeMult = aIsGhost > 0.5 ? 0.7 : 1.0;
     
-    gl_PointSize = max(1.0, (200.0 * uPixelScale * sizeMult) / max(dist, 0.1)); 
+    // Fade out / Shrink logic near end of scroll
+    // NEW: Instead of global fade, fade only the BOTTOM part relative to screen
+    // ndcY ranges from -1 (bottom) to 1 (top)
+    float ndcY = gl_Position.y / gl_Position.w;
+    
+    // Calculate bottom fade mask: 
+    // Particles at bottom (-1.0) are transparent (0.0), particles higher up (> -0.2) are opaque (1.0)
+    // Extended range -1.2 to 0.1 for smoother transition
+    float bottomFade = smoothstep(-1.2, 0.1, ndcY);
+    
+    // Only apply this fade effect in the VERY late stages of scroll (transition to Products)
+    // DELAYED: Start blending in the effect at uProgress 0.8 (was 0.6), fully active by 1.0
+    float maskStrength = smoothstep(0.8, 1.0, uProgress);
+    
+    // Final alpha blends between 1.0 (no fade) and bottomFade
+    float finalAlpha = mix(1.0, bottomFade, maskStrength);
+    
+    vAlpha = finalAlpha; // Pass to fragment
+
+    gl_PointSize = max(0.0, (200.0 * uPixelScale * sizeMult * finalAlpha) / max(dist, 0.1)); 
   }
 `;
 
 const fragmentShader = `
   varying vec3 vColor;
   varying float vGhost;
+  varying float vAlpha;
   
   void main() {
     vec2 coord = gl_PointCoord - vec2(0.5);
@@ -121,7 +142,7 @@ const fragmentShader = `
         finalColor = vec3(0.2, 0.2, 0.2); 
     }
     
-    gl_FragColor = vec4(finalColor, 1.0);
+    gl_FragColor = vec4(finalColor, vAlpha);
   }
 `;
 
@@ -129,6 +150,8 @@ const fragmentShader = `
 const generateModel = (qualityLevel: string) => {
   const particles: number[] = [];
   const colors: number[] = [];
+
+
   const serverIndices: number[] = [];
   const partTypes: number[] = [];
   const randoms: number[] = [];
@@ -143,6 +166,7 @@ const generateModel = (qualityLevel: string) => {
     randoms.push(Math.random(), Math.random(), Math.random());
     isGhosts.push(isGhost);
   };
+
 
   let baseStep = qualityLevel === 'ultra' ? 0.35 : 0.55;
   let detailStep = qualityLevel === 'ultra' ? 0.12 : 0.25;
@@ -468,7 +492,7 @@ onMounted(() => {
       uProgress: { value: 0 },
       uPixelScale: { value: quality.value === 'ultra' ? 1.0 : 1.5 },
     },
-    transparent: false,
+    transparent: true,
   });
 
   particleSystem = new THREE.Points(geometry, pointsMaterial);
@@ -540,7 +564,12 @@ onMounted(() => {
       // Initial: Negative value moves model DOWN in the frame
       // During explosion: Decrease value (more negative) to move/keep model down so we can see the top
       const initialDownOffset = -viewHeight * 0.12; // Negative = model appears lower (Corrected from positive)
-      const explosionUpOffset = -viewHeight * 0.25 * easeRig; // Less aggressive upward shift
+
+      // DELAYED Camera Upward Move: Use ease-in curve (power 1.5) to start slow, then speed up
+      // This prevents the camera from moving up too quickly during the start of explosion
+      const cameraUpwardEase = Math.pow(rigProgress, 1.5);
+      const explosionUpOffset = -viewHeight * 0.25 * cameraUpwardEase;
+
       const currentOffsetY = initialDownOffset + explosionUpOffset;
 
       camera.setViewOffset(viewWidth, viewHeight, currentOffset, currentOffsetY, viewWidth, viewHeight);
