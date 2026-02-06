@@ -148,19 +148,25 @@ const generateModel = (qualityLevel: string) => {
   let detailStep = qualityLevel === 'ultra' ? 0.12 : 0.25;
   let ghostStep = 0.6;
 
-  const C_FRAME = '#111111';
-  const C_CASE = '#1a1a1a';
-  const C_LID = '#222222';
-  const C_PCB = '#111111';
-  const C_HEATSINK = '#cccccc';
-  const C_HDD_BODY = '#111111';
-  const C_HDD_LABEL = '#dddddd';
-  const C_FAN_WALL = '#050505';
+  const C_FRAME = '#080808'; // Very Dark Grey
+  const C_CASE = '#111111';  // Almost Black
+  const C_LID = '#181818';   // Dark Grey
+  const C_PCB = '#05101a'; // Darker Navy
+  const C_HEATSINK = '#d0d0d0'; // Standard Aluminum
+  const C_HDD_BODY = '#0d0d0d';
+  const C_HDD_LABEL = '#e8e8e8';
+  const C_HDD_LED = '#0066ff'; // Blue Status Light
+  const C_FAN_WALL = '#030303';
 
-  const C_GPU_TITANIUM = '#555555';
-  const C_GPU_BLACK = '#1a1a1a';
-  const C_GPU_SILVER = '#e0e0e0';
-  const C_RAM_DARK = '#222222';
+  const C_GPU_TITANIUM = '#3a3a3a';
+  const C_GPU_BLACK = '#050505';
+  const C_GPU_SILVER = '#c0c0c0';
+  const C_GPU_ACCENT = '#ffcc00'; // Nvidia Professional Yellow
+  const C_RAM_DARK = '#141414';
+  const C_RAM_GOLD = '#d4af37'; // Gold contacts
+  const C_SOCKET = '#222222';
+  const C_FAN_RING = '#444444'; // Grey Fan Ring (No Blue Light)
+  const C_POWER_LED = '#22ff22'; // Green Power LED
 
   // 布局参数
   const frameW = 17.5;
@@ -230,6 +236,10 @@ const generateModel = (qualityLevel: string) => {
       }
     }
 
+    // Power LED (Green) on the right ear/handle
+    add(7.4, baseY + 1.5, 11.0, C_POWER_LED, serverIdx, 0);
+    add(7.3, baseY + 1.5, 11.0, C_POWER_LED, serverIdx, 0); // Double point for visibility
+
     // 硬盘 (Front)
     const hddStartZ = 7.5;
     for (let h = 0; h < 12; h++) {
@@ -239,6 +249,8 @@ const generateModel = (qualityLevel: string) => {
           for (let z = hddStartZ; z < hddStartZ + 3.0; z += detailStep) {
             let col = C_HDD_BODY;
             if (y > 2.5 && z > hddStartZ + 2.0) col = C_HDD_LABEL;
+            // Add LED indicator (Green) - made smaller/subtle
+            if (y > 0.15 && y < 0.35 && z > hddStartZ + 2.9 && x > hx + 0.65) col = C_HDD_LED;
             add(x, baseY + 0.5 + y, z, col, serverIdx, 2);
           }
         }
@@ -254,14 +266,30 @@ const generateModel = (qualityLevel: string) => {
       for (let x = fx; x < fx + 1.4; x += detailStep) {
         for (let y = 0; y < 2.0; y += detailStep) {
           for (let z = fanCenterZ - fanThickness / 2; z < fanCenterZ + fanThickness / 2; z += detailStep) {
-            add(x, baseY + 0.5 + y, z, C_FAN_WALL, serverIdx, 6);
+            let col = C_FAN_WALL;
+            // Grey Ring Accent (Fan frame)
+            const dx = x - (fx + 0.7);
+            const dy = y - 1.0;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > 0.45 && dist < 0.6 && z > fanCenterZ + 0.3) {
+              // Randomly skip some pixels
+              if ((x * 10) % 2 < 1.5) col = C_FAN_RING;
+            }
+            add(x, baseY + 0.5 + y, z, col, serverIdx, 6);
           }
         }
       }
     }
 
     // 主板
-    for (let x = -7; x <= 7; x += baseStep) for (let z = -8; z <= 6; z += baseStep) add(x, baseY + 0.2, z, C_PCB, serverIdx, 3);
+    for (let x = -7; x <= 7; x += baseStep) {
+      for (let z = -8; z <= 6; z += baseStep) {
+        // Socket/Chipset areas
+        let col = C_PCB;
+        if (Math.abs(x) < 3.0 && Math.abs(z - 1.0) < 3.0) col = C_SOCKET;
+        add(x, baseY + 0.2, z, col, serverIdx, 3);
+      }
+    }
 
     // CPU & 散热器
     const cpuZ = 1.0;
@@ -286,7 +314,9 @@ const generateModel = (qualityLevel: string) => {
         const stickX = gx + (r * 0.25) * (gx > 0 ? -1 : 1);
         for (let z = cpuZ - 2.2; z <= cpuZ + 2.2; z += detailStep) {
           for (let h = 0; h < 1.0; h += detailStep) {
-            add(stickX, baseY + 0.5 + h, z, C_RAM_DARK, serverIdx, 5);
+            let col = C_RAM_DARK;
+            if (h < 0.03) col = C_RAM_GOLD; // Gold contacts very thin
+            add(stickX, baseY + 0.5 + h, z, col, serverIdx, 5);
           }
         }
       }
@@ -312,6 +342,7 @@ const generateModel = (qualityLevel: string) => {
             else {
               const localX = (x - gx) / gpuW;
               if (localX > 0.65) col = C_GPU_BLACK;
+              else if (localX > 0.3 && localX < 0.4) col = C_GPU_ACCENT; // Red Accent Stripe
               else col = C_GPU_TITANIUM;
             }
             if (y > 2.8 || x < gx + detailStep || x > gx + gpuW - detailStep) {
@@ -383,6 +414,7 @@ let particleSystem: THREE.Points;
 let pointsMaterial: THREE.ShaderMaterial;
 let animationFrameId: number;
 let controls: OrbitControls;
+let rotationPivot: THREE.Group; // Pivot for mouse rotation around dynamic center
 
 onMounted(() => {
   if (!canvasRef.value || !containerRef.value) return;
@@ -395,7 +427,7 @@ onMounted(() => {
   const width = containerRef.value.clientWidth;
   const height = containerRef.value.clientHeight;
   camera = new THREE.PerspectiveCamera(30, width / height, 5, 200); // FOV 30
-  camera.position.set(25, 12, 65); // Initial position (Further back)
+  camera.position.set(25, 5, 65); // Initial position (Higher for proper top-down view)
 
   // Initialize Renderer
   renderer = new THREE.WebGLRenderer({
@@ -414,6 +446,7 @@ onMounted(() => {
   controls.maxDistance = 200;
   controls.target.set(0, 0, 0);
   controls.enablePan = false;
+  controls.enableZoom = false; // Disable zoom to prevent wheel scroll from changing view
   controls.enableDamping = true; // Add smooth damping
 
   // Generate Geometry
@@ -439,18 +472,31 @@ onMounted(() => {
   });
 
   particleSystem = new THREE.Points(geometry, pointsMaterial);
-  scene.add(particleSystem);
+
+  // Create rotation pivot for proper mouse rotation center
+  rotationPivot = new THREE.Group();
+  rotationPivot.position.y = -4.8; // Initial position at bottom server motherboard (baseY=-5.0 + 0.2 for PCB)
+  rotationPivot.add(particleSystem);
+  scene.add(rotationPivot);
+
+  // Disable frustum culling to prevent model disappearing during rotation/explosion
+  particleSystem.frustumCulled = false;
 
   // Resize Handler
+  let viewWidth = 0;
+  let viewHeight = 0;
+
   const handleResize = () => {
     if (!containerRef.value) return;
-    const w = containerRef.value.clientWidth;
-    const h = containerRef.value.clientHeight;
-    camera.aspect = w / h;
+    viewWidth = containerRef.value.clientWidth;
+    viewHeight = containerRef.value.clientHeight;
+    camera.aspect = viewWidth / viewHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
+    renderer.setSize(viewWidth, viewHeight);
   };
   window.addEventListener('resize', handleResize);
+  // Initial capture
+  handleResize();
 
   // Mouse Interaction for Parallax/Rotation
   let mouseX = 0;
@@ -470,8 +516,8 @@ onMounted(() => {
 
     const elapsedTime = clock.getElapsedTime();
     if (pointsMaterial) {
-      pointsMaterial.uniforms['uTime'].value = elapsedTime;
-      pointsMaterial.uniforms['uProgress'].value = progress.value;
+      pointsMaterial.uniforms['uTime']!.value = elapsedTime;
+      pointsMaterial.uniforms['uProgress']!.value = progress.value;
     }
 
     // Rig Logic (Camera/Group movement)
@@ -485,40 +531,115 @@ onMounted(() => {
     const easeRig = 1.0 - Math.pow(1.0 - rigProgress, 3.0);
 
 
-    // 2. Define Targets (Zoom In + Center + Enlarge)
-    // Horizontal X: Start at Right (15.0), Move to Center (0.0)
-    const targetX = (1.0 - easeRig) * 15.0;
+    // 2. View Offset for Horizontal Movement (Right -> Center) and Vertical tracking
+    // 2. View Offset for Horizontal Movement (Right -> Center) and Vertical tracking
+    if (viewWidth > 0 && viewHeight > 0) {
+      const currentOffset = -viewWidth * 0.25 * (1.0 - easeRig);
 
-    // Zoom In (Z): Move Z closer. Initial 0. Target 35.0 (Dramatic zoom)
-    const targetZ = easeRig * 35.0;
+      // Vertical offset: Start with downward offset (model lower), then move UP to follow explosion
+      // Initial: Negative value moves model DOWN in the frame
+      // During explosion: Decrease value (more negative) to move/keep model down so we can see the top
+      const initialDownOffset = -viewHeight * 0.12; // Negative = model appears lower (Corrected from positive)
+      const explosionUpOffset = -viewHeight * 0.25 * easeRig; // Less aggressive upward shift
+      const currentOffsetY = initialDownOffset + explosionUpOffset;
 
-    // Center Y: Initial 0. Target 2.0 (Slightly up)
-    const targetY = easeRig * 2.0;
+      camera.setViewOffset(viewWidth, viewHeight, currentOffset, currentOffsetY, viewWidth, viewHeight);
+    }
 
-    // Scale: Initial 0.8 (Small). Target 1.6 (Big!)
-    const targetScale = 0.8 + (easeRig * 0.8);
 
-    // 3. Apply Rig transform + Mouse Rotation
-    if (particleSystem) {
-      // Position Lerp
-      particleSystem.position.x = THREE.MathUtils.lerp(particleSystem.position.x, targetX, 0.05);
-      particleSystem.position.z = THREE.MathUtils.lerp(particleSystem.position.z, targetZ, 0.05);
-      particleSystem.position.y = THREE.MathUtils.lerp(particleSystem.position.y, targetY, 0.05);
+    // 3. Calculate explosion progress first (needed for camera distance)
+    // Bottom server: serverIndex=2, baseY=-5.0, motherboard at baseY+0.2=-4.8
+    const bottomServerIndex = 2;
+    const delay = bottomServerIndex * 0.12; // 0.24
+    const rawProgress = (progress.value * 1.5 - delay);
 
-      // Scale Lerp
+    // smoothstep function
+    const smoothstep = (edge0: number, edge1: number, x: number) => {
+      const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
+      return t * t * (3 - 2 * t);
+    };
+
+    const effectiveProgress = smoothstep(0.0, 1.0, rawProgress);
+
+    // Stage 3: Explosion progress (starts at effectiveProgress=0.45)
+    const explode = smoothstep(0.45, 1.0, effectiveProgress);
+
+    // Camera Zoom/Position Logic:
+    // REMOVED Z-axis pull back to fix "shrinking" issue and conflict with controls.
+    // instead, we will adjust Camera Y to maintain a "Top-Down" view (Look Down)
+
+    // 4. Calculate Bottom Server Motherboard Position (replicating shader logic)
+    // Three servers: serverIndex=2,3,4
+    // Bottom server (2): baseY=-5.0, motherboard at -4.8
+    // Middle server (3): baseY=0.0, motherboard at 0.2
+    // Top server (4): baseY=5.0, motherboard at 5.2
+    const motherboardInitialY = -4.8;
+    const topMotherboardInitialY = 5.2; // Top server motherboard
+    const motherboardInitialZ = 0.0;
+
+    const easeOutCubic = (x: number) => 1.0 - Math.pow(1.0 - x, 3.0);
+    const easeExplode = easeOutCubic(explode);
+
+    // Stage 1: Slide out (Z axis)
+    const slideDist = smoothstep(0.0, 0.3, effectiveProgress) * 40.0;
+
+    // Rotation Center Logic:
+    // - During slide-out (explode = 0): Fixed at bottom motherboard (-4.8)
+    // - During explosion (explode = 0->1): Transition from bottom (-4.8) to top (5.2) motherboard
+    const rotationCenterBaseY = motherboardInitialY + (topMotherboardInitialY - motherboardInitialY) * easeExplode;
+    const rotationCenterExplosionY = easeExplode * 6.0; // Explosion upward movement
+
+    // Calculate rotation center position in shader local coordinates
+    const rotationCenterShaderY = rotationCenterBaseY + rotationCenterExplosionY;
+    const rotationCenterShaderZ = motherboardInitialZ + slideDist;
+
+    // 5. Rig Logic
+    const targetZ = easeRig * -80.0; // Camera movement
+    const targetY = easeRig * -5.0;  // Object movement
+    const targetScale = 0.75 + (easeRig * 0.55);
+
+    // 6. Transform
+    if (particleSystem && rotationPivot) {
+      // Calculate rotation center world position
+      const rotationCenterWorldY = rotationCenterShaderY * targetScale + targetY;
+      const rotationCenterWorldZ = rotationCenterShaderZ * targetScale + targetZ;
+
+      // Set pivot to rotation center position
+      rotationPivot.position.y = rotationCenterWorldY;
+      rotationPivot.position.z = rotationCenterWorldZ;
+      controls.target.y = rotationCenterWorldY;
+      controls.target.z = rotationCenterWorldZ;
+
+      // CRITICAL: Update Camera Y to maintain "Top-Down" view
+      // Always keep camera higher than the target center
+      // Initial CenterWorldY is approx -3.6. Initial CameraY is 5. Difference is ~8.6
+      const cameraHeightOffset = 9.0;
+      const targetCameraY = rotationCenterWorldY + cameraHeightOffset;
+      // Lerp camera Y to follow the center UP
+      camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetCameraY, 0.1);
+
+      // Adjust particleSystem position to compensate
+      // We want: particleSystem.position + shader * scale = 0 (relative to pivot)
+      // So: particleSystem.position = -shader * scale
+      particleSystem.position.x = 0;
+
+      const targetParticleY = targetY - rotationCenterWorldY;
+      const targetParticleZ = targetZ - rotationCenterWorldZ;
+
+      particleSystem.position.y = THREE.MathUtils.lerp(particleSystem.position.y, targetParticleY, 0.05);
+      particleSystem.position.z = THREE.MathUtils.lerp(particleSystem.position.z, targetParticleZ, 0.05);
+
+      // Scale
       const currentScale = particleSystem.scale.x;
       const nextScale = THREE.MathUtils.lerp(currentScale, targetScale, 0.05);
       particleSystem.scale.setScalar(nextScale);
 
       // Rotation (Mouse Interaction)
-      // We layer mouse rotation on top of any existing rotation logic.
-      // Since autoRotate is on controls (camera), we can rotate the object for parallax.
-      // Target Rotation: Tilt based on mouse
-      const targetRotX = mouseY * 0.3; // Tilt up/down
-      const targetRotY = mouseX * 0.3; // Turn left/right
+      const targetRotX = mouseY * 0.10;
+      const targetRotY = mouseX * 0.80;
 
-      particleSystem.rotation.x = THREE.MathUtils.lerp(particleSystem.rotation.x, targetRotX, 0.1);
-      particleSystem.rotation.y = THREE.MathUtils.lerp(particleSystem.rotation.y, targetRotY, 0.1);
+      rotationPivot.rotation.x = THREE.MathUtils.lerp(rotationPivot.rotation.x, targetRotX, 0.05);
+      rotationPivot.rotation.y = THREE.MathUtils.lerp(rotationPivot.rotation.y, targetRotY, 0.05);
     }
 
     controls.update();

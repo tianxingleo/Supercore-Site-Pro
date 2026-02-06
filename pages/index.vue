@@ -87,7 +87,7 @@
     </section>
 
     <!-- Product Categories Section -->
-    <section class="py-24 bg-white border-y border-gray-100 relative z-20">
+    <section class="py-24 bg-white border-b border-gray-100 relative z-20">
       <GridContainer>
         <div class="col-span-12 mb-16">
           <SwissTextReveal tag="div" :delay="100">
