@@ -18,10 +18,10 @@
 
 - 🎨 **Swiss International Style** - 极简主义设计，40%+ 负空间
 - 🌐 **多语言支持** - 繁体中文（香港）、简体中文、English
-- 🎭 **3D 交互场景** - Three.js 3D 服务器模型展示
-- 📱 **响应式设计** - 桌面端 3D + 移动端优化降级
-- 🎬 **GSAP 动画** - 流畅的滚动触发动画效果
-- ⚡ **性能优化** - WebP 图片、懒加载、ISR 缓存策略
+- 🎭 **3D 粒子系统** - 程序化生成的 GPU 加速 3D 服务器，滚动触发爆炸动画
+- 📱 **响应式设计** - 桌面端完整 3D + 移动端优化降级
+- 🎬 **Scrollytelling 动画** - 流畅的滚动触发 3D 展示与交互动画
+- ⚡ **性能优化** - GPU 加速渲染、WebP 图片、懒加载、ISR 缓存策略
 - 🔍 **SEO 友好** - 结构化数据、动态 Sitemap、完整 Meta 标签
 - ♿ **可访问性** - 完整 ARIA 标签、键盘导航支持
 - 🛠️ **完整 CMS 后台** - 产品/新闻/询盘管理、批量操作、全局搜索、AI 统计与会话管理
@@ -45,6 +45,7 @@
 
 ### 动画与 3D
 - **Three.js** - 3D 渲染引擎（桌面端）
+- **GPU 粒子系统** - ShaderMaterial 实现的高性能粒子效果
 - **GSAP + ScrollTrigger** - 滚动动画系统
 - **Lenis** - 平滑滚动体验
 
@@ -91,8 +92,6 @@ Web-For-HK/
 │
 ├── composables/           # Vue组合式函数
 │   ├── useDeviceDetection.ts    # 设备检测
-│   ├── usePerformanceMonitor.ts # 性能监控
-│   ├── useServerAnimation.ts    # 服务端动画
 │   ├── useStructuredData.ts     # 结构化数据
 │   └── useSwissGrid.ts          # Swiss网格布局
 │
@@ -121,8 +120,6 @@ Web-For-HK/
 │   └── utils/             # 服务端工具
 │
 ├── public/                # 公共静态文件
-│   ├── models/            # 3D模型文件
-│   │   └── server/        # 服务器模型（4.8MB）
 │   ├── robots.txt         # 搜索引擎爬虫配置
 │   └── icon.png           # 网站图标
 │
@@ -250,26 +247,39 @@ npm run preview
 
 ### 已实现功能 ✅
 
-1. **完整的 Three.js 场景框架**
-   - 场景、相机、渲染器配置
-   - 环境光、平行光、轮廓光照明系统
-   - 鼠标视差效果（3D 模型跟随鼠标移动）
+1. **程序化生成的粒子系统**
+   - **零外部依赖**：完全使用代码生成，无需下载 3D 模型文件
+   - **GPU 加速**：使用 Three.js ShaderMaterial 实现，性能优异
+   - **高精度模型**：程序化生成的服务器机柜，包含：
+     - 机柜框架（17.5U × 42U × 28U）
+     - 7 台服务器（其中 3 台为高精度焦点服务器）
+     - 详细的硬件组件：硬盘、风扇墙、主板、CPU 散热器、内存条、GPU
+     - LED 指示灯（电源、硬盘状态灯）
+   - **幽灵服务器效果**：背景服务器以深灰色低对比度呈现，营造景深感
 
-2. **真实的 3D 服务器模型**
-   - 模型来源：[Sketchfab](https://sketchfab.com) - [@Shalmon](https://sketchfab.com/Shalmon) 的 [Server Rack](https://sketchfab.com/3d-models/server-rack-c144d837358d446998c7b63cd1bdf825) 免费模型
-   - 模型文件：`public/models/server/model.obj` (4.8MB, 38,006 面)
-   - 材质文件：`public/models/server/model.mtl` (9 种材质)
-   - 自动缩放和居中对齐
-   - 许可：CC Attribution（知识共享署名许可）
+2. **滚动触发的爆炸动画（Scrollytelling）**
+   - **多阶段动画序列**：
+     - 阶段 1：服务器滑出（Z 轴移动）
+     - 阶段 2：机箱盖打开（向上掀起）
+     - 阶段 3：组件爆炸解体（各部件沿不同方向展开）
+   - **波浪延迟**：每台服务器依次触发动画，形成波浪效果
+   - **文字内容协同**：滚动时文字内容淡出并上移，配合 3D 展示
+   - **镜头运动**：相机从侧前方移动到正上方，保持最佳视角
 
-3. **设备检测与降级**
-   - 桌面端：完整 3D 场景
-   - 移动端：静态图片降级方案
+3. **交互功能**
+   - **鼠标视差效果**：模型跟随鼠标位置轻微旋转
+   - **自动旋转**：OrbitControls 提供平滑的自动旋转
+   - **动态缩放**：随滚动进度自动调整模型大小（0.75x - 1.3x）
+   - **质量自适应**：Ultra/Medium 两种质量级别，自动选择最优配置
+
+4. **设备检测与降级**
+   - 桌面端：完整 3D 粒子系统
+   - 移动端：优化的降级方案
    - `useDeviceDetection` composable 自动判断
 
-4. **加载状态管理**
+5. **加载状态管理**
    - PlaceholderCanvas 加载占位符
-   - 加载进度显示
+   - ClientOnly 组件确保仅客户端渲染
    - 优雅的错误处理
 
 ---
@@ -278,18 +288,24 @@ npm run preview
 
 ### 已实现的 GSAP 动画
 
-1. **Feature Items 特性展示**
+1. **Hero 区域 3D Scrollytelling**
+   - 滚动触发的 3D 服务器爆炸动画
+   - 文字内容淡出并上移
+   - 相机从侧前方移动到正上方
+   - 模型动态缩放（0.75x - 1.3x）
+
+2. **Feature Items 特性展示**
    - 分隔线扩展动画
    - 文字上滑淡入
    - 数字淡入效果
    - 交错显示（stagger）
 
-2. **News Cards 新闻卡片**
+3. **News Cards 新闻卡片**
    - 批量触发动画（ScrollTrigger.batch）
    - 上滑淡入效果
    - 交错延迟显示
 
-3. **Reveal Sections 区域淡入**
+4. **Reveal Sections 区域淡入**
    - 通用淡入效果
    - 触发点：元素顶部到达视口 85%
 
