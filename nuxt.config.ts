@@ -65,12 +65,12 @@ export default defineNuxtConfig({
 
   // 1. 模块配置：顺序至关重要！
   modules: [
-    '@pinia/nuxt',                        // 👈 必须在持久化插件之前！
-    'pinia-plugin-persistedstate/nuxt',   // 👈 持久化插件
+    '@nuxt/ui',
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/supabase',
-    '@nuxt/ui'
+    '@pinia/nuxt',                        // 👈 必须在持久化插件之前！
+    'pinia-plugin-persistedstate/nuxt',   // 👈 持久化插件
   ],
 
   // 2. Pinia 持久化默认配置 (可选，但在服务端更安全)
