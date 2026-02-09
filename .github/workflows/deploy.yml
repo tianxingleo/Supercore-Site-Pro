@@ -22,8 +22,8 @@ jobs:
             # 2. 【关键】强制同步 GitHub 代码
             # 这会删除服务器上所有手动修改（包括你刚才 nano 写的文件），确保和 GitHub 一致
             git fetch --all
-            git reset --hard origin/main  # ⚠️ 如果分支是 latest 这里也要改
-            git pull origin main          # ⚠️ 如果分支是 latest 这里也要改
+            git reset --hard origin/latest  # ⚠️ 如果分支是 latest 这里也要改
+            git pull origin latest          # ⚠️ 如果分支是 latest 这里也要改
             
             # 3. 重新构建 Docker 镜像
             docker build -t my-nuxt-app .
