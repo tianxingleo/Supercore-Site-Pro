@@ -63,15 +63,23 @@ export default defineNuxtConfig({
     storesDirs: ['./stores/**'],
   },
 
-  // Modules
+  // 1. 模块配置：顺序至关重要！
   modules: [
-    '@pinia/nuxt',
-    'pinia-plugin-persistedstate/nuxt',
+    '@pinia/nuxt',                        // 👈 必须在持久化插件之前！
+    'pinia-plugin-persistedstate/nuxt',   // 👈 持久化插件
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/supabase',
-    '@nuxt/ui',
+    '@nuxt/ui'
   ],
+
+  // 2. Pinia 持久化默认配置 (可选，但在服务端更安全)
+  piniaPluginPersistedstate: {
+    storage: 'cookies', // 强制默认使用 Cookie (服务端可读写)，避免 LocalStorage 在服务端报错
+    cookieOptions: {
+      sameSite: 'lax',
+    }
+  },
 
   // 圖片優化配置
   image: {
@@ -215,6 +223,13 @@ export default defineNuxtConfig({
   },
   // Build
   build: {
-    transpile: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js'],
+    // 强制转译这些库，防止生产环境找不到对象
+    transpile: [
+      '@supabase/postgrest-js',
+      '@supabase/supabase-js',
+      '@supabase/functions-js',
+      'pinia-plugin-persistedstate',
+      'tslib'
+    ],
   },
 })
