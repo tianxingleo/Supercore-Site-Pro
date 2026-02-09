@@ -31,7 +31,9 @@ const vertexShader = `
   varying vec3 vColor;
   varying float vGhost;
   varying float vEmissive;
-  varying float vAlpha; // Pass alpha to fragment
+  varying float vAlpha;
+  varying float vPartType; // Pass part type to fragment
+  varying vec3 vPos;       // Pass local position to fragment
 
   float easeOutCubic(float x) { return 1.0 - pow(1.0 - x, 3.0); }
 
@@ -39,7 +41,9 @@ const vertexShader = `
     vColor = aColor;
     vGhost = aIsGhost;
     vEmissive = aEmissive;
+    vPartType = aPartType;
     vec3 pos = position;
+    vPos = pos; // Store initial local position (before explosion) for consistent texture mapping
 
     // --- A. 幽灵服务器 (背景) ---
     if (aIsGhost > 0.5) {
@@ -140,6 +144,10 @@ const fragmentShader = `
   varying float vGhost;
   varying float vEmissive;
   varying float vAlpha;
+  varying float vPartType;
+  varying vec3 vPos;
+  
+  uniform float uTime;
   
   void main() {
     vec2 coord = gl_PointCoord - vec2(0.5);
@@ -151,12 +159,27 @@ const fragmentShader = `
     if (vGhost > 0.5) {
         finalColor = vec3(0.12, 0.12, 0.12); 
     } else {
+        // --- Data Flow Effects ---
+        // 1. PCB Data Flow (Type 3) - Moving pulses along Z axis
+        if (abs(vPartType - 3.0) < 0.1) {
+            // Create a "digital rain" or circuit flow effect
+            // Wave moving from back (-Z) to front (+Z) or vice versa
+            float flow = sin(vPos.z * 1.5 - uTime * 4.0) + sin(vPos.x * 2.0);
+            float pulse = smoothstep(1.5, 1.8, flow); // Sharp peaks
+            
+            if (pulse > 0.01) {
+                // Add Cyan/Blue data pulse
+                finalColor += vec3(0.0, 0.6, 1.0) * pulse * 0.8; 
+            }
+        }
+        
+
         // Emissive Logic for Bloom
         if (vEmissive > 0.5) {
-           // Boost emissive color VERY strongly to exceed HDR threshold (1.1)
-           finalColor *= 4.0; 
+           // Reduced boost to prevent flickering/fireflies artifacts
+           finalColor *= 2.0; 
         } else {
-           // Dim non-emissive. Even bright metals (0.8) * 1.0 < 1.1
+           // Dim non-emissive
            finalColor *= 1.0;
         }
     }
@@ -496,15 +519,14 @@ onMounted(() => {
   const renderTarget = new THREE.WebGLRenderTarget(width, height, {
     type: THREE.HalfFloatType,
     format: THREE.RGBAFormat,
-    encoding: THREE.sRGBEncoding // Ensure colors look right
   });
 
   const renderScene = new RenderPass(scene, camera);
   const bloomPass = new UnrealBloomPass(
     new THREE.Vector2(width, height),
-    1.2,  // strength
-    0.4,  // radius
-    1.1   // threshold (Above 1.0 to exclude pure white background)
+    1.0,  // strength
+    0.5,  // radius (slightly smoother)
+    1.05   // threshold (Lowered slightly to match reduced emissive)
   );
 
   composer = new EffectComposer(renderer, renderTarget);
