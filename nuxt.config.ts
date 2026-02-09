@@ -53,6 +53,11 @@ export default defineNuxtConfig({
       concurrency: 1, // 限制预渲染时的并发数
       interval: 250   // 增加间隔，防止瞬时压力过大
     },
+
+    // 👇👇👇 新增这一块！核心修复代码 👇👇👇
+    externals: {
+      inline: ['tslib'] 
+    },
     
     // ❌ 删除下面这个错误的 experimental 配置
     // experimental: {
