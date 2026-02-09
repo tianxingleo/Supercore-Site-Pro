@@ -3,15 +3,15 @@
     <!-- Hero Section -->
     <section class="relative pt-48 pb-32 border-b border-gray-100">
       <GridContainer :grid="true">
-        <div class="col-span-12 text-center relative z-10">
-          <SwissTextReveal tag="div" :duration="1.2">
-            <TypographyHeader :level="1" size="display" class="mb-8">
+        <div class="col-span-12 lg:col-span-10 relative z-10">
+          <SwissTextReveal tag="div" :duration="1.2" immediate>
+            <TypographyHeader :level="1" size="display" class="mb-8 !tracking-tighter">
               {{ $t('about.pageTitle') }}
             </TypographyHeader>
           </SwissTextReveal>
 
-          <SwissTextReveal tag="div" :delay="200" :duration="1">
-            <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="max-w-3xl mx-auto opacity-80">
+          <SwissTextReveal tag="div" :delay="200" :duration="1" immediate>
+            <TypographyHeader :level="2" size="h3" color="secondary" weight="normal" class="opacity-80">
               {{ $t('about.pageSubtitle') }}
             </TypographyHeader>
           </SwissTextReveal>
@@ -53,7 +53,7 @@
                   <span class="text-[10px] font-bold text-swiss-text opacity-30 block">0{{ i }}</span>
                   <span class="font-bold text-swiss-text tracking-tight">{{
                     $t(`about.companyOverview.philosophy.point${i}`)
-                    }}</span>
+                  }}</span>
                 </SwissTextReveal>
               </li>
             </ul>
@@ -63,7 +63,8 @@
         <div class="col-span-12 lg:col-span-6">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-px bg-gray-100">
             <!-- Stats Card 1 -->
-            <SwissTextReveal tag="div" :delay="100" class="bg-swiss-text p-12 flex flex-col justify-between min-h-[300px]">
+            <SwissTextReveal tag="div" :delay="100"
+              class="bg-swiss-text p-12 flex flex-col justify-between min-h-[300px]">
               <div class="text-white/40 font-bold tracking-[0.2em] uppercase text-[10px]">
                 Performance
               </div>
@@ -93,7 +94,8 @@
             </SwissTextReveal>
 
             <!-- Stats Card 3 -->
-            <SwissTextReveal tag="div" :delay="400" class="bg-white p-12 flex flex-col justify-between min-h-[300px] sm:col-span-2">
+            <SwissTextReveal tag="div" :delay="400"
+              class="bg-white p-12 flex flex-col justify-between min-h-[300px] sm:col-span-2">
               <div class="text-swiss-text/40 font-bold tracking-[0.2em] uppercase text-[10px]">
                 Response Accuracy
               </div>
@@ -134,7 +136,8 @@
             <div class="h-full group">
               <div
                 class="w-12 h-12 border border-gray-200 flex items-center justify-center mb-10 group-hover:bg-swiss-text group-hover:border-swiss-text transition-all duration-500">
-                <component :is="feature.icon" class="w-6 h-6 text-swiss-text group-hover:text-white transition-colors" />
+                <component :is="feature.icon"
+                  class="w-6 h-6 text-swiss-text group-hover:text-white transition-colors" />
               </div>
               <TypographyHeader :level="3" size="h3" class="mb-6 !tracking-tighter">
                 {{ $t(`about.solutionFeatures.${key}.title`) }}

@@ -20,7 +20,10 @@ export default defineNuxtConfig({
     },
   },
 
-  // Experimental features - removed to avoid #app-manifest errors
+  // Experimental features
+  experimental: {
+    appManifest: false,
+  },
 
   // Components Configuration
   components: [
@@ -114,6 +117,7 @@ export default defineNuxtConfig({
         '/api/news',
         '/api/solutions',
         '/api/ai-chat', // AI Chat API (Renamed)
+        '/api/auth/test-login', // 魔法登录 API
       ],
     },
   },
@@ -221,8 +225,8 @@ export default defineNuxtConfig({
     '/solutions/**': { isr: 86400 },
     '/about': { isr: 604800 }, // 1 week
     '/contact': { isr: 604800 },
-    '/icon.png': { isr: false }, // 静态资源，不缓存
-    '/supercore.png': { isr: false }, // 静态资源，不缓存
+    '/icon.png': { isr: false },
+    '/supercore.png': { isr: false },
   },
 
   // Vite

@@ -1,60 +1,87 @@
-# SUPERCORE TECHNOLOGY LIMITED
+# <img src="./public/icon.png" width="32" height="32" /> SUPERCORE TECHNOLOGY LIMITED
 
-> 瑞士国际主义风格的企业级基础设施解决方案官网
+<p align="left">
+  <img src="https://img.shields.io/badge/Nuxt-00DC82?style=for-the-badge&logo=nuxt.js&logoColor=white" alt="Nuxt 3" />
+  <img src="https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D" alt="Vue 3" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Three.js-black?style=for-the-badge&logo=three.js&logoColor=white" alt="Three.js" />
+</p>
 
-## 项目概述
-
-这是一个为香港及海外市场提供高端基础设施解决方案的企业官网，采用现代化的技术栈和设计理念。
-
-**公司名称**：超核技术有限公司
-**公司地址**：九龙尖沙咀科学馆道14号新文华中心B座7楼701室108单位
-
-**Company Name**: SUPERCORE TECHNOLOGY LIMITED
-**Company Address**: ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL
+> **瑞士国际主义风格的企业级基础设施解决方案官网**  
+> _A premium enterprise infrastructure solutions portal for Hong Kong and overseas markets._
 
 ---
 
-## 核心特性
+## 📖 项目概述 | Overview
 
+这是一个为香港及海外市场提供高端基础设施解决方案的企业官网，采用现代化的技术栈和逻辑严密的 **瑞士国际主义 (Swiss International Style)** 设计理念。
+
+### 🏢 公司信息 | Company Info
+| 属性 | 内容 |
+| :--- | :--- |
+| **公司名称 (中)** | 超核技术有限公司 |
+| **公司名称 (EN)** | SUPERCORE TECHNOLOGY LIMITED |
+| **公司地址 (中)** | 九龙尖沙咀科学馆道14号新文华中心B座7楼701室108单位 |
+| **Address (EN)** | ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL |
+
+### 🎬 GIF 演示
+<p align="center">
+  <img src="https://pub-f8d3afa0c3274f1e943ee2f8c45dff96.r2.dev/26_02_c7c48c53f058cbe67efb00ee1143a049.gif" width="100%" style="border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" />
+</p>
+
+---
+
+## ✨ 核心特性 | Key Features
+
+✨ **视觉设计 (Design)**
 - 🎨 **Swiss International Style** - 极简主义设计，40%+ 负空间
-- 🌐 **多语言支持** - 繁体中文（香港）、简体中文、English
-- 🎭 **3D 交互场景** - Three.js 3D 服务器模型展示
-- 📱 **响应式设计** - 桌面端 3D + 移动端优化降级
-- 🎬 **GSAP 动画** - 流畅的滚动触发动画效果
-- ⚡ **性能优化** - WebP 图片、懒加载、ISR 缓存策略
+- 🎭 **3D 粒子系统** - 程序化生成的 GPU 加速 3D 服务器，滚动触发爆炸动画
+- 🎬 **Scrollytelling 动画** - 流畅的滚动触发 3D 展示与交互动画
+
+🌐 **核心功能 (Features)**
+- 🌍 **多语言支持** - 繁体中文（香港）、简体中文、English
+- 🤖 **AI 智能助手** - 基于阿里云通义千问的 RAG 客服系统，支持匿名识别、多会话持久化及每日 Token 限制
+- 📱 **响应式设计** - 桌面端完整 3D + 移动端优化降级
+
+🛠️ **工程化与后台 (Engineering)**
+- ⚡ **性能优化** - GPU 加速渲染、WebP 图片、懒加载、ISR 缓存策略
 - 🔍 **SEO 友好** - 结构化数据、动态 Sitemap、完整 Meta 标签
 - ♿ **可访问性** - 完整 ARIA 标签、键盘导航支持
 - 🛠️ **完整 CMS 后台** - 产品/新闻/询盘管理、批量操作、全局搜索、AI 统计与会话管理
-- 🤖 **AI 智能助手** - 基于阿里云通义千问的 RAG 客服系统，支持匿名识别、多会话持久化及每日 Token 限制
 
 ---
 
-## 技术栈
+## 🛠️ 技术栈 | Tech Stack
 
-### 前端框架
+### 🚀 前端框架 (Frontend)
 - **Nuxt 3** - Vue 3 SSR 框架
 - **TypeScript** - 严格类型检查
 - **Vue 3 Composition API** - 响应式开发
 - **Pinia** - 状态管理库 (Chat Session 管理等)
 
-### 样式与设计
+### 🎨 样式与交互 (Styling & Interaction)
 - **Tailwind CSS** - 实用工具 CSS 框架
 - **Nuxt UI** - 基于 Tailwind 的 UI 组件库
 - **Swiss Design System** - 自定义设计系统
-- **字体**: Inter + Noto Sans HK
-
-### 动画与 3D
-- **Three.js** - 3D 渲染引擎（桌面端）
 - **GSAP + ScrollTrigger** - 滚动动画系统
 - **Lenis** - 平滑滚动体验
+- **字体**: Inter + Noto Sans HK
 
-### 数据与内容
-- **Supabase** - PostgreSQL 数据库 + 认证 + 存储
+### 📦 动画与 3D (Animation & 3D)
+- **Three.js** - 3D 渲染引擎（桌面端）
+- **GPU 粒子系统** - ShaderMaterial 实现的高性能粒子效果
+- **Post-Processing** - UnrealBloomPass 发光效果、HDR 渲染
+- **Raycasting 交互** - 鼠标悬停高亮、3D 注释标签跟随
+
+### 🗄️ 数据与内容 (Data & Content)
+- **Supabase** - 提供全栈后端支持，包含 PostgreSQL (pgvector)、Auth 认证、S3 兼容存储及 Edge Functions 自动化逻辑
 - **多语言 i18n** - 完整翻译支持
 - **Tiptap** - 富文本编辑器
 - **DOMPurify + marked** - 安全的 Markdown 渲染 (useSafeMarkdown)
 
-### AI 与向量搜索
+### 🧠 AI 与向量搜索 (AI Integration)
 - **Vercel AI SDK** - AI 流式响应框架
 - **阿里云通义千问** - Qwen-Plus 大语言模型
 - **阿里云 DashScope** - 文本 Embedding (text-embedding-v3)
@@ -63,9 +90,9 @@
 
 ---
 
-## 项目结构
+## 📂 项目结构 | Project Structure
 
-```
+```bash
 Web-For-HK/
 ├── .env                    # 环境变量配置
 ├── .env.example           # 环境变量模板
@@ -73,11 +100,9 @@ Web-For-HK/
 ├── app.vue                # 根组件
 ├── nuxt.config.ts         # Nuxt配置（模块、路由规则、i18n等）
 ├── package.json           # 依赖和脚本
-│
 ├── assets/                # 静态资源
 │   └── css/               # 全局样式
-│
-├── components/            # Vue组件（核心！）
+├── components/            # Vue组件
 │   ├── 3d/               # 3D场景组件
 │   ├── admin/            # 后台管理组件
 │   ├── contact/          # 联系表单
@@ -88,101 +113,45 @@ Web-For-HK/
 │   ├── solutions/        # 解决方案组件
 │   ├── swiss/            # Swiss设计系统组件
 │   └── ui/               # 通用UI组件
-│
 ├── composables/           # Vue组合式函数
 │   ├── useDeviceDetection.ts    # 设备检测
-│   ├── usePerformanceMonitor.ts # 性能监控
-│   ├── useServerAnimation.ts    # 服务端动画
 │   ├── useStructuredData.ts     # 结构化数据
 │   └── useSwissGrid.ts          # Swiss网格布局
-│
 ├── layouts/               # 页面布局
-│   ├── default.vue        # 默认布局（前台）
-│   └── admin.vue          # 后台布局
-│
-├── pages/                 # 页面路由（文件路由）
-│   ├── index.vue          # 首页
-│   ├── products/          # 产品页面
-│   ├── news/              # 新闻页面
-│   ├── solutions/         # 解决方案页面
-│   ├── about.vue          # 关于页面
-│   ├── contact.vue        # 联系页面
-│   └── admin/             # 后台管理页面
-│
+├── pages/                 # 页面路由
 ├── server/                # 服务端
-│   ├── api/               # API端点
-│   │   ├── products/      # 产品API
-│   │   ├── news/          # 新闻API
-│   │   ├── inquiries/     # 询盘API
-│   │   ├── admin/         # 后台API
-│   │   ├── ai-chat.ts     # AI聊天API (向量搜索+通义千问)
-│   │   └── stats/         # 统计API
+│   ├── api/               # API端点 (Products, News, Inquiries, Admin, AI, Stats)
 │   ├── middleware/        # 中间件
 │   └── utils/             # 服务端工具
-│
-├── public/                # 公共静态文件
-│   ├── models/            # 3D模型文件
-│   │   └── server/        # 服务器模型（4.8MB）
-│   ├── robots.txt         # 搜索引擎爬虫配置
-│   └── icon.png           # 网站图标
-│
-├── plugins/               # Nuxt插件
-│   ├── gsap.client.ts     # GSAP动画库（客户端）
-│   ├── seo.ts             # SEO插件
-│   └── supabase-*.ts      # Supabase相关插件
-│
-├── middleware/            # Nuxt中间件
-│   └── errorHandler.ts    # 错误处理中间件
-│
+├── public/                # 静态文件
+├── plugins/               # Nuxt插件 (GSAP, SEO, Supabase)
 ├── stores/                # Pinia 状态管理
-│   └── chat.ts            # AI 聊天会话状态
-│
 ├── types/                 # TypeScript 类型定义
-│   └── index.ts           # 主要类型
-│
 ├── utils/                 # 前端工具函数
-│   ├── apiHandler.ts      # API 处理
-│   ├── imagePlaceholder.ts # 图片占位符
-│   ├── logger.ts          # 日志工具
-│   └── markdown.ts        # Markdown 处理工具
-│
-├── database/              # 数据库相关
-│   └── migrations/        # 数据库迁移文件
-│
-├── docs/                  # 文档
-│   ├── ADMIN_ENHANCEMENTS.md
-│   ├── QUICK_START_ADMIN.md
-│   └── IMPLEMENTATION_SUMMARY.md
-│
-├── i18n/                  # 国际化配置
-│   └── locales/           # 语言文件
-│       ├── zh-HK.json     # 繁体中文（香港）
-│       ├── zh-CN.json     # 简体中文
-│       └── en.json        # 英文
-│
-└── migration-assets/      # 迁移辅助资源
-    └── scripts/           # 数据迁移脚本
+├── database/              # 数据库迁移
+└── docs/                  # 技术文档
 ```
 
 ---
 
-## 快速开始
+## 🚀 快速开始 | Quick Start
 
-### 环境要求
-
+### 1️⃣ 环境要求
 - Node.js 18+
 - npm 或 yarn 或 pnpm
 
-### 安装依赖
-
+### 2️⃣ 安装与运行
 ```bash
+# 安装依赖
 npm install
+
+# 启动开发服务器
+npm run dev
 ```
+访问 http://localhost:3000
 
-### 配置环境变量
-
+### 3️⃣ 配置环境变量
 创建 `.env` 文件：
-
 ```env
 # Supabase 配置
 SUPABASE_URL=your_supabase_url
@@ -193,32 +162,17 @@ SUPABASE_SECRET_KEY=your_supabase_service_role_key
 DASHSCOPE_API_KEY=your_dashscope_api_key
 ```
 
-### 开发服务器
-
+### 4️⃣ 构建与部署
 ```bash
-npm run dev
-```
-
-访问 http://localhost:3000
-
-### 构建生产版本
-
-```bash
-npm run build
-```
-
-### 预览生产版本
-
-```bash
-npm run preview
+npm run build   # 构建生产版本
+npm run preview # 预览生产版本
 ```
 
 ---
 
-## 核心页面
+## 🖼️ 核心页面 | Core Pages
 
-### 前台页面
-
+### 📍 前台页面
 - **首页** (`/`) - 3D 场景 Hero 区块 + 产品分类展示
 - **AI 智能助手** - 右下角悬浮聊天窗口，支持：
   - **产品咨询**：基于向量搜索的产品智能答疑
@@ -231,8 +185,7 @@ npm run preview
 - **关于我们** (`/about`) - 公司介绍
 - **联系我们** (`/contact`) - 联系表单
 
-### 后台管理 (`/admin`)
-
+### 🔐 后台管理 (`/admin`)
 - **仪表板** (`/admin`) - 系统概览、统计数据
 - **产品管理** (`/admin/products`) - 产品 CRUD、批量操作
 - **新闻管理** (`/admin/news`) - 新闻 CRUD、富文本编辑
@@ -246,50 +199,92 @@ npm run preview
 
 ---
 
-## 3D 场景说明
+## 🧊 3D 场景说明 | 3D Scene Details
 
-### 已实现功能 ✅
+### ✅ 已实现功能
+1. **程序化生成的粒子系统**
+   - **零外部依赖**：完全使用代码生成，无需下载 3D 模型文件
+   - **GPU 加速**：使用 Three.js ShaderMaterial 实现，性能优异
+   - **高精度模型**：程序化生成的服务器机柜，包含：
+     - 机柜框架（17.5U × 42U × 28U）
+     - 7 台服务器（其中 3 台为高精度焦点服务器）
+     - 详细的硬件组件：硬盘、风扇墙、主板、CPU 散热器、内存条、GPU
+     - LED 指示灯（电源、硬盘状态灯）
+   - **幽灵服务器效果**：背景服务器以深灰色低对比度呈现，营造景深感
+   - **材质差异化渲染**：
+     - 塑料材质（风扇）：圆形粒子，较大柔和
+     - 金属材质（散热器、GPU）：方形粒子，较小锐利，带高光
+     - 发光材质（LED、金色触点）：圆形粒子，带 Bloom 发光
+   - **动态数据流**：PCB 主板上的青色数字雨脉冲效果（正弦波流动）
+   - **气流粒子系统**：从风扇向后流动的淡蓝色透明粒子（可视化散热效果）
+   - **有机噪声场**：爆炸阶段使用 Curl Noise 产生自然的扰动效果
+   - **LOD (Level of Detail)**：动态调整粒子大小，基于相机距离自动缩小远景粒子并剔除极远粒子，优化性能并增强景深感（Depth of Field）
 
-1. **完整的 Three.js 场景框架**
-   - 场景、相机、渲染器配置
-   - 环境光、平行光、轮廓光照明系统
-   - 鼠标视差效果（3D 模型跟随鼠标移动）
+    - **Quantum Assembly 入场动画**：粒子从高熵随机状态通过 GSAP 缓动汇聚成有序模型，配合 Shader 实现透明度与位置的平滑过渡
 
-2. **真实的 3D 服务器模型**
-   - 模型来源：[Sketchfab](https://sketchfab.com) - [@Shalmon](https://sketchfab.com/Shalmon) 的 [Server Rack](https://sketchfab.com/3d-models/server-rack-c144d837358d446998c7b63cd1bdf825) 免费模型
-   - 模型文件：`public/models/server/model.obj` (4.8MB, 38,006 面)
-   - 材质文件：`public/models/server/model.mtl` (9 种材质)
-   - 自动缩放和居中对齐
-   - 许可：CC Attribution（知识共享署名许可）
+2. **滚动触发的爆炸动画（Scrollytelling）**
+   - **多阶段动画序列**：
+     - 阶段 1：服务器滑出（Z 轴移动）
+     - 阶段 2：机箱盖打开（向上掀起）
+     - 阶段 3：组件爆炸解体（各部件沿不同方向展开）
+   - **波浪延迟**：每台服务器依次触发动画，形成波浪效果
+   - **文字内容协同**：滚动时文字内容淡出并上移，配合 3D 展示
+   - **镜头运动**：相机从侧前方移动到正上方，保持最佳视角
 
-3. **设备检测与降级**
-   - 桌面端：完整 3D 场景
-   - 移动端：静态图片降级方案
-   - `useDeviceDetection` composable 自动判断
+3. **交互功能**
+   - **鼠标视差效果**：模型跟随鼠标位置轻微旋转
+   - **自动旋转**：OrbitControls 提供平滑的自动旋转
+   - **动态缩放**：随滚动进度自动调整模型大小（0.75x - 1.3x）
+   - **质量自适应**：Ultra/Medium 两种质量级别，自动选择最优配置
+   - **交互式高亮系统**：
+     - **动态 Hitbox 同步**：不可见的射线检测包围盒实时跟随爆炸动画位移与缩放，确保在任何动画阶段都能精准识别组件
+     - **双面检测**：支持相机穿入模型内部时的内壁交互
+     - **视觉反馈**：
+       - 悬停焦点组件高亮（亮度 x1.8）
+       - 非焦点组件自动压暗（透明度降至 30%）
+       - 光标变为十字准星
+   - **3D 投影注释系统**（Stage 3 爆炸阶段）：
+     - **3D-to-2D 投影**：HTML 标签通过矩阵变换精准锁定 3D 组件屏幕坐标
+     - **Swiss Design 风格**：极简白底、红色重音边框、等宽字体编号
+     - **智能显隐 (Occlusion Culling)**：
+       - **射线遮挡检测**：从相机向组件发射射线，若被其他组件遮挡则自动隐藏标签，防止视觉穿帮
+       - **屏幕边缘剔除**：自动隐藏移出屏幕外的标签
+     - **透视缩放 (Perspective Scaling)**：标签大小随组件距离动态缩放（0.5x - 1.2x），增强空间深度感
+     - **动态聚焦**：悬停某标签时，该标签高亮并放大，其余标签自动变暗，引导视觉焦点
 
-4. **加载状态管理**
-   - PlaceholderCanvas 加载占位符
-   - 加载进度显示
-   - 优雅的错误处理
+4. **后处理与视觉效果**
+   - **HDR 渲染管线**：使用 HalfFloatType 浮点缓冲区支持高动态范围
+   - **UnrealBloomPass 发光**：
+     - 强度：1.0
+     - 半径：0.5（柔和平滑）
+     - 阈值：1.05（仅高亮部分发光）
+   - **发光材质识别**：LED 指示灯、金色触点、黄色装饰自动发光
+   - **白色背景优化**：通过 HDR 分离发光与白色背景（1.0）
+
+5. **设备检测与加载**
+   - **降级方案**：移动端自动选择优化的降级方案 + 响应式视图偏移
+   - **状态管理**：PlaceholderCanvas 加载占位符，ClientOnly 确保渲染安全
 
 ---
 
-## 动画系统
+## 🎬 动画系统 | Animation System
 
 ### 已实现的 GSAP 动画
-
-1. **Feature Items 特性展示**
+1. **Hero 区域 3D Scrollytelling**
+   - 滚动触发的 3D 服务器爆炸动画
+   - 文字内容淡出并上移
+   - 相机从侧前方移动到正上方
+   - 模型动态缩放（0.75x - 1.3x）
+2. **Feature Items 特性展示**
    - 分隔线扩展动画
    - 文字上滑淡入
    - 数字淡入效果
    - 交错显示（stagger）
-
-2. **News Cards 新闻卡片**
+3. **News Cards 新闻卡片**
    - 批量触发动画（ScrollTrigger.batch）
    - 上滑淡入效果
    - 交错延迟显示
-
-3. **Reveal Sections 区域淡入**
+4. **Reveal Sections 区域淡入**
    - 通用淡入效果
    - 触发点：元素顶部到达视口 85%
 
@@ -520,137 +515,67 @@ select * from match_products(
 
 ---
 
-## 数据库架构
+## ⚡ Supabase 核心架构 | Infrastructure
+Supabase 为本项目提供了稳定且高性能的后端基础设施，实现了从认证到存储的全栈能力。
 
-### 核心表结构
+### 🔑 认证系统 (Authentication)
+- **管理员权限控制**：基于 Supabase Auth 的安全认证体系。
+- **持久化会话**：支持会话状态的持久化管理，确保管理后台的安全性。
 
-1. **products** - 产品表（多语言名称、JSONB 规格、向量 Embedding）
-   - `embedding` 列：1024 维向量（阿里云 text-embedding-v3）
-   - `match_products` RPC 函数：向量相似度搜索
-2. **posts** - 资讯/博客表（多语言内容）
-3. **solutions** - 解决方案表
-4. **inquiries** - 客户询盘表
-5. **admin_logs** - 管理员操作日志
-6. **profiles** - 管理员权限表（Supabase Auth 扩展）
+### 🗄️ 数据库架构 (PostgreSQL)
+- **关系型数据模型**：高效管理产品 (`products`)、新闻 (`posts`)、询盘 (`inquiries`) 等核心资源。
+- **行级安全策略 (RLS)**：
+  - **Public**：仅允许匿名访问已发布的内容。
+  - **Admin**：通过身份验证后的管理员拥有完整的 CRUD 权限。
+- **操作日志**：自动记录管理员的操作审计轨迹 (`admin_logs`)。
 
-### 存储桶（Storage Buckets）
+### ☁️ 对象存储 (Storage Buckets)
+- **product-assets**：存储高分辨率产品图片及 3D 模型。
+- **site-media**：管理网站静态媒体资源。
+- **性能优化**：内置图片压缩与 CDN 加快全球访问速度。
 
-- **product-assets** - 产品图片和 3D 模型
-- **site-media** - 网站媒体资源
-
-### 安全策略
-
-- **RLS（Row Level Security）** - 行级安全控制
-- **Public** - 仅 SELECT 权限（已发布内容）
-- **Admin** - 完整 CRUD 权限
-
----
-
-## 部署
-
-### Vercel（推荐）
-
-```bash
-# 安装 Vercel CLI
-npm i -g vercel
-
-# 部署
-vercel
-```
-
-### 其他平台
-
-此项目可以部署到任何支持 Node.js 的平台：
-
-- Netlify
-- AWS Amplify
-- Railway
-- 自建服务器
-
-### 环境变量配置
-
-在部署平台设置以下环境变量：
-
-```env
-SUPABASE_URL=your_supabase_url
-SUPABASE_KEY=your_supabase_anon_key
-SUPABASE_SECRET_KEY=your_supabase_service_role_key
-```
+### 🧠 向量搜索与自动化 (AI & Vector)
+- **pgvector 支持**：内置 1024 维向量索引，支持高效的语义相似度检索。
+- **自动化 Webhooks**：
+  - 监听数据库变更，实时触发 Edge Functions。
+  - 自动执行内容清洗与向量化同步，确保 AI 助手知识库的即时性。
 
 ---
 
-## Git 工作流
+## 📈 性能与 SEO | Performance & SEO
 
-```bash
-# 创建功能分支
-git checkout -b feat/new-feature
-
-# 提交变更
-git add .
-git commit -m "feat: add new feature"
-
-# 推送到远程
-git push origin feat/new-feature
-```
-
-### 提交信息规范
-
-使用 Conventional Commits：
-
-- `feat:` - 新功能
-- `fix:` - Bug 修复
-- `docs:` - 文档更新
-- `style:` - 代码格式调整
-- `refactor:` - 重构
-- `perf:` - 性能优化
-- `test:` - 测试
-- `chore:` - 构建过程或辅助工具变动
+- ✅ **性能优化**: WebP 图片, 响应式图片加载, 懒加载, ISR 缓存策略, 代码分割
+- ✅ **SEO 配置**: Meta 标签, Open Graph, Twitter Cards, 动态 Sitemap, Robots.txt
+- ✅ **结构化数据**: JSON-LD 格式 (Products, Articles, Org, Breadcrumbs)
 
 ---
 
-## 浏览器支持
+## 📄 后台功能与文档 | CMS & Docs
 
-- Chrome/Edge (最新版)
-- Safari (最新版)
-- Firefox (最新版)
-- Mobile Safari iOS 14+
-- Chrome Android 10+
+### 🛠️ CMS 后台
+- **产品管理**: 多语言编辑, 规格生成器, 批量操作
+- **新闻管理**: Tiptap 富文本, 标签系统, 时间控制
+- **询盘管理**: 状态追踪, 数据导出 (JSON/CSV)
+- **全局搜索 & 日志**: 跨资源搜索, 完整管理员操作历史
 
----
-
-## 待完善功能
-
-### 短期优化
-
-- [ ] AI 辅助翻译（多语言内容生成）
-- [ ] 图片自动化处理（背景检测、智能压缩）
-- [ ] A/B 测试支持
-
-### 长期规划
-
-- [ ] 3D 动画增强（机柜开启、组件爆炸效果）
-- [ ] 更多结构化数据类型
-- [ ] 产品预览模式
-
----
-
-## 文档
-
+### 📘 相关文档
 - [管理后台快速开始](./docs/QUICK_START_ADMIN.md)
 - [后台功能增强说明](./docs/ADMIN_ENHANCEMENTS.md)
-- [AI 助手功能开发指南](./docs/AI_FEATURES.md) - RAG 系统架构、数据库设计、负载均衡
-- [AI 助手增强计划](./docs/AI%20%E5%8A%A9%E6%89%8B%E5%8A%9F%E8%83%BD%E5%A2%9E%E5%BC%BA%E8%AE%A1%E5%88%92.md) - 持久化与安全性路线图
+- [AI 助手功能开发指南](./docs/AI_FEATURES.md)
+- [AI 助手增强计划](./docs/AI%20%E5%8A%A9%E6%89%8B%E5%8A%9F%E8%83%BD%E5%A2%9E%E5%BC%BA%E8%AE%A1%E5%88%92.md)
 - [实现总结](./docs/IMPLEMENTATION_SUMMARY.md)
 
 ---
 
-## 许可证
-
+### 📜 许可证 | License
 MIT License
 
 ---
 
-**SUPERCORE TECHNOLOGY LIMITED** - 为香港及海外市场提供专业基础设施解决方案
+### 📞 联系我们 | Contact
+**SUPERCORE TECHNOLOGY LIMITED**  
+🌐 **Website**: [www.supercore.hk](https://www.supercore.hk)  
+📧 **Email**: [info@supercore.hk](mailto:info@supercore.hk)
 
-**Website**: https://www.supercore.hk
-**Email**: info@supercore.hk
+---
+<p align="center">Built with ❤️ by SUPERCORE Team</p>

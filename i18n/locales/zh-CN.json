@@ -16,13 +16,13 @@
     "mission": "了解客户需求；理解客户需求；满足客户需求；为客户提供超预期的产品与服务",
     "description": "全球领先的AI算力基础设施服务商，专注于AI服务器与GPU计算集群的研发、生产与全栈解决方案交付",
     "address": "九龍尖沙咀科學館道14號新文華中心B座7樓701室108單位",
-    "phone": "+852 XXXX XXXX",
-    "email": "sales{'@'}supercore.com",
+    "phone": "+86 18565106111",
+    "email": "kyle{'@'}supercore.hk",
     "website": "https://www.supercore.com"
   },
   "home": {
     "hero": {
-      "title": "基础设施 · 极简主义",
+      "title": "AI驱动\n重构企业智能生产力",
       "subtitle": "为数字化企业打造的精密工程解决方案。",
       "cta": "探索方案",
       "ctaSecondary": "联系咨询"
@@ -288,8 +288,8 @@
     },
     "contact": {
       "title": "联系方式",
-      "phone": "+852 XXXX XXXX",
-      "email": "sales{'@'}supercore.com"
+      "phone": "+86 18565106111",
+      "email": "kyle{'@'}supercore.hk"
     }
   },
   "supercore": {

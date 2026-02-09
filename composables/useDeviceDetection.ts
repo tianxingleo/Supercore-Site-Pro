@@ -70,11 +70,9 @@ export const useDeviceDetection = () => {
   }
 
   const canUseAdvanced3D = (): boolean => {
-    return (
-      !deviceInfo.value.isLowPerformance &&
-      canUseWebGL() &&
-      deviceInfo.value.isDesktop
-    )
+    // Relaxed check: Allow 3D on all devices that support WebGL, including mobile
+    // The particle system has been optimized for mobile in ServerParticles.vue
+    return canUseWebGL()
   }
 
   onMounted(() => {

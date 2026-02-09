@@ -28,7 +28,7 @@ const organizationData = {
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer service',
-    email: 'info@supercore.hk',
+    email: 'kyle@supercore.hk',
   },
   sameAs: [] as string[],
 }
