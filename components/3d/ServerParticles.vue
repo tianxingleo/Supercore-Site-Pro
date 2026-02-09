@@ -7,12 +7,12 @@
       class="absolute pointer-events-none transition-opacity duration-300" :style="{
         top: ann.y + 'px',
         left: ann.x + 'px',
-        opacity: ann.opacity,
-        transform: 'translate(-50%, -50%)',
-        zIndex: ann.isActive ? 50 : 10 // Bring active label to front
+        opacity: ann.isOccluded ? 0 : ann.opacity,
+        transform: `translate(-50%, -50%) scale(${ann.scale})`,
+        zIndex: ann.isActive ? 50 : (ann.isOccluded ? 0 : 10)
       }">
-      <div class="flex items-center space-x-2 transition-transform duration-300"
-        :class="ann.isActive ? 'scale-110' : 'scale-100'">
+      <div class="flex items-center space-x-2 transition-transform duration-300 origin-left"
+        :class="ann.isActive ? 'scale-110' : ''">
         <!-- Connecting Line/Dot -->
         <div class="w-2 h-2 rounded-full shadow-[0_0_10px_rgba(255,0,0,0.8)] transition-colors duration-300"
           :class="ann.isActive ? 'bg-red-500 shadow-[0_0_15px_rgba(255,50,50,1)]' : 'bg-red-600'"></div>
@@ -630,6 +630,8 @@ const annotations = ref<{
   x: number;
   y: number;
   opacity: number;
+  scale: number; // For perspective depth
+  isOccluded: boolean; // For occlusion culling
   isActive: boolean; // Track active state
 }[]>([]);
 
@@ -1047,9 +1049,14 @@ onMounted(() => {
             x: 0,
             y: 0,
             opacity: 0,
+            scale: 1,
+            isOccluded: false,
             isActive: false
           }));
         }
+
+        const occlusionRay = new THREE.Raycaster();
+
 
         // Determine currently hovered type from uniform or raycaster logic below?
         // Actually, raycaster logic runs AFTER this block. 
@@ -1065,15 +1072,41 @@ onMounted(() => {
         hitBoxes.forEach((box, i) => {
           const tempV = new THREE.Vector3();
           box.getWorldPosition(tempV);
+
+          // 1. Perspective Scaling
+          const distToCam = camera.position.distanceTo(tempV);
+          // Scale logic: Closer = larger (up to 1.2), Further = smaller (down to 0.5)
+          let scale = Math.max(0.5, Math.min(1.2, 65.0 / distToCam));
+
+          // 2. Projection
           tempV.project(camera);
 
           const x = (tempV.x * .5 + .5) * viewWidth;
           const y = (tempV.y * -.5 + .5) * viewHeight;
 
+          // 3. Occlusion Check
+          // Cast ray from camera to object center
+          // Note: direction must be normalized
+          const worldDir = new THREE.Vector3().subVectors(box.getWorldPosition(new THREE.Vector3()), camera.position).normalize();
+          occlusionRay.set(camera.position, worldDir);
+
+          // Intersect against ALL hitboxes
+          const intersects = occlusionRay.intersectObjects(hitBoxes);
+
+          let isOccluded = false;
+          if (intersects.length > 0) {
+            // If closest hit is NOT me, I am occluded
+            if (intersects[0].object.uuid !== box.uuid) {
+              isOccluded = true;
+            }
+          }
+
           const ann = annotations.value[i];
           if (ann) {
             ann.x = x;
             ann.y = y;
+            ann.scale = scale;
+            ann.isOccluded = isOccluded;
 
             let visible = easeExplode > 0.1;
             if (tempV.z > 1.0 || Math.abs(tempV.x) > 1.1 || Math.abs(tempV.y) > 1.1) visible = false;
