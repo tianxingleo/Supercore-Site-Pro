@@ -54,7 +54,7 @@ export default defineNuxtConfig({
     // 2. 👇👇👇 核心修复代码：强制内联 tslib 👇👇👇
     // 这行代码会把 tslib 直接写入 index.mjs，不再去外部寻找文件
     externals: {
-      inline: ['tslib', 'pinia', '@pinia/nuxt']
+      inline: ['tslib']
     }
   },
 
@@ -66,20 +66,11 @@ export default defineNuxtConfig({
   // 1. 模块配置：顺序至关重要！
   modules: [
     '@pinia/nuxt',                        // 👈 移至首位，确保 Pinia 最先加载
-    'pinia-plugin-persistedstate/nuxt',   // 👈 紧跟在 Pinia 之后
     '@nuxt/ui',
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/supabase',
   ],
-
-  // 2. Pinia 持久化默认配置 (可选，但在服务端更安全)
-  piniaPluginPersistedstate: {
-    storage: 'cookies', // 强制默认使用 Cookie (服务端可读写)，避免 LocalStorage 在服务端报错
-    cookieOptions: {
-      sameSite: 'lax',
-    }
-  },
 
   // 圖片優化配置
   image: {
@@ -223,28 +214,14 @@ export default defineNuxtConfig({
     build: {
       rollupOptions: {
         output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              // 兼容 Windows 路径并转换为小写处理
-              const path = id.toString().toLowerCase().replace(/\\/g, '/')
-
-              if (path.includes('three')) return 'vendor-three'
-              if (path.includes('echarts')) return 'vendor-echarts'
-              if (path.includes('gsap')) return 'vendor-gsap'
-              if (path.includes('lenis')) return 'vendor-lenis'
-              if (path.includes('tiptap')) return 'vendor-tiptap'
-              if (path.includes('supabase')) return 'vendor-supabase'
-              if (path.includes('vue')) return 'vendor-vue-core'
-
-              // 剩余的 node_modules 按包名拆分，避免全部堆在一个 vendor.js 里
-              const parts = path.split('node_modules/')
-              const pkgName = parts[parts.length - 1]?.split('/')[0]
-              if (pkgName) return `vendor-${pkgName}`
-
-              return 'vendor-others'
-            }
-          },
-        },
+          // ⚠️ 删掉你之前复杂的 manualChunks 函数！
+          // 使用最安全的拆分策略：只把巨大的库拆出来，其他的让 Vite 自己算
+          manualChunks: {
+            'three-vendor': ['three', '@tresjs/core'],
+            'echarts-vendor': ['echarts'],
+            // 其他的不要手动拆了，很容易崩
+          }
+        }
       },
       chunkSizeWarningLimit: 1000, // 进一步调高阈值，核心库 large 是预期的
     },

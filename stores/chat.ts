@@ -250,5 +250,6 @@ export const useChatStore = defineStore('chat', {
       this.currentSession = null
       console.log('[ChatStore] 清空当前会话，之后:', this.currentSession)
     }
-  }
+  },
+  persist: true
 })
