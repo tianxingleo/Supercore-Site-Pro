@@ -54,7 +54,7 @@ export default defineNuxtConfig({
     // 2. 👇👇👇 核心修复代码：强制内联 tslib 👇👇👇
     // 这行代码会把 tslib 直接写入 index.mjs，不再去外部寻找文件
     externals: {
-      inline: ['tslib']
+      inline: ['tslib', 'pinia', '@pinia/nuxt']
     }
   },
 
@@ -227,7 +227,7 @@ export default defineNuxtConfig({
             if (id.includes('node_modules')) {
               // 兼容 Windows 路径并转换为小写处理
               const path = id.toString().toLowerCase().replace(/\\/g, '/')
-              
+
               if (path.includes('three')) return 'vendor-three'
               if (path.includes('echarts')) return 'vendor-echarts'
               if (path.includes('gsap')) return 'vendor-gsap'
@@ -235,12 +235,12 @@ export default defineNuxtConfig({
               if (path.includes('tiptap')) return 'vendor-tiptap'
               if (path.includes('supabase')) return 'vendor-supabase'
               if (path.includes('vue')) return 'vendor-vue-core'
-              
+
               // 剩余的 node_modules 按包名拆分，避免全部堆在一个 vendor.js 里
               const parts = path.split('node_modules/')
               const pkgName = parts[parts.length - 1]?.split('/')[0]
               if (pkgName) return `vendor-${pkgName}`
-              
+
               return 'vendor-others'
             }
           },
