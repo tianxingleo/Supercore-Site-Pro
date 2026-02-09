@@ -36,6 +36,17 @@ const vertexShader = `
   varying vec3 vPos;       // Pass local position to fragment
 
   float easeOutCubic(float x) { return 1.0 - pow(1.0 - x, 3.0); }
+  
+  // Simple Curl-like Noise Field
+  vec3 getNoiseField(vec3 p) {
+      float t = uTime * 0.5;
+      // Combine multiple sines for organic complexity
+      return vec3(
+          sin(p.y * 0.3 + t) * cos(p.z * 0.23 + t*1.1),
+          sin(p.z * 0.3 + t) * cos(p.x * 0.23 + t*1.2),
+          sin(p.x * 0.3 + t) * cos(p.y * 0.23 + t*1.3)
+      );
+  }
 
   void main() {
     vColor = aColor;
@@ -104,6 +115,13 @@ const vertexShader = `
              pos.x += pos.x * 0.15 * easeExplode; 
         }
         
+        // Apply Curl Noise / Turbulence
+        if (easeExplode > 0.05) {
+             vec3 noise = getNoiseField(pos * 0.3 + aRandom * 2.0); // Scale pos for frequency
+             float noiseAmp = 0.8 * easeExplode; // Increase noise as it explodes
+             pos += noise * noiseAmp;
+        }
+
         pos += (aRandom - 0.5) * easeExplode * 0.2;
       }
     }
