@@ -44,7 +44,8 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 const vertexShader = `
   uniform float uTime;
   uniform float uProgress;
-  uniform float uPixelScale; 
+  uniform float uPixelScale;
+  uniform float uEntrance; // 0.0: Dispersed, 1.0: Assembled 
   
   attribute vec3 aColor;
   attribute float aServerIndex;
@@ -227,7 +228,23 @@ const vertexShader = `
     gl_PointSize = max(0.0, perspectiveSize * lodFactor);
     
     // Pass alpha, if size is 0, alpha effectively doesn't matter, but good to fade
-    vAlpha = finalAlpha * lodFactor;
+    // vAlpha = finalAlpha * lodFactor;
+
+    // --- Entrance / Exit Animation (Quantum Assembly) ---
+    // uEntrance: 0->1 (In), 1->0 (Out)
+    // Staggered assembly based on random value
+    float entranceProgress = smoothstep(0.0, 1.0, (uEntrance - (1.0 - aRandom.x) * 0.5) / 0.5);
+    entranceProgress = clamp(entranceProgress, 0.0, 1.0);
+    
+    // Dispersion Vector: Explode outwards based on normal or random
+    vec3 dispersion = (aRandom - 0.5) * 300.0; // Scatter 300 units
+    dispersion.y += 50.0; // Bias upwards slightly
+    
+    // Apply Entrance
+    gl_Position.xyz = mix(gl_Position.xyz + dispersion, gl_Position.xyz, entranceProgress);
+    
+    // Pass alpha
+    vAlpha = finalAlpha * lodFactor * entranceProgress;
   }
 `;
 
@@ -752,7 +769,8 @@ onMounted(() => {
       uTime: { value: 0 },
       uProgress: { value: 0 },
       uPixelScale: { value: quality.value === 'ultra' ? 1.0 : 1.5 },
-      uHoverPartType: { value: -1.0 }
+      uHoverPartType: { value: -1.0 },
+      uEntrance: { value: 0.0 } // Start at 0 (Dispersed)
     },
     transparent: true,
   });
@@ -823,6 +841,26 @@ onMounted(() => {
   window.addEventListener('resize', handleResize);
   // Initial capture
   handleResize();
+
+  // Entrance Animation
+  // Delay slightly to ensure ready, then assemble
+  // Use GSAP for smooth easing
+  const { $gsap } = useNuxtApp();
+  $gsap.to(pointsMaterial.uniforms.uEntrance, {
+    value: 1.0,
+    duration: 3.5, // Slow, majestic assembly
+    ease: 'power2.out',
+    delay: 0.2
+  });
+
+  // Expose exit method
+  const animateOut = () => {
+    $gsap.to(pointsMaterial.uniforms.uEntrance, {
+      value: 0.0,
+      duration: 1.5,
+      ease: 'power2.in'
+    });
+  };
 
   // Mouse Move for Raycasting
   const onMouseMove = (event: MouseEvent) => {
