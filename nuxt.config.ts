@@ -43,26 +43,19 @@ export default defineNuxtConfig({
 
   // Nitro engine optimization
   nitro: {
-    // static: true, // ⚠️ 注意：如果你是部署 Node 服务端(SSR)，建议把这行注释掉，否则可能会变成纯静态站点
-    
-    sourceMap: false, // 核心：关闭 sourceMap 省内存
-    minify: true,     // 压缩代码
-    
-    // 如果你有预渲染需求（SSG），在这里限制并发
+    // 1. 之前做过的优化保持不变
+    sourceMap: false,
+    minify: true,
     prerender: {
-      concurrency: 1, // 限制预渲染时的并发数
-      interval: 250   // 增加间隔，防止瞬时压力过大
+      concurrency: 1,
+      interval: 250
     },
 
-    // 👇👇👇 新增这一块！核心修复代码 👇👇👇
+    // 2. 👇👇👇 核心修复代码：强制内联 tslib 👇👇👇
+    // 这行代码会把 tslib 直接写入 index.mjs，不再去外部寻找文件
     externals: {
-      inline: ['tslib'] 
-    },
-    
-    // ❌ 删除下面这个错误的 experimental 配置
-    // experimental: {
-    //   concurrency: 1,
-    // },
+      inline: ['tslib']
+    }
   },
 
   // Pinia Configuration
