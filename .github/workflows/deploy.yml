@@ -1,0 +1,43 @@
+name: Deploy Nuxt to Server
+
+on:
+  push:
+    branches: [ "latest" ]  # 当推送到 main 分支时触发，如果是 master 请修改
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            # 1. 进入项目目录
+            cd /root/my-nuxt-app
+            
+            # 2. 拉取最新代码
+            git pull origin latest
+            
+            # 3. 重新构建 Docker 镜像 (这一步可能需要几分钟)
+            # 这里的 --build-arg 可以把变量传进去，也可以在 run 的时候传
+            docker build -t my-nuxt-app .
+            
+            # 4. 停止并删除旧容器 (如果存在)
+            docker stop nuxt-web || true
+            docker rm nuxt-web || true
+            
+            # 5. 启动新容器 (注入 GitHub Secrets 里的变量)
+            docker run -d \
+              --name nuxt-web \
+              --restart=always \
+              -p 3000:3000 \
+              -e SUPABASE_URL="${{ secrets.SUPABASE_URL }}" \
+              -e SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" \
+              -e SUPABASE_SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}" \
+              my-nuxt-app
+              
+            # 6. 清理未使用的镜像 (可选，防止磁盘爆满)
+            docker image prune -f
