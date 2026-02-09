@@ -4,7 +4,6 @@
  */
 export default defineNuxtPlugin({
     name: 'supabase-error-handler',
-    enforce: 'pre', // 在其他插件之前运行
     async setup(nuxtApp) {
         // 监听Supabase相关错误
         nuxtApp.hook('app:error', (error) => {

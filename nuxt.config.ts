@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   future: {
-    compatibilityVersion: 4,
+    compatibilityVersion: 3,
   },
 
   // Runtime Config
@@ -65,12 +65,12 @@ export default defineNuxtConfig({
 
   // 1. 模块配置：顺序至关重要！
   modules: [
+    '@pinia/nuxt',                        // 👈 移至首位，确保 Pinia 最先加载
+    'pinia-plugin-persistedstate/nuxt',   // 👈 紧跟在 Pinia 之后
     '@nuxt/ui',
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/supabase',
-    '@pinia/nuxt',                        // 👈 必须在持久化插件之前！
-    'pinia-plugin-persistedstate/nuxt',   // 👈 持久化插件
   ],
 
   // 2. Pinia 持久化默认配置 (可选，但在服务端更安全)
@@ -219,6 +219,34 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: ['gsap', 'lenis'],
       exclude: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js'],
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              // 兼容 Windows 路径并转换为小写处理
+              const path = id.toString().toLowerCase().replace(/\\/g, '/')
+              
+              if (path.includes('three')) return 'vendor-three'
+              if (path.includes('echarts')) return 'vendor-echarts'
+              if (path.includes('gsap')) return 'vendor-gsap'
+              if (path.includes('lenis')) return 'vendor-lenis'
+              if (path.includes('tiptap')) return 'vendor-tiptap'
+              if (path.includes('supabase')) return 'vendor-supabase'
+              if (path.includes('vue')) return 'vendor-vue-core'
+              
+              // 剩余的 node_modules 按包名拆分，避免全部堆在一个 vendor.js 里
+              const parts = path.split('node_modules/')
+              const pkgName = parts[parts.length - 1]?.split('/')[0]
+              if (pkgName) return `vendor-${pkgName}`
+              
+              return 'vendor-others'
+            }
+          },
+        },
+      },
+      chunkSizeWarningLimit: 1000, // 进一步调高阈值，核心库 large 是预期的
     },
   },
   // Build
