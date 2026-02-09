@@ -33,12 +33,31 @@ export default defineNuxtConfig({
   // TypeScript
   typescript: {
     strict: true,
-    typeCheck: false, // Disabled due to vue-tsc issues in dev mode
+    typeCheck: false,
   },
 
   sourcemap: {
     server: false,
-    client: false
+    client: false,
+  },
+
+  // Nitro engine optimization
+  nitro: {
+    // static: true, // ⚠️ 注意：如果你是部署 Node 服务端(SSR)，建议把这行注释掉，否则可能会变成纯静态站点
+    
+    sourceMap: false, // 核心：关闭 sourceMap 省内存
+    minify: true,     // 压缩代码
+    
+    // 如果你有预渲染需求（SSG），在这里限制并发
+    prerender: {
+      concurrency: 1, // 限制预渲染时的并发数
+      interval: 250   // 增加间隔，防止瞬时压力过大
+    },
+    
+    // ❌ 删除下面这个错误的 experimental 配置
+    // experimental: {
+    //   concurrency: 1,
+    // },
   },
 
   // Pinia Configuration
@@ -47,7 +66,7 @@ export default defineNuxtConfig({
   },
 
   // Modules
-  modules: ['@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/supabase', '@nuxt/ui'],
+  modules: ['@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/supabase', '@nuxt/ui', '@pinia/nuxt'],
 
   // 圖片優化配置
   image: {
