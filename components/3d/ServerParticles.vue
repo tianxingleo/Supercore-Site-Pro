@@ -8,6 +8,12 @@
 import * as THREE from 'three';
 // @ts-ignore
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+// @ts-ignore
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+// @ts-ignore
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+// @ts-ignore
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 // --- Shader Definitions ---
 const vertexShader = `
@@ -20,9 +26,11 @@ const vertexShader = `
   attribute float aPartType;    
   attribute vec3 aRandom;
   attribute float aIsGhost;
+  attribute float aEmissive;
 
   varying vec3 vColor;
   varying float vGhost;
+  varying float vEmissive;
   varying float vAlpha; // Pass alpha to fragment
 
   float easeOutCubic(float x) { return 1.0 - pow(1.0 - x, 3.0); }
@@ -30,6 +38,7 @@ const vertexShader = `
   void main() {
     vColor = aColor;
     vGhost = aIsGhost;
+    vEmissive = aEmissive;
     vec3 pos = position;
 
     // --- A. 幽灵服务器 (背景) ---
@@ -129,6 +138,7 @@ const vertexShader = `
 const fragmentShader = `
   varying vec3 vColor;
   varying float vGhost;
+  varying float vEmissive;
   varying float vAlpha;
   
   void main() {
@@ -139,7 +149,16 @@ const fragmentShader = `
     
     // 幽灵模式：深灰色
     if (vGhost > 0.5) {
-        finalColor = vec3(0.2, 0.2, 0.2); 
+        finalColor = vec3(0.12, 0.12, 0.12); 
+    } else {
+        // Emissive Logic for Bloom
+        if (vEmissive > 0.5) {
+           // Boost emissive color VERY strongly to exceed HDR threshold (1.1)
+           finalColor *= 4.0; 
+        } else {
+           // Dim non-emissive. Even bright metals (0.8) * 1.0 < 1.1
+           finalColor *= 1.0;
+        }
     }
     
     gl_FragColor = vec4(finalColor, vAlpha);
@@ -156,17 +175,7 @@ const generateModel = (qualityLevel: string) => {
   const partTypes: number[] = [];
   const randoms: number[] = [];
   const isGhosts: number[] = [];
-
-  const add = (x: number, y: number, z: number, color: string, sIdx: number, pType: number, isGhost = 0.0) => {
-    particles.push(x, y, z);
-    const c = new THREE.Color(color);
-    colors.push(c.r, c.g, c.b);
-    serverIndices.push(sIdx);
-    partTypes.push(pType);
-    randoms.push(Math.random(), Math.random(), Math.random());
-    isGhosts.push(isGhost);
-  };
-
+  const emissives: number[] = [];
 
   let baseStep = qualityLevel === 'ultra' ? 0.35 : 0.55;
   let detailStep = qualityLevel === 'ultra' ? 0.12 : 0.25;
@@ -191,6 +200,21 @@ const generateModel = (qualityLevel: string) => {
   const C_SOCKET = '#222222';
   const C_FAN_RING = '#444444'; // Grey Fan Ring (No Blue Light)
   const C_POWER_LED = '#22ff22'; // Green Power LED
+
+  const add = (x: number, y: number, z: number, color: string, sIdx: number, pType: number, isGhost = 0.0) => {
+    particles.push(x, y, z);
+    const c = new THREE.Color(color);
+    colors.push(c.r, c.g, c.b);
+    serverIndices.push(sIdx);
+    partTypes.push(pType);
+    randoms.push(Math.random(), Math.random(), Math.random());
+    isGhosts.push(isGhost);
+
+    // Check for emissive colors (LEDs, Gold, Accents)
+    const isEmissive = [C_GPU_ACCENT, C_RAM_GOLD, C_HDD_LED, C_POWER_LED].includes(color);
+    emissives.push(isEmissive ? 1.0 : 0.0);
+  };
+
 
   // 布局参数
   const frameW = 17.5;
@@ -394,6 +418,7 @@ const generateModel = (qualityLevel: string) => {
     partTypes: new Float32Array(partTypes),
     randoms: new Float32Array(randoms),
     isGhosts: new Float32Array(isGhosts),
+    emissives: new Float32Array(emissives),
     count: particles.length / 3
   };
 };
@@ -434,6 +459,7 @@ defineExpose({
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
+let composer: EffectComposer;
 let particleSystem: THREE.Points;
 let pointsMaterial: THREE.ShaderMaterial;
 let animationFrameId: number;
@@ -445,22 +471,45 @@ onMounted(() => {
 
   // Initialize Scene
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff); // Use white background
+  scene.background = new THREE.Color(0xffffff); // Pure White Background
 
   // Initialize Camera
   const width = containerRef.value.clientWidth;
   const height = containerRef.value.clientHeight;
   camera = new THREE.PerspectiveCamera(30, width / height, 5, 200); // FOV 30
-  camera.position.set(25, 5, 65); // Initial position (Higher for proper top-down view)
+  // ... camera position ...
+  camera.position.set(25, 5, 65);
 
   // Initialize Renderer
   renderer = new THREE.WebGLRenderer({
     canvas: canvasRef.value,
     antialias: true,
     alpha: false,
+    powerPreference: "high-performance" // Ensure good performance for HDR
   });
   renderer.setSize(width, height);
+  // Remove duplicate setSize
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Initialize Post-Processing Composer with HDR Buffer (HalfFloatType)
+  // This allows values > 1.0 so we can isolate bloom from white background (1.0)
+  const renderTarget = new THREE.WebGLRenderTarget(width, height, {
+    type: THREE.HalfFloatType,
+    format: THREE.RGBAFormat,
+    encoding: THREE.sRGBEncoding // Ensure colors look right
+  });
+
+  const renderScene = new RenderPass(scene, camera);
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(width, height),
+    1.2,  // strength
+    0.4,  // radius
+    1.1   // threshold (Above 1.0 to exclude pure white background)
+  );
+
+  composer = new EffectComposer(renderer, renderTarget);
+  composer.addPass(renderScene);
+  composer.addPass(bloomPass);
 
   // Initialize OrbitControls
   controls = new OrbitControls(camera, renderer.domElement);
@@ -482,6 +531,7 @@ onMounted(() => {
   geometry.setAttribute('aPartType', new THREE.BufferAttribute(data.partTypes, 1));
   geometry.setAttribute('aRandom', new THREE.BufferAttribute(data.randoms, 3));
   geometry.setAttribute('aIsGhost', new THREE.BufferAttribute(data.isGhosts, 1));
+  geometry.setAttribute('aEmissive', new THREE.BufferAttribute(data.emissives, 1));
 
   // Setup Material
   pointsMaterial = new THREE.ShaderMaterial({
@@ -517,6 +567,7 @@ onMounted(() => {
     camera.aspect = viewWidth / viewHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(viewWidth, viewHeight);
+    composer.setSize(viewWidth, viewHeight);
   };
   window.addEventListener('resize', handleResize);
   // Initial capture
@@ -678,7 +729,8 @@ onMounted(() => {
     }
 
     controls.update();
-    renderer.render(scene, camera);
+    // Use composer for bloom effect instead of standard renderer
+    composer.render();
   };
 
   animate();
