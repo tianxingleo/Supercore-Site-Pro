@@ -1,0 +1,19 @@
+# 忽略依赖 (我们在镜像里重新装)
+node_modules
+
+# 忽略构建产物 (防止重复打包)
+.nuxt
+.output
+dist
+
+# 忽略 Git 版本控制文件
+.git
+.gitignore
+.github
+
+# 忽略其他杂项
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+README.md
