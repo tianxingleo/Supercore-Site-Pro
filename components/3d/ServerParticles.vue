@@ -115,7 +115,6 @@ const vertexShader = `
              pos.x += pos.x * 0.15 * easeExplode; 
         }
         
-        // Apply Curl Noise / Turbulence
         if (easeExplode > 0.05) {
              vec3 noise = getNoiseField(pos * 0.3 + aRandom * 2.0); // Scale pos for frequency
              float noiseAmp = 0.8 * easeExplode; // Increase noise as it explodes
@@ -123,6 +122,26 @@ const vertexShader = `
         }
 
         pos += (aRandom - 0.5) * easeExplode * 0.2;
+      }
+      
+      // --- C. Airflow Logic (Type 12) ---
+      // Always active, but maybe speed up with scroll?
+      // Move from Front (Fan Z=4.5) to Back (-Z)
+      if (abs(aPartType - 12.0) < 0.1) {
+          float speed = 8.0; 
+          float flowLen = 15.0; // Distance to flow
+          // Move along -Z
+          // Add random offset to phase so they don't move in sync
+          float zOffset = mod(uTime * speed + aRandom.z * 10.0, flowLen);
+          pos.z -= zOffset; 
+          
+          // Add slight jitter/spread as they move back
+          float spreadProgress = zOffset / flowLen;
+          pos.x += (aRandom.x - 0.5) * spreadProgress * 1.5;
+          pos.y += (aRandom.y - 0.5) * spreadProgress * 1.5;
+          
+          // Scroll based visibility? 
+          // They are always visible for now.
       }
     }
 
@@ -178,6 +197,7 @@ const fragmentShader = `
   uniform float uTime;
   
   void main() {
+    float fAlpha = vAlpha; // Local copy of alpha
     vec2 coord = gl_PointCoord - vec2(0.5);
     float dist = length(coord);
     
@@ -198,8 +218,6 @@ const fragmentShader = `
             // Center is bright, edges fade slightly
             float glow = 1.0 - smoothstep(0.2, 0.5, dist);
             // Don't fade alpha, fade brightness/mix to prevent transparency sorting issues?
-            // Actually fading color is safer for additive look
-            // But we want sharp core.
         }
     }
     
@@ -209,7 +227,6 @@ const fragmentShader = `
         // Add a subtle center highlight to simulate metal reflection
         if (dist < 0.2) {
              // Specular highlight
-             // No operation on coord, just boost color later
         }
     }
 
@@ -233,7 +250,6 @@ const fragmentShader = `
             }
         }
         
-
         // Emissive Logic for Bloom
         if (vEmissive > 0.5) {
            // Reduced boost to prevent flickering/fireflies artifacts
@@ -254,8 +270,20 @@ const fragmentShader = `
            }
         }
     }
+
+    // 3. Airflow (Type 12)
+    // Light Blue, Transparent
+    if (abs(vPartType - 12.0) < 0.1) {
+        finalColor = vec3(0.68, 0.85, 0.95); // Pale Blue
+        float flowDist = length(coord);
+        if (flowDist > 0.5) discard;
+        // Soft edge
+        float alphaMult = 1.0 - smoothstep(0.0, 0.5, flowDist);
+        finalColor *= 1.5; // Little boost for visibility
+        fAlpha *= 0.15 * alphaMult; // Very transparent
+    }
     
-    gl_FragColor = vec4(finalColor, vAlpha);
+    gl_FragColor = vec4(finalColor, fAlpha);
   }
 `;
 
@@ -420,6 +448,17 @@ const generateModel = (qualityLevel: string) => {
             add(x, baseY + 0.5 + y, z, col, serverIdx, 6);
           }
         }
+      }
+
+      // Generate Airflow Particles (Type 12)
+      // Center of fan: fx + 0.7, baseY + 1.5
+      const airCount = 12; // Particles per fan
+      for (let k = 0; k < airCount; k++) {
+        const ax = fx + 0.7 + (Math.random() - 0.5) * 0.8;
+        const ay = baseY + 1.5 + (Math.random() - 0.5) * 0.8;
+        const az = fanCenterZ - (Math.random() * 2.0); // Start behind fan face
+        // Use a placeholder color, color overridden in shader
+        add(ax, ay, az, '#ffffff', serverIdx, 12, 0.0);
       }
     }
 
