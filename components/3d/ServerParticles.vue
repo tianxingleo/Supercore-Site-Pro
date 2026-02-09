@@ -205,9 +205,29 @@ const vertexShader = `
     // Final alpha blends between 1.0 (no fade) and bottomFade
     float finalAlpha = mix(1.0, bottomFade, maskStrength);
     
-    vAlpha = finalAlpha; // Pass to fragment
-
-    gl_PointSize = max(0.0, (200.0 * uPixelScale * sizeMult * finalAlpha) / max(dist, 0.1)); 
+    // --- LOD (Level of Detail) & Depth Scaling ---
+    // Calculate actual distance from camera to particle
+    // gl_Position.w is roughly the distance in view space for perspective projection
+    float viewDist = gl_Position.w;
+    
+    // 1. Distance Attenuation (Standard Perspective)
+    float baseSize = 200.0 * uPixelScale;
+    float perspectiveSize = (baseSize * sizeMult * finalAlpha) / max(viewDist, 0.1);
+    
+    // 2. LOD Scaling
+    // Far particles shrink faster to create depth of field effect and reduce clutter
+    // Range: Starts shrinking at 180.0, disappears at 300.0 (adjusted for explosion camera pull-back)
+    // Camera is initially at Z=65, but pulls back during explosion (up to ~150 dist).
+    float lodFactor = 1.0;
+    if (viewDist > 180.0) {
+        lodFactor = smoothstep(300.0, 180.0, viewDist); // 1.0 at 180, 0.0 at 300
+    }
+    
+    // Apply LOD to final size
+    gl_PointSize = max(0.0, perspectiveSize * lodFactor);
+    
+    // Pass alpha, if size is 0, alpha effectively doesn't matter, but good to fade
+    vAlpha = finalAlpha * lodFactor;
   }
 `;
 
