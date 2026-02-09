@@ -54,7 +54,7 @@ export default defineNuxtConfig({
     // 2. 👇👇👇 核心修复代码：强制内联 tslib 👇👇👇
     // 这行代码会把 tslib 直接写入 index.mjs，不再去外部寻找文件
     externals: {
-      inline: ['tslib']
+      inline: ['tslib', 'pinia', '@pinia/nuxt']
     }
   },
 
