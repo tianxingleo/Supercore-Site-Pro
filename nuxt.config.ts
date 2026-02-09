@@ -64,7 +64,14 @@ export default defineNuxtConfig({
   },
 
   // Modules
-  modules: ['@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/supabase', '@nuxt/ui', '@pinia/nuxt'],
+  modules: [
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
+    '@nuxt/image',
+    '@nuxtjs/i18n',
+    '@nuxtjs/supabase',
+    '@nuxt/ui',
+  ],
 
   // 圖片優化配置
   image: {
