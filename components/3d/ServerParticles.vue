@@ -2,12 +2,28 @@
   <div ref="containerRef" class="w-full h-full min-h-[500px] relative">
     <canvas ref="canvasRef" class="w-full h-full block outline-none"></canvas>
 
-    <div class="absolute top-1/2 right-8 transform -translate-y-1/2 pointer-events-none transition-opacity duration-300"
-      :class="hoverLabel ? 'opacity-100' : 'opacity-0'">
-      <!-- Swiss Style Label: Clean, High Contrast, Minimalist -->
-      <div class="bg-white/95 backdrop-blur-sm border-l-4 border-[#ff0000] pl-6 py-4 pr-12 shadow-sm">
-        <div class="text-gray-400 text-[10px] font-mono uppercase tracking-widest mb-2">System Component</div>
-        <div class="text-black text-3xl font-bold font-display tracking-tighter leading-none">{{ hoverLabel }}</div>
+    <!-- 3D Projected Annotations (Visible during Stage 3 Explosion) -->
+    <div v-for="(ann, index) in annotations" :key="index"
+      class="absolute pointer-events-none transition-opacity duration-300" :style="{
+        top: ann.y + 'px',
+        left: ann.x + 'px',
+        opacity: ann.opacity,
+        transform: 'translate(-50%, -50%)',
+        zIndex: ann.isActive ? 50 : 10 // Bring active label to front
+      }">
+      <div class="flex items-center space-x-2 transition-transform duration-300"
+        :class="ann.isActive ? 'scale-110' : 'scale-100'">
+        <!-- Connecting Line/Dot -->
+        <div class="w-2 h-2 rounded-full shadow-[0_0_10px_rgba(255,0,0,0.8)] transition-colors duration-300"
+          :class="ann.isActive ? 'bg-red-500 shadow-[0_0_15px_rgba(255,50,50,1)]' : 'bg-red-600'"></div>
+        <!-- Label Content -->
+        <div class="backdrop-blur-sm border-l-2 px-3 py-1 shadow-sm transition-all duration-300"
+          :class="ann.isActive ? 'bg-white/95 border-red-500 shadow-md' : 'bg-white/80 border-red-600'">
+          <div class="text-[10px] font-mono tracking-widest uppercase transition-colors duration-300"
+            :class="ann.isActive ? 'text-red-500 font-bold' : 'text-gray-500'">sys.comp.{{ index + 1 }}</div>
+          <div class="text-sm font-bold font-display whitespace-nowrap transition-colors duration-300"
+            :class="ann.isActive ? 'text-black' : 'text-gray-800'">{{ ann.text }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -587,7 +603,15 @@ const containerRef = ref<HTMLElement | null>(null);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const quality = ref('ultra'); // Default quality
 const progress = ref(0);
-const hoverLabel = ref<string | null>(null);
+
+// Reactive state for 3D annotations
+const annotations = ref<{
+  text: string;
+  x: number;
+  y: number;
+  opacity: number;
+  isActive: boolean; // Track active state
+}[]>([]);
 
 // Expose setProgress for parent component
 const setProgress = (val: number) => {
@@ -844,33 +868,6 @@ onMounted(() => {
       const currentOffsetY = initialDownOffset + (totalMoveUp * cameraUpwardEase);
 
       camera.setViewOffset(viewWidth, viewHeight, currentOffset, currentOffsetY, viewWidth, viewHeight);
-
-      // 4. Raycasting & Interaction
-      if (raycaster) {
-        // CRITICAL: Force update world matrices before raycasting because we just modified positions manually
-        rotationPivot.updateMatrixWorld(true);
-
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(hitBoxes);
-
-        if (intersects.length > 0) {
-          const hit = intersects[0].object;
-          const type = hit.userData['type'];
-          const label = hit.userData['label'];
-
-          if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
-            pointsMaterial.uniforms['uHoverPartType'].value = type;
-          }
-          hoverLabel.value = label;
-          document.body.style.cursor = 'crosshair';
-        } else {
-          if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
-            pointsMaterial.uniforms['uHoverPartType'].value = -1.0;
-          }
-          hoverLabel.value = null;
-          document.body.style.cursor = 'default';
-        }
-      }
     }
 
 
@@ -897,7 +894,7 @@ onMounted(() => {
 
     // 4. Calculate Bottom Server Motherboard Position (replicating shader logic)
     // Three servers: serverIndex=2,3,4
-    // Bottom server (2): baseY=-5.0, motherboard at -4.8
+    // Bottom server (2): baseY=-5.0, motherboard at baseY+0.2=-4.8
     // Middle server (3): baseY=0.0, motherboard at 0.2
     // Top server (4): baseY=5.0, motherboard at 5.2
     const motherboardInitialY = -4.8;
@@ -1005,7 +1002,6 @@ onMounted(() => {
               // For GPU, slight expansion based on position
               // orig.x += orig.x * 0.15 * ... but handled in box x
               // Since GPU is a single box, we just widen it or effectively move it?
-              // Let's widen the box scale slightly to match expansion?
               // Actually, just syncing position is enough as box is wide.
             }
           }
@@ -1023,6 +1019,65 @@ onMounted(() => {
             box.scale.x = systemScale * (1.0 + 0.15 * easeExplode);
           }
         });
+
+        // --- Update Annotations based on current HitBox positions ---
+        if (annotations.value.length !== hitBoxes.length) {
+          annotations.value = hitBoxes.map(box => ({
+            text: box.userData['label'],
+            x: 0,
+            y: 0,
+            opacity: 0,
+            isActive: false
+          }));
+        }
+
+        // Determine currently hovered type from uniform or raycaster logic below?
+        // Actually, raycaster logic runs AFTER this block. 
+        // We need the hover state from the PREVIOUS frame or calculate it here.
+        // Let's use a local variable `hoveredType` that we update in the Raycaster block
+        // But the Raycaster block is below.
+        // We can just use `pointsMaterial.uniforms.uHoverPartType.value` since it persists.
+        let currentHoverType = -1.0;
+        if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
+          currentHoverType = pointsMaterial.uniforms['uHoverPartType'].value;
+        }
+
+        hitBoxes.forEach((box, i) => {
+          const tempV = new THREE.Vector3();
+          box.getWorldPosition(tempV);
+          tempV.project(camera);
+
+          const x = (tempV.x * .5 + .5) * viewWidth;
+          const y = (tempV.y * -.5 + .5) * viewHeight;
+
+          const ann = annotations.value[i];
+          if (ann) {
+            ann.x = x;
+            ann.y = y;
+
+            let visible = easeExplode > 0.1;
+            if (tempV.z > 1.0 || Math.abs(tempV.x) > 1.1 || Math.abs(tempV.y) > 1.1) visible = false;
+
+            let baseOpacity = visible ? smoothstep(0.1, 0.5, easeExplode) : 0.0;
+
+            // Interactive Opacity Logic
+            const boxType = box.userData['type'];
+            const isHovered = currentHoverType > -0.5 && Math.abs(boxType - currentHoverType) < 0.1;
+            const isAnyHovered = currentHoverType > -0.5;
+
+            ann.isActive = isHovered; // Set active flag for template styling
+
+            if (isAnyHovered) {
+              if (isHovered) {
+                ann.opacity = baseOpacity * 1.0; // Full opacity for hovered
+              } else {
+                ann.opacity = baseOpacity * 0.3; // Dim others significantly
+              }
+            } else {
+              ann.opacity = baseOpacity * 0.8; // Default state (slightly transparent)
+            }
+          }
+        });
       }
 
       // 4. Raycasting & Interaction
@@ -1036,18 +1091,18 @@ onMounted(() => {
         if (intersects.length > 0) {
           const hit = intersects[0].object;
           const type = hit.userData['type'];
-          const label = hit.userData['label'];
+          // const label = hit.userData['label']; // Label used for annotation now
 
           if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
             pointsMaterial.uniforms['uHoverPartType'].value = type;
           }
-          hoverLabel.value = label;
+          // hoverLabel.value = label; // REPLACED
           document.body.style.cursor = 'crosshair';
         } else {
           if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
             pointsMaterial.uniforms['uHoverPartType'].value = -1.0;
           }
-          hoverLabel.value = null;
+          // hoverLabel.value = null; // REPLACED
           document.body.style.cursor = 'default';
         }
       }
