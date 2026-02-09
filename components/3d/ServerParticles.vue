@@ -116,6 +116,16 @@ const vertexShader = `
     // 幽灵粒子大小
     float sizeMult = aIsGhost > 0.5 ? 0.7 : 1.0;
     
+    // Material Size Adjustments
+    // Metal (Heatsink 4.0, GPU 8.0): Smaller, sharper
+    if (abs(aPartType - 4.0) < 0.1 || abs(aPartType - 8.0) < 0.1) {
+        sizeMult *= 0.85; 
+    } 
+    // Plastic (Fan 6.0): Larger, softer
+    else if (abs(aPartType - 6.0) < 0.1) {
+        sizeMult *= 1.3; 
+    }
+    
     // Fade out / Shrink logic near end of scroll
     // NEW: Instead of global fade, fade only the BOTTOM part relative to screen
     // ndcY ranges from -1 (bottom) to 1 (top)
@@ -151,8 +161,40 @@ const fragmentShader = `
   
   void main() {
     vec2 coord = gl_PointCoord - vec2(0.5);
-    if(abs(coord.x) > 0.48 || abs(coord.y) > 0.48) discard;
+    float dist = length(coord);
     
+    // Default Shape: Square (Hard Edge)
+    if(abs(coord.x) > 0.48 || abs(coord.y) > 0.48) discard;
+
+    // Material Differentiation Logic
+    
+    // 1. Soft / Plastic (Fan Type 6.0) OR Emissive (LEDs)
+    // Make them circular
+    if (abs(vPartType - 6.0) < 0.1 || vEmissive > 0.5) {
+        // Circular cut
+        if (dist > 0.48) discard;
+        
+        // Soft Glow for LEDs
+        if (vEmissive > 0.5) {
+            // Gaussian-ish falloff from center lightness
+            // Center is bright, edges fade slightly
+            float glow = 1.0 - smoothstep(0.2, 0.5, dist);
+            // Don't fade alpha, fade brightness/mix to prevent transparency sorting issues?
+            // Actually fading color is safer for additive look
+            // But we want sharp core.
+        }
+    }
+    
+    // 2. Metal (Heatsink Type 4.0, GPU Type 8.0)
+    // Sharp, Specular Highlight
+    if (abs(vPartType - 4.0) < 0.1 || abs(vPartType - 8.0) < 0.1) {
+        // Add a subtle center highlight to simulate metal reflection
+        if (dist < 0.2) {
+             // Specular highlight
+             // No operation on coord, just boost color later
+        }
+    }
+
     vec3 finalColor = vColor;
     
     // 幽灵模式：深灰色
@@ -178,9 +220,20 @@ const fragmentShader = `
         if (vEmissive > 0.5) {
            // Reduced boost to prevent flickering/fireflies artifacts
            finalColor *= 2.0; 
+           
+           // Apply soft edge from shape logic
+           // (Optional: simple gradient)
+           float glow = 1.0 - smoothstep(0.3, 0.5, dist);
+           finalColor *= (0.5 + 0.5 * glow); // Keep core bright
+           
         } else {
            // Dim non-emissive
            finalColor *= 1.0;
+           
+           // Apply Metal Highlight
+           if (abs(vPartType - 4.0) < 0.1 || abs(vPartType - 8.0) < 0.1) {
+               if (dist < 0.15) finalColor *= 1.3; // Shiny point
+           }
         }
     }
     
