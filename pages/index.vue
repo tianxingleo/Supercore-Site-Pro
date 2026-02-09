@@ -20,7 +20,7 @@
         <div class="relative z-10 h-full flex flex-col justify-center pointer-events-none" id="hero-content">
           <GridContainer :grid="true" class="pointer-events-auto">
             <!-- Text Content: restricted to left/center columns initially -->
-            <div class="col-span-12 lg:col-span-12 xl:col-span-8 flex flex-col justify-center py-24 lg:py-0">
+            <div class="col-span-12 lg:col-span-10 xl:col-span-6 flex flex-col justify-center py-24 lg:py-0">
               <!-- Eyebrow Text: Technical / Branding -->
               <SwissTextReveal tag="div" :delay="100" class="mb-4 lg:mb-6" immediate>
                 <div class="flex items-center gap-4">

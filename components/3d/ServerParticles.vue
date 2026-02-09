@@ -556,21 +556,27 @@ onMounted(() => {
 
 
     // 2. View Offset for Horizontal Movement (Right -> Center) and Vertical tracking
-    // 2. View Offset for Horizontal Movement (Right -> Center) and Vertical tracking
     if (viewWidth > 0 && viewHeight > 0) {
-      const currentOffset = -viewWidth * 0.25 * (1.0 - easeRig);
+      const isMobile = viewWidth < 768; // Mobile Breakpoint
+
+      // Horizontal:
+      // Desktop: Start right (-0.25), move to center (0)
+      // Mobile: Start center (0), stay center (0)
+      const currentOffset = isMobile ? 0 : -viewWidth * 0.25 * (1.0 - easeRig);
 
       // Vertical offset: Start with downward offset (model lower), then move UP to follow explosion
       // Initial: Negative value moves model DOWN in the frame
-      // During explosion: Decrease value (more negative) to move/keep model down so we can see the top
-      const initialDownOffset = -viewHeight * 0.12; // Negative = model appears lower (Corrected from positive)
+      // Mobile: Move further down (0.75) to avoid title overlap completely
+      const downRatio = isMobile ? 0.75 : 0.15;
+      const initialDownOffset = -viewHeight * downRatio;
 
-      // DELAYED Camera Upward Move: Use ease-in curve (power 1.5) to start slow, then speed up
-      // This prevents the camera from moving up too quickly during the start of explosion
-      const cameraUpwardEase = Math.pow(rigProgress, 1.5);
-      const explosionUpOffset = -viewHeight * 0.25 * cameraUpwardEase;
+      // We want to move from initialDownOffset (low) to a centered or slightly high position
+      const targetUpOffset = isMobile ? viewHeight * 0.0 : -viewHeight * 0.15; // End at center (mobile) or slight up (desktop)
 
-      const currentOffsetY = initialDownOffset + explosionUpOffset;
+      const totalMoveUp = targetUpOffset - initialDownOffset; // Positive distance
+
+      const cameraUpwardEase = Math.pow(rigProgress, 1.2); // Slightly more linear ease for better tracking
+      const currentOffsetY = initialDownOffset + (totalMoveUp * cameraUpwardEase);
 
       camera.setViewOffset(viewWidth, viewHeight, currentOffset, currentOffsetY, viewWidth, viewHeight);
     }
