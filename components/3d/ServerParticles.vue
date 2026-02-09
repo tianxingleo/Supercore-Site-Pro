@@ -1,6 +1,15 @@
 <template>
   <div ref="containerRef" class="w-full h-full min-h-[500px] relative">
     <canvas ref="canvasRef" class="w-full h-full block outline-none"></canvas>
+
+    <div class="absolute top-1/2 right-8 transform -translate-y-1/2 pointer-events-none transition-opacity duration-300"
+      :class="hoverLabel ? 'opacity-100' : 'opacity-0'">
+      <!-- Swiss Style Label: Clean, High Contrast, Minimalist -->
+      <div class="bg-white/95 backdrop-blur-sm border-l-4 border-[#ff0000] pl-6 py-4 pr-12 shadow-sm">
+        <div class="text-gray-400 text-[10px] font-mono uppercase tracking-widest mb-2">System Component</div>
+        <div class="text-black text-3xl font-bold font-display tracking-tighter leading-none">{{ hoverLabel }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -195,6 +204,7 @@ const fragmentShader = `
   varying vec3 vPos;
   
   uniform float uTime;
+  uniform float uHoverPartType; // -1.0: None, Other: Part ID
   
   void main() {
     float fAlpha = vAlpha; // Local copy of alpha
@@ -281,6 +291,21 @@ const fragmentShader = `
         float alphaMult = 1.0 - smoothstep(0.0, 0.5, flowDist);
         finalColor *= 1.5; // Little boost for visibility
         fAlpha *= 0.15 * alphaMult; // Very transparent
+    }
+    
+    // --- Interaction Highlight ---
+    if (uHoverPartType > -0.5) {
+        // Check if this particle belongs to the hovered part
+        // Allow slight tolerance
+        if (abs(vPartType - uHoverPartType) < 0.5) {
+             // Highlight
+             finalColor *= 1.8;
+             finalColor += vec3(0.05); // Lift blacks
+        } else {
+             // Dim others
+             finalColor *= 0.3;
+             fAlpha *= 0.3;
+        }
     }
     
     gl_FragColor = vec4(finalColor, fAlpha);
@@ -562,6 +587,7 @@ const containerRef = ref<HTMLElement | null>(null);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const quality = ref('ultra'); // Default quality
 const progress = ref(0);
+const hoverLabel = ref<string | null>(null);
 
 // Expose setProgress for parent component
 const setProgress = (val: number) => {
@@ -598,6 +624,9 @@ let pointsMaterial: THREE.ShaderMaterial;
 let animationFrameId: number;
 let controls: OrbitControls;
 let rotationPivot: THREE.Group; // Pivot for mouse rotation around dynamic center
+let raycaster: THREE.Raycaster;
+let mouse: THREE.Vector2;
+let hitBoxes: THREE.Mesh[] = [];
 
 onMounted(() => {
   if (!canvasRef.value || !containerRef.value) return;
@@ -612,6 +641,10 @@ onMounted(() => {
   camera = new THREE.PerspectiveCamera(30, width / height, 5, 200); // FOV 30
   // ... camera position ...
   camera.position.set(25, 5, 65);
+
+  // Initialize Raycaster
+  raycaster = new THREE.Raycaster();
+  mouse = new THREE.Vector2(-999, -999); // Off screen init
 
   // Initialize Renderer
   renderer = new THREE.WebGLRenderer({
@@ -673,6 +706,7 @@ onMounted(() => {
       uTime: { value: 0 },
       uProgress: { value: 0 },
       uPixelScale: { value: quality.value === 'ultra' ? 1.0 : 1.5 },
+      uHoverPartType: { value: -1.0 }
     },
     transparent: true,
   });
@@ -683,6 +717,45 @@ onMounted(() => {
   rotationPivot = new THREE.Group();
   rotationPivot.position.y = -4.8; // Initial position at bottom server motherboard (baseY=-5.0 + 0.2 for PCB)
   rotationPivot.add(particleSystem);
+
+  // --- Create Hit Zones (Invisible Meshes) ---
+  const addHitZone = (w: number, h: number, d: number, x: number, y: number, z: number, type: number, label: string) => {
+    const geo = new THREE.BoxGeometry(w, h, d);
+    // CRITICAL FIX: Raycaster ignores visible: false objects by default.
+    // Use visible: true with opacity: 0 to make them "invisible" but interactive.
+    // ALSO: depthWrite: false to prevent "white blocks" occluding the model.
+    // side: DoubleSide to ensure detection even if camera is inside the box (common in close-ups)
+    const mat = new THREE.MeshBasicMaterial({
+      visible: true,
+      transparent: true,
+      opacity: 0.0,
+      wireframe: false,
+      depthWrite: false,
+      side: THREE.DoubleSide
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(x, y, z);
+    mesh.userData = { type, label, origPos: new THREE.Vector3(x, y, z) }; // Store original pos
+    rotationPivot.add(mesh); // Add to pivot so it moves with model
+    hitBoxes.push(mesh);
+  };
+
+  // CPU Area (Type 4) -> Wider and deeper to catch all angles
+  addHitZone(16, 8, 8, 0, 2.5, 1.0, 4.0, 'Dual Intel Xeon Scalable');
+
+  // GPU Area (Type 8) - Back
+  addHitZone(18, 6, 10, 0, 2.0, -5.5, 8.0, 'NVIDIA Tesla A100 Array');
+
+  // RAM Area (Type 5)
+  addHitZone(6, 6, 8, -6, 1.5, 1.0, 5.0, '2TB DDR4 ECC Memory');
+  addHitZone(6, 6, 8, 6, 1.5, 1.0, 5.0, '2TB DDR4 ECC Memory');
+
+  // HDD Area (Type 2) - Front
+  addHitZone(16, 6, 5, 0, 2.0, 9.0, 2.0, '160TB Enterprise HDD Array');
+
+  // Fan Area (Type 6)
+  addHitZone(16, 6, 4, 0, 1.5, 4.5, 6.0, 'High-RPM Cooling System');
+
   scene.add(rotationPivot);
 
   // Disable frustum culling to prevent model disappearing during rotation/explosion
@@ -704,6 +777,15 @@ onMounted(() => {
   window.addEventListener('resize', handleResize);
   // Initial capture
   handleResize();
+
+  // Mouse Move for Raycasting
+  const onMouseMove = (event: MouseEvent) => {
+    if (!containerRef.value) return;
+    const rect = containerRef.value.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  };
+  window.addEventListener('mousemove', onMouseMove);
 
   // Mouse Interaction for Parallax/Rotation
   let mouseX = 0;
@@ -762,6 +844,33 @@ onMounted(() => {
       const currentOffsetY = initialDownOffset + (totalMoveUp * cameraUpwardEase);
 
       camera.setViewOffset(viewWidth, viewHeight, currentOffset, currentOffsetY, viewWidth, viewHeight);
+
+      // 4. Raycasting & Interaction
+      if (raycaster) {
+        // CRITICAL: Force update world matrices before raycasting because we just modified positions manually
+        rotationPivot.updateMatrixWorld(true);
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(hitBoxes);
+
+        if (intersects.length > 0) {
+          const hit = intersects[0].object;
+          const type = hit.userData['type'];
+          const label = hit.userData['label'];
+
+          if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
+            pointsMaterial.uniforms['uHoverPartType'].value = type;
+          }
+          hoverLabel.value = label;
+          document.body.style.cursor = 'crosshair';
+        } else {
+          if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
+            pointsMaterial.uniforms['uHoverPartType'].value = -1.0;
+          }
+          hoverLabel.value = null;
+          document.body.style.cursor = 'default';
+        }
+      }
     }
 
 
@@ -858,6 +967,90 @@ onMounted(() => {
 
       rotationPivot.rotation.x = THREE.MathUtils.lerp(rotationPivot.rotation.x, targetRotX, 0.05);
       rotationPivot.rotation.y = THREE.MathUtils.lerp(rotationPivot.rotation.y, targetRotY, 0.05);
+
+      // CRITICAL: Synchronize HitBoxes AFTER particle system update
+      // Visual Position = Scale * (Orig + Offset) + SystemPosition
+      if (hitBoxes.length > 0) {
+        const systemScale = particleSystem.scale.x;
+        const systemPos = particleSystem.position;
+
+        hitBoxes.forEach(box => {
+          const type = box.userData.type;
+          const orig = box.userData.origPos as THREE.Vector3;
+
+          // 1. Calculate Shader-like Offset (Local)
+          const offset = new THREE.Vector3(0, 0, 0);
+
+          // Slide
+          offset.z += slideDist;
+
+          // Explosion
+          if (easeExplode > 0.001) {
+            offset.y += easeExplode * 6.0;
+
+            if (Math.abs(type - 2.0) < 0.1) { // HDD
+              offset.z += easeExplode * 12.0;
+              offset.y += easeExplode * 2.0;
+            } else if (Math.abs(type - 6.0) < 0.1) { // Fan
+              offset.y += easeExplode * 14.0;
+            } else if (Math.abs(type - 4.0) < 0.1) { // CPU/Heatsink
+              offset.y += easeExplode * 22.0;
+            } else if (Math.abs(type - 5.0) < 0.1) { // RAM
+              const dir = orig.x > 0 ? 1.0 : -1.0;
+              offset.x += dir * easeExplode * 9.0;
+              offset.y += easeExplode * 8.0;
+            } else if (Math.abs(type - 8.0) < 0.1) { // GPU
+              offset.z -= easeExplode * 16.0;
+              offset.y += easeExplode * 12.0;
+              // For GPU, slight expansion based on position
+              // orig.x += orig.x * 0.15 * ... but handled in box x
+              // Since GPU is a single box, we just widen it or effectively move it?
+              // Let's widen the box scale slightly to match expansion?
+              // Actually, just syncing position is enough as box is wide.
+            }
+          }
+
+          // 2. Apply Scale & System Position
+          // BoxPos = (Orig + Offset) * Scale + SystemPos
+          box.position.copy(orig).add(offset).multiplyScalar(systemScale).add(systemPos);
+
+          // 3. Sync Scale
+          // If particles shrink/grow, hitboxes should too
+          box.scale.setScalar(systemScale);
+
+          // GPU Special Case: Widen X scale during explosion
+          if (type === 8 && easeExplode > 0.05) {
+            box.scale.x = systemScale * (1.0 + 0.15 * easeExplode);
+          }
+        });
+      }
+
+      // 4. Raycasting & Interaction
+      if (raycaster) {
+        // CRITICAL: Force update world matrices before raycasting because we just modified positions manually
+        rotationPivot.updateMatrixWorld(true);
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(hitBoxes);
+
+        if (intersects.length > 0) {
+          const hit = intersects[0].object;
+          const type = hit.userData['type'];
+          const label = hit.userData['label'];
+
+          if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
+            pointsMaterial.uniforms['uHoverPartType'].value = type;
+          }
+          hoverLabel.value = label;
+          document.body.style.cursor = 'crosshair';
+        } else {
+          if (pointsMaterial && pointsMaterial.uniforms['uHoverPartType']) {
+            pointsMaterial.uniforms['uHoverPartType'].value = -1.0;
+          }
+          hoverLabel.value = null;
+          document.body.style.cursor = 'default';
+        }
+      }
     }
 
     controls.update();
