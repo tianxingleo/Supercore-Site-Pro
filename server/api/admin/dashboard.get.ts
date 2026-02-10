@@ -1,4 +1,4 @@
-import { serverSupabaseServiceRole } from '#supabase/server'
+import { getInternalSupabaseClient } from '~/server/utils/supabase'
 import { requireAdminAuth } from '~/server/utils/auth'
 import { withApiHandler, createSuccessResponse, createErrorResponse } from '~/utils/apiHandler'
 import { logger, createRequestContext } from '~/utils/logger'
@@ -15,7 +15,7 @@ export default withApiHandler(async (event) => {
   }
 
   // 2. 获取针对后端的 Service Role 客户端
-  const client = serverSupabaseServiceRole(event)
+  const client = getInternalSupabaseClient(event)
 
 
   try {

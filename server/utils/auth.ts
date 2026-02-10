@@ -105,8 +105,25 @@ export async function requireAdminAuth(event: any) {
     })
   }
 
-  // 使用 service role client 验证管理员角色
-  const client = serverSupabaseServiceRole(event)
+  // 使用 robust client 验证管理员角色
+  const config = useRuntimeConfig(event)
+  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
+  const supabaseKey = config.supabaseService.key || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('[Auth] Cannot verify admin role: Supabase config missing')
+    throw createError({
+      statusCode: 500,
+      message: '服务器配置错误：无法验证管理员权限'
+    })
+  }
+
+  const client = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  })
 
   const { data: profile, error } = await client
     .from('profiles')

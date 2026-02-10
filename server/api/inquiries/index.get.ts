@@ -1,4 +1,4 @@
-import { serverSupabaseServiceRole } from '#supabase/server'
+import { getInternalSupabaseClient } from '~/server/utils/supabase'
 import { requireAdminAuth } from '~/server/utils/auth'
 
 export default defineEventHandler(async (event) => {
@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   await requireAdminAuth(event)
 
   // 2. 获取所有询盘
-  const client = serverSupabaseServiceRole(event)
+  const client = getInternalSupabaseClient(event)
   const { data: inquiries, error } = await client
     .from('inquiries')
     .select('*')
