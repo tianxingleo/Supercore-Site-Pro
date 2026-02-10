@@ -51,8 +51,8 @@ export async function requireAdminAuth(event: any) {
 
         if (accessToken) {
           const config = useRuntimeConfig(event)
-          const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl
-          const supabaseKey = config.supabaseService.key || config.public.supabaseKey
+          const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
+          const supabaseKey = config.supabaseService.key || config.public.supabaseKey || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
 
           if (supabaseUrl && supabaseKey) {
             const supabase = createClient(supabaseUrl, supabaseKey, {

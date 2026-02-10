@@ -15,8 +15,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     // 验证配置
-    const supabaseUrl = config.supabaseService.url
-    const supabaseKey = config.supabaseService.key
+    const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
+    const supabaseKey = config.supabaseService.key || config.public.supabaseKey || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
 
     if (!supabaseUrl || !supabaseKey) {
       results.connectionStatus = 'failed'

@@ -10,16 +10,20 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 403, message: 'Unauthorized: Magic link parameter missing' })
   }
 
-  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl
-  const supabaseServiceKey = config.supabaseService.key
+  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
+  const supabaseServiceKey = config.supabaseService.key || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
 
   console.log('[Auth API] Using Supabase URL:', supabaseUrl)
+  console.log('[Auth API] Config Status:', { 
+    url: !!supabaseUrl, 
+    key: !!supabaseServiceKey,
+    env: process.env.NODE_ENV
+  })
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    console.error('[Auth API] Config missing:', { hasUrl: !!supabaseUrl, hasKey: !!supabaseServiceKey })
     throw createError({ 
       statusCode: 500, 
-      message: `Supabase configuration missing on server (URL: ${!!supabaseUrl}, Key: ${!!supabaseServiceKey}, Env: ${process.env.NODE_ENV})` 
+      message: `Supabase configuration missing (URL: ${!!supabaseUrl}, Key: ${!!supabaseServiceKey}). Check Docker env vars.` 
     })
   }
 
