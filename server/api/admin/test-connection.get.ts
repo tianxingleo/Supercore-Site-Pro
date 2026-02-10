@@ -1,11 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig(event)
   const results = {
     envConfig: {
-      hasUrl: !!process.env.SUPABASE_URL,
-      hasKey: !!process.env.SUPABASE_SECRET_KEY,
-      urlPrefix: process.env.SUPABASE_URL?.substring(0, 20) + '...',
+      hasUrl: !!config.supabaseService.url,
+      hasKey: !!config.supabaseService.key,
+      urlPrefix: config.supabaseService.url?.substring(0, 20) + '...',
     },
     connectionStatus: 'unknown' as string,
     tables: {} as any,
@@ -14,16 +15,19 @@ export default defineEventHandler(async (event) => {
 
   try {
     // 验证配置
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) {
+    const supabaseUrl = config.supabaseService.url
+    const supabaseKey = config.supabaseService.key
+
+    if (!supabaseUrl || !supabaseKey) {
       results.connectionStatus = 'failed'
-      results.error = 'Missing Supabase configuration'
+      results.error = 'Missing Supabase configuration (URL or Service Key)'
       return results
     }
 
     // 创建客户端
     const client = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_SECRET_KEY,
+      supabaseUrl,
+      supabaseKey,
       {
         auth: {
           autoRefreshToken: false,
