@@ -14,7 +14,7 @@ export const useServerScene = () => {
   const renderer = ref<THREE.WebGLRenderer | null>(null)
   const canvasRef = ref<HTMLCanvasElement>()
   const containerRef = ref<HTMLDivElement>()
-  const isLoaded = ref(false)
+  const isLoaded = useState('server-scene-loaded', () => false)
 
   let animationId: number
 
@@ -171,7 +171,7 @@ export const useServerScene = () => {
     containerRef,
     isLoaded,
     initScene,
-    addServerModel,
+    loadModel,
     animate,
     handleResize,
     cleanup,

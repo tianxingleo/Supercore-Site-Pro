@@ -17,7 +17,7 @@ export const useServerAnimation = () => {
   const { ScrollTrigger } = $ScrollTrigger
 
   const timeline = ref<gsapType.Timeline>()
-  const isAnimating = ref(false)
+  const isAnimating = useState('server-animating', () => false)
 
   /**
    * 初始化滾動動畫時間軸

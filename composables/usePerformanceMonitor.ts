@@ -17,16 +17,16 @@ export interface PerformanceMetrics {
 }
 
 export const usePerformanceMonitor = () => {
-  const metrics = ref<PerformanceMetrics>({
+  const metrics = useState<PerformanceMetrics>('perf-metrics', () => ({
     LCP: null,
     FID: null,
     CLS: null,
     FCP: null,
     TTI: null,
     loadTime: null,
-  })
+  }))
 
-  const isMonitoring = ref(false)
+  const isMonitoring = useState('perf-is-monitoring', () => false)
 
   const measureLCP = () => {
     if (process.client && 'PerformanceObserver' in window) {
