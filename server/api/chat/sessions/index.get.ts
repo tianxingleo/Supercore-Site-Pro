@@ -5,17 +5,26 @@ export default defineEventHandler(async (event) => {
   try {
     // 1. 获取运行时配置
     const config = useRuntimeConfig()
-    const { url, key } = config.supabaseService
+    // 尝试获取 service key，如果没有则尝试 public key
+    const url = (config.supabaseService?.url || config.public?.supabaseUrl || '').trim()
+    const key = (config.supabaseService?.key || config.public?.supabaseKey || '').trim()
 
     if (!url || !key) {
+      console.error('Supabase config missing in /api/chat/sessions. Service:', config.supabaseService, 'Public:', config.public)
       throw createError({
         statusCode: 500,
-        statusMessage: 'Missing Supabase configuration'
+        statusMessage: 'Missing Supabase configuration. Check SUPABASE_URL and SUPABASE_SECRET_KEY in .env'
       })
     }
 
     // 2. 初始化 Supabase 客户端
-    const supabase = createClient(url, key)
+    const supabase = createClient(url, key, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false
+      }
+    })
 
     // 3. 获取查询参数
     const query = getQuery(event)
@@ -54,10 +63,10 @@ export default defineEventHandler(async (event) => {
     console.log('[API Sessions] 查询结果:', { data, error, count, status })
 
     if (error) {
-      console.error('Failed to fetch sessions:', error)
+      console.error('Failed to fetch sessions details:', JSON.stringify(error, null, 2))
       throw createError({
         statusCode: 500,
-        statusMessage: 'Failed to fetch sessions'
+        statusMessage: `Failed to fetch sessions: ${error.message} (${error.code})`
       })
     }
 

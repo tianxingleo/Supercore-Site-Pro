@@ -1,4 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+console.log('--- Nuxt Config Loading ---')
+console.log('SUPABASE_URL from env:', process.env.SUPABASE_URL)
+console.log('SUPABASE_SECRET_KEY present:', !!process.env.SUPABASE_SECRET_KEY)
+console.log('---------------------------')
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
