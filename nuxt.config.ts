@@ -20,7 +20,10 @@ export default defineNuxtConfig({
     },
   },
 
-  // Experimental features - removed to avoid #app-manifest errors
+  // Experimental features
+  experimental: {
+    appManifest: false,
+  },
 
   // Components Configuration
   components: [
