@@ -54,11 +54,12 @@ export default withApiHandler(async (event) => {
       .limit(5)
 
     // 检查服务器状态
+    const config = useRuntimeConfig(event)
     // 从请求头获取实际的前端 URL
     const protocol = event.headers.get('x-forwarded-proto') || 'http'
-    const host = event.headers.get('host') || 'localhost:3000'
+    const host = event.headers.get('host') || 'host.docker.internal' // 或 host
     const frontendUrl = `${protocol}://${host}`
-    const backendUrl = process.env.SUPABASE_URL || 'Unknown'
+    const backendUrl = config.supabaseService.url || 'Unknown'
 
     // 计算总处理时间作为前端响应时间的近似值
     const frontendPing = Date.now() - startTime
