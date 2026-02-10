@@ -66,7 +66,7 @@ export async function requireAdminAuth(event: any) {
             const { data: userData, error: userError } = await supabase.auth.getUser(accessToken)
 
             if (!userError && userData?.user) {
-              user = userData.user
+              user = userData.user as any
               console.log('[Auth] Successfully restored session from cookie')
             }
           }

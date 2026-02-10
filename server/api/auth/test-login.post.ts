@@ -13,11 +13,13 @@ export default defineEventHandler(async (event) => {
   const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl
   const supabaseServiceKey = config.supabaseService.key
 
+  console.log('[Auth API] Using Supabase URL:', supabaseUrl)
+
   if (!supabaseUrl || !supabaseServiceKey) {
     console.error('[Auth API] Config missing:', { hasUrl: !!supabaseUrl, hasKey: !!supabaseServiceKey })
     throw createError({ 
       statusCode: 500, 
-      message: `Supabase configuration missing on server (URL: ${!!supabaseUrl}, Key: ${!!supabaseServiceKey})` 
+      message: `Supabase configuration missing on server (URL: ${!!supabaseUrl}, Key: ${!!supabaseServiceKey}, Env: ${process.env.NODE_ENV})` 
     })
   }
 

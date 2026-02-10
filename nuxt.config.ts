@@ -98,7 +98,7 @@ export default defineNuxtConfig({
     cookieOptions: {
       path: '/',
       sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production', // 仅在生产环境使用 secure
+      secure: false, // 改为 false，因为你目前使用的是 HTTP (IP 直接访问)，设为 true 会导致 Cookie 无法发送给服务器
       httpOnly: false, // 允许客户端访问
       maxAge: 60 * 60 * 24 * 7, // 7 天
     },
