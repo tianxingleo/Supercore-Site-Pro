@@ -43,18 +43,18 @@ export interface News {
   id: string
   slug: string
   title: {
-    hk: string
-    cn: string
+    'zh-HK': string
+    'zh-CN': string
     en: string
   }
   content: {
-    hk: string
-    cn: string
+    'zh-HK': string
+    'zh-CN': string
     en: string
   }
   excerpt: {
-    hk: string
-    cn: string
+    'zh-HK': string
+    'zh-CN': string
     en: string
   }
   locale: 'zh-HK' | 'zh-CN' | 'en'
@@ -72,13 +72,13 @@ export interface Solution {
   id: string
   slug: string
   title: {
-    hk: string
-    cn: string
+    'zh-HK': string
+    'zh-CN': string
     en: string
   }
   description: {
-    hk: string
-    cn: string
+    'zh-HK': string
+    'zh-CN': string
     en: string
   }
   icon: string

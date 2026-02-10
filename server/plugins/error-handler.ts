@@ -16,15 +16,6 @@ export default defineNitroPlugin((nitroApp) => {
     }
   })
 
-  // 原有的 onError 处理逻辑也可以保留或改进
-  const h3OnError = nitroApp.h3App.options.onError
-  nitroApp.h3App.options.onError = (error: Error, event: H3Event) => {
-    const h3Error = error as H3Error
-    if (h3Error?.statusCode === 404 && event.path?.startsWith('/_nuxt/')) {
-      return
-    }
-    if (h3OnError) {
-      return h3OnError(error, event)
-    }
-  }
+  // 移除了直接修改 nitroApp.h3App.options.onError 的逻辑，
+  // 因为这可能会干扰 Nuxt 的内部错误处理流程，导致 SSR 上下文丢失。
 })

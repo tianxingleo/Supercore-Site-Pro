@@ -7,9 +7,8 @@
                     <div class="col-span-12 lg:col-span-10 lg:offset-1">
                         <div class="mb-8 flex items-center space-x-4">
                             <NuxtLink :to="localePath('/news')"
-                                class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center"
-                                :aria-label="$t('news.backToList')">
-                                <span class="mr-2" aria-hidden="true">←</span> {{ $t('news.backToList') }}
+                                class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center">
+                                <span class="mr-2">←</span> {{ $t('news.backToList') }}
                             </NuxtLink>
                         </div>
 
