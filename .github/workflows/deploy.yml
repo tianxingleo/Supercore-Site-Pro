@@ -37,6 +37,8 @@ jobs:
               --name nuxt-web \
               --restart=always \
               -p 3000:3000 \
+              -e NUXT_PUBLIC_SUPABASE_URL="${{ secrets.SUPABASE_URL }}" \
+              -e NUXT_PUBLIC_SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" \
               -e SUPABASE_URL="${{ secrets.SUPABASE_URL }}" \
               -e SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" \
               -e SUPABASE_SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}" \
