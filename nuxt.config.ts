@@ -233,7 +233,6 @@ export default defineNuxtConfig({
       '@supabase/postgrest-js',
       '@supabase/supabase-js',
       '@supabase/functions-js',
-      'pinia-plugin-persistedstate',
       'tslib'
     ],
   },

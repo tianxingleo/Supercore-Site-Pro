@@ -41,7 +41,7 @@ jobs:
               -e NUXT_PUBLIC_SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" \
               -e SUPABASE_URL="${{ secrets.SUPABASE_URL }}" \
               -e SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" \
-              -e SUPABASE_SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}" \
+              -e SUPABASE_SECRET_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}" \
               my-nuxt-app
               
             # 6. 清理垃圾
