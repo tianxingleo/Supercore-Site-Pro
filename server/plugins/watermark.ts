@@ -8,7 +8,7 @@ export default defineNitroPlugin((nitroApp) => {
    ██║   ██║██╔═══██║██║╚██╗██║ ██╔██╗ ██║██║╚██╗██║██║   ██║
    ██║   ██║██║   ██║██║ ╚████║██╔╝ ██╗██║██║ ╚████║╚██████╔╝
    ╚═╝   ╚═╝╚═╝   ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
-             Code by tianxingleo
+                      Code by tianxingleo
 -->\n`;
       response.body = banner + response.body;
     }

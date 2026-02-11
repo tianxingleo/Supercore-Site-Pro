@@ -3,7 +3,7 @@
  * 返回所有產品列表
  */
 
-import { serverSupabaseServiceRole } from '#supabase/server'
+import { getInternalSupabaseClient } from '~/server/utils/supabase'
 import { requireAdminAuth } from '~/server/utils/auth'
 
 export default defineEventHandler(async (event) => {
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     await requireAdminAuth(event)
 
     // 2. 获取所有产品
-    const client = serverSupabaseServiceRole(event)
+    const client = getInternalSupabaseClient(event)
     const { data, error } = await client
         .from('products')
         .select('*')
