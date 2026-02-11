@@ -81,6 +81,6 @@ const filteredSolutions = computed(() => {
 })
 
 useHead({
-  title: computed(() => `${t('nav.solutions')} - Supercore`),
+  title: computed(() => `${t('nav.solutions')} - XX`),
 })
 </script>

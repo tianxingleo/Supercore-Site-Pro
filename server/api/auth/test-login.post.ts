@@ -2,24 +2,29 @@ import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
 
   console.log('[Auth API] Received magic login request, query:', query)
 
-  // 仅在开发环境下或特定安全验证后允许此操作
-  // if (process.env.NODE_ENV === 'production') {
-  //   throw createError({ statusCode: 403, message: 'Forbidden' })
-  // }
-
   if (query.test !== 'true' && query.test !== '') {
-    throw createError({ statusCode: 403, message: 'Unauthorized' })
+    throw createError({ statusCode: 403, message: 'Unauthorized: Magic link parameter missing' })
   }
 
-  const supabaseUrl = config.public.supabaseUrl
-  const supabaseServiceKey = config.supabaseService.key
+  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
+  const supabaseServiceKey = config.supabaseService.key || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
+
+  console.log('[Auth API] Using Supabase URL:', supabaseUrl)
+  console.log('[Auth API] Config Status:', { 
+    url: !!supabaseUrl, 
+    key: !!supabaseServiceKey,
+    env: process.env.NODE_ENV
+  })
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw createError({ statusCode: 500, message: 'Supabase config missing' })
+    throw createError({ 
+      statusCode: 500, 
+      message: `Supabase configuration missing (URL: ${!!supabaseUrl}, Key: ${!!supabaseServiceKey}). Check Docker env vars.` 
+    })
   }
 
   // 使用 Service Role Key 创建管理客户端
@@ -33,43 +38,68 @@ export default defineEventHandler(async (event) => {
   const adminEmail = 'admin@example.com'
   const adminPassword = 'ExampleMagic123!' // 固定测试密码，仅内部使用
   
-  // 1. 尝试获取现有用户
-  const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers()
-  if (listError) throw createError({ statusCode: 500, message: listError.message })
-  
-  let targetUser = users.users.find(u => u.email === adminEmail)
-
-  // 2. 如果用户不存在，则创建一个
-  if (!targetUser) {
-    console.log('[Auth] 创建测试管理员用户...')
-    const { data: newUser, error: createErrorMsg } = await supabaseAdmin.auth.admin.createUser({
-      email: adminEmail,
-      password: adminPassword,
-      email_confirm: true,
-      user_metadata: { full_name: 'Test Administrator' }
-    })
+  try {
+    // 1. 尝试获取现有用户
+    const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers()
     
-    if (createErrorMsg) throw createError({ statusCode: 500, message: createErrorMsg.message })
-    targetUser = newUser.user
-  } else {
-    // 3. 如果用户已存在，确保密码正确（以防万一被改过）
-    await supabaseAdmin.auth.admin.updateUserById(targetUser.id, {
-      password: adminPassword
+    if (listError) {
+      console.error('[Auth API] listUsers error:', listError)
+      throw createError({ 
+        statusCode: 500, 
+        message: `Auth Service Error: ${listError.message} (Role: service_role)` 
+      })
+    }
+    
+    let targetUser = users.users.find(u => u.email === adminEmail)
+
+    // 2. 如果用户不存在，则创建一个
+    if (!targetUser) {
+      console.log('[Auth] Creating test admin user...')
+      const { data: newUser, error: createErrorMsg } = await supabaseAdmin.auth.admin.createUser({
+        email: adminEmail,
+        password: adminPassword,
+        email_confirm: true,
+        user_metadata: { full_name: 'Test Administrator' }
+      })
+      
+      if (createErrorMsg) {
+        console.error('[Auth API] createUser error:', createErrorMsg)
+        throw createError({ statusCode: 500, message: `Create User Failed: ${createErrorMsg.message}` })
+      }
+      targetUser = newUser.user
+    } else {
+      // 3. 如果用户已存在，确保密码正确（以防万一被改过）
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(targetUser.id, {
+        password: adminPassword
+      })
+      if (updateError) {
+        console.warn('[Auth API] Password update failed (might be expected):', updateError.message)
+      }
+    }
+
+    // 4. 核心：确保该用户在 profiles 表中拥有 admin 权限
+    if (targetUser) {
+      const { error: profileError } = await supabaseAdmin
+        .from('profiles')
+        .upsert({
+          id: targetUser.id,
+          role: 'admin',
+          full_name: 'Test Administrator',
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id' })
+
+      if (profileError) {
+        console.error('[Auth] Profile upsert failed:', profileError)
+        // 这个不一定要 throw，因为 Auth 实际上已经通了，但为了严谨我们可以记录它
+      }
+    }
+  } catch (err: any) {
+    console.error('[Auth API] Fatal error:', err)
+    if (err.statusCode) throw err
+    throw createError({
+      statusCode: 500,
+      message: `System Error: ${err.message || 'Unknown error'}`
     })
-  }
-
-  // 4. 核心：确保该用户在 profiles 表中拥有 admin 权限
-  if (targetUser) {
-    const { error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .upsert({
-        id: targetUser.id,
-        role: 'admin',
-        full_name: 'Test Administrator',
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'id' })
-
-    if (profileError) console.error('[Auth] 提升权限失败:', profileError)
   }
 
   return {

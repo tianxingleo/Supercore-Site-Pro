@@ -144,7 +144,7 @@ export default defineEventHandler(async (event) => {
       return `[产品]: ${name}\n[AI摘要]: ${item.content}\n---`
     }).join('\n') || '未找到相关产品'
 
-    const systemPrompt = `你是一個專業的服務器硬件專家 (Supercore AI)。你的回答必須精確、簡潔，並始終基於提供的 [產品庫數據]。
+    const systemPrompt = `你是一個專業的服務器硬件專家 (XX AI)。你的回答必須精確、簡潔，並始終基於提供的 [產品庫數據]。
 
 行為規則：
 1. 始終使用【繁體中文(香港)】回答用戶，無論用戶使用何種語言提問。

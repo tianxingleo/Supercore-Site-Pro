@@ -1,12 +1,10 @@
 <template>
   <NuxtLink v-if="tag === 'a' && to" :to="to" custom v-slot="{ navigate }">
-    <a v-bind="$attrs" @click="navigate" :class="buttonClasses" :href="to" @click.exact="handleClick($event, navigate)"
-      @keydown.enter.prevent="handleClick($event, navigate)" @keydown.space.prevent="handleClick($event, navigate)">
+    <a v-bind="$attrs" @click="navigate" :class="buttonClasses" :href="to" @click.exact="handleClick($event, navigate)">
       <slot />
     </a>
   </NuxtLink>
-  <a v-else-if="tag === 'a'" v-bind="$attrs" :href="to" :class="buttonClasses" @click="handleClick"
-    @keydown.enter.prevent="handleClick($event)">
+  <a v-else-if="tag === 'a'" v-bind="$attrs" :href="to" :class="buttonClasses" @click="handleClick">
     <slot />
   </a>
   <button v-else v-bind="$attrs" :type="type" :class="buttonClasses" :disabled="disabled" @click="handleClick">
@@ -55,9 +53,6 @@ const buttonClasses = computed(() => {
     'uppercase',
     'text-[10px]',
     'font-bold',
-    'focus-visible:outline-2',
-    'focus-visible:outline-offset-2',
-    'focus-visible:outline-swiss-text',
   ]
 
   // Size variants

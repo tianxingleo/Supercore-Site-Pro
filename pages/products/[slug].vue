@@ -5,9 +5,8 @@
       <GridContainer>
         <div class="col-span-12 py-4">
           <NuxtLink :to="localePath('/products')"
-            class="inline-flex items-center text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text/40 hover:text-swiss-text transition-colors"
-            aria-label="Back to products collection">
-            <span class="mr-4" aria-hidden="true">←</span>
+            class="inline-flex items-center text-[10px] font-bold tracking-[0.3em] uppercase text-swiss-text/40 hover:text-swiss-text transition-colors">
+            <span class="mr-4">←</span>
             Back to Collection
           </NuxtLink>
         </div>
@@ -61,8 +60,7 @@
             <!-- Navigation Controls -->
             <template v-if="product && product.images && product.images.length > 1">
               <button @click="previousImage"
-                class="absolute left-0 top-0 bottom-0 w-16 md:w-20 lg:w-24 flex items-center justify-center bg-transparent group/btn z-10"
-                aria-label="Previous image">
+                class="absolute left-0 top-0 bottom-0 w-16 md:w-20 lg:w-24 flex items-center justify-center bg-transparent group/btn z-10">
                 <div
                   class="w-11 h-11 flex items-center justify-center bg-white/80 backdrop-blur-sm border border-swiss-text/5 group-hover/btn:border-swiss-text transition-all duration-300 shadow-sm">
                   <svg viewBox="0 0 24 24"
@@ -73,8 +71,7 @@
                 </div>
               </button>
               <button @click="nextImage"
-                class="absolute right-0 top-0 bottom-0 w-16 md:w-20 lg:w-24 flex items-center justify-center bg-transparent group/btn z-10"
-                aria-label="Next image">
+                class="absolute right-0 top-0 bottom-0 w-16 md:w-20 lg:w-24 flex items-center justify-center bg-transparent group/btn z-10">
                 <div
                   class="w-11 h-11 flex items-center justify-center bg-white/80 backdrop-blur-sm border border-swiss-text/5 group-hover/btn:border-swiss-text transition-all duration-300 shadow-sm">
                   <svg viewBox="0 0 24 24"
@@ -93,8 +90,7 @@
             <div class="flex items-center gap-1.5">
               <button v-for="(img, index) in product.images" :key="index" @click="setCurrentImage(index)"
                 class="h-1 transition-all duration-500 ease-out"
-                :class="currentImageIndex === index ? 'w-12 bg-swiss-text' : 'w-4 bg-swiss-text/10 hover:bg-swiss-text/30'"
-                :aria-label="`View image ${index + 1}`" />
+                :class="currentImageIndex === index ? 'w-12 bg-swiss-text' : 'w-4 bg-swiss-text/10 hover:bg-swiss-text/30'" />
             </div>
             <div class="font-mono text-[10px] uppercase tracking-widest text-swiss-text/40">
               FRAME_{{ String(currentImageIndex + 1).padStart(2, '0') }} / {{ String(product.images.length).padStart(2,
@@ -318,47 +314,4 @@ const categoryLabels: Record<string, string> = {
 const getCategoryLabel = (category: string): string => {
   return categoryLabels[category] || category
 }
-
-// Set page title, structured data, and canonical
-watchEffect(() => {
-  if (product.value) {
-    const langKey = locale.value
-    const baseUrl = 'https://www.example.com'
-    const currentPath = route.path
-    const canonicalUrl =
-      locale.value === 'en'
-        ? `${baseUrl}${currentPath}`
-        : `${baseUrl}/${locale.value}${currentPath}`
-
-    // 生成產品結構化數據
-    const structuredData = useProductStructuredData(product.value, locale.value)
-
-    // 生成麵包屑結構化數據
-    const breadcrumbStructuredData = useBreadcrumbStructuredData([
-      { name: 'Home', url: '/' },
-      { name: 'Products', url: '/products' },
-      { name: product.value.name[langKey] || product.value.name['zh-HK'], url: currentPath },
-    ])
-
-    useHead({
-      title: `${product.value.name[langKey as keyof typeof product.value.name] || product.value.name['zh-HK']} - Supercore`,
-      link: [
-        {
-          rel: 'canonical',
-          href: canonicalUrl,
-        },
-      ],
-      script: [
-        {
-          type: 'application/ld+json',
-          innerHTML: JSON.stringify(structuredData),
-        },
-        {
-          type: 'application/ld+json',
-          innerHTML: JSON.stringify(breadcrumbStructuredData),
-        },
-      ],
-    })
-  }
-})
 </script>

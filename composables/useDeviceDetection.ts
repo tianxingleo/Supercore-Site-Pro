@@ -17,7 +17,7 @@ export interface DeviceInfo {
 }
 
 export const useDeviceDetection = () => {
-  const deviceInfo = ref<DeviceInfo>({
+  const deviceInfo = useState<DeviceInfo>('deviceInfo', () => ({
     isMobile: false,
     isTablet: false,
     isDesktop: true,
@@ -26,7 +26,7 @@ export const useDeviceDetection = () => {
     pixelRatio: 1,
     viewportWidth: 1920,
     viewportHeight: 1080,
-  })
+  }))
 
   const checkDevice = () => {
     if (process.client) {
@@ -70,11 +70,9 @@ export const useDeviceDetection = () => {
   }
 
   const canUseAdvanced3D = (): boolean => {
-    return (
-      !deviceInfo.value.isLowPerformance &&
-      canUseWebGL() &&
-      deviceInfo.value.isDesktop
-    )
+    // Relaxed check: Allow 3D on all devices that support WebGL, including mobile
+    // The particle system has been optimized for mobile in ServerParticles.vue
+    return canUseWebGL()
   }
 
   onMounted(() => {

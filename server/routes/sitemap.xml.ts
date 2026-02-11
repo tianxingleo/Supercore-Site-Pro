@@ -24,8 +24,9 @@ export default defineEventHandler(async (event) => {
 
   try {
     // 使用 service_role 客戶端繞過 RLS
-    const supabaseUrl = process.env.SUPABASE_URL
-    const supabaseKey = process.env.SUPABASE_SECRET_KEY
+    const config = useRuntimeConfig(event)
+    const supabaseUrl = config.supabaseService.url
+    const supabaseKey = config.supabaseService.key
 
     if (supabaseUrl && supabaseKey) {
       const client = createClient(supabaseUrl, supabaseKey, {

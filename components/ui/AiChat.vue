@@ -528,7 +528,7 @@ onUnmounted(() => {
               v2.1.0</span>
             <div class="flex items-center gap-2">
               <div class="w-2 h-2 bg-black dark:bg-white animate-pulse"></div>
-              <span id="chat-title" class="font-bold tracking-tighter uppercase text-base italic">Supercore AI</span>
+              <span id="chat-title" class="font-bold tracking-tighter uppercase text-base italic">XX AI</span>
             </div>
           </div>
         </div>

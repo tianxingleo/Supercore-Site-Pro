@@ -5,23 +5,13 @@
   >
     <!-- Cover Image -->
     <div class="aspect-video bg-gray-50 relative overflow-hidden">
-      <!-- Shimmer Placeholder (Visible until image loads) -->
-      <div v-if="post.cover_image && !imageLoaded" class="shimmer absolute inset-0 z-10"></div>
-
       <NuxtImg
         v-if="post.cover_image"
         :src="post.cover_image"
         :alt="post.title[lang]"
         width="800"
         height="450"
-        format="webp"
-        quality="80"
-        loading="lazy"
-        sizes="xs:100vw sm:50vw md:33vw lg:33vw"
-        @load="imageLoaded = true"
         class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-in-out"
-        :class="[imageLoaded ? 'opacity-100' : 'opacity-0']"
-        placeholder
       />
 
       <div v-else class="absolute inset-0 flex items-center justify-center bg-gray-50">
@@ -97,7 +87,6 @@ const props = defineProps<{
 
 const localePath = useLocalePath()
 const { locale } = useI18n()
-const imageLoaded = ref(false)
 
 const lang = computed(() => {
   const l = locale.value as string
@@ -146,29 +135,6 @@ function formatDate(dateStr: string) {
 </script>
 
 <style scoped>
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 45%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(255, 255, 255, 0.4) 55%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite linear;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

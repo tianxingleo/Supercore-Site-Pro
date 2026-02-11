@@ -116,6 +116,6 @@ const handleFormSubmit = (data: ContactFormData) => {
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => `${t('nav.contact')} - Supercore`),
+  title: computed(() => `${t('nav.contact')} - XX`),
 })
 </script>

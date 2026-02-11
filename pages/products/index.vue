@@ -110,7 +110,7 @@ const products = computed(() => {
 console.log('[Products] Page mounted, data:', rawProducts.value, 'pending:', pending.value)
 
 useHead({
-  title: computed(() => `${t('products.title')} - Supercore`),
+  title: computed(() => `${t('products.title')} - XX`),
 })
 
 // 添加动画逻辑

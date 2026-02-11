@@ -1,88 +1,93 @@
 <template>
   <div class="min-h-screen bg-swiss-bg">
-    <!-- Hero Section with 3D Scene -->
-    <section class="min-h-screen flex items-center relative overflow-hidden bg-white" id="hero-section">
-      <GridContainer :grid="true">
-        <div class="col-span-12 lg:col-span-12 xl:col-span-8 flex flex-col justify-center py-24 lg:py-0 relative z-10">
-          <!-- Eyebrow Text: Technical / Branding -->
-          <SwissTextReveal tag="div" :delay="100" class="mb-4 lg:mb-6" immediate>
-            <div class="flex items-center gap-4">
-              <span class="text-[10px] font-black tracking-[0.4em] uppercase text-swiss-text/40 font-mono">
-                Est. 2024 // Network Infrastructure
-              </span>
-              <div class="h-px w-12 bg-swiss-text/10"></div>
-            </div>
-          </SwissTextReveal>
+    <!-- Hero Section with Sticky 3D Scrollytelling -->
+    <!-- h-[250vh] provides scroll space for the animation -->
+    <section class="h-[250vh] relative bg-white" id="hero-section">
+      <div class="sticky top-0 h-screen w-full overflow-hidden">
 
-          <SwissTextReveal tag="div" :delay="250" :duration="1.2" immediate block>
-            <TypographyHeader :level="1" size="display" class="mb-4 lg:mb-6 whitespace-pre-line">{{
-              $t('home.hero.title') }}</TypographyHeader>
-          </SwissTextReveal>
-
-          <SwissTextReveal tag="div" :delay="450" :duration="1" immediate>
-            <div class="max-w-2xl border-l-2 border-swiss-text/5 pl-8 lg:pl-12 mt-6 lg:mt-8 mb-4 lg:mb-6">
-              <TypographyHeader :level="2" size="h5" color="secondary" weight="normal"
-                class="!mb-0 opacity-90 leading-tight">
-                {{ $t('home.hero.subtitle') }}
-              </TypographyHeader>
-              <div class="mt-4 flex items-center gap-3">
-                <span class="w-1.5 h-1.5 rounded-full bg-swiss-accent animate-pulse"></span>
-                <span
-                  class="text-[9px] font-bold tracking-widest uppercase text-swiss-text/30 font-mono">Systems_Online:
-                  Hypercore_v4.0</span>
-              </div>
-            </div>
-          </SwissTextReveal>
-
-          <div class="flex flex-row flex-wrap items-center gap-6 lg:gap-10 mt-2 overflow-visible">
-            <SwissTextReveal tag="div" :delay="600" :duration="0.8" immediate width-class="w-auto">
-              <SwissButton variant="primary" size="lg"
-                class="!px-12 !py-5 hover-lift text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
-                @click="navigateTo(localePath('/solutions'))" aria-label="Explore our infrastructure solutions">
-                {{ $t('home.hero.cta') }}
-              </SwissButton>
-            </SwissTextReveal>
-
-            <SwissTextReveal tag="div" :delay="750" :duration="0.8" immediate width-class="w-auto">
-              <SwissButton variant="ghost" size="lg"
-                class="!px-12 !py-5 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300 text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
-                @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
-                {{ $t('home.hero.ctaSecondary') }}
-              </SwissButton>
-            </SwissTextReveal>
-
-            <SwissTextReveal tag="div" :delay="900" :duration="0.8" immediate width-class="w-auto"
-              class="hidden lg:block">
-              <div
-                class="flex items-center gap-6 ml-4 opacity-10 group cursor-help transition-opacity hover:opacity-40">
-                <div class="h-10 w-px bg-swiss-text"></div>
-                <span class="text-[9px] font-mono uppercase tracking-tighter leading-none translate-y-1">
-                  Ref_Code: HK_712<br>Axis_X: 114.167
-                </span>
-              </div>
-            </SwissTextReveal>
-          </div>
-        </div>
-
-        <div
-          class="col-span-12 lg:col-span-12 xl:col-span-4 min-h-[400px] lg:min-h-[500px] relative mt-12 lg:mt-0 flex items-center justify-center">
-          <!-- 桌面端：3D 場景 - 使用 ClientOnly 避免 hydration mismatch -->
+        <!-- 3D Scene Layer: Absolute & Full Screen -->
+        <div class="absolute inset-0 z-0 w-full h-full">
           <ClientOnly>
-            <ServerScene v-if="canUseAdvanced3D()" ref="serverSceneRef" background-color="#FFFFFF" :auto-rotate="false"
-              :mouse-parallax="true" :initial-rotation="{ x: 0, y: (70 * Math.PI) / 180, z: 0 }" />
-            <!-- 移動端：降級版本 -->
+            <ServerParticles v-if="canUseAdvanced3D()" ref="serverSceneRef" />
             <MobileFallback v-else :show-scroll-indicator="true" />
-            <!-- 加載中的佔位符 -->
             <template #fallback>
               <PlaceholderCanvas />
             </template>
           </ClientOnly>
         </div>
-      </GridContainer>
+
+        <!-- Content Layer: Overlay on top, Grid aligned -->
+        <div class="relative z-10 h-full flex flex-col justify-center pointer-events-none" id="hero-content">
+          <GridContainer :grid="true" class="pointer-events-auto">
+            <!-- Text Content: restricted to left/center columns initially -->
+            <div class="col-span-12 lg:col-span-10 xl:col-span-6 flex flex-col justify-center py-24 lg:py-0">
+              <!-- Eyebrow Text: Technical / Branding -->
+              <SwissTextReveal tag="div" :delay="100" class="mb-4 lg:mb-6" immediate>
+                <div class="flex items-center gap-4">
+                  <span class="text-[10px] font-black tracking-[0.4em] uppercase text-swiss-text/40 font-mono">
+                    Est. 2024 // Network Infrastructure
+                  </span>
+                  <div class="h-px w-12 bg-swiss-text/10"></div>
+                </div>
+              </SwissTextReveal>
+
+              <SwissTextReveal tag="div" :delay="250" :duration="1.2" immediate block>
+                <TypographyHeader :level="1" size="display" class="mb-4 lg:mb-6 whitespace-pre-line">{{
+                  $t('home.hero.title') }}</TypographyHeader>
+              </SwissTextReveal>
+
+              <SwissTextReveal tag="div" :delay="450" :duration="1" immediate>
+                <div class="max-w-2xl border-l-2 border-swiss-text/5 pl-8 lg:pl-12 mt-6 lg:mt-8 mb-4 lg:mb-6">
+                  <TypographyHeader :level="2" size="h5" color="secondary" weight="normal"
+                    class="!mb-0 opacity-90 leading-tight">
+                    {{ $t('home.hero.subtitle') }}
+                  </TypographyHeader>
+                  <div class="mt-4 flex items-center gap-3">
+                    <span class="w-1.5 h-1.5 rounded-full bg-swiss-accent animate-pulse"></span>
+                    <span
+                      class="text-[9px] font-bold tracking-widest uppercase text-swiss-text/30 font-mono">Systems_Online:
+                      Hypercore_v4.0</span>
+                  </div>
+                </div>
+              </SwissTextReveal>
+
+              <div class="flex flex-row flex-wrap items-center gap-6 lg:gap-10 mt-2 overflow-visible">
+                <SwissTextReveal tag="div" :delay="600" :duration="0.8" immediate width-class="w-auto">
+                  <SwissButton variant="primary" size="lg"
+                    class="!px-12 !py-5 hover-lift text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
+                    @click="navigateTo(localePath('/solutions'))" aria-label="Explore our infrastructure solutions">
+                    {{ $t('home.hero.cta') }}
+                  </SwissButton>
+                </SwissTextReveal>
+
+                <SwissTextReveal tag="div" :delay="750" :duration="0.8" immediate width-class="w-auto">
+                  <SwissButton variant="ghost" size="lg"
+                    class="!px-12 !py-5 border-swiss-text hover:bg-swiss-text hover:text-white transition-colors duration-300 text-[11px] font-black tracking-[0.2em] whitespace-nowrap"
+                    @click="navigateTo(localePath('/contact'))" aria-label="Contact us for project consultation">
+                    {{ $t('home.hero.ctaSecondary') }}
+                  </SwissButton>
+                </SwissTextReveal>
+
+                <SwissTextReveal tag="div" :delay="900" :duration="0.8" immediate width-class="w-auto"
+                  class="hidden lg:block">
+                  <div
+                    class="flex items-center gap-6 ml-4 opacity-10 group cursor-help transition-opacity hover:opacity-40">
+                    <div class="h-10 w-px bg-swiss-text"></div>
+                    <span class="text-[9px] font-mono uppercase tracking-tighter leading-none translate-y-1">
+                      Ref_Code: HK_712<br>Axis_X: 114.167
+                    </span>
+                  </div>
+                </SwissTextReveal>
+              </div>
+            </div>
+            <!-- Removed the right column div since 3D is now background -->
+          </GridContainer>
+        </div>
+      </div>
     </section>
 
     <!-- Product Categories Section -->
-    <section class="py-24 bg-white border-y border-gray-100">
+    <section class="py-24 bg-white border-b border-gray-100 relative z-20">
       <GridContainer>
         <div class="col-span-12 mb-16">
           <SwissTextReveal tag="div" :delay="100">
@@ -426,7 +431,7 @@ const breadcrumbStructuredData = useBreadcrumbStructuredData([
 ])
 
 useHead({
-  title: computed(() => `${t('nav.home')} - Supercore`),
+  title: computed(() => `${t('nav.home')} - XX`),
   // 移除 snap-y snap-mandatory scroll-pt-24 md:scroll-pt-32 以解决滚动卡顿问题
   link: [
     {
@@ -448,7 +453,7 @@ const canUse3D = ref(false)
 
 // 動畫系統
 const serverSceneRef = ref()
-const animationPhase = ref(0)
+const animationPhase = ref(0) // Still used? Check usages.
 
 onMounted(() => {
   // 檢測設備並決定是否啟用 3D
@@ -569,65 +574,42 @@ const initScrollAnimation = () => {
   }
 
   try {
-    // 创建滚动时间轴 - 使用 gsap.timeline() 而不是 ScrollTrigger.timeline()
-    const timeline = $gsap.timeline({
-      scrollTrigger: {
-        trigger: '#hero-section',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-        onUpdate: (self: any) => {
-          const progress = self.progress
-          updateAnimationPhase(progress)
-        },
+    // 1. Hero Scroll Logic
+    $ScrollTrigger.create({
+      trigger: '#hero-section',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1.5, // Smoother scrub
+      onUpdate: (self: any) => {
+        const progress = self.progress;
+
+        // Pass direct progress to 3D scene (handles zooming/centering)
+        if (serverSceneRef.value) {
+          serverSceneRef.value.setProgress(progress);
+        }
+
+        // Animate Text Content opacity/blur
+        // As progress goes from 0 to 0.5 (approx), fade out text
+        const textOpacity = 1 - Math.min(1, progress * 4); // Fast fade out
+        const textY = -progress * 200; // Move up slightly
+
+        $gsap.to('#hero-content', {
+          opacity: textOpacity,
+          y: textY,
+          filter: `blur(${progress * 10}px)`,
+          duration: 0.1,
+          overwrite: 'auto'
+        });
       },
     })
 
-    // 阶段 1: 淡入 (0-20%)
-    timeline.to({}, { duration: 20 })
-
-    // 阶段 2: 机柜打开 (20-50%)
-    timeline.to({}, { duration: 30 })
-
-    // 阶段 3: 组件爆炸 (50-80%)
-    timeline.to({}, { duration: 30 })
-
-    // 阶段 4: 重新组装 (80-100%)
-    timeline.to({}, { duration: 20 })
   } catch (error) {
     console.error('Failed to initialize scroll animation:', error)
   }
 }
 
-const updateAnimationPhase = (progress: number) => {
-  if (!serverSceneRef.value) return
-
-  let phase = 0
-  let phaseProgress = 0
-
-  if (progress < 0.2) {
-    // 階段 1: 淡入
-    phase = 0
-    phaseProgress = progress / 0.2
-  } else if (progress < 0.5) {
-    // 階段 2: 機櫃打開
-    phase = 1
-    phaseProgress = (progress - 0.2) / 0.3
-  } else if (progress < 0.8) {
-    // 階段 3: 組件爆炸
-    phase = 2
-    phaseProgress = (progress - 0.5) / 0.3
-  } else {
-    // 階段 4: 重新組裝
-    phase = 3
-    phaseProgress = (progress - 0.8) / 0.2
-  }
-
-  animationPhase.value = phase
-
-  // 更新 3D 場景
-  serverSceneRef.value.setAnimationPhase(phase, phaseProgress)
-}
+// Remove old updateAnimationPhase since we now pass raw progress
+// const updateAnimationPhase = ... (Deleted)
 
 onUnmounted(() => {
   // 清理 ScrollTrigger
