@@ -25,13 +25,14 @@ export default defineEventHandler(async (event) => {
   console.log('[Product API] Fetching product with slug:', slug)
 
   // 使用 service_role 客户端绕过 RLS（公开 API）
-  const supabaseUrl = process.env.SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_SECRET_KEY
+  const config = useRuntimeConfig(event)
+  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
+  const supabaseKey = config.supabaseService.key || config.public.supabaseKey || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
 
   if (!supabaseUrl || !supabaseKey) {
     throw createError({
       statusCode: 500,
-      message: 'Supabase configuration is missing',
+      message: 'Supabase configuration is missing (URL or Service Key)',
     })
   }
 

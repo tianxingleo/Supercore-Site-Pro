@@ -54,11 +54,11 @@ const { data: posts, pending, error } = useLazyFetch<Post[]>('/api/news/public')
 console.log('[News] Data loaded:', { posts, pending, error })
 
 useHead({
-  title: computed(() => `${t('nav.news')} - Supercore`),
+  title: computed(() => `${t('nav.news')} - XX`),
   meta: [
     {
       name: 'description',
-      content: 'Latest industry news and company updates from Supercore Technology.',
+      content: 'Latest industry news and company updates from XX Technology.',
     },
   ],
 })

@@ -2,7 +2,6 @@
   <nav
     class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
     :class="[scrolled ? 'bg-white/90 backdrop-blur-md border-b border-gray-100' : 'bg-transparent']"
-    aria-label="Main Navigation"
   >
     <div
       class="w-full px-6 sm:px-8 lg:px-12 py-5 md:py-8 transition-all duration-500"
@@ -10,10 +9,10 @@
     >
       <div class="flex items-center justify-between max-w-[1400px] mx-auto">
         <!-- Logo -->
-        <NuxtLink :to="localePath('/')" class="flex items-center group" aria-label="SUPERCORE Home">
+        <NuxtLink :to="localePath('/')" class="flex items-center group">
           <NuxtImg
             src="/icon.png"
-            alt="SUPERCORE Logo"
+            alt="XX Logo"
             width="256"
             height="256"
             format="webp"
@@ -27,15 +26,12 @@
         </NuxtLink>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center space-x-12" role="menubar">
+        <div class="hidden md:flex items-center space-x-12">
           <NuxtLink
             v-for="item in navItems"
             :key="item.key"
             :to="localePath(item.to)"
             class="nav-link group relative py-1 px-1"
-            role="menuitem"
-            :aria-current="route.path === localePath(item.to) ? 'page' : undefined"
-            :aria-label="$t(item.label)"
           >
             <TypographyHeader
               :level="4"
@@ -57,16 +53,12 @@
             type="button"
             class="md:hidden p-2 text-swiss-text hover:text-swiss-accent transition-colors"
             @click="toggleMobileMenu"
-            :aria-label="mobileMenuOpen ? 'Close menu' : 'Open menu'"
-            :aria-expanded="mobileMenuOpen"
-            aria-controls="mobile-menu"
           >
             <svg
               class="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
-              aria-hidden="true"
             >
               <path
                 v-if="!mobileMenuOpen"
@@ -95,15 +87,13 @@
         id="mobile-menu"
         class="md:hidden bg-swiss-bg/95 backdrop-blur-md border-t border-swiss-secondary/10"
       >
-        <div class="px-6 sm:px-8 lg:px-12 py-4 max-w-[1400px] mx-auto space-y-4" role="menu">
+        <div class="px-6 sm:px-8 lg:px-12 py-4 max-w-[1400px] mx-auto space-y-4">
           <NuxtLink
             v-for="item in navItems"
             :key="item.key"
             :to="localePath(item.to)"
             class="block py-2"
             @click="mobileMenuOpen = false"
-            role="menuitem"
-            :aria-current="route.path === localePath(item.to) ? 'page' : undefined"
           >
             <TypographyHeader :level="4" size="h5">
               {{ $t(item.label) }}

@@ -7,7 +7,7 @@ export default defineNuxtPlugin(() => {
    ██║   ██║██╔═══██║██║╚██╗██║ ██╔██╗ ██║██║╚██╗██║██║   ██║
    ██║   ██║██║   ██║██║ ╚████║██╔╝ ██╗██║██║ ╚████║╚██████╔╝
    ╚═╝   ╚═╝╚═╝   ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
-             Code by tianxingleo
+                      Code by tianxingleo
 `;
     console.log(
       "%c GitHub %c tianxingleo ",

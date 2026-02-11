@@ -1,4 +1,4 @@
-# robots.txt for SUPERCORE TECHNOLOGY LIMITED
+# robots.txt for XX TECHNOLOGY LIMITED
 
 User-agent: *
 Allow: /
@@ -7,4 +7,4 @@ Allow: /
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://www.supercore.hk/sitemap.xml
+Sitemap: https://www.example.com/sitemap.xml

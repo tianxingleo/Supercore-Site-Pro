@@ -9,43 +9,6 @@
 <script setup lang="ts">
 const { locale } = useI18n()
 
-// 直接定義全局結構化數據
-const baseUrl = 'https://www.supercore.hk'
-
-const organizationData = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Supercore Technology Co., Ltd.',
-  url: baseUrl,
-  logo: `${baseUrl}/icon.png`,
-  description:
-    'Leading global AI computing infrastructure provider, focusing on AI server & GPU cluster R&D, production and full-stack solutions.',
-  address: {
-    '@type': 'PostalAddress',
-    addressCountry: 'HK',
-    addressLocality: 'Hong Kong',
-  },
-  contactPoint: {
-    '@type': 'ContactPoint',
-    contactType: 'customer service',
-    email: 'kyle@supercore.hk',
-  },
-  sameAs: [] as string[],
-}
-
-const websiteData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Supercore Technology Co., Ltd.',
-  url: baseUrl,
-  description: 'Global leading AI computing infrastructure service provider',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${baseUrl}/search?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
-}
-
 useHead({
   htmlAttrs: {
     lang: locale,
@@ -53,16 +16,6 @@ useHead({
   bodyAttrs: {
     class: 'antialiased',
   },
-  script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify(organizationData),
-    },
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify(websiteData),
-    },
-  ],
 })
 </script>
 

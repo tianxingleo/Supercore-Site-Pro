@@ -1,4 +1,4 @@
-# <img src="./public/icon.png" width="32" height="32" /> SUPERCORE TECHNOLOGY LIMITED
+# <img src="./public/icon.png" width="32" height="32" /> XX TECHNOLOGY LIMITED
 
 <p align="left">
   <img src="https://img.shields.io/badge/Nuxt-00DC82?style=for-the-badge&logo=nuxt.js&logoColor=white" alt="Nuxt 3" />
@@ -21,10 +21,10 @@
 ### 🏢 公司信息 | Company Info
 | 属性 | 内容 |
 | :--- | :--- |
-| **公司名称 (中)** | 超核技术有限公司 |
-| **公司名称 (EN)** | SUPERCORE TECHNOLOGY LIMITED |
-| **公司地址 (中)** | 九龙尖沙咀科学馆道14号新文华中心B座7楼701室108单位 |
-| **Address (EN)** | ROOM 701 UNIT 108 7/F TOWER B NEW MANDARIN PLAZA 14 SCIENCE MUSEUM ROAD TSIM SHA TSUI KL |
+| **公司名称 (中)** | XX科技有限公司 |
+| **公司名称 (EN)** | XX TECHNOLOGY LIMITED |
+| **公司地址 (中)** | 香港九龙 |
+| **Address (EN)** | Kowloon, Hong Kong |
 
 ### 🎬 GIF 演示
 <p align="center">
@@ -625,9 +625,9 @@ MIT License
 ---
 
 ### 📞 联系我们 | Contact
-**SUPERCORE TECHNOLOGY LIMITED**  
-🌐 **Website**: [www.supercore.hk](https://www.supercore.hk)  
-📧 **Email**: [info@supercore.hk](mailto:info@supercore.hk)
+**XX TECHNOLOGY LIMITED**
+🌐 **Website**: [www.example.com](https://www.example.com)
+📧 **Email**: [contact@example.com](mailto:contact@example.com)
 
 ---
-<p align="center">Built with ❤️ by SUPERCORE Team</p>
+<p align="center">Built with ❤️ by XX Team</p>

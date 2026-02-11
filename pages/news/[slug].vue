@@ -7,9 +7,8 @@
                     <div class="col-span-12 lg:col-span-10 lg:offset-1">
                         <div class="mb-8 flex items-center space-x-4">
                             <NuxtLink :to="localePath('/news')"
-                                class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center"
-                                :aria-label="$t('news.backToList')">
-                                <span class="mr-2" aria-hidden="true">←</span> {{ $t('news.backToList') }}
+                                class="text-xs font-bold uppercase tracking-widest text-swiss-secondary hover:text-swiss-text transition-colors flex items-center">
+                                <span class="mr-2">←</span> {{ $t('news.backToList') }}
                             </NuxtLink>
                         </div>
 
@@ -28,7 +27,7 @@
                         <div class="flex items-center space-x-6 text-sm text-swiss-secondary uppercase tracking-widest">
                             <span>{{ formatDate(post.published_at || post.created_at) }}</span>
                             <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>SUPERCORE NEWS</span>
+                            <span>XX NEWS</span>
                         </div>
                     </div>
                 </GridContainer>
@@ -176,7 +175,7 @@ function formatDate(dateStr: string) {
 // Set page title, structured data, and canonical
 watchEffect(() => {
   if (post.value) {
-    const baseUrl = 'https://www.supercore.hk'
+    const baseUrl = 'https://www.example.com'
     const currentPath = route.path
     const canonicalUrl = locale.value === 'en'
       ? `${baseUrl}${currentPath}`
@@ -193,7 +192,7 @@ watchEffect(() => {
     ])
 
     useHead({
-      title: (post.value?.title[lang.value] || 'News') + ' - Supercore',
+      title: (post.value?.title[lang.value] || 'News') + ' - XX',
       link: [
         {
           rel: 'canonical',

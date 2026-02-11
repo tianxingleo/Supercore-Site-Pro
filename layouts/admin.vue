@@ -5,7 +5,7 @@
       class="bg-white border-b border-swiss-text/10 py-4 px-6 md:px-8 flex justify-between items-center sticky top-0 z-50">
       <div class="flex items-center space-x-4">
         <h1 class="text-xl font-bold tracking-tight">
-          SUPERCORE <span class="text-swiss-text">Admin</span>
+          XX <span class="text-swiss-text">Admin</span>
         </h1>
       </div>
       <div class="flex items-center gap-4 flex-1 max-w-md mx-4">

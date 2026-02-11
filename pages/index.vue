@@ -418,7 +418,7 @@ watch(locale, () => {
 })
 
 // 添加 canonical 標籤
-const baseUrl = 'https://www.supercore.hk'
+const baseUrl = 'https://www.example.com'
 const canonicalUrl = computed(() => {
   return locale.value === 'en'
     ? `${baseUrl}${route.path}`
@@ -431,7 +431,7 @@ const breadcrumbStructuredData = useBreadcrumbStructuredData([
 ])
 
 useHead({
-  title: computed(() => `${t('nav.home')} - Supercore`),
+  title: computed(() => `${t('nav.home')} - XX`),
   // 移除 snap-y snap-mandatory scroll-pt-24 md:scroll-pt-32 以解决滚动卡顿问题
   link: [
     {

@@ -10,8 +10,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_SECRET_KEY
+  const config = useRuntimeConfig(event)
+  const supabaseUrl = config.supabaseService.url
+  const supabaseKey = config.supabaseService.key
 
   if (!supabaseUrl || !supabaseKey) {
     throw createError({

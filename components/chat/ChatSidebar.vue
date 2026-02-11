@@ -227,7 +227,7 @@ onMounted(async () => {
     <div class="p-4 border-t border-black/10 dark:border-white/10">
       <div class="flex items-center justify-between text-[8px] font-mono opacity-30">
         <span>{{ chatStore.activeSessions.length }} sessions</span>
-        <span>Supercore AI v2.1</span>
+        <span>XX AI v2.1</span>
       </div>
     </div>
   </div>

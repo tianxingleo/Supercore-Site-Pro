@@ -370,5 +370,6 @@ export function createRequestContext(event: any) {
     requestId: headers['x-request-id'] || crypto.randomUUID(),
     method: event.node.req.method,
     url: event.node.req.url,
+    userId: undefined as string | undefined,
   }
 }

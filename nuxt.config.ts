@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   future: {
-    compatibilityVersion: 4,
+    compatibilityVersion: 3,
   },
 
   // Runtime Config
@@ -41,12 +41,29 @@ export default defineNuxtConfig({
   // TypeScript
   typescript: {
     strict: true,
-    typeCheck: false, // Disabled due to vue-tsc issues in dev mode
+    typeCheck: false,
   },
 
   sourcemap: {
     server: false,
-    client: false
+    client: false,
+  },
+
+  // Nitro engine optimization
+  nitro: {
+    // 1. 之前做过的优化保持不变
+    sourceMap: false,
+    minify: true,
+    prerender: {
+      concurrency: 1,
+      interval: 250
+    },
+
+    // 2. 👇👇👇 核心修复代码：强制内联 tslib 👇👇👇
+    // 这行代码会把 tslib 直接写入 index.mjs，不再去外部寻找文件
+    externals: {
+      inline: ['tslib']
+    }
   },
 
   // Pinia Configuration
@@ -54,8 +71,14 @@ export default defineNuxtConfig({
     storesDirs: ['./stores/**'],
   },
 
-  // Modules
-  modules: ['@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/supabase', '@nuxt/ui'],
+  // 1. 模块配置：顺序至关重要！
+  modules: [
+    '@pinia/nuxt',                        // 👈 移至首位，确保 Pinia 最先加载
+    '@nuxt/ui',
+    '@nuxt/image',
+    '@nuxtjs/i18n',
+    '@nuxtjs/supabase',
+  ],
 
   // 圖片優化配置
   image: {
@@ -83,7 +106,7 @@ export default defineNuxtConfig({
     cookieOptions: {
       path: '/',
       sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production', // 仅在生产环境使用 secure
+      secure: false, // 改为 false，因为你目前使用的是 HTTP (IP 直接访问)，设为 true 会导致 Cookie 无法发送给服务器
       httpOnly: false, // 允许客户端访问
       maxAge: 60 * 60 * 24 * 7, // 7 天
     },
@@ -159,41 +182,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'Supercore - Computing the Future',
-      meta: [
-        {
-          name: 'description',
-          content:
-            '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
-        },
-        {
-          name: 'keywords',
-          content: 'AI服務器,GPU計算集群,算力基礎設施,HPC,人工智能,超級計算,IDC服務',
-        },
-        { name: 'author', content: 'tianxingleo' },
-        { name: 'copyright', content: 'tianxingleo' },
-        { property: 'og:type', content: 'website' },
-        { property: 'og:site_name', content: '超核技術有限公司' },
-        { property: 'og:locale', content: 'zh_HK' },
-        { property: 'og:title', content: '超核技術有限公司 - AI算力基礎設施服務商' },
-        {
-          property: 'og:description',
-          content:
-            '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
-        },
-        { property: 'og:image', content: '/og-image.png' },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: '超核技術有限公司 - AI算力基礎設施服務商' },
-        {
-          name: 'twitter:description',
-          content:
-            '全球領先的AI算力基礎設施服務商，專注於AI服務器與GPU計算集群的研發、生產與全棧解決方案交付',
-        },
-        { name: 'twitter:image', content: '/og-image.png' },
-      ],
-      htmlAttrs: {
-        lang: 'zh-HK',
-      },
+      title: 'XX - Computing the Future',
       link: [
         { rel: 'icon', type: 'image/png', href: '/icon.png' },
         { rel: 'apple-touch-icon', href: '/icon.png' },
@@ -208,13 +197,12 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+HK:wght@300;400;500;700&display=swap',
         },
-        { rel: 'author', type: 'text/plain', href: '/humans.txt' },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
   },
 
-  // Route Rules (ISR for performance)
+  // Route Rules
   routeRules: {
     '/**': {
       headers: {
@@ -223,15 +211,6 @@ export default defineNuxtConfig({
         'X-Created-By': 'tianxingleo',
       },
     },
-    '/': { isr: 3600 }, // 1 hour
-    '/products': { isr: 86400 }, // 1 day
-    '/products/**': { isr: 86400 },
-    '/solutions': { isr: 86400 },
-    '/solutions/**': { isr: 86400 },
-    '/about': { isr: 604800 }, // 1 week
-    '/contact': { isr: 604800 },
-    '/icon.png': { isr: false },
-    '/supercore.png': { isr: false },
   },
 
   // Vite
@@ -240,9 +219,29 @@ export default defineNuxtConfig({
       include: ['gsap', 'lenis'],
       exclude: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js'],
     },
+    build: {
+      rollupOptions: {
+        output: {
+          // ⚠️ 删掉你之前复杂的 manualChunks 函数！
+          // 使用最安全的拆分策略：只把巨大的库拆出来，其他的让 Vite 自己算
+          manualChunks: {
+            'three-vendor': ['three', '@tresjs/core'],
+            'echarts-vendor': ['echarts'],
+            // 其他的不要手动拆了，很容易崩
+          }
+        }
+      },
+      chunkSizeWarningLimit: 1000, // 进一步调高阈值，核心库 large 是预期的
+    },
   },
   // Build
   build: {
-    transpile: ['@supabase/postgrest-js', '@supabase/supabase-js', '@supabase/functions-js'],
+    // 强制转译这些库，防止生产环境找不到对象
+    transpile: [
+      '@supabase/postgrest-js',
+      '@supabase/supabase-js',
+      '@supabase/functions-js',
+      'tslib'
+    ],
   },
 })

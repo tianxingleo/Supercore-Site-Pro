@@ -2,9 +2,7 @@
   <div class="relative" ref="dropdownRef">
     <button type="button"
       class="flex items-center space-x-1 px-3 py-2 rounded-none hover:bg-swiss-bg-soft transition-colors"
-      @click="toggleDropdown" @keydown.enter.prevent="toggleDropdown" @keydown.space.prevent="toggleDropdown"
-      @keydown.escape.prevent="closeDropdown" :aria-expanded="dropdownOpen" aria-haspopup="listbox"
-      :aria-label="`Switch language: ${currentLocale}`">
+      @click="toggleDropdown">
       <svg class="w-5 h-5 text-swiss-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129">
@@ -21,15 +19,11 @@
 
     <!-- Dropdown Menu -->
     <Transition name="fade">
-      <div v-if="dropdownOpen" id="locale-listbox" role="listbox" aria-label="Language selector"
+      <div v-if="dropdownOpen"
         class="absolute right-0 mt-2 w-48 bg-white rounded-none shadow-2xl border border-gray-100 py-1 z-50">
-        <button v-for="(locale, index) in availableLocales" :key="locale.code" type="button" role="option"
-          :tabindex="dropdownOpen ? 0 : -1" :aria-selected="locale.code === currentLocaleCode"
-          class="w-full px-4 py-3 text-left hover:bg-swiss-bg-soft transition-colors flex items-center justify-between focus:bg-swiss-bg-soft focus:outline-none"
-          :class="{ 'bg-swiss-bg-soft': locale.code === currentLocaleCode }" @click="switchLocale(locale.code)"
-          @keydown.enter.prevent="switchLocale(locale.code)" @keydown.space.prevent="switchLocale(locale.code)"
-          @keydown.escape.prevent="closeDropdown" @keydown.up.prevent="focusPrevious(index)"
-          @keydown.down.prevent="focusNext(index)" ref="localeButtons">
+        <button v-for="(locale, index) in availableLocales" :key="locale.code" type="button"
+          class="w-full px-4 py-3 text-left hover:bg-swiss-bg-soft transition-colors flex items-center justify-between"
+          :class="{ 'bg-swiss-bg-soft': locale.code === currentLocaleCode }" @click="switchLocale(locale.code)">
           <span class="text-sm font-medium text-swiss-text">
             {{ locale.name }}
           </span>
@@ -51,7 +45,6 @@ const switchLocalePath = useSwitchLocalePath()
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref<HTMLDivElement>()
-const localeButtons = ref<HTMLButtonElement[]>()
 
 const currentLocaleCode = computed(() => locale.value)
 
@@ -70,41 +63,12 @@ const availableLocales = computed(() => {
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value
-  // Focus first locale button when dropdown opens
-  if (dropdownOpen.value) {
-    nextTick(() => {
-      if (localeButtons.value && localeButtons.value.length > 0) {
-        localeButtons.value[0]?.focus()
-      }
-    })
-  }
-}
-
-const closeDropdown = () => {
-  dropdownOpen.value = false
 }
 
 const switchLocale = async (code: string) => {
   await setLocale(code as any)
   navigateTo(switchLocalePath(code as any))
   dropdownOpen.value = false
-}
-
-// 鍵盤導航 - 焦點管理
-const focusPrevious = (currentIndex: number) => {
-  const buttons = localeButtons.value
-  if (!buttons || buttons.length === 0) return
-
-  const prevIndex = currentIndex === 0 ? buttons.length - 1 : currentIndex - 1
-  buttons[prevIndex]?.focus()
-}
-
-const focusNext = (currentIndex: number) => {
-  const buttons = localeButtons.value
-  if (!buttons || buttons.length === 0) return
-
-  const nextIndex = currentIndex === buttons.length - 1 ? 0 : currentIndex + 1
-  buttons[nextIndex]?.focus()
 }
 
 // 點擊外部關閉下拉選單
