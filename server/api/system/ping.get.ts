@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
-  const supabaseUrl = config.supabaseService.url || ''
-  const supabaseKey = config.public.supabaseKey || ''
+  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL || ''
+  const supabaseKey = config.supabaseService.key || config.public.supabaseKey || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_KEY || ''
 
   const results: any = {
     frontend: { url: 'localhost', status: 'online', responseTime: 0 },

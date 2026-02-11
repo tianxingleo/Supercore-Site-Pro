@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async (event) => {
   // 1. 获取运行时配置
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const { url, key } = config.supabaseService
   const apiKey = config.dashscopeApiKey
 
