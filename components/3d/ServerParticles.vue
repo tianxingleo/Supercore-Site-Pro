@@ -4,25 +4,49 @@
 
     <!-- 3D Projected Annotations (Visible during Stage 3 Explosion) -->
     <div v-for="(ann, index) in annotations" :key="index"
-      class="absolute pointer-events-none transition-opacity duration-300" :style="{
+      class="absolute pointer-events-none transition-opacity duration-500" :style="{
         top: ann.y + 'px',
         left: ann.x + 'px',
         opacity: ann.isOccluded ? 0 : ann.opacity,
         transform: `translate(-50%, -50%) scale(${ann.scale})`,
-        zIndex: ann.isActive ? 50 : (ann.isOccluded ? 0 : 10)
+        zIndex: ann.isActive ? 100 : (ann.isOccluded ? 0 : 10)
       }">
-      <div class="flex items-center space-x-2 transition-transform duration-300 origin-left"
-        :class="ann.isActive ? 'scale-110' : ''">
-        <!-- Connecting Line/Dot -->
-        <div class="w-2 h-2 rounded-full shadow-[0_0_10px_rgba(255,0,0,0.8)] transition-colors duration-300"
-          :class="ann.isActive ? 'bg-red-500 shadow-[0_0_15px_rgba(255,50,50,1)]' : 'bg-red-600'"></div>
-        <!-- Label Content -->
-        <div class="backdrop-blur-sm border-l-2 px-3 py-1 shadow-sm transition-all duration-300"
-          :class="ann.isActive ? 'bg-white/95 border-red-500 shadow-md' : 'bg-white/80 border-red-600'">
-          <div class="text-[10px] font-mono tracking-widest uppercase transition-colors duration-300"
-            :class="ann.isActive ? 'text-red-500 font-bold' : 'text-gray-500'">sys.comp.{{ index + 1 }}</div>
-          <div class="text-sm font-bold font-display whitespace-nowrap transition-colors duration-300"
-            :class="ann.isActive ? 'text-black' : 'text-gray-800'">{{ ann.text }}</div>
+      <div class="flex items-center space-x-5 transition-all duration-300 origin-left"
+        :class="ann.isActive ? 'scale-105' : ''">
+        <!-- Connecting Line/Dot (Tech Version) -->
+        <div class="relative flex items-center justify-center">
+          <div class="absolute w-6 h-6 rounded-full border border-red-500/20 animate-ping" v-if="ann.isActive"></div>
+          <div class="w-3 h-3 rounded-full shadow-[0_0_15px_rgba(255,0,0,0.6)] transition-all duration-300 ring-2 ring-white/50"
+            :class="ann.isActive ? 'bg-red-500 scale-125' : 'bg-red-600'"></div>
+        </div>
+
+        <!-- Label Content (Premium Tech Style) -->
+        <div class="relative group">
+          <!-- Glass Background (Premium Gradient & Blur) -->
+          <div class="absolute inset-0 backdrop-blur-md rounded-sm border-l-4 transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
+            :class="ann.isActive 
+              ? 'bg-gradient-to-r from-white/98 to-white/95 border-red-500 shadow-red-500/5' 
+              : 'bg-gradient-to-r from-white/90 to-white/70 border-red-600/30' ">
+          </div>
+          
+          <!-- Content Wrapper -->
+          <div class="relative px-6 py-4 flex flex-col items-start min-w-[160px]">
+            <div class="flex items-center space-x-2 mb-1.5">
+              <div class="w-1 h-1 bg-red-500 rounded-full animate-pulse" v-if="ann.isActive"></div>
+              <div class="text-[10px] font-mono tracking-[0.3em] uppercase transition-colors duration-300"
+                :class="ann.isActive ? 'text-red-500 font-bold' : 'text-gray-400'">
+                COMPONENT.{{ (index + 1).toString().padStart(2, '0') }}
+              </div>
+            </div>
+            <div class="text-sm sm:text-base font-bold font-display transition-colors duration-300 max-w-[350px] leading-relaxed tracking-tight"
+              :class="ann.isActive ? 'text-black' : 'text-gray-800'">
+              {{ ann.text }}
+            </div>
+          </div>
+
+          <!-- Decorative Accents -->
+          <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-red-500/10" v-if="ann.isActive"></div>
+          <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-red-500/10" v-if="ann.isActive"></div>
         </div>
       </div>
     </div>
@@ -31,6 +55,7 @@
 
 <script setup lang="ts">
 import * as THREE from 'three';
+const { t } = useI18n();
 // @ts-ignore
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // @ts-ignore
@@ -805,20 +830,26 @@ onMounted(() => {
   };
 
   // CPU Area (Type 4) -> Wider and deeper to catch all angles
-  addHitZone(16, 8, 8, 0, 2.5, 1.0, 4.0, 'Dual Intel Xeon Scalable');
+  addHitZone(16, 8, 8, 0, 2.5, 1.0, 4.0, t('home.serverLabels.cpu'));
 
   // GPU Area (Type 8) - Back
-  addHitZone(18, 6, 10, 0, 2.0, -5.5, 8.0, 'NVIDIA Tesla A100 Array');
+  addHitZone(18, 6, 10, 0, 2.0, -5.5, 8.0, t('home.serverLabels.gpu'));
+
+  // GPU Interconnect Area (Type 8) - Higher position to represent NVLink/Switch layer
+  addHitZone(18, 3, 10, 0, 5.5, -5.5, 8.0, t('home.serverLabels.gpuInterconnect'));
 
   // RAM Area (Type 5)
-  addHitZone(6, 6, 8, -6, 1.5, 1.0, 5.0, '2TB DDR4 ECC Memory');
-  addHitZone(6, 6, 8, 6, 1.5, 1.0, 5.0, '2TB DDR4 ECC Memory');
+  addHitZone(6, 6, 8, -6, 1.5, 1.0, 5.0, t('home.serverLabels.ram'));
+  addHitZone(6, 6, 8, 6, 1.5, 1.0, 5.0, t('home.serverLabels.ram'));
 
   // HDD Area (Type 2) - Front
-  addHitZone(16, 6, 5, 0, 2.0, 9.0, 2.0, '160TB Enterprise HDD Array');
+  addHitZone(16, 6, 5, 0, 2.0, 9.0, 2.0, t('home.serverLabels.storage'));
 
-  // Fan Area (Type 6)
-  addHitZone(16, 6, 4, 0, 1.5, 4.5, 6.0, 'High-RPM Cooling System');
+  // Network Card Area (Type 3) - Very back expansion/OCP slots
+  addHitZone(16, 4, 4, 0, 1.0, -11.0, 3.0, t('home.serverLabels.nic'));
+
+  // Network Connectivity (Type 3) - Alternative back connectivity view
+  addHitZone(16, 4, 4, 0, 4.0, -11.0, 3.0, t('home.serverLabels.networking'));
 
   scene.add(rotationPivot);
 
@@ -1113,8 +1144,8 @@ onMounted(() => {
 
           // 1. Perspective Scaling
           const distToCam = camera.position.distanceTo(tempV);
-          // Scale logic: Closer = larger (up to 1.2), Further = smaller (down to 0.5)
-          let scale = Math.max(0.5, Math.min(1.2, 65.0 / distToCam));
+          // Scale logic: Closer = larger (up to 1.4), Further = smaller (down to 0.8)
+          let scale = Math.max(0.8, Math.min(1.4, 75.0 / distToCam));
 
           // 2. Projection
           tempV.project(camera);
