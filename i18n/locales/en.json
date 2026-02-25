@@ -51,6 +51,15 @@
         "title": "Latest Technology & Security",
         "description": "Continuously innovating product applications, protecting user data security, providing comprehensive security protection"
       }
+    },
+    "serverLabels": {
+      "gpu": "NVIDIA® HGX H100/H200 8-GPU, up to 141GB HBM3e memory per GPU",
+      "gpuInterconnect": "900GB/s GPU-GPU NVLink with 4x NVSwitch - 7x faster than PCIe",
+      "cpu": "Dual 4th/5th Gen Intel® Xeon® or AMD EPYC™ 9004 series processors",
+      "ram": "Up to 32 DIMM slots: 8 TB DDR5-5600",
+      "storage": "Up to 16 2.5\" hot-swap NVMe drive bays",
+      "nic": "High-performance 400 Gb/s NVIDIA BlueField®-3 or ConnectX®-7",
+      "networking": "NVIDIA Quantum-2 InfiniBand or Spectrum-X™ Ethernet expansion"
     }
   },
   "products": {

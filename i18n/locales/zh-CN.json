@@ -51,6 +51,15 @@
         "title": "最新技术，安全可靠",
         "description": "不断创新产品应用，保护用户数据安全，提供全方位安全防护"
       }
+    },
+    "serverLabels": {
+      "gpu": "图形处理器英伟达™（NVIDIA®）HGX H100/H200 8 图形处理器，每个图形处理器最高可配备 141GB HBM3e 内存",
+      "gpuInterconnect": "GPU-GPU 互连：900GB/s GPU-GPU NVLink 互连，带 4x NVSwitch - 性能比 PCIe 高 7 倍",
+      "cpu": "双第 4/5 代 IntelXeon®或AMD EPYC™9004 系列处理器",
+      "ram": "最多 32 个 DIMM 插槽：8 TB DDR5-5600",
+      "storage": "最多 16 个 2.5 英寸热插拔 NVMe 驱动器托架",
+      "nic": "高性能 400 Gb/s NVIDIABlueField®-3 或 NVIDIAConnectX®-7",
+      "networking": "利用 NVIDIA Quantum-2 InfiniBand 或 NVIDIASpectrum-X™以太网进行扩展"
     }
   },
   "products": {
@@ -129,7 +138,6 @@
     "subtitle": "值得信赖的基础设施合作伙伴",
     "mission": "我们的使命",
     "vision": "我们的愿景",
-    "timeline": "发展历程",
     "pageTitle": "关于超核",
     "pageSubtitle": "全球领先的AI算力基础设施服务商",
     "companyOverview": {
