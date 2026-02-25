@@ -31,8 +31,9 @@
     </div>
 
     <div class="bg-white border border-swiss-text/10">
-      <TableSkeleton v-if="pending" />
-      <UTable v-else :rows="posts" :columns="columns" :loading="false" :ui="{
+      <ClientOnly>
+        <TableSkeleton v-if="pending" />
+        <UTable v-else :rows="posts" :columns="columns" :loading="false" :ui="{
         wrapper: 'overflow-x-auto',
         thead: 'bg-swiss-bg-soft',
         th: {
@@ -72,6 +73,10 @@
           </button>
         </template>
       </UTable>
+        <template #fallback>
+          <TableSkeleton />
+        </template>
+      </ClientOnly>
     </div>
   </div>
 </template>
@@ -153,7 +158,7 @@ async function deletePost(id: number) {
   if (!confirm('確定刪除此文章？')) return
 
   try {
-    await $fetch(`/api/news/${id}`, {
+    await $fetch(`/api/news/admin/${id}`, {
       method: 'DELETE',
     })
     // 立刻刷新数据，实现动态更新
