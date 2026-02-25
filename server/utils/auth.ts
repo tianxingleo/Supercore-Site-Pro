@@ -11,7 +11,14 @@ import { createClient } from '@supabase/supabase-js'
  */
 export async function requireAdminAuth(event: any) {
   // 方法1: 尝试使用 serverSupabaseUser
-  let user = await serverSupabaseUser(event)
+  let user: any = null
+  try {
+    user = await serverSupabaseUser(event)
+  } catch (e) {
+    // serverSupabaseUser 有时会在 session 无效时 throw，而非返回 null
+    // 继续尝试方法2（手动读取 cookie）
+    console.warn('[Auth] serverSupabaseUser threw, falling back to manual cookie:', (e as any)?.message)
+  }
 
   // 方法2: 如果方法1失败，手动从 cookie 读取 session
   if (!user) {

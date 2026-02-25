@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 
   // Experimental features
   experimental: {
-    appManifest: false,
+    appManifest: true,
   },
 
   // Components Configuration

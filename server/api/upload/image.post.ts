@@ -1,58 +1,19 @@
-import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 import { readMultipartFormData } from 'h3'
+import { requireAdminAuth } from '~/server/utils/auth'
 
 export default defineEventHandler(async (event) => {
   console.log('[Upload] Request received:', event.method, event.path)
 
   try {
-    // 1. 检查身份验证
-    const user = await serverSupabaseUser(event)
-
-    if (!user) {
-      console.error('[Upload] No user found in session')
-      throw createError({
-        statusCode: 401,
-        message: '未授权：请先登录'
-      })
-    }
-
-    // JWT token 中用户 ID 存储在 sub 字段中
-    const userId = user.sub
-    console.log('[Upload] User authenticated. ID:', userId, 'Email:', user.email)
-
-    // 使用 service role client（具有完整权限，可以绕过 RLS）
-    const client = serverSupabaseServiceRole(event)
-    console.log('[Upload] Using service role client:', !!client)
-
-    // 检查管理员角色
-    console.log('[Upload] Checking admin role for user:', userId)
-    const { data: profile, error: profileError } = await client
-      .from('profiles')
-      .select('role')
-      .eq('id', userId)
-      .single()
-
-    console.log('[Upload] Profile query result:', {
-      hasProfile: !!profile,
-      role: profile?.role,
-      error: profileError?.message
-    })
-
-    if (profileError || !profile || profile.role !== 'admin') {
-      console.error('[Upload] Admin check failed:', {
-        profileError: profileError?.message,
-        profile,
-        hasProfile: !!profile,
-        role: profile?.role,
-        isAdmin: profile?.role === 'admin'
-      })
-      throw createError({
-        statusCode: 403,
-        message: '禁止访问：需要管理员权限'
-      })
-    }
-
+    // 1. 使用与其他 admin API 一致的认证方式（含 cookie 回退）
+    const { user } = await requireAdminAuth(event)
+    const userId = user?.id || (user as any)?.sub
+    console.log('[Upload] Admin authenticated. ID:', userId, 'Email:', (user as any).email)
     console.log('[Upload] Admin check passed ✓')
+
+    // 获取 service role 客户端用于存储操作
+    const client = serverSupabaseServiceRole(event)
 
     // 2. 解析上传的文件
     const formData = await readMultipartFormData(event)
@@ -80,7 +41,9 @@ export default defineEventHandler(async (event) => {
     const bucketField = formData.find(f => f.name === 'bucket')
     const bucketName = bucketField?.data.toString() || 'news-covers'
     const timestamp = Date.now()
-    const extension = file.filename?.split('.').pop() || 'jpg'
+    // 根据实际 content-type 决定扩展名（前端统一压缩为 jpeg）
+    const mimeToExt: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' }
+    const extension = mimeToExt[file.type || ''] || file.filename?.split('.').pop() || 'jpg'
     const fileName = `${timestamp}-${Math.random().toString(36).substring(2, 7)}.${extension}`
 
     console.log('[Upload] Uploading to bucket:', bucketName, 'path:', fileName)

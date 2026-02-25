@@ -32,8 +32,10 @@ export default defineEventHandler(async (event) => {
   if (supabaseUrl) {
     const backendStart = Date.now()
     try {
-      const projectRef = supabaseUrl.replace('https://', '').replace('.supabase.co', '')
-      const apiUrl = `https://${projectRef}.supabase.co/rest/v1/`
+      // 支持自托管（http://host:port）和云端（https://xxx.supabase.co）两种格式
+      const apiUrl = supabaseUrl.includes('.supabase.co')
+        ? `${supabaseUrl}/rest/v1/`
+        : `${supabaseUrl}/rest/v1/`
 
       const { response: pingResponse, duration } = await fetchWithTimeout(
         apiUrl,
