@@ -4,6 +4,10 @@ on:
   push:
     branches: [ "latest" ]
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -62,6 +66,10 @@ jobs:
               --network host \
               -e NUXT_PUBLIC_SUPABASE_URL="${{ secrets.SUPABASE_URL }}" \
               -e NUXT_PUBLIC_SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" \
+              -e NUXT_SUPABASE_URL="${{ secrets.SUPABASE_URL }}" \
+              -e NUXT_SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" \
+              -e NUXT_SUPABASE_SERVICE_URL="${{ secrets.SUPABASE_URL }}" \
+              -e NUXT_SUPABASE_SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}" \
               -e SUPABASE_URL="${{ secrets.SUPABASE_URL }}" \
               -e SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" \
               -e SUPABASE_SECRET_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}" \

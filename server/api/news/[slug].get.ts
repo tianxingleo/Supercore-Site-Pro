@@ -17,8 +17,8 @@ export default defineEventHandler(async (event) => {
 
     // 使用 service_role 客户端绕过 RLS（公开 API）
     const config = useRuntimeConfig(event)
-    const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
-    const supabaseKey = config.supabaseService.key || config.public.supabaseKey || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
+    const supabaseUrl = process.env.SUPABASE_URL || config.supabaseService.url || config.public.supabaseUrl
+    const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY || config.supabaseService.key || config.public.supabaseKey
 
     if (!supabaseUrl || !supabaseKey) {
         throw createError({

@@ -10,8 +10,8 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 403, message: 'Unauthorized: Magic link parameter missing' })
   }
 
-  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
-  const supabaseServiceKey = config.supabaseService.key || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
+  const supabaseUrl = process.env.SUPABASE_URL || config.supabaseService.url || config.public.supabaseUrl
+  const supabaseServiceKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY || config.supabaseService.key
 
   console.log('[Auth API] Using Supabase URL:', supabaseUrl)
   console.log('[Auth API] Config Status:', { 

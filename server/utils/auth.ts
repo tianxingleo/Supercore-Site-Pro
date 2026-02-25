@@ -58,8 +58,9 @@ export async function requireAdminAuth(event: any) {
 
         if (accessToken) {
           const config = useRuntimeConfig(event)
-          const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
-          const supabaseKey = config.supabaseService.key || config.public.supabaseKey || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
+          // process.env 优先 —— 避免旧构建里 bake-in 的错误 URL 覆盖运行时环境变量
+          const supabaseUrl = process.env.SUPABASE_URL || config.supabaseService.url || config.public.supabaseUrl
+          const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY || config.supabaseService.key || config.public.supabaseKey
 
           if (supabaseUrl && supabaseKey) {
             const supabase = createClient(supabaseUrl, supabaseKey, {
@@ -114,8 +115,9 @@ export async function requireAdminAuth(event: any) {
 
   // 使用 robust client 验证管理员角色
   const config = useRuntimeConfig(event)
-  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
-  const supabaseKey = config.supabaseService.key || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
+  // process.env 优先，避免旧构建里 bake-in 的错误 URL 覆盖运行时环境变量
+  const supabaseUrl = process.env.SUPABASE_URL || config.supabaseService.url || config.public.supabaseUrl
+  const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY || config.supabaseService.key
 
   if (!supabaseUrl || !supabaseKey) {
     console.error('[Auth] Cannot verify admin role: Supabase config missing')

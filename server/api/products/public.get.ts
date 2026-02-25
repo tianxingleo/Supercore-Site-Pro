@@ -7,8 +7,8 @@ export default defineEventHandler(async (event) => {
 
   // 验证配置
   const config = useRuntimeConfig(event)
-  const supabaseUrl = config.supabaseService.url || config.public.supabaseUrl || process.env.SUPABASE_URL
-  const supabaseKey = config.supabaseService.key || config.public.supabaseKey || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
+  const supabaseUrl = process.env.SUPABASE_URL || config.supabaseService.url || config.public.supabaseUrl
+  const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY || config.supabaseService.key || config.public.supabaseKey || process.env.SUPABASE_SERVICE_KEY
 
   if (!supabaseUrl || !supabaseKey) {
     throw createError({
