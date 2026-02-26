@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Product } from '~/types'
+import { sanitizeStorageUrls } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
@@ -60,7 +61,7 @@ export default defineEventHandler(async (event) => {
       en: item.description.en || '',
     },
     specs: item.specs || {},
-    images: item.images || [],
+    images: sanitizeStorageUrls(item.images),
     category: item.category,
     featured: item.is_featured || false,
     createdAt: item.created_at,

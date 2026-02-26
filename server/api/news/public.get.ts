@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Post } from '~/types'
+import { sanitizeStorageUrl } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
@@ -9,6 +10,9 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig(event)
     const supabaseUrl = process.env.SUPABASE_URL || config.supabaseService.url || config.public.supabaseUrl
     const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY || config.supabaseService.key || config.public.supabaseKey
+
+    console.log('Supabase URL:', supabaseUrl)
+    console.log('Supabase Key exists:', !!supabaseKey)
 
     if (!supabaseUrl || !supabaseKey) {
         throw createError({
@@ -48,5 +52,10 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    return (data as Post[]) || []
+    // 重写 cover_image，避免 Mixed Content（HTTP on HTTPS）
+    const posts = (data as Post[]) || []
+    return posts.map((p) => ({
+      ...p,
+      cover_image: sanitizeStorageUrl(p.cover_image) as string | undefined,
+    }))
 })

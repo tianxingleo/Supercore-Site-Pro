@@ -5,6 +5,7 @@
 
 import { createClient } from '@supabase/supabase-js'
 import type { Product } from '~/types'
+import { sanitizeStorageUrls } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
   // 从 event.path 中提取 slug
@@ -83,7 +84,7 @@ export default defineEventHandler(async (event) => {
         en: anyProduct.description.en || '',
       },
       specs: anyProduct.specs || {},
-      images: anyProduct.images || [],
+      images: sanitizeStorageUrls(anyProduct.images),
       category: anyProduct.category,
       featured: anyProduct.is_featured || false,
       createdAt: anyProduct.created_at,
@@ -115,7 +116,7 @@ export default defineEventHandler(async (event) => {
       en: data.description.en || '',
     },
     specs: data.specs || {},
-    images: data.images || [],
+    images: sanitizeStorageUrls(data.images),
     category: data.category,
     featured: data.is_featured || false,
     createdAt: data.created_at,

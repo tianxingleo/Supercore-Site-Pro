@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Post } from '~/types'
+import { sanitizeStorageUrl } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
     // 获取路由参数
@@ -77,8 +78,14 @@ export default defineEventHandler(async (event) => {
         }
     }
 
+    // 重写 cover_image，避免 Mixed Content（HTTP on HTTPS）
+    const sanitizedPost = {
+      ...(post as Post),
+      cover_image: sanitizeStorageUrl((post as Post).cover_image),
+    }
+
     return {
-        post: post as Post,
+        post: sanitizedPost as Post,
         prevPost,
         nextPost
     }
