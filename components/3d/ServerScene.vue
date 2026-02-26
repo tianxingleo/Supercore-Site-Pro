@@ -59,7 +59,7 @@ const setAnimationPhase = (phase: number, progress: number) => {
       cube.scale.setScalar(1.05 + progress * 0.05)
       break
     case 2: // 細節聚焦階段
-      cube.position.set(0, 0, 0) 
+      cube.position.set(0, 0, 0)
       cube.scale.setScalar(1.1 + progress * 0.05)
       break
     case 3: // 恢復階段
