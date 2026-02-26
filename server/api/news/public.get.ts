@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Post } from '~/types'
+import { sanitizeRecords } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
@@ -51,5 +52,5 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    return (data as Post[]) || []
+    return sanitizeRecords(data as Post[])
 })

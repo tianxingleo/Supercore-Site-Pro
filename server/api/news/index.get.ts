@@ -1,6 +1,7 @@
 import { getInternalSupabaseClient } from '~/server/utils/supabase'
 import { requireAdminAuth } from '~/server/utils/auth'
 import type { Post } from '~/types'
+import { sanitizeRecords } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
     // 1. 检查身份验证
@@ -23,6 +24,6 @@ export default defineEventHandler(async (event) => {
 
     return {
         success: true,
-        data: data as Post[]
+        data: sanitizeRecords(data as Post[])
     }
 })

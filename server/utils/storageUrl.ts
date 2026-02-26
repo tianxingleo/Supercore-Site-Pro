@@ -30,3 +30,38 @@ export function sanitizeStorageUrls(urls: string[] | null | undefined): string[]
   if (!urls) return []
   return urls.map((url) => (sanitizeStorageUrl(url) as string) || url)
 }
+
+/**
+ * 清理单条 Post / Product 记录中的所有图片 URL 字段。
+ * 支持 cover_image、images（数组）字段。
+ */
+export function sanitizeRecord<T extends Record<string, any>>(record: T): T {
+  if (!record) return record
+  const result = { ...record }
+
+  // 单一图片字段
+  const singleFields = ['cover_image', 'image', 'thumbnail', 'avatar', 'cover']
+  for (const field of singleFields) {
+    if (typeof result[field] === 'string') {
+      result[field] = sanitizeStorageUrl(result[field]) ?? result[field]
+    }
+  }
+
+  // 数组图片字段
+  const arrayFields = ['images', 'thumbnails', 'gallery']
+  for (const field of arrayFields) {
+    if (Array.isArray(result[field])) {
+      result[field] = sanitizeStorageUrls(result[field])
+    }
+  }
+
+  return result
+}
+
+/**
+ * 批量清理记录数组。
+ */
+export function sanitizeRecords<T extends Record<string, any>>(records: T[] | null | undefined): T[] {
+  if (!records) return []
+  return records.map(sanitizeRecord)
+}

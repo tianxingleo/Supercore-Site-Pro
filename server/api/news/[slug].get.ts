@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Post } from '~/types'
+import { sanitizeRecord } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
     // 获取路由参数
@@ -78,7 +79,7 @@ export default defineEventHandler(async (event) => {
     }
 
     return {
-        post: post as Post,
+        post: sanitizeRecord(post as Post),
         prevPost,
         nextPost
     }
