@@ -2,7 +2,7 @@
   <div class="spec-table overflow-hidden">
     <table class="w-full border-collapse">
       <tbody>
-        <tr v-for="(value, key) in specs" :key="key"
+        <tr v-for="key in orderedKeys" :key="key"
           class="border-b border-gray-100 last:border-0 group hover:bg-swiss-bg-soft transition-colors">
           <th class="py-6 px-0 text-left w-1/3" scope="row">
             <span
@@ -11,7 +11,7 @@
             </span>
           </th>
           <td class="py-6 px-0 text-right text-swiss-text font-bold">
-            {{ formatSpecValue(value) }}
+            {{ formatSpecValue(specs[key]) }}
           </td>
         </tr>
       </tbody>
@@ -25,6 +25,15 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+import { computed } from 'vue'
+
+const orderedKeys = computed(() => {
+  if (props.specs && Array.isArray(props.specs._order)) {
+    return props.specs._order.filter((k: string) => props.specs[k] !== undefined)
+  }
+  return Object.keys(props.specs || {}).filter(k => k !== '_order')
+})
 
 // 規格標籤映射（繁體中文）
 const specLabels: Record<string, string> = {

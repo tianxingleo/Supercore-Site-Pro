@@ -126,7 +126,24 @@
             </button>
           </div>
           <div class="p-6 md:p-8 space-y-3">
-            <div v-for="(item, index) in specsItems" :key="item.id" class="flex items-center space-x-2">
+            <div v-for="(item, index) in specsItems" :key="item.id" 
+                 class="flex items-center space-x-2 group p-1 -m-1 rounded hover:bg-swiss-bg-soft transition-colors"
+                 draggable="true" 
+                 @dragstart="onDragStart($event, index)" 
+                 @dragover.prevent 
+                 @dragenter.prevent 
+                 @drop="onDrop($event, index)">
+              <!-- Drag handle -->
+              <div class="text-swiss-text-muted opacity-30 cursor-grab active:cursor-grabbing hover:opacity-100 px-2 flex-shrink-0" title="拖動以重新排序">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+              </div>
               <input v-model="item.key"
                 @blur="syncSpecs"
                 placeholder="Key (如 CPU)"
@@ -136,7 +153,7 @@
                 placeholder="Value (如 2x AMD)"
                 class="flex-1 px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
               <button type="button" @click="removeSpec(index)"
-                class="px-3 py-3 text-swiss-text hover:text-red-500 transition-colors">
+                class="px-3 py-3 text-swiss-text hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
                 ✕
               </button>
             </div>
@@ -201,23 +218,78 @@ const form = ref({
 // 用于编辑的规格参数数组
 const specsItems = ref<Array<{ id: string; key: string; value: string }>>([])
 
+// Drag and drop state
+const draggedIndex = ref<number | null>(null)
+
+function onDragStart(event: DragEvent, index: number) {
+  draggedIndex.value = index
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'move'
+  }
+}
+
+function onDrop(event: DragEvent, index: number) {
+  if (draggedIndex.value !== null && draggedIndex.value !== index) {
+    const items = [...specsItems.value]
+    const [draggedItem] = items.splice(draggedIndex.value, 1)
+    items.splice(index, 0, draggedItem)
+    specsItems.value = items
+    syncSpecs()
+  }
+  draggedIndex.value = null
+}
+
 // 初始化 specsItems
 const initSpecsItems = () => {
-  specsItems.value = Object.keys(form.value.specs).map((key, index) => ({
-    id: `spec_${index}_${Date.now()}`,
-    key,
-    value: form.value.specs[key]
-  }))
+  const specs = (form.value.specs as any) || {}
+  const order = Array.isArray(specs._order) ? specs._order : Object.keys(specs).filter(k => k !== '_order')
+  
+  const items: Array<{ id: string; key: string; value: string }> = []
+  
+  // Use order to populate items
+  order.forEach((key: string, index: number) => {
+    if (key !== '_order' && specs[key] !== undefined) {
+      items.push({
+        id: `spec_ordered_${index}_${Date.now()}`,
+        key,
+        value: specs[key]
+      })
+    }
+  })
+  
+  // Handle any keys that might be in specs but not in _order, just in case
+  Object.keys(specs).forEach((key) => {
+    if (key !== '_order' && !order.includes(key)) {
+      items.push({
+        id: `spec_extra_${key}_${Date.now()}`,
+        key,
+        value: specs[key]
+      })
+    }
+  })
+  
+  specsItems.value = items
 }
 
 // 同步 specsItems 到 form.specs
 const syncSpecs = () => {
-  const newSpecs: Record<string, string> = {}
+  const newSpecs: Record<string, any> = {}
+  const order: string[] = []
+  
   specsItems.value.forEach(item => {
-    if (item.key) {
-      newSpecs[item.key] = item.value
+    const k = item.key?.trim()
+    if (k) {
+      newSpecs[k] = item.value
+      if (!order.includes(k)) {
+         order.push(k)
+      }
     }
   })
+  
+  if (order.length > 0) {
+    newSpecs['_order'] = order
+  }
+  
   form.value.specs = newSpecs
 }
 
@@ -293,20 +365,20 @@ async function saveProduct() {
 
     if (isNew.value) {
       // 创建新产品
-      const response = await $fetch('/api/products', {
+      const response = await $fetch<any>('/api/products', {
         method: 'POST',
         body: payload,
       })
-      if (response.success) {
+      if (response && response.success) {
         navigateTo('/admin/products')
       }
     } else {
       // 更新产品
-      const response = await $fetch(`/api/products/admin/${route.params.id}`, {
+      const response = await $fetch<any>(`/api/products/admin/${route.params.id}`, {
         method: 'PUT',
         body: payload,
       })
-      if (response.success) {
+      if (response && response.success) {
         navigateTo('/admin/products')
       }
     }

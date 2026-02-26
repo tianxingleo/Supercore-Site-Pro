@@ -199,6 +199,11 @@ const getActionItems = (row: any) => [
       click: () => navigateTo(`/admin/products/${row.id}`),
     },
     {
+      label: '克隆',
+      icon: 'i-heroicons-document-duplicate-20-solid',
+      click: () => cloneProduct(row.id),
+    },
+    {
       label: '預覽',
       icon: 'i-heroicons-eye-20-solid',
       click: () => window.open(`/products/${row.slug}`, '_blank'),
@@ -234,6 +239,26 @@ function toggleSelection(row: any) {
     selectedItems.value.splice(index, 1)
   } else {
     selectedItems.value.push(row)
+  }
+}
+
+async function cloneProduct(id: number) {
+  if (!confirm('確定要克隆此產品嗎？')) return
+
+  try {
+    const response = await $fetch(`/api/products/admin/${id}.clone`, {
+      method: 'POST',
+    }) as any
+    
+    if (response?.success) {
+      alert('克隆成功！')
+      refreshKey.value++
+      await refresh()
+    }
+  } catch (error: any) {
+    console.error('克隆失敗:', error)
+    const errorMessage = error.data?.message || error.message || '克隆失敗，請重試'
+    alert(errorMessage)
   }
 }
 
