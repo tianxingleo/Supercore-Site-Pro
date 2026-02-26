@@ -94,7 +94,7 @@ export default defineNuxtConfig({
     densities: [1, 2],
     // 允许 IPX 从内网 Supabase（HTTP）抓取图片并以 HTTPS 返回给浏览器，
     // 解决 Mixed Content 问题：IPX 在服务端 fetch，浏览器只看到 /_ipx/ HTTPS URL
-    domains: ['43.132.185.199'],
+    domains: ['43.132.185.199', 'api.supercore.hk', 'supercore.hk'],
   },
 
   // Supabase Configuration

@@ -13,14 +13,14 @@
 
 const STORAGE_PUBLIC_PREFIX_RE = /^https?:\/\/[^/]+\/storage\/v1\/object\/public\//
 
-/**
- * 将单个存储 URL 转换为代理路径。
- * 非存储 URL 原样返回。
- */
 export function sanitizeStorageUrl(url: string | null | undefined): string | null | undefined {
   if (!url) return url
   if (!STORAGE_PUBLIC_PREFIX_RE.test(url)) return url
-  return url.replace(STORAGE_PUBLIC_PREFIX_RE, '/storage/')
+  
+  const baseUrl = process.env.SUPABASE_URL || 'https://api.supercore.hk'
+  const prefix = baseUrl.replace(/\/+$/, '') + '/storage/v1/object/public/'
+  
+  return url.replace(STORAGE_PUBLIC_PREFIX_RE, prefix)
 }
 
 /**
@@ -37,7 +37,7 @@ export function sanitizeStorageUrls(urls: string[] | null | undefined): string[]
  */
 export function sanitizeRecord<T extends Record<string, any>>(record: T): T {
   if (!record) return record
-  const result = { ...record }
+  const result: any = { ...record }
 
   // 单一图片字段
   const singleFields = ['cover_image', 'image', 'thumbnail', 'avatar', 'cover']
