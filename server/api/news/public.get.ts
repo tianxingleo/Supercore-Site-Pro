@@ -1,12 +1,28 @@
-import { getInternalSupabaseClient } from '~/server/utils/supabase'
+import { createClient } from '@supabase/supabase-js'
 import type { Post } from '~/types'
 
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const limit = query.limit ? parseInt(query.limit as string) : undefined
 
-    // 使用统一的 service_role 客户端工具函数
-    const client = getInternalSupabaseClient(event)
+    // 与 products/public.get.ts 保持完全相同的客户端初始化模式（已验证可用）
+    const config = useRuntimeConfig(event)
+    const supabaseUrl = process.env.SUPABASE_URL || config.supabaseService.url || config.public.supabaseUrl
+    const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY || config.supabaseService.key || config.public.supabaseKey
+
+    if (!supabaseUrl || !supabaseKey) {
+        throw createError({
+            statusCode: 500,
+            message: 'Supabase configuration is missing',
+        })
+    }
+
+    const client = createClient(supabaseUrl, supabaseKey, {
+        auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+        },
+    })
 
     let queryBuilder = client
         .from('posts')
