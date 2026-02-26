@@ -1,7 +1,6 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
 import { readMultipartFormData } from 'h3'
 import { requireAdminAuth } from '~/server/utils/auth'
-import { sanitizeStorageUrl } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
   console.log('[Upload] Request received:', event.method, event.path)
@@ -74,12 +73,11 @@ export default defineEventHandler(async (event) => {
 
     const { data: urlData } = client.storage.from(bucketName).getPublicUrl(fileName)
 
-    const publicUrl = sanitizeStorageUrl(urlData.publicUrl) as string
-    console.log('[Upload] Success:', publicUrl)
+    console.log('[Upload] Success:', urlData.publicUrl)
     return {
       success: true,
       data: {
-        publicUrl
+        publicUrl: urlData.publicUrl
       }
     }
 

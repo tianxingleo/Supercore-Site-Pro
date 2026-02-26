@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Post } from '~/types'
-import { sanitizeStorageUrl } from '~/server/utils/storageUrl'
 
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
@@ -52,10 +51,5 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    // 重写 cover_image，避免 Mixed Content（HTTP on HTTPS）
-    const posts = (data as Post[]) || []
-    return posts.map((p) => ({
-      ...p,
-      cover_image: sanitizeStorageUrl(p.cover_image) as string | undefined,
-    }))
+    return (data as Post[]) || []
 })
