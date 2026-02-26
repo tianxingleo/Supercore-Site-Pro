@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div ref="containerRef" class="w-full h-full relative">
     <canvas ref="canvasRef" class="w-full h-full block" v-show="!isLoading" />
     <!-- 內部加載狀態，與 ClientOnly 的 fallback 保持一致的視覺 -->
@@ -77,9 +77,17 @@ const resetAnimation = () => {
   currentPhase.value = 0
 }
 
+// 將 0-1 的進度值轉換為 phase/progress 格式，兼容滾動動畫系統
+const setProgress = (progress: number) => {
+  const phase = Math.min(3, Math.floor(progress * 4))
+  const phaseProgress = (progress * 4) - phase
+  setAnimationPhase(phase, phaseProgress)
+}
+
 defineExpose({
   setAnimationPhase,
   resetAnimation,
+  setProgress,
   currentPhase,
 })
 

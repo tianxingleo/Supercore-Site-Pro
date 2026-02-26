@@ -8,7 +8,8 @@
         <!-- 3D Scene Layer: Absolute & Full Screen -->
         <div class="absolute inset-0 z-0 w-full h-full">
           <ClientOnly>
-            <ServerParticles v-if="canUseAdvanced3D()" ref="serverSceneRef" />
+            <ServerScene v-if="canUseAdvanced3D()" ref="serverSceneRef" background-color="#FFFFFF" :auto-rotate="false"
+              :mouse-parallax="true" :initial-rotation="{ x: 0, y: (70 * Math.PI) / 180, z: 0 }" />
             <MobileFallback v-else :show-scroll-indicator="true" />
             <template #fallback>
               <PlaceholderCanvas />
