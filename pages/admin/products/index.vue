@@ -60,7 +60,7 @@
             <!-- <input type="checkbox" :checked="selectedItems.includes(row)" @change="toggleSelection(row)"
               class="w-4 h-4 border-swiss-text/20" /> -->
             <div class="w-10 h-10 bg-swiss-bg-soft overflow-hidden flex-shrink-0">
-              <img v-if="row.images?.[0]" :src="row.images[0]" :alt="row.name?.['zh-HK'] || row.name?.['hk']"
+              <img v-if="row.images?.[0]" :src="ensureHttps(row.images[0])" :alt="row.name?.['zh-HK'] || row.name?.['hk']"
                 loading="lazy" class="w-full h-full object-cover" />
               <div v-else class="w-full h-full bg-swiss-bg flex items-center justify-center">
                 <span class="text-[8px] text-swiss-text-muted">No Image</span>

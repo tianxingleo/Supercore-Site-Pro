@@ -3,6 +3,15 @@
  * 生成 SVG 圖片占位符用於開發階段
  */
 
+/**
+ * 将图片 URL 中的 http:// 强制替换为 https://
+ * 防止 HTTPS 页面出现 Mixed Content 报错
+ */
+export const ensureHttps = (url: string | null | undefined): string => {
+  if (!url) return ''
+  return url.replace(/^http:\/\//i, 'https://')
+}
+
 export const generatePlaceholder = (
   width: number,
   height: number,

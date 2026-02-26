@@ -7,7 +7,7 @@
     <div class="aspect-square bg-swiss-bg-soft relative flex items-center justify-center p-8">
       <NuxtImg
         v-if="product.images && product.images.length > 0"
-        :src="product.images[0]"
+        :src="ensureHttps(product.images[0])"
         :alt="product.name[locale as keyof typeof product.name] || product.name['zh-HK'] || product.name.en"
         width="800"
         height="600"

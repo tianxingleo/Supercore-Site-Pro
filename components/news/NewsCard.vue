@@ -7,7 +7,7 @@
     <div class="aspect-video bg-gray-50 relative overflow-hidden">
       <NuxtImg
         v-if="post.cover_image"
-        :src="post.cover_image"
+        :src="ensureHttps(post.cover_image)"
         :alt="post.title[lang]"
         width="800"
         height="450"

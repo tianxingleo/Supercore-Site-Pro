@@ -42,7 +42,7 @@
             class="relative flex-1 min-h-[350px] lg:min-h-[500px] p-6 md:p-10 lg:p-12 flex items-center justify-center">
             <!-- Product Image -->
             <div v-if="product && product.images && product.images.length > 0" class="relative">
-              <NuxtImg v-if="currentImage" ref="mainImageRef" :src="currentImage"
+              <NuxtImg v-if="currentImage" ref="mainImageRef" :src="ensureHttps(currentImage)"
                 :alt="product.name[locale] || product.name['zh-HK'] || product.name.en" width="1600" height="900"
                 format="webp" quality="90" loading="eager" :key="currentImageIndex" :preload="currentImageIndex === 0"
                 sizes="xs:100vw sm:100vw md:70vw lg:70vw" @load="handleImageLoad" @error="handleImageLoad"

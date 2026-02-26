@@ -42,7 +42,7 @@
                             class="mb-16 aspect-video bg-gray-50 overflow-hidden border border-gray-100 relative">
                             <div v-if="!imageLoaded" class="shimmer absolute inset-0 z-10"></div>
                             <NuxtImg
-                              :src="post.cover_image"
+                              :src="ensureHttps(post.cover_image)"
                               :alt="post.title[lang]"
                               width="1200"
                               height="675"
