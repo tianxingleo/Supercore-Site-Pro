@@ -6,9 +6,13 @@
 /**
  * 将图片 URL 中的 http:// 强制替换为 https://
  * 防止 HTTPS 页面出现 Mixed Content 报错
+ * 注意：对裸 IP 地址（如 43.x.x.x:8000）不做升级，避免 ERR_SSL_PROTOCOL_ERROR
  */
 export const ensureHttps = (url: string | null | undefined): string => {
   if (!url) return ''
+  // 如果是裸 IP 地址，浏览器通常没有合法证书，保留原协议避免 SSL 错误
+  const isIpUrl = /^https?:\/\/(\d{1,3}\.){3}\d{1,3}(:\d+)?\//i.test(url)
+  if (isIpUrl) return url
   return url.replace(/^http:\/\//i, 'https://')
 }
 

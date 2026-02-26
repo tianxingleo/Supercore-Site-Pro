@@ -2,7 +2,7 @@
   <div class="spec-table overflow-hidden">
     <table class="w-full border-collapse">
       <tbody>
-        <tr v-for="(value, key) in specs" :key="key"
+        <tr v-for="[key, value] in orderedSpecs" :key="key"
           class="border-b border-gray-100 last:border-0 group hover:bg-swiss-bg-soft transition-colors">
           <th class="py-6 px-0 text-left w-1/3" scope="row">
             <span
@@ -11,7 +11,7 @@
             </span>
           </th>
           <td class="py-6 px-0 text-right text-swiss-text font-bold">
-            {{ formatSpecValue(value) }}
+            {{ formatSpecValue(value as string | number | boolean) }}
           </td>
         </tr>
       </tbody>
@@ -21,10 +21,24 @@
 
 <script setup lang="ts">
 interface Props {
-  specs: Record<string, string | number | boolean>
+  specs: Record<string, string | number | boolean | string[]>
 }
 
 const props = defineProps<Props>()
+
+// 按 __order 元数据排序，并过滤掉内部 __order 键
+const orderedSpecs = computed<[string, string | number | boolean][]>(() => {
+  const raw = props.specs
+  if (!raw) return []
+  const orderArr = Array.isArray(raw.__order) ? (raw.__order as string[]) : []
+  // 按已保存的顺序排列已知 key
+  const orderedKeys = orderArr.filter(k => k in raw && k !== '__order')
+  // 追加不在 __order 中的剩余 key（兼容旧数据）
+  Object.keys(raw).forEach(k => {
+    if (k !== '__order' && !orderedKeys.includes(k)) orderedKeys.push(k)
+  })
+  return orderedKeys.map(k => [k, raw[k] as string | number | boolean])
+})
 
 // 規格標籤映射（繁體中文）
 const specLabels: Record<string, string> = {

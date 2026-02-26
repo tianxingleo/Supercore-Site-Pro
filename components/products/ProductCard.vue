@@ -48,10 +48,6 @@
       >
         {{ getProductName() }}
       </TypographyHeader>
-      <p class="text-swiss-secondary text-sm line-clamp-2 mb-4">
-        {{ getProductDescription() }}
-      </p>
-
       <!-- Key Specs Preview -->
       <div class="flex items-center justify-between text-xs text-swiss-secondary">
         <span v-if="product.specs?.cpu">{{ product.specs.cpu }}</span>

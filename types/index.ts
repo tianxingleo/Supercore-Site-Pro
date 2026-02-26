@@ -14,7 +14,7 @@ export interface Product {
     'zh-CN': string
     en: string
   }
-  specs: Record<string, string | number | boolean>
+  specs: Record<string, string | number | boolean | string[]>
   images: string[]
   category: 'server' | 'storage' | 'network' | 'software' | 'hpc' | 'storage-hp'
   featured: boolean

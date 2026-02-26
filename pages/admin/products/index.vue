@@ -203,6 +203,11 @@ const getActionItems = (row: any) => [
       icon: 'i-heroicons-eye-20-solid',
       click: () => window.open(`/products/${row.slug}`, '_blank'),
     },
+    {
+      label: '克隆',
+      icon: 'i-heroicons-document-duplicate-20-solid',
+      click: () => cloneProduct(row),
+    },
   ],
   [
     {
@@ -234,6 +239,53 @@ function toggleSelection(row: any) {
     selectedItems.value.splice(index, 1)
   } else {
     selectedItems.value.push(row)
+  }
+}
+
+const cloning = ref(false)
+
+async function cloneProduct(row: any) {
+  if (!confirm(`確定要克隆產品「${row.name?.['zh-HK'] || row.name?.['hk'] || row.slug}」嗎？\n將以草稿狀態新建一份副本。`)) return
+
+  cloning.value = true
+  try {
+    // 生成不衝突的 slug：原 slug + -copy，若已存在則加數字後綴
+    const baseSlug = `${row.slug}-copy`
+    const existingSlugs = (products.value || []).map((p: any) => p.slug)
+    let newSlug = baseSlug
+    let counter = 2
+    while (existingSlugs.includes(newSlug)) {
+      newSlug = `${baseSlug}-${counter}`
+      counter++
+    }
+
+    // 只取 API 白名單字段，避免多餘字段導致 DB 500 錯誤
+    const cloneData = {
+      slug: newSlug,
+      name: row.name,
+      description: row.description,
+      category: row.category,
+      specs: row.specs ?? null,
+      images: row.images ?? null,
+      model_3d_url: row.model_3d_url ?? null,
+      featured: row.featured ?? false,
+      status: 'draft',
+    }
+
+    await $fetch('/api/products', {
+      method: 'POST',
+      body: cloneData,
+    })
+
+    refreshKey.value++
+    await refresh()
+    alert(`克隆成功！新產品 slug：${newSlug}（草稿狀態）`)
+  } catch (error: any) {
+    console.error('克隆失敗:', error)
+    const errorMessage = error.data?.statusMessage || error.data?.message || error.message || '克隆失敗，請重試'
+    alert(errorMessage)
+  } finally {
+    cloning.value = false
   }
 }
 

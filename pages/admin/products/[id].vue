@@ -119,14 +119,33 @@
         <!-- Specs Card -->
         <div class="bg-white border border-swiss-text/10">
           <div class="p-6 md:p-8 border-b border-swiss-text/10 flex justify-between items-center">
-            <div class="font-bold text-swiss-text">規格參數 (Specs)</div>
+            <div>
+              <div class="font-bold text-swiss-text">規格參數 (Specs)</div>
+              <div class="text-[10px] text-swiss-text-muted mt-0.5">拖拽左側 ≡ 手柄可調整行順序</div>
+            </div>
             <button type="button" @click="addSpec"
               class="text-[10px] font-bold uppercase tracking-widest text-swiss-text hover:text-swiss-text-muted">
               + 添加
             </button>
           </div>
-          <div class="p-6 md:p-8 space-y-3">
-            <div v-for="(item, index) in specsItems" :key="item.id" class="flex items-center space-x-2">
+          <div class="p-6 md:p-8 space-y-2">
+            <div
+              v-for="(item, index) in specsItems"
+              :key="item.id"
+              class="flex items-center space-x-2 transition-opacity"
+              :class="{ 'opacity-40': draggedIndex === index, 'ring-2 ring-swiss-text ring-inset': dragOverIndex === index && dragOverIndex !== draggedIndex }"
+              draggable="true"
+              @dragstart="onDragStart(index, $event)"
+              @dragover.prevent="onDragOver(index, $event)"
+              @drop.prevent="onDrop(index)"
+              @dragend="onDragEnd"
+            >
+              <!-- Drag Handle -->
+              <div class="cursor-grab active:cursor-grabbing px-1 py-3 text-swiss-text-muted hover:text-swiss-text select-none flex-shrink-0" title="拖拽排序">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+              </div>
               <input v-model="item.key"
                 @blur="syncSpecs"
                 placeholder="Key (如 CPU)"
@@ -136,7 +155,7 @@
                 placeholder="Value (如 2x AMD)"
                 class="flex-1 px-4 py-3 bg-swiss-bg border border-swiss-text/10 text-swiss-text text-sm focus:outline-none focus:border-swiss-text" />
               <button type="button" @click="removeSpec(index)"
-                class="px-3 py-3 text-swiss-text hover:text-red-500 transition-colors">
+                class="px-3 py-3 text-swiss-text hover:text-red-500 transition-colors flex-shrink-0">
                 ✕
               </button>
             </div>
@@ -191,7 +210,7 @@ const form = ref({
   name: { hk: '', cn: '', en: '' },
   description: { hk: '', cn: '', en: '' },
   category: 'server',
-  specs: {} as Record<string, string>,
+  specs: {} as Record<string, any>,
   images: [] as string[],
   model_3d_url: '',
   is_featured: false,
@@ -201,24 +220,68 @@ const form = ref({
 // 用于编辑的规格参数数组
 const specsItems = ref<Array<{ id: string; key: string; value: string }>>([])
 
-// 初始化 specsItems
+// 拖拽状态
+const draggedIndex = ref<number | null>(null)
+const dragOverIndex = ref<number | null>(null)
+
+// 初始化 specsItems —— 按 __order 中保存的顺序恢复
 const initSpecsItems = () => {
-  specsItems.value = Object.keys(form.value.specs).map((key, index) => ({
+  const specs = form.value.specs
+  const orderArr = (specs.__order as unknown as string[]) || []
+  // 先按照 __order 的顺序排列已有的 key
+  const orderedKeys = orderArr.filter((k: string) => k in specs && k !== '__order')
+  // 再追加不在 __order 中的 key（兼容旧数据）
+  Object.keys(specs).filter(k => k !== '__order' && !orderedKeys.includes(k)).forEach(k => orderedKeys.push(k))
+
+  specsItems.value = orderedKeys.map((key, index) => ({
     id: `spec_${index}_${Date.now()}`,
     key,
-    value: form.value.specs[key]
+    value: specs[key] as string
   }))
 }
 
-// 同步 specsItems 到 form.specs
+// 同步 specsItems 到 form.specs，并写入 __order 保持顺序
 const syncSpecs = () => {
-  const newSpecs: Record<string, string> = {}
+  const newSpecs: Record<string, any> = {}
+  const orderArr: string[] = []
   specsItems.value.forEach(item => {
     if (item.key) {
       newSpecs[item.key] = item.value
+      orderArr.push(item.key)
     }
   })
+  // 将顺序数组存入 specs 对象以便跨保存持久化
+  newSpecs.__order = orderArr
   form.value.specs = newSpecs
+}
+
+// 拖拽排序处理
+function onDragStart(index: number, event: DragEvent) {
+  draggedIndex.value = index
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData('text/plain', String(index))
+  }
+}
+
+function onDragOver(index: number, _event: DragEvent) {
+  dragOverIndex.value = index
+}
+
+function onDrop(index: number) {
+  if (draggedIndex.value === null || draggedIndex.value === index) return
+  const items = [...specsItems.value]
+  const [removed] = items.splice(draggedIndex.value, 1)
+  items.splice(index, 0, removed)
+  specsItems.value = items
+  draggedIndex.value = null
+  dragOverIndex.value = null
+  syncSpecs()
+}
+
+function onDragEnd() {
+  draggedIndex.value = null
+  dragOverIndex.value = null
 }
 
 
