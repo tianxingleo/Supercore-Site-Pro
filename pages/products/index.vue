@@ -168,15 +168,21 @@ const initAnimation = () => {
 }
 
 // 使用 onMounted 确保组件已挂载到 DOM
+// 仅当数据已就绪（SSR hydration 场景）时才立即初始化
+// 否则由 watch(rawProducts) 在数据到达后处理
 onMounted(() => {
-  console.log('[Products] onMounted triggered')
-  initAnimation()
+  console.log('[Products] onMounted triggered, pending:', pending.value, 'products:', rawProducts.value?.length)
+  if (!pending.value && rawProducts.value?.length) {
+    initAnimation()
+  }
 })
 
-// 监听分类切换
+// 监听分类切换（仅在数据已加载时才初始化动画）
 watch(activeCategory, () => {
   console.log('[Products] Category changed to:', activeCategory.value)
-  initAnimation()
+  if (!pending.value && rawProducts.value?.length) {
+    initAnimation()
+  }
 })
 
 // 监听原始数据变化
