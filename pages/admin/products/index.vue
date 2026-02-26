@@ -246,8 +246,9 @@ async function cloneProduct(id: number) {
   if (!confirm('確定要克隆此產品嗎？')) return
 
   try {
-    const response = await $fetch(`/api/products/admin/${id}.clone`, {
+    const response = await $fetch(`/api/products/admin/clone`, {
       method: 'POST',
+      body: { id }
     }) as any
     
     if (response?.success) {

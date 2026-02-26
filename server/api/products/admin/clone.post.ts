@@ -6,7 +6,9 @@ export default defineEventHandler(async (event) => {
   await requireAdminAuth(event)
 
   // 2. 获取产品 ID
-  const id = getRouterParam(event, 'id')
+  const body = await readBody(event)
+  const id = body?.id
+  
   if (!id || isNaN(Number(id))) {
     throw createError({
       statusCode: 400,
